@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 CWD="$(pwd)"
-FILES='.zshrc .gitconfig .gitignore_global'
+FILES='.zshrc .zshenv .gitconfig .gitignore_global'
 
 for f in $FILES; do
     cp -v -f -R ~/$f ~/$f.orig
