@@ -16,6 +16,9 @@ editor = nano
 [branch]
 autosetuprebase = always
 
+[merge]
+summary = true
+
 [push]
 default = simple
 
