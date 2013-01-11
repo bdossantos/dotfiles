@@ -32,3 +32,7 @@ alias ohmyzsh="mate ~/.oh-my-zsh"
 plugins=(git ruby rbenv vagrant textmate osx python pip)
 
 source $ZSH/oh-my-zsh.sh
+
+# map Ctrl-Shift-left-arrow and Ctrl-Shift-right-arrow for word jumping
+bindkey "\e[1;6D" backward-word
+bindkey "\e[1;6C" forward-word
