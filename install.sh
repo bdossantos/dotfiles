@@ -10,3 +10,5 @@ for f in $FILES; do
     fi
     ln -v -s -f $CWD/$f ~/.$f
 done
+
+exec $SHELL
