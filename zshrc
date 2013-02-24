@@ -38,6 +38,9 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 
+# Base paths
+export PATH="$HOME/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
 # map Ctrl-Shift-left-arrow and Ctrl-Shift-right-arrow for word jumping
 bindkey "\e[1;6D" backward-word
 bindkey "\e[1;6C" forward-word
