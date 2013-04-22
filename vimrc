@@ -55,6 +55,9 @@ autocmd FileType python setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
 autocmd VimEnter * if !argc() | NERDTree | endif
 autocmd VimEnter * wincmd p
 
+" Close vim if the only window left open is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
 " Key Bindings
 map <F2> :NERDTreeToggle<CR>
 
