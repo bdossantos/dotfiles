@@ -54,6 +54,9 @@ colorscheme Frontier
 " Python
 autocmd FileType python setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
 
+" Git commit
+autocmd Filetype gitcommit setlocal spell textwidth=72
+
 " Autopen NERDTree and focus cursor in new document
 autocmd VimEnter * if !argc() | NERDTree | endif
 autocmd VimEnter * wincmd p
