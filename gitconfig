@@ -11,7 +11,6 @@ status = auto
 
 [core]
 excludesfile = ~/.gitignore_global
-editor = nano
 
 [branch]
 autosetuprebase = always
