@@ -39,7 +39,7 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 
 # Base paths
-export PATH="$HOME/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 
 # Aliases
 alias vi='vim'
