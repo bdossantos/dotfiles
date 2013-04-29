@@ -1,6 +1,3 @@
-# rbenv
-if [[ -d $HOME/.rbenv/bin ]]; then
-    export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"
-    #$(rbenv init -)
-fi
-
+# default editor
+export EDITOR='/usr/bin/vim'
+export VISUAL='/usr/bin/vim'
