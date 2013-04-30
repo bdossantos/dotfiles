@@ -21,6 +21,7 @@ Bundle 'tpope/vim-rails'
 Bundle 'rodjek/vim-puppet'
 Bundle 'klen/python-mode'
 Bundle 'tpope/vim-markdown'
+Bundle 'mv/mv-vim-nginx'
 Bundle 'daylerees/colour-schemes', { 'rtp': 'vim-themes/' }
 
 " Settings
