@@ -8,10 +8,10 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 Bundle 'scrooloose/nerdtree'
 Bundle 'tpope/vim-fugitive'
-Bundle "MarcWeber/vim-addon-mw-utils"
-Bundle "tomtom/tlib_vim"
-Bundle "honza/vim-snippets"
-Bundle 'garbas/snipmate.vim'
+Bundle 'MarcWeber/vim-addon-mw-utils'
+Bundle 'tomtom/tlib_vim'
+Bundle 'honza/vim-snippets'
+Bundle 'garbas/vim-snipmate'
 Bundle 'ervandew/supertab'
 Bundle 'godlygeek/tabular'
 Bundle 'Lokaltog/vim-easymotion'
@@ -21,7 +21,7 @@ Bundle 'tpope/vim-rails'
 Bundle 'rodjek/vim-puppet'
 Bundle 'klen/python-mode'
 Bundle 'tpope/vim-markdown'
-Bundle "daylerees/colour-schemes", { "rtp": "vim-themes/" }
+Bundle 'daylerees/colour-schemes', { 'rtp': 'vim-themes/' }
 
 " Settings
 set encoding=utf-8
