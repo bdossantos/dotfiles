@@ -8,6 +8,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 Bundle 'scrooloose/nerdtree'
 Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-git'
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'tomtom/tlib_vim'
 Bundle 'honza/vim-snippets'
@@ -16,13 +17,14 @@ Bundle 'ervandew/supertab'
 Bundle 'godlygeek/tabular'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+Bundle 'othree/html5.vim'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-rails'
 Bundle 'rodjek/vim-puppet'
 Bundle 'klen/python-mode'
 Bundle 'tpope/vim-markdown'
 Bundle 'mv/mv-vim-nginx'
-Bundle 'daylerees/colour-schemes', { 'rtp': 'vim-themes/' }
+Bundle 'daylerees/colour-schemes', {'rtp': 'vim-themes/'}
 
 " Settings
 set encoding=utf-8
@@ -51,6 +53,10 @@ set antialias
 
 syntax enable
 colorscheme Frontier
+
+if exists('+colorcolumn')
+  set colorcolumn=80
+endif
 
 " Python
 autocmd FileType python setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
