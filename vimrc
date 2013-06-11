@@ -53,7 +53,9 @@ set guifont=SourceCodePro-Regular:h14
 set antialias
 
 syntax enable
-colorscheme Frontier
+if has('gui_running')
+  colorscheme Frontier
+endif
 
 if exists('+colorcolumn')
   set colorcolumn=80
@@ -74,6 +76,13 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 
 " Key Bindings
 map <F2> :NERDTreeToggle<CR>
+
+" Unbind the cursor keys in insert, normal and visual modes.
+for prefix in ['i', 'n', 'v']
+  for key in ['<Up>', '<Down>', '<Left>', '<Right>']
+    exe prefix . "noremap " . key . " <Nop>"
+  endfor
+endfor
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")
