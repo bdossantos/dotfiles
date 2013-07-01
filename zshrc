@@ -32,11 +32,33 @@ alias ohmyzsh="mate ~/.oh-my-zsh"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git ruby rbenv vagrant textmate osx python pip brew)
+plugins=(git ruby gem bundler vagrant osx python pip brew)
 
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
+
+# prompt
+PROMPT='%{$fg[white]%}%2~ $(git_prompt_info)%{$fg[white]%}%# %{$reset_color%}'
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}|%{$fg[green]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}| "
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}✗"
+ZSH_THEME_GIT_PROMPT_CLEAN=""
+
+# chruby
+if [ -f /usr/local/share/chruby/chruby.sh ]; then
+  source /usr/local/share/chruby/chruby.sh
+fi
+
+if [ -f /usr/local/share/chruby/auto.sh ]; then
+  source /usr/local/share/chruby/auto.sh
+fi
+
+RUBIES=(~/.rubies/*)
+
+if which chruby &>/dev/null; then
+  chruby 2.0.0-p247
+fi
 
 # Base paths
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
