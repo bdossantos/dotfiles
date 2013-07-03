@@ -50,6 +50,11 @@ set novisualbell
 set noerrorbells
 set history=1000                  " Store lots of :cmdline history
 
+set ignorecase                    " Ignore case when searching
+set smartcase                     " When searching try to be smart about cases
+set hlsearch                      " Highlight search results
+set incsearch                     " Makes search act like in modern browsers
+
 set guifont=SourceCodePro-Regular:h14
 set antialias
 
