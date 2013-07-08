@@ -26,6 +26,7 @@ Bundle 'tpope/vim-markdown'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'mv/mv-vim-nginx'
 Bundle 'scrooloose/syntastic'
+Bundle 'bling/vim-airline'
 Bundle 'daylerees/colour-schemes', {'rtp': 'vim-themes/'}
 
 " Settings
@@ -66,6 +67,18 @@ endif
 if exists('+colorcolumn')
   set colorcolumn=80
 endif
+
+" always show the status line
+set laststatus=2
+
+" enable airline/fugitive integration
+let g:airline_enable_fugitive=1
+
+" enable airline/syntastic integration
+let g:airline_enable_syntastic=1
+
+" airline theme
+let g:airline_theme='dark'
 
 " Python
 autocmd FileType python setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
