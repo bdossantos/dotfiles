@@ -73,7 +73,8 @@ endif
 set laststatus=2
 
 " enable airline/fugitive integration
-let g:airline_enable_fugitive=1
+let g:airline_enable_branch=1
+let g:airline_branch_prefix=1
 
 " enable airline/syntastic integration
 let g:airline_enable_syntastic=1
