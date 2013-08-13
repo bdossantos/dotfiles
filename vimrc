@@ -28,6 +28,7 @@ Bundle 'kchmck/vim-coffee-script'
 Bundle 'mv/mv-vim-nginx'
 Bundle 'scrooloose/syntastic'
 Bundle 'bling/vim-airline'
+Bundle 'bronson/vim-trailing-whitespace'
 Bundle 'daylerees/colour-schemes', {'rtp': 'vim-themes/'}
 
 " Settings
