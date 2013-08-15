@@ -38,7 +38,7 @@ filetype plugin indent on         " load file type plugins + indentation
 set nowrap                        " don't wrap lines
 set tabstop=2 shiftwidth=2        " a tab is two spaces (or set this to 4)
 set expandtab                     " use spaces, not tabs (optional)
-set smarttab 
+set smarttab
 set backspace=indent,eol,start    " backspace through everything in insert mode
 set autoindent                    " match indentation of previous line
 
@@ -63,7 +63,7 @@ set antialias
 
 syntax enable
 if has('gui_running')
-  colorscheme Frontier
+  colorscheme Yule
 endif
 
 if exists('+colorcolumn')
