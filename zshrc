@@ -45,6 +45,9 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}] "
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}✗"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 
+# boxen
+[ -f /opt/boxen/env.sh ] && source /opt/boxen/env.sh
+
 # chruby
 if [ -f /usr/local/share/chruby/chruby.sh ]; then
   source /usr/local/share/chruby/chruby.sh
