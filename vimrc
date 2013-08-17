@@ -96,6 +96,9 @@ autocmd VimEnter * wincmd p
 " Close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
+" Jump to the last position when reopening a file
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+
 " Key Bindings
 map <F2> :NERDTreeToggle<CR>
 
