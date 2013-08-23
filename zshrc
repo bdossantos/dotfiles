@@ -48,6 +48,10 @@ ZSH_THEME_GIT_PROMPT_CLEAN=""
 # boxen
 [ -f /opt/boxen/env.sh ] && source /opt/boxen/env.sh
 
+# zsh syntax highlighting
+hl='/opt/boxen/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+[ -f $hl ] && source $hl
+
 # chruby
 if [ -f /usr/local/share/chruby/chruby.sh ]; then
   source /usr/local/share/chruby/chruby.sh
