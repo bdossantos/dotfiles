@@ -53,19 +53,11 @@ hl='/opt/boxen/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 [ -f $hl ] && source $hl
 
 # chruby
-if [ -f /usr/local/share/chruby/chruby.sh ]; then
-  source /usr/local/share/chruby/chruby.sh
-fi
-
-if [ -f /usr/local/share/chruby/auto.sh ]; then
-  source /usr/local/share/chruby/auto.sh
-fi
-
 RUBIES=(~/.rubies/*)
 
-if which chruby &>/dev/null; then
-  chruby 2.0.0-p247
-fi
+[ -f /usr/local/share/chruby/chruby.sh ] && source /usr/local/share/chruby/chruby.sh
+[ -f /usr/local/share/chruby/auto.sh ] && source /usr/local/share/chruby/auto.sh
+[ which chruby &>/dev/null ] && chruby 2.0.0-p247
 
 # Base paths
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
