@@ -2,6 +2,10 @@
 export EDITOR='/usr/bin/vim'
 export VISUAL='/usr/bin/vim'
 
+# pager
+export PAGER='less'
+export LESS='-R'
+
 # speed up building ruby
 export RUBY_CONFIGURE_OPTS='--disable-install-rdoc --disable-install-ri'
 
