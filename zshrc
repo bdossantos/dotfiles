@@ -63,6 +63,7 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 alias vi='vim'
 alias 'redis.start'='redis-server /usr/local/etc/redis.conf'
 alias 'redis.stop'='kill $(cat /usr/local/var/run/redis.pid)'
+alias ri='ri -f ansi'
 
 # map Ctrl-Shift-left-arrow and Ctrl-Shift-right-arrow for word jumping
 bindkey "\e[1;6D" backward-word
