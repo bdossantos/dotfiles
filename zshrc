@@ -40,6 +40,7 @@ source $ZSH/oh-my-zsh.sh
 
 # prompt
 PURE_DEFAULT_USERNAME=$USER
+PURE_CMD_MAX_EXEC_TIME=10
 [ -f $ZSH/custom/pure/pure.zsh ] && source $ZSH/custom/pure/pure.zsh
 
 # boxen
