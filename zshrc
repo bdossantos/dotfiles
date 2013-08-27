@@ -39,7 +39,7 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 
 # prompt
-DEFAULT_USERNAME=$USER
+PURE_DEFAULT_USERNAME=$USER
 [ -f $ZSH/custom/pure/pure.zsh ] && source $ZSH/custom/pure/pure.zsh
 
 # boxen
