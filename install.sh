@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 
-CWD="$(pwd)"
-FILES='zshrc zshenv gitconfig vimrc'
+if ! which stow >/dev/null; then
+  echo "CAN I HAZ STOW ?"
+  exit 1
+fi
 
-for f in $FILES; do
-    rm -f ~/.$f.orig
-    if [ -f ~/.$f ]; then
-        cp -f -R ~/.$f{,.orig}
-    fi
-    ln -v -s -f $CWD/$f ~/.$f
-done
+script_name=$(basename $0)
 
-exec $SHELL
+stow -S . -t $HOME -v --ignore='README.md' --ignore="$script_name"
+if [ $? -eq 0 ]; then
+  exec $SHELL
+fi
