@@ -1,6 +1,6 @@
 # default editor
-export EDITOR='/usr/bin/vim'
-export VISUAL='/usr/bin/vim'
+export EDITOR=$(which vim)
+export VISUAL=$(which vim)
 
 # pager
 export PAGER='less'
