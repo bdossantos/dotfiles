@@ -109,6 +109,14 @@ for prefix in ['i', 'n', 'v']
   endfor
 endfor
 
+" Store swap files in fixed location, not current directory.
+"
+" The '//' at the end ensure the swap file name will be built from the complete
+" path to the file with all path separators substituted to percent '%' signs.
+"
+" This will ensure file name uniqueness in the preserve directory.
+set dir=~/.vimswap//,/var/tmp//,/tmp//,.
+
 " Local config
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
