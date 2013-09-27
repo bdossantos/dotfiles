@@ -77,6 +77,11 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias ln='ln -i'
 
+# Time
+alias now='date +"%T"'
+alias nowtime='now'
+alias nowdate='date +"%d-%m-%Y"'
+
 # map Ctrl-Shift-left-arrow and Ctrl-Shift-right-arrow for word jumping
 bindkey "\e[1;6D" backward-word
 bindkey "\e[1;6C" forward-word
