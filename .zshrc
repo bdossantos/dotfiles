@@ -71,6 +71,12 @@ alias 'redis.start'='redis-server /usr/local/etc/redis.conf'
 alias 'redis.stop'='kill $(cat /usr/local/var/run/redis.pid)'
 alias ri='ri -f ansi'
 
+# Some more alias to avoid making mistakes
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias ln='ln -i'
+
 # map Ctrl-Shift-left-arrow and Ctrl-Shift-right-arrow for word jumping
 bindkey "\e[1;6D" backward-word
 bindkey "\e[1;6C" forward-word
