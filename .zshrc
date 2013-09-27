@@ -82,6 +82,13 @@ alias now='date +"%T"'
 alias nowtime='now'
 alias nowdate='date +"%d-%m-%Y"'
 
+# Shortcuts
+alias c='clear'
+alias x='exit'
+alias q='exit'
+alias h='history'
+alias j='jobs -l'
+
 # map Ctrl-Shift-left-arrow and Ctrl-Shift-right-arrow for word jumping
 bindkey "\e[1;6D" backward-word
 bindkey "\e[1;6C" forward-word
