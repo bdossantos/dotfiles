@@ -1,0 +1,8 @@
+# ~/.tmuxinator/running.yml
+
+name: running
+root: ~/Code/running-plan
+windows:
+  - editor: vim .
+  - server: bundle exec jekyll serve -w --future
+  - git: git status
