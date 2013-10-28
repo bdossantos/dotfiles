@@ -7,6 +7,7 @@ call vundle#rc()
 
 Bundle 'gmarik/vundle'
 Bundle 'scrooloose/nerdtree'
+Bundle 'wincent/Command-T'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-git'
 Bundle 'MarcWeber/vim-addon-mw-utils'
