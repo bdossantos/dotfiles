@@ -117,6 +117,10 @@ for prefix in ['i', 'n', 'v']
   endfor
 endfor
 
+" More natural split opening
+set splitbelow
+set splitright
+
 " Store swap files in fixed location, not current directory.
 "
 " The '//' at the end ensure the swap file name will be built from the complete
