@@ -52,7 +52,7 @@ PURE_CMD_MAX_EXEC_TIME=10
 [ -f /opt/boxen/env.sh ] && source /opt/boxen/env.sh
 
 # zsh syntax highlighting
-hl='/opt/boxen/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+hl="${HOMEBREW_ROOT}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 [ -f $hl ] && source $hl
 
 # chruby
