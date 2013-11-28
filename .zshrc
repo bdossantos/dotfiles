@@ -55,12 +55,6 @@ PURE_CMD_MAX_EXEC_TIME=10
 hl="${HOMEBREW_ROOT}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 [ -f $hl ] && source $hl
 
-# chruby
-RUBIES=(~/.rubies/*)
-
-[ -f /usr/local/share/chruby/chruby.sh ] && source /usr/local/share/chruby/chruby.sh
-[ -f /usr/local/share/chruby/auto.sh ] && source /usr/local/share/chruby/auto.sh
-
 # Base paths
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 

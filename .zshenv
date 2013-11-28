@@ -6,6 +6,16 @@ export VISUAL=$(which vim)
 export PAGER='less'
 export LESS='-R'
 
+# chruby
+if [ -d "${HOMEBREW_ROOT}/share/chruby" ]; then
+  RUBIES=(~/.rubies/*)
+
+  source "${HOMEBREW_ROOT}/share/chruby/chruby.sh"
+  source "${HOMEBREW_ROOT}/share/chruby/auto.sh"
+
+  [ -f ~/.ruby-version ] && chruby $(cat ~/.ruby-version)
+fi
+
 # speed up building ruby
 export RUBY_CONFIGURE_OPTS='--disable-install-rdoc --disable-install-ri'
 
