@@ -6,6 +6,9 @@ export VISUAL=$(which vim)
 export PAGER='less'
 export LESS='-R'
 
+# homebrew
+export HOMEBREW_ROOT=${HOMEBREW_ROOT:='/opt/boxen/homebrew'}
+
 # chruby
 if [ -d "${HOMEBREW_ROOT}/share/chruby" ]; then
   RUBIES=(~/.rubies/*)
