@@ -67,6 +67,10 @@ alias 'postgresql.stop'="pg_ctl -D ${HOMEBREW_ROOT}/var/postgres stop -s -m fast
 alias 'postgresql.restart'='postgresql.stop && sleep 1 && postgresql.start'
 alias ri='ri -f ansi'
 
+# Quick HTTP server
+alias serve='ruby -run -e httpd . -p 8080'
+alias pserve='python -m SimpleHTTPServer'
+
 # Some more alias to avoid making mistakes
 alias rm='rm -i'
 alias cp='cp -i'
