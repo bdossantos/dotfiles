@@ -62,6 +62,9 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 alias vi='vim'
 alias 'redis.start'='redis-server /usr/local/etc/redis.conf'
 alias 'redis.stop'='kill $(cat /usr/local/var/run/redis.pid)'
+alias 'postgresql.start'="pg_ctl -D ${HOMEBREW_ROOT}/var/postgres start"
+alias 'postgresql.stop'="pg_ctl -D ${HOMEBREW_ROOT}/var/postgres stop -s -m fast"
+alias 'postgresql.restart'='postgresql.stop && sleep 1 && postgresql.start'
 alias ri='ri -f ansi'
 
 # Some more alias to avoid making mistakes
