@@ -95,6 +95,11 @@ alias please='sudo'
 # passing alias to sudo
 alias sudo='sudo '
 
+# Automatically Starting tmux on SSH
+function ssht() {
+  ssh $* -t 'tmux a || tmux || /bin/bash'
+}
+
 # map Ctrl-Shift-left-arrow and Ctrl-Shift-right-arrow for word jumping
 bindkey "\e[1;6D" backward-word
 bindkey "\e[1;6C" forward-word
