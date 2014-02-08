@@ -87,6 +87,9 @@ let g:airline_enable_syntastic=1
 " airline theme
 let g:airline_theme='dark'
 
+" Use rubocop with the default ruby checker (mri)
+let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+
 " Python
 autocmd FileType python setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
 
