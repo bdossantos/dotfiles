@@ -33,6 +33,7 @@ Bundle 'mv/mv-vim-nginx'
 Bundle 'scrooloose/syntastic'
 Bundle 'bling/vim-airline'
 Bundle 'bronson/vim-trailing-whitespace'
+Bundle 'zenorocha/dracula-theme'
 Bundle 'daylerees/colour-schemes', {'rtp': 'vim-themes/'}
 
 " Settings
@@ -67,7 +68,7 @@ set antialias
 
 syntax enable
 if has('gui_running')
-  colorscheme Yule
+  colorscheme dracula
 endif
 
 if exists('+colorcolumn')
