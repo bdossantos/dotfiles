@@ -33,6 +33,7 @@ Bundle 'mv/mv-vim-nginx'
 Bundle 'scrooloose/syntastic'
 Bundle 'bling/vim-airline'
 Bundle 'bronson/vim-trailing-whitespace'
+Bundle 'chriskempson/base16-vim'
 Bundle 'zenorocha/dracula-theme'
 Bundle 'daylerees/colour-schemes', {'rtp': 'vim-themes/'}
 
@@ -69,10 +70,7 @@ set antialias
 syntax enable
 
 set background=dark
-
-if has('gui_running')
-  colorscheme dracula
-endif
+colorscheme base16-tomorrow
 
 if exists('+colorcolumn')
   set colorcolumn=80
