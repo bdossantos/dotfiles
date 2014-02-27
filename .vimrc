@@ -67,6 +67,9 @@ set guifont=SourceCodePro-Regular:h14
 set antialias
 
 syntax enable
+
+set background=dark
+
 if has('gui_running')
   colorscheme dracula
 endif
