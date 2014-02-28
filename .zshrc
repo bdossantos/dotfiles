@@ -95,7 +95,7 @@ alias sudo='sudo '
 
 # Automatically Starting tmux on SSH
 function ssht() {
-  ssh $* -t 'tmux a || tmux || /bin/bash'
+  ssh $* -t 'tmux a || tmux || $SHELL'
 }
 
 compdef ssht=ssh
