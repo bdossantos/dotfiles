@@ -93,8 +93,15 @@ alias please='sudo'
 # passing alias to sudo
 alias sudo='sudo '
 
+# update tab name
+function tabname() {
+  echo -en "\033];$1\007"
+}
+
 # Automatically Starting tmux on SSH
 function ssht() {
+  SSH_HOST="${@: -1}"
+  tabname $SSH_HOST
   ssh $* -t 'tmux a || tmux || $SHELL'
 }
 
