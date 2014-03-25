@@ -29,5 +29,5 @@ export RUBY_BUILD_CACHE_PATH='~/.rubies/cache'
 export BUNDLE_JOBS=4
 
 # zsh syntax highlighting
-highlighters=/opt/boxen/homebrew/share/zsh-syntax-highlighting/highlighters
+highlighters="${HOMEBREW_ROOT}/share/zsh-syntax-highlighting/highlighters"
 [ -d $highlighters ] && export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=$highlighters
