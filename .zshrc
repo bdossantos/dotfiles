@@ -43,6 +43,7 @@ plugins=(
   gem
   bundler
   capistrano
+  rake-fast
   vagrant
   osx
   colored-man
