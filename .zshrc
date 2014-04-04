@@ -53,6 +53,7 @@ plugins=(
   urltools
   vundle
   tmuxinator
+  common-aliases
   autojump
 )
 
@@ -86,23 +87,10 @@ alias ri='ri -f ansi'
 alias serve='ruby -run -e httpd . -p 8080'
 alias pserve='python -m SimpleHTTPServer'
 
-# Some more alias to avoid making mistakes
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-alias ln='ln -i'
-
 # Time
 alias now='date +"%T"'
 alias nowtime='now'
 alias nowdate='date +"%d-%m-%Y"'
-
-# Shortcuts
-alias c='clear'
-alias x='exit'
-alias q='exit'
-alias h='history'
-alias j='jobs -l'
 
 # CAN I HAZ ?
 alias please='sudo'
