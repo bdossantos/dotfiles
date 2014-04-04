@@ -1,6 +1,6 @@
-# ~/.tmuxinator/running.yml
+# ~/.tmuxinator/runner.sh.yml
 
-name: running
+name: runner
 root: ~/Code/Sites/runner.sh
 windows:
   - editor: vim .
