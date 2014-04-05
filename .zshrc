@@ -93,6 +93,9 @@ alias now='date +"%T"'
 alias nowtime='now'
 alias nowdate='date +"%d-%m-%Y"'
 
+# Override ls alias from common-aliases plugin
+alias ls='ls -G'
+
 # CAN I HAZ ?
 alias please='sudo'
 
