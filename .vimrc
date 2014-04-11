@@ -94,6 +94,10 @@ let g:airline_theme='dark'
 " Use rubocop with the default ruby checker (mri)
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
+" Better syntastic symbols
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚠'
+
 " Python
 autocmd FileType python setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
 
