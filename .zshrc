@@ -75,6 +75,9 @@ hl="${HOMEBREW_ROOT}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 # Base paths
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 
+# You may need to manually set your language environment
+export LANG=en_US.UTF-8
+
 # Aliases
 alias vi='vim'
 alias 'redis.start'='redis-server /usr/local/etc/redis.conf'
