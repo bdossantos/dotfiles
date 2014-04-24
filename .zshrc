@@ -55,7 +55,6 @@ plugins=(
   vundle
   tmuxinator
   common-aliases
-  autojump
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -71,6 +70,10 @@ source $ZSH/oh-my-zsh.sh
 # zsh syntax highlighting
 hl="${HOMEBREW_ROOT}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 [ -f $hl ] && source $hl
+
+# z is the new j, yo
+_Z_DATA=$HOME/.z_data
+[ -f $HOME/.z/z.sh ] && source $HOME/.z/z.sh
 
 # Base paths
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
