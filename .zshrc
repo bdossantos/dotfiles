@@ -57,15 +57,16 @@ plugins=(
   common-aliases
 )
 
+# boxen
+[ -f /opt/boxen/env.sh ] && source /opt/boxen/env.sh
+
+# load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 
 # prompt
 [ -f $HOME/.bds.zsh-theme ] && source $HOME/.bds.zsh-theme
-
-# boxen
-[ -f /opt/boxen/env.sh ] && source /opt/boxen/env.sh
 
 # zsh syntax highlighting
 hl="${HOMEBREW_ROOT}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
