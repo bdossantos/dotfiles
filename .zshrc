@@ -53,6 +53,7 @@ plugins=(
   go
   urltools
   vundle
+  tmux
   tmuxinator
   common-aliases
 )
