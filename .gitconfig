@@ -21,6 +21,9 @@ summary = true
 [push]
 default = simple
 
+[commit]
+template = ~/.gitmessage
+
 [gc]
 auto = 1
 
