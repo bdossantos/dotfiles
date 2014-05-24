@@ -49,6 +49,7 @@ plugins=(
   colored-man
   python
   pip
+  aws
   brew
   go
   urltools
