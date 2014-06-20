@@ -1,43 +1,46 @@
 set nocompatible
 filetype off
 
-" Vundle - Vim Plugins
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-Bundle 'gmarik/vundle'
-Bundle 'scrooloose/nerdtree'
-Bundle 'wincent/Command-T'
-Bundle 'kien/ctrlp.vim'
-Bundle 'rking/ag.vim'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-fugitive'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'tpope/vim-git'
-Bundle 'MarcWeber/vim-addon-mw-utils'
-Bundle 'tomtom/tlib_vim'
-Bundle 'honza/vim-snippets'
-Bundle 'garbas/vim-snipmate'
-Bundle 'ervandew/supertab'
-Bundle 'godlygeek/tabular'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-Bundle 'othree/html5.vim'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'tpope/vim-rails'
-Bundle 'rodjek/vim-puppet'
-Bundle 'klen/python-mode'
-Bundle 'fatih/vim-go'
-Bundle 'tpope/vim-markdown'
-Bundle 'tpope/vim-liquid'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'mv/mv-vim-nginx'
-Bundle 'scrooloose/syntastic'
-Bundle 'bling/vim-airline'
-Bundle 'bronson/vim-trailing-whitespace'
-Bundle 'chriskempson/base16-vim'
-Bundle 'zenorocha/dracula-theme'
-Bundle 'daylerees/colour-schemes', {'rtp': 'vim-themes/'}
+Plugin 'gmarik/Vundle.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'wincent/Command-T'
+Plugin 'kien/ctrlp.vim'
+Plugin 'rking/ag.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'tpope/vim-git'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'honza/vim-snippets'
+Plugin 'garbas/vim-snipmate'
+Plugin 'ervandew/supertab'
+Plugin 'godlygeek/tabular'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plugin 'othree/html5.vim'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-rails'
+Plugin 'rodjek/vim-puppet'
+Plugin 'klen/python-mode'
+Plugin 'fatih/vim-go'
+Plugin 'tpope/vim-markdown'
+Plugin 'tpope/vim-liquid'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'mv/mv-vim-nginx'
+Plugin 'scrooloose/syntastic'
+Plugin 'bling/vim-airline'
+Plugin 'bronson/vim-trailing-whitespace'
+Plugin 'chriskempson/base16-vim'
+Plugin 'zenorocha/dracula-theme'
+Plugin 'daylerees/colour-schemes', {'rtp': 'vim-themes/'}
+
+call vundle#end()
+filetype plugin indent on
 
 " Settings
 set encoding=utf-8
