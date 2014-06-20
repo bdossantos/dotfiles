@@ -27,7 +27,7 @@ Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-rails'
 Bundle 'rodjek/vim-puppet'
 Bundle 'klen/python-mode'
-Bundle 'Blackrush/vim-gocode'
+Bundle 'fatih/vim-go'
 Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-liquid'
 Bundle 'kchmck/vim-coffee-script'
@@ -97,6 +97,9 @@ let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 " Better syntastic symbols
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
+
+" Disable download and install all necessary go binaries from vim-go plugin
+let g:go_disable_autoinstall = 1
 
 " Python
 autocmd FileType python setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
