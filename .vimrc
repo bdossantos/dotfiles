@@ -104,6 +104,9 @@ let g:syntastic_warning_symbol = '⚠'
 " Disable download and install all necessary go binaries from vim-go plugin
 let g:go_disable_autoinstall = 1
 
+" Disable auto go fmt on save
+let g:go_fmt_autosave = 0
+
 " Python
 autocmd FileType python setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
 
