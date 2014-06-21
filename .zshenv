@@ -28,6 +28,10 @@ export RUBY_BUILD_CACHE_PATH='~/.rubies/cache'
 # Allow bundler to use all the cores for parallel installation
 export BUNDLE_JOBS=4
 
+# Go
+export GOPATH=$HOME/Code/go
+export PATH=$PATH:$GOPATH/bin
+
 # zsh syntax highlighting
 highlighters="${HOMEBREW_ROOT}/share/zsh-syntax-highlighting/highlighters"
 [ -d $highlighters ] && export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=$highlighters
