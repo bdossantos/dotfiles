@@ -6,3 +6,4 @@ windows:
   - editor: vim .
   - server: bundle exec jekyll serve -w --future
   - git: git status
+  - pi: ssht pi@192.168.0.252
