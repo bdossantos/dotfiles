@@ -7,14 +7,14 @@ export PAGER='less'
 export LESS='-R'
 
 # homebrew
-export HOMEBREW_ROOT=${HOMEBREW_ROOT:='/opt/boxen/homebrew'}
+export HOMEBREW_PREFIX=${HOMEBREW_PREFIX:='/opt/boxen/homebrew'}
 
 # chruby
-if [ -d "${HOMEBREW_ROOT}/share/chruby" ]; then
+if [ -d "${HOMEBREW_PREFIX}/share/chruby" ]; then
   RUBIES=(~/.rubies/*)
 
-  source "${HOMEBREW_ROOT}/share/chruby/chruby.sh"
-  source "${HOMEBREW_ROOT}/share/chruby/auto.sh"
+  source "${HOMEBREW_PREFIX}/share/chruby/chruby.sh"
+  source "${HOMEBREW_PREFIX}/share/chruby/auto.sh"
 
   [ -f ~/.ruby-version ] && chruby $(cat ~/.ruby-version)
 fi
@@ -33,5 +33,5 @@ export GOPATH=$HOME/Code/go
 export PATH=$PATH:$GOPATH/bin
 
 # zsh syntax highlighting
-highlighters="${HOMEBREW_ROOT}/share/zsh-syntax-highlighting/highlighters"
+highlighters="${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/highlighters"
 [ -d $highlighters ] && export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=$highlighters
