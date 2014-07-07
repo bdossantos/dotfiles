@@ -31,7 +31,3 @@ export BUNDLE_JOBS=4
 # Go
 export GOPATH=$HOME/Code/go
 export PATH=$PATH:$GOPATH/bin
-
-# zsh syntax highlighting
-highlighters="${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/highlighters"
-[ -d $highlighters ] && export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=$highlighters
