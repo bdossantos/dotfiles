@@ -4,6 +4,6 @@ name: runner
 root: ~/Code/Sites/runner.sh
 windows:
   - editor: vim .
-  - server: bundle exec jekyll serve -w --future
+  - server: bundle exec jekyll serve -w --future --force_polling
   - git: git status
   - pi: ssht pi@192.168.0.252
