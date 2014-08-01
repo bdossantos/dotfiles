@@ -6,6 +6,9 @@ export VISUAL=$(which vim)
 export PAGER='less'
 export LESS='-R'
 
+# enable cheat syntax highlighting
+export CHEATCOLORS=true
+
 # homebrew
 export HOMEBREW_PREFIX=${HOMEBREW_PREFIX:='/opt/boxen/homebrew'}
 
