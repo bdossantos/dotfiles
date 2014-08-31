@@ -56,6 +56,7 @@ plugins=(
   tmux
   tmuxinator
   common-aliases
+  aws
 )
 
 # boxen
