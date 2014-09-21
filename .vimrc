@@ -71,6 +71,8 @@ set ignorecase                    " Ignore case when searching
 set smartcase                     " When searching try to be smart about cases
 set hlsearch                      " Highlight search results
 set incsearch                     " Makes search act like in modern browsers
+set laststatus=2                  " Always display the status line
+set autowrite                     " Automatically :write before running commands
 
 set guifont=SourceCodePro-Regular:h14
 set antialias
