@@ -112,6 +112,15 @@ let g:go_fmt_autosave = 0
 augroup vimrcEx
   autocmd!
 
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it for commit messages, when the position is invalid, or when
+  " inside an event handler (happens when dropping a file on gvim).
+  " https://github.com/thoughtbot/dotfiles/blob/master/vimrc#L34-L40
+  autocmd BufReadPost *
+    \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
   " Python
   autocmd FileType python setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
 
@@ -124,9 +133,6 @@ augroup vimrcEx
 
   " Close vim if the only window left open is a NERDTree
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-  " Jump to the last position when reopening a file
-  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 augroup END
 
 " Key Bindings
