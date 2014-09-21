@@ -109,21 +109,25 @@ let g:go_disable_autoinstall = 1
 " Disable auto go fmt on save
 let g:go_fmt_autosave = 0
 
-" Python
-autocmd FileType python setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
+augroup vimrcEx
+  autocmd!
 
-" Git commit
-autocmd Filetype gitcommit setlocal spell textwidth=72
+  " Python
+  autocmd FileType python setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
 
-" Autopen NERDTree and focus cursor in new document
-autocmd VimEnter * if !argc() | NERDTree | endif
-autocmd VimEnter * wincmd p
+  " Git commit
+  autocmd Filetype gitcommit setlocal spell textwidth=72
 
-" Close vim if the only window left open is a NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+  " Autopen NERDTree and focus cursor in new document
+  autocmd VimEnter * if !argc() | NERDTree | endif
+  autocmd VimEnter * wincmd p
 
-" Jump to the last position when reopening a file
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+  " Close vim if the only window left open is a NERDTree
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+  " Jump to the last position when reopening a file
+  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+augroup END
 
 " Key Bindings
 map <F2> :NERDTreeToggle<CR>
