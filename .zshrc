@@ -63,6 +63,12 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 
+# history settings
+setopt hist_ignore_all_dups inc_append_history
+HISTFILE=$HOME/.zsh_history
+HISTSIZE=4096
+SAVEHIST=4096
+
 # prompt
 [ -f $HOME/.bds.zsh-theme ] && source $HOME/.bds.zsh-theme
 
