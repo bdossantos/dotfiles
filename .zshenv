@@ -34,3 +34,6 @@ export BUNDLE_JOBS=4
 # Go
 export GOPATH=$HOME/Code/go
 export PATH=$PATH:$GOPATH/bin
+
+# Local config
+test -f ~/.zshenv.local && source ~/.zshenv.local
