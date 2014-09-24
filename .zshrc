@@ -7,10 +7,6 @@ ZSH=$HOME/.oh-my-zsh
 # time that oh-my-zsh is loaded.
 ZSH_THEME=""
 
-# Example aliases
-alias zshconfig="mate ~/.zshrc"
-alias ohmyzsh="mate ~/.oh-my-zsh"
-
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
 
@@ -85,47 +81,9 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# Aliases
-alias vi='vim'
-alias 'redis.start'='redis-server /usr/local/etc/redis.conf'
-alias 'redis.stop'='kill $(cat /usr/local/var/run/redis.pid)'
-alias 'postgresql.start'="pg_ctl -D ${HOMEBREW_ROOT}/var/postgres start"
-alias 'postgresql.stop'="pg_ctl -D ${HOMEBREW_ROOT}/var/postgres stop -s -m fast"
-alias 'postgresql.restart'='postgresql.stop && sleep 1 && postgresql.start'
-alias ri='ri -f ansi'
-
-# Quick HTTP server
-alias serve='ruby -run -e httpd . -p 8080'
-alias pserve='python -m SimpleHTTPServer'
-
-# Time
-alias now='date +"%T"'
-alias nowtime='now'
-alias nowdate='date +"%d-%m-%Y"'
-
-# Override ls alias from common-aliases plugin
-alias ls='ls -G'
-
-# CAN I HAZ ?
-alias please='sudo'
-
-# passing alias to sudo
-alias sudo='sudo '
-
-# update tab name
-function tabname() {
-  echo -en "\033];$1\007"
-}
-
-# Automatically Starting tmux on SSH
-function ssht() {
-  SSH_HOST="${@: -1}"
-  tabname $SSH_HOST
-  ssh $* -t 'tmux a || tmux || $SHELL'
-}
-
-compdef ssht=ssh
-
 # map Ctrl-Shift-left-arrow and Ctrl-Shift-right-arrow for word jumping
 bindkey "\e[1;6D" backward-word
 bindkey "\e[1;6C" forward-word
+
+# Aliases
+test -f $HOME/.aliases && source $HOME/.aliases
