@@ -70,15 +70,15 @@ HISTSIZE=4096
 SAVEHIST=4096
 
 # prompt
-[ -f ~/.bds.zsh-theme ] && source ~/.bds.zsh-theme
+test -f ~/.bds.zsh-theme && source ~/.bds.zsh-theme
 
 # zsh syntax highlighting
 hl="${HOMEBREW_ROOT}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-[ -f $hl ] && source $hl
+test -f $hl && source $hl
 
 # z is the new j, yo
 _Z_DATA=~/.z_data
-[ -f ~/.z/z.sh ] && source ~/.z/z.sh
+test -f ~/.z/z.sh && source ~/.z/z.sh
 
 # Base paths
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"

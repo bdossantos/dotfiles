@@ -13,13 +13,13 @@ export CHEATCOLORS=true
 export HOMEBREW_PREFIX=${HOMEBREW_PREFIX:='/opt/boxen/homebrew'}
 
 # chruby
-if [ -d "${HOMEBREW_PREFIX}/share/chruby" ]; then
+if test -d "${HOMEBREW_PREFIX}/share/chruby"; then
   RUBIES=(~/.rubies/*)
 
   source "${HOMEBREW_PREFIX}/share/chruby/chruby.sh"
   source "${HOMEBREW_PREFIX}/share/chruby/auto.sh"
 
-  [ -f ~/.ruby-version ] && chruby $(cat ~/.ruby-version)
+  test -f ~/.ruby-version && chruby $(cat ~/.ruby-version)
 fi
 
 # speed up building ruby
