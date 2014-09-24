@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh configuration.
-ZSH=$HOME/.oh-my-zsh
+ZSH=~/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -65,20 +65,20 @@ source $ZSH/oh-my-zsh.sh
 
 # history settings
 setopt hist_ignore_all_dups inc_append_history
-HISTFILE=$HOME/.zsh_history
+HISTFILE=~/.zsh_history
 HISTSIZE=4096
 SAVEHIST=4096
 
 # prompt
-[ -f $HOME/.bds.zsh-theme ] && source $HOME/.bds.zsh-theme
+[ -f ~/.bds.zsh-theme ] && source ~/.bds.zsh-theme
 
 # zsh syntax highlighting
 hl="${HOMEBREW_ROOT}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 [ -f $hl ] && source $hl
 
 # z is the new j, yo
-_Z_DATA=$HOME/.z_data
-[ -f $HOME/.z/z.sh ] && source $HOME/.z/z.sh
+_Z_DATA=~/.z_data
+[ -f ~/.z/z.sh ] && source ~/.z/z.sh
 
 # Base paths
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
@@ -92,4 +92,4 @@ bindkey "\e[1;6D" backward-word
 bindkey "\e[1;6C" forward-word
 
 # Aliases
-test -f $HOME/.aliases && source $HOME/.aliases
+test -f ~/.aliases && source ~/.aliases
