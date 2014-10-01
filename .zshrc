@@ -80,8 +80,8 @@ hl="${HOMEBREW_ROOT}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 test -f $hl && source $hl
 
 # z is the new j, yo
-_Z_DATA=~/.z_data
-test -f ~/.z/z.sh && source ~/.z/z.sh
+export _Z_DATA=~/.z_data
+test -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" && source "${HOMEBREW_ROOT}/etc/profile.d/z.sh"
 
 # chruby
 if test -d "${HOMEBREW_ROOT}/share/chruby"; then
