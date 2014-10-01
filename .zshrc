@@ -56,7 +56,7 @@ plugins=(
 )
 
 # boxen
-[ -f /opt/boxen/env.sh ] && source /opt/boxen/env.sh
+test -f /opt/boxen/env.sh && source /opt/boxen/env.sh
 
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
