@@ -9,19 +9,6 @@ export LESS='-R'
 # enable cheat syntax highlighting
 export CHEATCOLORS=true
 
-# homebrew
-export HOMEBREW_PREFIX=${HOMEBREW_PREFIX:='/opt/boxen/homebrew'}
-
-# chruby
-if test -d "${HOMEBREW_PREFIX}/share/chruby"; then
-  RUBIES=(~/.rubies/*)
-
-  source "${HOMEBREW_PREFIX}/share/chruby/chruby.sh"
-  source "${HOMEBREW_PREFIX}/share/chruby/auto.sh"
-
-  test -f ~/.ruby-version && chruby $(cat ~/.ruby-version)
-fi
-
 # speed up building ruby
 export RUBY_CONFIGURE_OPTS='--disable-install-rdoc --disable-install-ri'
 

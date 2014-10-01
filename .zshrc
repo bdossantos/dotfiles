@@ -83,6 +83,16 @@ test -f $hl && source $hl
 _Z_DATA=~/.z_data
 test -f ~/.z/z.sh && source ~/.z/z.sh
 
+# chruby
+if test -d "${HOMEBREW_ROOT}/share/chruby"; then
+  RUBIES=(~/.rubies/*)
+
+  source "${HOMEBREW_ROOT}/share/chruby/chruby.sh"
+  source "${HOMEBREW_ROOT}/share/chruby/auto.sh"
+
+  test -f ~/.ruby-version && chruby $(cat ~/.ruby-version)
+fi
+
 # Base paths
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 
