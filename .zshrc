@@ -63,6 +63,9 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 
+# homebrew
+export HOMEBREW_ROOT=$(brew --prefix)
+
 # history settings
 setopt hist_ignore_all_dups inc_append_history
 HISTFILE=~/.zsh_history
