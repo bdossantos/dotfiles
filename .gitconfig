@@ -10,7 +10,7 @@ interactive = auto
 status = auto
 
 [core]
-excludesfile = /opt/boxen/config/git/gitignore
+excludesfile = ~/.gitignore_global
 
 [branch]
 autosetuprebase = always
