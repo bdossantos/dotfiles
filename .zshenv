@@ -22,5 +22,8 @@ export BUNDLE_JOBS=4
 export GOPATH=$HOME/Code/go
 export PATH=$PATH:$GOPATH/bin
 
+# Link Homebrew casks in `/Applications` rather than `~/Applications`
+export HOMEBREW_CASK_OPTS='--appdir=/Applications'
+
 # Local config
 test -f ~/.zshenv.local && source ~/.zshenv.local
