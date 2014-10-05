@@ -163,6 +163,11 @@ brew cask install openoffice
 # email
 brew cask install thunderbird
 
+# chat
+brew cask install google-hangouts
+brew cask install hipchat
+brew cask install adium
+
 # cloud drive
 brew cask install google-drive
 brew cask install dropbox
@@ -177,7 +182,7 @@ brew cask install flux-beta
 brew cask install spectacle
 brew cask install gpgtools
 brew cask install keepassx
-brew cask install hipchat
+brew cask install xquartz
 
 brew install reattach-to-user-namespace
 brew install zsh-syntax-highlighting
