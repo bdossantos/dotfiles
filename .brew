@@ -160,6 +160,9 @@ brew cask install vlc
 # office
 brew cask install openoffice
 
+# email
+brew cask install thunderbird
+
 # cloud drive
 brew cask install google-drive
 brew cask install dropbox
