@@ -106,3 +106,6 @@ bindkey "\e[1;6C" forward-word
 
 # Aliases
 test -f ~/.aliases && source ~/.aliases
+
+# ~/.extra can be used for other settings you don't want to commit.
+test -f ~/.extra && source ~/.extra
