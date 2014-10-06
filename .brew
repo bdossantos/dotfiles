@@ -238,4 +238,5 @@ echo '--> Link homebrew apps'
 brew linkapps
 
 echo '--> Cleanup !'
+brew cask cleanup
 brew cleanup
