@@ -62,6 +62,11 @@ test -d ~/.vim/bundle/Vundle.vim || \
 # fonts
 brew cask install font-source-code-pro
 brew cask install font-source-sans-pro
+brew cask install font-anonymous-pro-for-powerline
+brew cask install font-anonymous-pro
+brew cask install font-inconsolata-for-powerline
+brew cask install font-inconsolata
+brew cask install font-terminus
 
 # programming
 
