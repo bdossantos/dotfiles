@@ -12,13 +12,6 @@ brew update
 echo '--> Upgrade any already-installed formulae'
 brew upgrade
 
-echo '--> Install/update Homebrew cask'
-brew cask doctor &> /dev/null || brew install caskroom/cask/brew-cask
-brew cask update
-
-# Link Homebrew casks in `/Applications` rather than `~/Applications`
-export HOMEBREW_CASK_OPTS='--appdir=/Applications'
-
 echo '--> Tap extras Homebrew repositories'
 brew tap thoughtbot/formulae
 brew tap phinze/homebrew-cask
@@ -28,6 +21,13 @@ brew tap caskroom/fonts
 brew tap homebrew/dupes
 brew tap Goles/battery
 brew tap peco/peco
+
+echo '--> Install/update Homebrew cask'
+brew install brew-cask
+brew cask update
+
+# Link Homebrew casks in `/Applications` rather than `~/Applications`
+export HOMEBREW_CASK_OPTS='--appdir=/Applications'
 
 echo '--> INSTALL ALL THE THINGS !'
 
