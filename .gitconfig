@@ -28,7 +28,7 @@ template = ~/.gitmessage
 auto = 1
 
 [credential]
-helper = /opt/boxen/bin/boxen-git-credential
+helper = /usr/local/bin/git-credential-osxkeychain
 
 [hub]
 protocol = https
