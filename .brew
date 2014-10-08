@@ -162,8 +162,11 @@ brew cask install chromecast
 brew cask install gimp
 brew cask install vlc
 
-# office
+# writing
+brew install pandoc
+
 brew cask install openoffice
+brew cask install mactex
 
 # email
 brew cask install thunderbird
@@ -188,7 +191,6 @@ brew cask install spectacle
 brew cask install gpgtools
 brew cask install keepassx
 brew cask install xquartz
-brew cask install mactex
 
 brew install reattach-to-user-namespace
 brew install zsh-syntax-highlighting
