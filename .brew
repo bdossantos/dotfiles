@@ -188,6 +188,7 @@ brew cask install spectacle
 brew cask install gpgtools
 brew cask install keepassx
 brew cask install xquartz
+brew cask install mactex
 
 brew install reattach-to-user-namespace
 brew install zsh-syntax-highlighting
