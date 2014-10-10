@@ -186,11 +186,11 @@ brew cask install garmin-express
 # misc
 brew cask install android-file-transfer
 brew cask install sequel-pro
-brew cask install flux-beta
 brew cask install spectacle
 brew cask install gpgtools
 brew cask install keepassx
 brew cask install xquartz
+brew cask install flux
 
 brew install reattach-to-user-namespace
 brew install zsh-syntax-highlighting
