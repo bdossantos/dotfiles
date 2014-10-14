@@ -192,12 +192,12 @@ brew cask install keepassx
 brew cask install xquartz
 brew cask install flux
 
+brew install htmlcompressor --yuicompressor
 brew install reattach-to-user-namespace
 brew install zsh-syntax-highlighting
 brew install the_silver_searcher
 brew install tmux-mem-cpu-load
 brew install closure-compiler
-brew install htmlcompressor
 brew install ssh-copy-id
 brew install ansifilter
 brew install coreutils
