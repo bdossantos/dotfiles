@@ -197,6 +197,7 @@ brew install zsh-syntax-highlighting
 brew install the_silver_searcher
 brew install tmux-mem-cpu-load
 brew install closure-compiler
+brew install htmlcompressor
 brew install ssh-copy-id
 brew install ansifilter
 brew install coreutils
