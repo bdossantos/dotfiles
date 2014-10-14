@@ -218,6 +218,7 @@ brew install ncftp
 brew install watch
 brew install pwgen
 brew install sshrc
+brew install s3cmd
 brew install cheat
 brew install stow
 brew install cloc
