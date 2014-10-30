@@ -56,7 +56,7 @@ plugins=(
 )
 
 # boxen
-test -f /opt/boxen/env.sh && source /opt/boxen/env.sh
+[[ -f /opt/boxen/env.sh ]] && source /opt/boxen/env.sh
 
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
@@ -73,24 +73,25 @@ HISTSIZE=4096
 SAVEHIST=4096
 
 # prompt
-test -f ~/.bds.zsh-theme && source ~/.bds.zsh-theme
+[[ -f ~/.bds.zsh-theme ]] && source ~/.bds.zsh-theme
 
 # zsh syntax highlighting
 hl="${HOMEBREW_ROOT}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-test -f $hl && source $hl
+[[ -f $hl ]] && source "$hl"
 
 # z is the new j, yo
 export _Z_DATA=~/.z_data
-test -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" && source "${HOMEBREW_ROOT}/etc/profile.d/z.sh"
+[[ -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" ]] && \
+  source "${HOMEBREW_ROOT}/etc/profile.d/z.sh"
 
 # chruby
-if test -d "${HOMEBREW_ROOT}/share/chruby"; then
+if [[ -d "${HOMEBREW_ROOT}/share/chruby" ]]; then
   RUBIES=(~/.rubies/*)
 
   source "${HOMEBREW_ROOT}/share/chruby/chruby.sh"
   source "${HOMEBREW_ROOT}/share/chruby/auto.sh"
 
-  test -f ~/.ruby-version && chruby $(cat ~/.ruby-version)
+  [[ -f ~/.ruby-version ]] && chruby "$(cat ~/.ruby-version)"
 fi
 
 # Base paths
@@ -105,7 +106,7 @@ bindkey "\e[1;6D" backward-word
 bindkey "\e[1;6C" forward-word
 
 # Aliases
-test -f ~/.aliases && source ~/.aliases
+[[ -f ~/.aliases ]] && source ~/.aliases
 
 # ~/.extra can be used for other settings you don't want to commit.
-test -f ~/.extra && source ~/.extra
+[[ -f ~/.extra ]] && source ~/.extra
