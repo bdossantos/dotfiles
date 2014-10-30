@@ -200,6 +200,7 @@ brew install tmux-mem-cpu-load
 brew install closure-compiler
 brew install ssh-copy-id
 brew install ansifilter
+brew install shellcheck
 brew install coreutils
 brew install findutils
 brew install tmux-cssh
