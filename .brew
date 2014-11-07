@@ -108,6 +108,7 @@ RUBIES=(
   2.1.1
   2.1.2
   2.1.3
+  2.1.4
 )
 
 for ruby in "${RUBIES[@]}"; do
@@ -115,7 +116,7 @@ for ruby in "${RUBIES[@]}"; do
     $(brew --prefix)/bin/ruby-install --rubies-dir ~/.rubies ruby "$ruby"
 done
 
-echo 'ruby-2.1.3' > ~/.ruby-version
+echo 'ruby-2.1.4' > ~/.ruby-version
 
 GEMS=(
   shell_explain
