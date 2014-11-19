@@ -14,7 +14,6 @@ brew upgrade
 
 echo '--> Tap extras Homebrew repositories'
 brew tap thoughtbot/formulae
-brew tap phinze/homebrew-cask
 brew tap homebrew/versions
 brew tap homebrew/binary
 brew tap caskroom/fonts
@@ -23,7 +22,7 @@ brew tap Goles/battery
 brew tap peco/peco
 
 echo '--> Install/update Homebrew cask'
-brew install brew-cask
+brew install caskroom/cask/brew-cask
 brew cask update
 
 # Link Homebrew casks in `/Applications` rather than `~/Applications`
