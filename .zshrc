@@ -53,6 +53,7 @@ plugins=(
   tmuxinator
   common-aliases
   aws
+  vi-mode
 )
 
 # boxen
@@ -101,9 +102,9 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# map Ctrl-Shift-left-arrow and Ctrl-Shift-right-arrow for word jumping
-bindkey "\e[1;6D" backward-word
-bindkey "\e[1;6C" forward-word
+# Use vi-mode in Your Shell, see also vi-mode plugin
+bindkey -M viins ';;' vi-cmd-mode
+bindkey '^R' history-incremental-search-backward
 
 # Aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
