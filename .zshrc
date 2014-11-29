@@ -34,26 +34,26 @@ DISABLE_AUTO_UPDATE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(
-  git
-  ruby
-  gem
+  aws
+  brew
   bundler
   capistrano
-  rake-fast
-  vagrant
-  osx
   colored-man
-  python
-  pip
-  brew
+  common-aliases
+  gem
+  git
   go
-  urltools
-  vundle
+  osx
+  pip
+  python
+  rake-fast
+  ruby
   tmux
   tmuxinator
-  common-aliases
-  aws
+  urltools
+  vagrant
   vi-mode
+  vundle
 )
 
 # boxen
