@@ -144,6 +144,8 @@ augroup END
 
 " Key Bindings
 map <F2> :NERDTreeToggle<CR>
+map ;; <Esc>
+imap ;; <Esc>
 
 " Easier split navigations
 nnoremap <C-J> <C-W><C-J>
