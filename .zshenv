@@ -26,4 +26,4 @@ export PATH=$PATH:$GOPATH/bin
 export HOMEBREW_CASK_OPTS='--appdir=/Applications'
 
 # Local config
-test -f ~/.zshenv.local && source ~/.zshenv.local
+[[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
