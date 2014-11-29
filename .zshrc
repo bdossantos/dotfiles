@@ -56,10 +56,15 @@ plugins=(
   vundle
 )
 
+# User configuration
+
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
-# Customize to your needs...
+# You may need to manually set your language environment
+export LANG=en_US.UTF-8
 
 # homebrew
 export HOMEBREW_ROOT=$(brew --prefix)
@@ -91,13 +96,6 @@ if [[ -d "${HOMEBREW_ROOT}/share/chruby" ]]; then
 
   [[ -f ~/.ruby-version ]] && chruby "$(cat ~/.ruby-version)"
 fi
-
-# Base paths
-export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-
-# You may need to manually set your language environment
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
 
 # Use vi-mode in Your Shell, see also vi-mode plugin
 bindkey -M viins ';;' vi-cmd-mode
