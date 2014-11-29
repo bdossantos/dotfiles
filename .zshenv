@@ -13,7 +13,7 @@ export CHEATCOLORS=true
 export RUBY_CONFIGURE_OPTS='--disable-install-rdoc --disable-install-ri'
 
 # ruby build cache path
-export RUBY_BUILD_CACHE_PATH='~/.rubies/cache'
+export RUBY_BUILD_CACHE_PATH=~/.rubies/cache
 
 # Allow bundler to use all the cores for parallel installation
 export BUNDLE_JOBS=4
