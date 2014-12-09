@@ -218,6 +218,7 @@ brew install zopfli
 brew install aptly
 brew install cdump
 brew install cheat
+brew install ctags
 brew install ncftp
 brew install pwgen
 brew install s3cmd
