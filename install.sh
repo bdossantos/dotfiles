@@ -7,5 +7,8 @@ fi
 
 script_name=$(basename "$0")
 
-stow -S . -t "$HOME" -v --ignore='README.md' --ignore="$script_name" && \
+stow -S . -t "$HOME" -v \
+  --ignore='README.md' \
+  --ignore="LICENCE" \
+  --ignore="$script_name" && \
   exec "$SHELL"
