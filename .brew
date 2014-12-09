@@ -58,6 +58,8 @@ mkdir -p ~/.vim/bundle/
 [[ -d ~/.vim/bundle/Vundle.vim ]] || \
   git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
+brew install ctags
+
 # fonts
 brew cask install font-source-code-pro
 brew cask install font-source-sans-pro
@@ -122,6 +124,7 @@ GEMS=(
   shell_explain
   puppet-lint
   tmuxinator
+  gem-ctags
   rubocop
   desktop
   bundler
@@ -134,6 +137,13 @@ GEMS=(
 for gem in "${GEMS[@]}"; do
   ~/.rubies/$(cat ~/.ruby-version)/bin/gem list -i "${gem}" &> /dev/null || \
     ~/.rubies/$(cat ~/.ruby-version)/bin/gem install "${gem}"
+done
+
+gem ctags
+for ruby in ~/.rubies/*/lib/ruby/; do
+  pushd "${ruby}" &> /dev/null
+    ctags -R ./*
+  popd &> /dev/null
 done
 
 ## node.js
@@ -218,7 +228,6 @@ brew install zopfli
 brew install aptly
 brew install cdump
 brew install cheat
-brew install ctags
 brew install ncftp
 brew install pwgen
 brew install s3cmd
