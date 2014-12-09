@@ -9,7 +9,7 @@ Using [GNU Stow](http://www.gnu.org/software/stow/):
 ```bash
 git clone https://github.com/bdossantos/dotfiles ~/.dotfiles
 cd ~/.dotfiles
-./install.sh
+./install
 ```
 
 ### Uninstallation
