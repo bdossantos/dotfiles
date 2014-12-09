@@ -19,3 +19,7 @@ Thumbs.db
 # Vim
 *~
 .*.sw*
+
+# ctags
+gems.tags
+tags
