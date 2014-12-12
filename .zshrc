@@ -40,6 +40,7 @@ plugins=(
   capistrano
   colored-man
   common-aliases
+  docker
   gem
   git
   go
