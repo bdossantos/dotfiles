@@ -42,7 +42,7 @@ function ssht() {
   ssh $* -t 'tmux a || tmux || $SHELL'
 }
 
-compdef ssht=ssh
+which compdef &>/dev/null && compdef ssht=ssh
 
 # Misc, see https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
 
