@@ -19,7 +19,7 @@ alias nowtime='now'
 alias nowdate='date +"%d-%m-%Y"'
 
 # Can I haz `timeout` ?
-alias timeout='gtimeout'
+hash gtimeout &>/dev/null && alias timeout='gtimeout'
 
 # Override ls alias from common-aliases plugin
 alias ls='ls -G'
