@@ -22,6 +22,9 @@ export BUNDLE_JOBS=4
 export GOPATH=$HOME/Code/go
 export PATH=$PATH:$GOPATH/bin
 
+# MySQL prompt
+export MYSQL_PS1='(\D) \u@\h [\d] > '
+
 # Link Homebrew casks in `/Applications` rather than `~/Applications`
 export HOMEBREW_CASK_OPTS='--appdir=/Applications'
 
