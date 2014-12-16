@@ -269,3 +269,6 @@ brew linkapps
 echo '--> Cleanup !'
 brew cask cleanup
 brew cleanup
+
+# Extra stuff ?
+[[ -f ~/.brew.local ]] && . ~/.brew.local
