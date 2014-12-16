@@ -1,5 +1,5 @@
 # Aliases
-# vim: syntax=zsh
+# vim: syntax=sh
 
 OS="$(uname)"
 export $OS
@@ -28,6 +28,11 @@ alias x='exit'
 alias q='exit'
 alias h='history'
 alias j='jobs -l'
+
+# grep
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
 
 # Quick HTTP server
 alias serve='ruby -run -e httpd . -p 8080'
