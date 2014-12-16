@@ -1,6 +1,9 @@
 # Aliases
 # vim: syntax=zsh
 
+OS="$(uname)"
+export $OS
+
 alias vi='vim'
 alias 'redis.start'='redis-server /usr/local/etc/redis.conf'
 alias 'redis.stop'='kill $(cat /usr/local/var/run/redis.pid)'
@@ -68,5 +71,5 @@ which compdef &>/dev/null && compdef ssht=ssh
 alias reload="exec $SHELL -l"
 
 # Include custom aliases
-[[ -f /usr/bin/sw_vers ]] && source ~/.aliases_osx
+[[ $OS == 'Darwin' ]] && source ~/.aliases_osx
 [[ -f ~/.aliases.local ]] && source ~/.aliases.local
