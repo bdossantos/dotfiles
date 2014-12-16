@@ -1,0 +1,79 @@
+# Aliases for Linux
+# vim: syntax=sh
+
+# can i haz color
+alias ls='ls --color=auto'
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias ll='ls -lah'
+alias la='ls -A'
+alias l='ls -lAh'
+
+# Find large files and directories
+alias fat='du -a | sort -n -r | head -n 20'
+
+# Show open ports
+alias ports='netstat -tulanp'
+
+# Memory
+alias meminfo='free -m -l -t'
+
+# Get top process eating memory
+alias psmem='ps auxf | sort -nr -k 4'
+alias psmem10='ps auxf | sort -nr -k 4 | head -10'
+
+# Get top process eating cpu
+alias pscpu='ps auxf | sort -nr -k 3'
+alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
+
+# Count all opened files by all process
+alias count_opened_files='lsof | wc -l'
+
+# Get maximum open files count allowed
+alias max_open_files='cat /proc/sys/fs/file-max'
+
+# Flush swap
+alias swapoffon='nohup bash -c "swapoff -a; swapon -a" &>/dev/null'
+
+# Yolo
+alias dropcache='sync && echo 3 > /proc/sys/vm/drop_caches'
+
+# iptables
+alias ipt='iptables'
+alias iptlist='iptables -L -n -v --line-numbers'
+alias iptlistin='iptables -L INPUT -n -v --line-numbers'
+alias iptlistout='iptables -L OUTPUT -n -v --line-numbers'
+alias iptlistfw='iptables -L FORWARD -n -v --line-numbers'
+alias firewall='iptlist'
+alias ban='iptables -I INPUT -j DROP -s'
+alias unban='iptables -D INPUT -j DROP -s'
+alias banin='iptables -I INPUT -j DROP -s'
+alias unbanin='iptables -D INPUT -j DROP -s'
+alias banout='iptables -I OUTPUT -j DROP -s'
+alias unbanout='iptables -D OUTPUT -j DROP -s'
+alias listbans='iptables -L -v -n | grep -e Chain -e DROP'
+
+# Log
+if which ccze &>/dev/null; then
+  alias syslog='sudo tail -f /var/log/syslog | ccze'
+else
+  alias syslog='sudo tail -f /var/log/syslog'
+fi
+
+alias tf='sudo tail -f'
+
+# services specific
+if which nginx &>/dev/null; then
+  alias nginxtest='nginx -t'
+  alias nginxreload='nginxtest && /etc/init.d/nginx reload'
+fi
+
+if which apache2ctl &>/dev/null; then
+  alias apachetest='apache2ctl -t'
+  alias apachereload='apachetest && /etc/init.d/apache2 reload'
+fi
+
+if which php5-fpm &>/dev/null; then
+  alias php5fpmtest='php5-fpm -t'
+  alias php5fpmreload='php5-fpmtest && /etc/init.d/php5-fpm reload'
+fi

@@ -77,4 +77,5 @@ alias reload="exec $SHELL -l"
 
 # Include custom aliases
 [[ $OS == 'Darwin' ]] && source ~/.aliases_osx
+[[ $OS == 'Linux' ]] && source ~/.aliases_linux
 [[ -f ~/.aliases.local ]] && source ~/.aliases.local
