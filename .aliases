@@ -34,6 +34,9 @@ hash gtimeout &>/dev/null && alias timeout='gtimeout'
 # Override ls alias from common-aliases plugin
 alias ls='ls -G'
 
+# Cuz IMADUMMY
+which mysql &>/dev/null && alias mysql='mysql --i-am-a-dummy'
+
 # CAN I HAZ ?
 alias please='sudo'
 
