@@ -19,6 +19,13 @@ alias chown='chown --preserve-root'
 alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
 
+# shortcuts
+alias c='clear'
+alias x='exit'
+alias q='exit'
+alias h='history'
+alias j='jobs -l'
+
 # Quick HTTP server
 alias serve='ruby -run -e httpd . -p 8080'
 alias pserve='python -m SimpleHTTPServer'
