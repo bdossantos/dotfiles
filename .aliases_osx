@@ -1,6 +1,6 @@
 # Aliases for OSx
 # See https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
-# vim: syntax=zsh
+# vim: syntax=sh
 
 # Stopwatch
 alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
