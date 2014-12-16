@@ -15,6 +15,7 @@ brew upgrade
 echo '--> Tap extras Homebrew repositories'
 brew tap thoughtbot/formulae
 brew tap homebrew/versions
+brew tap caskroom/versions
 brew tap homebrew/binary
 brew tap caskroom/fonts
 brew tap homebrew/dupes
