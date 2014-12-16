@@ -10,6 +10,15 @@ alias 'postgresql.restart'='postgresql.stop && sleep 1 && postgresql.start'
 alias ri='ri -f ansi'
 which colordiff &>/dev/null && alias diff='colordiff'
 
+# Some aliases to avoid making mistakes
+alias rm='rm -i --preserve-root'
+alias cp='cp -i'
+alias mv='mv -i'
+alias ln='ln -i'
+alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
+
 # Quick HTTP server
 alias serve='ruby -run -e httpd . -p 8080'
 alias pserve='python -m SimpleHTTPServer'
