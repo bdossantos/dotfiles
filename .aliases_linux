@@ -1,6 +1,12 @@
 # Aliases for Linux
 # vim: syntax=sh
 
+# safety, override from ~/.aliases
+alias rm='rm -i --preserve-root'
+alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
+
 # can i haz color
 alias ls='ls --color=auto'
 alias dir='dir --color=auto'

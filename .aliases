@@ -14,13 +14,10 @@ alias ri='ri -f ansi'
 which colordiff &>/dev/null && alias diff='colordiff'
 
 # Some aliases to avoid making mistakes
-alias rm='rm -i --preserve-root'
+alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias ln='ln -i'
-alias chown='chown --preserve-root'
-alias chmod='chmod --preserve-root'
-alias chgrp='chgrp --preserve-root'
 
 # shortcuts
 alias c='clear'
