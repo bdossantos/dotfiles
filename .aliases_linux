@@ -62,6 +62,10 @@ fi
 
 alias tf='sudo tail -f'
 
+# Memcached
+mctop="tcpdump -i eth1 -s 65535 -A -ttt port 11211| cut -c 9- | grep -i '^get\|set'"
+mcflush="echo 'flush_all' | nc -q 2 127.0.0.1 11211"
+
 # services specific
 if which nginx &>/dev/null; then
   alias nginxtest='nginx -t'
