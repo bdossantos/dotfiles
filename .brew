@@ -122,8 +122,11 @@ done
 echo 'ruby-2.1.5' > ~/.ruby-version
 
 GEMS=(
+  kitchen-vagrant
   shell_explain
+  test-kitchen
   puppet-lint
+  foodcritic
   tmuxinator
   gem-ctags
   rubocop
