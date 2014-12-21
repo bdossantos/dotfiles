@@ -76,6 +76,10 @@ HISTFILE=~/.zsh_history
 HISTSIZE=4096
 SAVEHIST=4096
 
+# color scheme
+BASE16_SHELL=~/.base16-shell/base16-tomorrow.dark.sh
+[[ -f $BASE16_SHELL ]] && source $BASE16_SHELL
+
 # prompt
 [[ -f ~/.bds.zsh-theme ]] && source ~/.bds.zsh-theme
 
