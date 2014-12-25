@@ -68,7 +68,7 @@ function ssht() {
   ssh "$@" -t 'tmux a || tmux || $SHELL'
 }
 
-which compdef &>/dev/null && compdef ssht=ssh
+which compdef &>/dev/null && compdef ssht=ssh && compdef sshrc=ssh
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
