@@ -72,6 +72,18 @@ alias tf='sudo tail -f'
 mctop="tcpdump -i eth1 -s 65535 -A -ttt port 11211| cut -c 9- | grep -i '^get\|set'"
 mcflush="echo 'flush_all' | nc -q 2 127.0.0.1 11211"
 
+# Nginx/Apache access log parsing
+# https://rtcamp.com/tutorials/nginx/log-parsing/
+# http://eddmann.com/posts/processing-apache-and-nginx-access-logs/
+alias http_access="cat *access.log | cut -d '\"' -f3 | cut -d ' ' -f2 | sort | uniq -c | sort -rn"
+alias http_404="cat *access.log | awk '($9 ~ /404/)' | awk '{ print $7 }' | sort | uniq -c | sort -rn"
+alias http_ua="cat *access.log | awk -F\" '{ print $6 }' | sort | uniq -c | sort -frn | head -n 25"
+alias http_requests_by_ip="cat *access.log | awk '{ print $1 }' | sort | uniq -c | sort -rn | head -n 25"
+alias http_count_visits="cat *access.log | awk '{ print $1 }' | sort | uniq -c | wc -l"
+alias http_count_visits_by_day="cat *access.log | grep $(date '+%e/%b/%G') | awk '{ print $1 }' | sort | uniq -c | wc -l"
+alias http_count_visits_by_month="cat *access.log | grep $(date '+%b/%G') | awk '{ print $1 }' | sort | uniq -c | wc -l"
+alias http_popular_urls="cat *access.log | awk '{ print $7 }' | sort | uniq -c | sort -rn | head -n 25"
+
 # services specific
 if which nginx &>/dev/null; then
   alias nginxtest='nginx -t'
