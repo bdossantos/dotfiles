@@ -1,4 +1,4 @@
-# ~/bdossantos
+# ~/.dotfiles
 
 ## dotfiles
 
