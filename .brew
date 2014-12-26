@@ -259,6 +259,7 @@ brew install stow
 brew install tree
 brew install wget
 brew install ack
+brew install ghi
 brew install git
 brew install gsl
 brew install hub
