@@ -235,6 +235,7 @@ if [[ $OS == 'Linux' ]]; then
   if which php5-fpm &>/dev/null; then
     alias php5fpmtest='php5-fpm -t'
     alias php5fpmreload='php5-fpmtest && /etc/init.d/php5-fpm reload'
+    alias php5fpmstatus='curl 127.0.0.1/status'
   fi
 fi
 
