@@ -4,12 +4,8 @@
 OS="$(uname)"
 export $OS
 
+# Misc
 alias vi='vim'
-alias 'redis.start'='redis-server /usr/local/etc/redis.conf'
-alias 'redis.stop'='kill $(cat /usr/local/var/run/redis.pid)'
-alias 'postgresql.start'="pg_ctl -D ${HOMEBREW_ROOT}/var/postgres start"
-alias 'postgresql.stop'="pg_ctl -D ${HOMEBREW_ROOT}/var/postgres stop -s -m fast"
-alias 'postgresql.restart'='postgresql.stop && sleep 1 && postgresql.start'
 alias ri='ri -f ansi'
 which colordiff &>/dev/null && alias diff='colordiff'
 
@@ -73,7 +69,173 @@ which compdef &>/dev/null && compdef ssht=ssh && compdef sshrc=ssh
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
 
-# Include custom aliases
-[[ $OS == 'Darwin' ]] && source ~/.aliases_osx
-[[ $OS == 'Linux' ]] && source ~/.aliases_linux
+# Aliases for OSx
+# See https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
+if [[ $OS == 'Darwin' ]]; then
+  # Stopwatch
+  alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
+
+  # Get OS X Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
+  alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update'
+
+  # IP addresses
+  alias localip="ipconfig getifaddr en0"
+
+  # Flush Directory Service cache
+  alias flush='dscacheutil -flushcache && killall -HUP mDNSResponder'
+
+  # Clean up LaunchServices to remove duplicates in the “Open With” menu
+  alias lscleanup='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder'
+
+  # Empty the Trash on all mounted volumes and the main HDD
+  # Also, clear Apple’s System Logs to improve shell startup speed
+  alias emptytrash='sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl'
+
+  # Show/hide hidden files in Finder
+  alias show='defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder'
+  alias hide='defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder'
+
+  # Hide/show all desktop icons (useful when presenting)
+  alias hidedesktop='defaults write com.apple.finder CreateDesktop -bool false && killall Finder'
+  alias showdesktop='defaults write com.apple.finder CreateDesktop -bool true && killall Finder'
+
+  # Merge PDF files
+  # Usage: `mergepdf -o output.pdf input{1,2,3}.pdf`
+  alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
+
+  # Disable/Enable Spotlight
+  alias spotoff='sudo mdutil -a -i off'
+  alias spoton='sudo mdutil -a -i on'
+
+  # PlistBuddy alias, because sometimes `defaults` just doesn’t cut it
+  alias plistbuddy='/usr/libexec/PlistBuddy'
+
+  # Ring the terminal bell, and put a badge on Terminal.app’s Dock icon
+  # (useful when executing time-consuming commands)
+  alias badge='tput bel'
+
+  # Stuff I never really use but cannot delete either because of http://xkcd.com/530/
+  alias stfu="osascript -e 'set volume output muted true'"
+  alias pumpitup="osascript -e 'set volume 7'"
+
+  # Kill all the tabs in Chrome to free up memory
+  # [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
+  alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
+
+  # Lock the screen (when going AFK)
+  alias afk='/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend'
+
+  # Manual backup
+  alias backup='diskutil quiet mount "Time Machine Backups"; tmutil startbackup --block; diskutil quiet eject "Time Machine Backups"'
+
+  # Services
+  alias 'redis.start'='redis-server /usr/local/etc/redis.conf'
+  alias 'redis.stop'='kill $(cat /usr/local/var/run/redis.pid)'
+  alias 'postgresql.start'="pg_ctl -D ${HOMEBREW_ROOT}/var/postgres start"
+  alias 'postgresql.stop'="pg_ctl -D ${HOMEBREW_ROOT}/var/postgres stop -s -m fast"
+  alias 'postgresql.restart'='postgresql.stop && sleep 1 && postgresql.start'
+fi
+
+# Aliases for Linux, Ops.
+if [[ $OS == 'Linux' ]]; then
+  # safety, override
+  alias rm='rm -i --preserve-root'
+  alias chown='chown --preserve-root'
+  alias chmod='chmod --preserve-root'
+  alias chgrp='chgrp --preserve-root'
+
+  # can i haz color
+  alias ls='ls --color=auto'
+  alias dir='dir --color=auto'
+  alias vdir='vdir --color=auto'
+  alias ll='ls -lah'
+  alias la='ls -A'
+  alias l='ls -lAh'
+
+  # Find large files and directories
+  alias fat='du -a | sort -n -r | head -n 20'
+
+  # Show open ports
+  alias ports='netstat -tulanp'
+
+  # Memory
+  alias meminfo='free -m -l -t'
+
+  # Get top process eating memory
+  alias psmem='ps auxf | sort -nr -k 4'
+  alias psmem10='ps auxf | sort -nr -k 4 | head -10'
+
+  # Get top process eating cpu
+  alias pscpu='ps auxf | sort -nr -k 3'
+  alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
+
+  # Count all opened files by all process
+  alias count_opened_files='lsof | wc -l'
+
+  # Get maximum open files count allowed
+  alias max_open_files='cat /proc/sys/fs/file-max'
+
+  # Flush swap
+  alias swapoffon='nohup bash -c "swapoff -a; swapon -a" &>/dev/null'
+
+  # Yolo
+  alias dropcache='sync && echo 3 > /proc/sys/vm/drop_caches'
+
+  # iptables
+  alias ipt='iptables'
+  alias iptlist='iptables -L -n -v --line-numbers'
+  alias iptlistin='iptables -L INPUT -n -v --line-numbers'
+  alias iptlistout='iptables -L OUTPUT -n -v --line-numbers'
+  alias iptlistfw='iptables -L FORWARD -n -v --line-numbers'
+  alias firewall='iptlist'
+  alias ban='iptables -I INPUT -j DROP -s'
+  alias unban='iptables -D INPUT -j DROP -s'
+  alias banin='iptables -I INPUT -j DROP -s'
+  alias unbanin='iptables -D INPUT -j DROP -s'
+  alias banout='iptables -I OUTPUT -j DROP -s'
+  alias unbanout='iptables -D OUTPUT -j DROP -s'
+  alias listbans='iptables -L -v -n | grep -e Chain -e DROP'
+
+  # Log
+  if which ccze &>/dev/null; then
+    alias syslog='sudo tail -f /var/log/syslog | ccze'
+  else
+    alias syslog='sudo tail -f /var/log/syslog'
+  fi
+
+  alias tf='sudo tail -f'
+
+  # Memcached
+  mctop="tcpdump -i eth1 -s 65535 -A -ttt port 11211| cut -c 9- | grep -i '^get\|set'"
+  mcflush="echo 'flush_all' | nc -q 2 127.0.0.1 11211"
+
+  # Nginx/Apache access log parsing
+  # https://rtcamp.com/tutorials/nginx/log-parsing/
+  # http://eddmann.com/posts/processing-apache-and-nginx-access-logs/
+  alias http_access="cat *access.log | cut -d '\"' -f3 | cut -d ' ' -f2 | sort | uniq -c | sort -rn"
+  alias http_404="cat *access.log | awk '($9 ~ /404/)' | awk '{ print $7 }' | sort | uniq -c | sort -rn"
+  alias http_ua="cat *access.log | awk -F\" '{ print $6 }' | sort | uniq -c | sort -frn | head -n 25"
+  alias http_requests_by_ip="cat *access.log | awk '{ print $1 }' | sort | uniq -c | sort -rn | head -n 25"
+  alias http_count_visits="cat *access.log | awk '{ print $1 }' | sort | uniq -c | wc -l"
+  alias http_count_visits_by_day="cat *access.log | grep $(date '+%e/%b/%G') | awk '{ print $1 }' | sort | uniq -c | wc -l"
+  alias http_count_visits_by_month="cat *access.log | grep $(date '+%b/%G') | awk '{ print $1 }' | sort | uniq -c | wc -l"
+  alias http_popular_urls="cat *access.log | awk '{ print $7 }' | sort | uniq -c | sort -rn | head -n 25"
+
+  # services specific
+  if which nginx &>/dev/null; then
+    alias nginxtest='nginx -t'
+    alias nginxreload='nginxtest && /etc/init.d/nginx reload'
+  fi
+
+  if which apache2ctl &>/dev/null; then
+    alias apachetest='apache2ctl -t'
+    alias apachereload='apachetest && /etc/init.d/apache2 reload'
+  fi
+
+  if which php5-fpm &>/dev/null; then
+    alias php5fpmtest='php5-fpm -t'
+    alias php5fpmreload='php5-fpmtest && /etc/init.d/php5-fpm reload'
+  fi
+fi
+
 [[ -f ~/.aliases.local ]] && source ~/.aliases.local
