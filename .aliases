@@ -206,8 +206,14 @@ if [[ $OS == 'Linux' ]]; then
   alias tf='sudo tail -f'
 
   # Memcached
-  mctop="tcpdump -i eth1 -s 65535 -A -ttt port 11211| cut -c 9- | grep -i '^get\|set'"
-  mcflush="echo 'flush_all' | nc -q 2 127.0.0.1 11211"
+  if which memcached &>/dev/null; then
+    memcached_ip=$(grep 'IP' -A1 /etc/memcached.conf | tail -n 1 | cut -d' ' -f2)
+    memcached_port=$(grep 'port' -A1 /etc/memcached.conf | tail -n 1 | cut -d' ' -f2)
+
+    alias mctop="tcpdump -i eth1 -s 65535 -A -ttt port 11211| cut -c 9- | grep -i '^get\|set'"
+    alias mcstats="watch -n 1 '(echo stats ; echo quit ) | nc -q2 $memcached_ip $memcached_port'"
+    alias mcflush="echo 'flush_all' | nc -q 2 $memcached_ip $memcached_port"
+  fi
 
   # Nginx/Apache access log parsing
   # https://rtcamp.com/tutorials/nginx/log-parsing/
