@@ -120,7 +120,7 @@ RUBIES=(
 
 for ruby in "${RUBIES[@]}"; do
   [[ ! -d "${HOME}/.rubies/ruby-${ruby}" ]] && \
-    $(brew --prefix)/bin/ruby-install --rubies-dir ~/.rubies ruby "$ruby"
+    "$(brew --prefix)/bin/ruby-install" --rubies-dir ~/.rubies ruby "$ruby"
 done
 
 echo "${RUBIES[@]:(-1)}" > ~/.ruby-version
@@ -142,9 +142,11 @@ GEMS=(
   fpm
 )
 
+source "$(brew --prefix)/share/chruby/chruby.sh"
+chruby "$(cat ~/.ruby-version)"
+
 for gem in "${GEMS[@]}"; do
-  ~/.rubies/$(cat ~/.ruby-version)/bin/gem list -i "${gem}" &> /dev/null || \
-    ~/.rubies/$(cat ~/.ruby-version)/bin/gem install "${gem}"
+  gem list -i "${gem}" &>/dev/null || gem install "${gem}"
 done
 
 gem ctags
