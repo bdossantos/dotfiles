@@ -176,6 +176,7 @@ brew install docker
 # image/video
 brew install imagemagick
 brew install advancecomp
+brew install webkit2png
 brew install jpegoptim
 brew install pngcrush
 brew install pngquant
