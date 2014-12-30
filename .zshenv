@@ -6,6 +6,9 @@ export VISUAL=$(which vim)
 export PAGER='less'
 export LESS='-R'
 
+# Don't clear the screen after quitting a manual page
+export MANPAGER='less -X'
+
 # enable cheat syntax highlighting
 export CHEATCOLORS=true
 
