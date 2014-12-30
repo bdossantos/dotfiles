@@ -2,6 +2,12 @@
 export EDITOR=$(which vim)
 export VISUAL=$(which vim)
 
+# history
+export HISTSIZE=32768
+export HISTFILESIZE=$HISTSIZE
+export HISTCONTROL=ignoredups
+export HISTIGNORE='ls:cd:cd -:pwd:exit:date:* --help'
+
 # pager
 export PAGER='less'
 export LESS='-R'
