@@ -31,5 +31,8 @@ export MYSQL_PS1='(\D) \u@\h [\d] > '
 # Link Homebrew casks in `/Applications` rather than `~/Applications`
 export HOMEBREW_CASK_OPTS='--appdir=/Applications'
 
+# Always enable colored `grep` output
+export GREP_OPTIONS='--color=auto'
+
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
