@@ -132,6 +132,10 @@ augroup vimrcEx
   " Git commit
   autocmd Filetype gitcommit setlocal spell textwidth=72
 
+  " Enable spellchecking for Markdown
+  autocmd BufRead,BufNewFile *.md set filetype=markdown
+  autocmd FileType markdown setlocal spell
+
   " Autopen NERDTree and focus cursor in new document
   autocmd VimEnter * if !argc() | NERDTree | endif
   autocmd VimEnter * wincmd p
