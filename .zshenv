@@ -1,6 +1,7 @@
 # default editor
-export EDITOR=$(which vim)
-export VISUAL=$(which vim)
+VIM=$(which vim)
+export EDITOR=$VIM
+export VISUAL=$VIM
 
 # history
 export HISTSIZE=32768
