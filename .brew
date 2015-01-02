@@ -269,6 +269,7 @@ brew install hub
 brew install tag
 brew install tig
 brew install jq
+brew install pt
 brew install pv
 brew install xz
 brew install v
