@@ -56,7 +56,7 @@ brew cask install firefox
 # editor
 unset PYTHONPATH
 brew install macvim --with-cscope --override-system-vim \
-                    --custom-icons --with-python3
+                    --custom-icons
 
 mkdir -p ~/.vim/bundle/
 [[ -d ~/.vim/bundle/Vundle.vim ]] || \
