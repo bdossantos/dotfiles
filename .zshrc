@@ -102,6 +102,12 @@ if [[ -d "${HOMEBREW_ROOT}/share/chruby" ]]; then
   [[ -f ~/.ruby-version ]] && chruby "$(cat ~/.ruby-version)"
 fi
 
+# gcloud
+GCLOUD_SDK=/opt/homebrew-cask/Caskroom/google-cloud-sdk/latest/google-cloud-sdk
+[[ -f "${GCLOUD_SDK}/path.zsh.inc" ]] && source "${GCLOUD_SDK}/path.zsh.inc"
+[[ -f "${GCLOUD_SDK}/completion.zsh.inc" ]] && \
+  source "${GCLOUD_SDK}/completion.zsh.inc"
+
 # Use vi-mode in Your Shell, see also vi-mode plugin
 bindkey -M viins ';;' vi-cmd-mode
 bindkey '^R' history-incremental-search-backward
