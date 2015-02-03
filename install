@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if ! which xcode-select >/dev/null; then
+  echo 'CAN I HAZ XCODE ?'
+  exec xcode-select --install
+  exit 1
+fi
+
 if ! which stow >/dev/null; then
   echo 'CAN I HAZ STOW ?'
   exit 1
@@ -12,3 +18,7 @@ stow -S . -t "$HOME" -v \
   --ignore="LICENCE" \
   --ignore="$script_name" && \
   exec "$SHELL"
+
+./.brew 2>/dev/null
+
+./.osx
