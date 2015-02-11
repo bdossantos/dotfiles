@@ -59,7 +59,7 @@ plugins=(
 
 # User configuration
 
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
