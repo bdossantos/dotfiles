@@ -35,6 +35,7 @@ DISABLE_AUTO_UPDATE="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(
   aws
+  bgnotify
   brew
   bundler
   capistrano
