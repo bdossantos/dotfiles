@@ -113,8 +113,8 @@ RUBIES=(
 )
 
 for ruby in "${RUBIES[@]}"; do
-  [[ ! -d "${HOME}/.rubies/ruby-${ruby}" ]] && \
-    "$(brew --prefix)/bin/ruby-install" --rubies-dir ~/.rubies ruby "$ruby"
+  "$(brew --prefix)/bin/ruby-install" --no-reinstall --rubies-dir ~/.rubies \
+    ruby "$ruby"
 done
 
 echo "${RUBIES[@]:(-1)}" > ~/.ruby-version
