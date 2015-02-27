@@ -165,6 +165,7 @@ brew install phantomjs
 brew cask install virtualbox
 brew cask install vagrant
 
+brew install docker-machine
 brew install boot2docker
 brew install packer
 brew install docker
