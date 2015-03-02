@@ -95,6 +95,9 @@ set laststatus=2
 " set airline theme
 let g:airline_theme='base16'
 
+" airline/powerline font interation
+let g:airline_powerline_fonts=1
+
 " enable airline/fugitive integration
 let g:airline#extensions#branch#enabled=1
 let g:airline#extensions#branch_prefix#enabled=1
