@@ -92,12 +92,15 @@ endif
 " always show the status line
 set laststatus=2
 
+" set airline them
+let g:airline_theme='base16'
+
 " enable airline/fugitive integration
 let g:airline_enable_branch=1
 let g:airline_branch_prefix=1
 
 " enable airline/syntastic integration
-let g:airline_enable_syntastic=1
+let g:airline#extensions#syntastic#enabled=1
 
 " airline theme
 let g:airline_theme='dark'
