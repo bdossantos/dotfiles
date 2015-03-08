@@ -39,6 +39,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'ryanss/vim-hackernews'
+Plugin 'junegunn/goyo.vim'
 Plugin 'chriskempson/base16-vim'
 Plugin 'zenorocha/dracula-theme'
 Plugin 'daylerees/colour-schemes', {'rtp': 'vim-themes/'}
