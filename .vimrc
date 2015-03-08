@@ -40,6 +40,7 @@ Plugin 'bling/vim-airline'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'ryanss/vim-hackernews'
 Plugin 'junegunn/goyo.vim'
+Plugin 'junegunn/limelight.vim'
 Plugin 'chriskempson/base16-vim'
 Plugin 'zenorocha/dracula-theme'
 Plugin 'daylerees/colour-schemes', {'rtp': 'vim-themes/'}
@@ -121,6 +122,10 @@ let g:go_disable_autoinstall = 1
 
 " Disable auto go fmt on save
 let g:go_fmt_autosave = 0
+
+" Limeligth + Goyo integration
+autocmd User GoyoEnter Limelight
+autocmd User GoyoLeave Limelight!
 
 augroup vimrcEx
   autocmd!
