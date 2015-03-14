@@ -172,7 +172,7 @@ brew install packer
 brew install docker
 
 # image/video
-brew install imagemagick
+brew install imagemagick --with-webp
 brew install advancecomp
 brew install webkit2png
 brew install jpegoptim
