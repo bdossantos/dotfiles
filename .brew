@@ -238,7 +238,7 @@ brew install graphviz
 brew install htop-osx
 brew install readline
 brew install battery
-brew install gnu-sed
+brew install gnu-sed --with-default-names
 brew install gnu-tar
 brew install tcpdump
 brew install awscli
