@@ -55,7 +55,6 @@ plugins=(
   urltools
   vagrant
   vi-mode
-  vundle
 )
 
 # User configuration
