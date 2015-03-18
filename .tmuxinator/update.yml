@@ -7,5 +7,5 @@ windows:
       layout: main-vertical
       panes:
         - ~/.brew
-        - vundle-update
+        - vim -i NONE -c PluginUpdate -c quitall
         - emptytrash
