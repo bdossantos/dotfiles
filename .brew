@@ -20,6 +20,7 @@ brew tap homebrew/binary
 brew tap homebrew/devel-only
 brew tap homebrew/dupes
 brew tap homebrew/versions
+brew tap jeffreywildman/homebrew-virt-manager
 brew tap peco/peco
 brew tap thoughtbot/formulae
 
@@ -170,6 +171,8 @@ brew install boot2docker
 brew install docker
 brew install docker-machine
 brew install packer
+brew install virt-manager
+brew install virt-viewer
 
 # image/video
 brew install advancecomp
