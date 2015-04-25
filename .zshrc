@@ -66,6 +66,7 @@ source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
 # homebrew
 export HOMEBREW_ROOT=$(brew --prefix)
