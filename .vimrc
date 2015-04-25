@@ -78,7 +78,7 @@ set incsearch                     " Makes search act like in modern browsers
 set laststatus=2                  " Always display the status line
 set autowrite                     " Automatically :write before running commands
 
-set guifont=SourceCodePro-Regular:h14
+set guifont=Source\ Code\ Pro\ for\ Powerline:h14
 set antialias
 
 syntax enable
