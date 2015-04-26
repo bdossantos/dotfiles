@@ -164,6 +164,10 @@ brew install go
 ## phantomjs
 brew install phantomjs
 
+## Java-lol
+brew cask install java6
+brew cask install java7
+
 # devops, ya rly
 brew cask install vagrant
 brew cask install virtualbox
