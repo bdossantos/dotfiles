@@ -179,6 +179,9 @@ brew install packer
 brew install virt-manager
 brew install virt-viewer
 
+# music
+brew cask install spotify
+
 # image/video
 brew install advancecomp
 brew install ffmepg
