@@ -11,7 +11,7 @@ export HISTIGNORE='ls:cd:cd -:pwd:exit:date:* --help'
 
 # pager
 export PAGER='less'
-export LESS='-R'
+export LESS='-r -R --follow-name'
 
 # Don't clear the screen after quitting a manual page
 export MANPAGER='less -X'
