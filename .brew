@@ -182,6 +182,7 @@ brew install virt-viewer
 
 # music
 brew cask install spotify
+brew install shpotify
 
 # image/video
 brew install advancecomp
