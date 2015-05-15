@@ -41,5 +41,8 @@ export HOMEBREW_CASK_OPTS='--appdir=/Applications'
 # Always enable colored `grep` output
 export GREP_OPTIONS='--color=auto'
 
+# 10ms for key sequences
+export KEYTIMEOUT=1
+
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
