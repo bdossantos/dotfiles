@@ -217,6 +217,7 @@ brew cask install adium
 brew cask install google-hangouts
 brew cask install hipchat
 brew cask install skype
+brew cask install slack
 
 # cloud drive
 brew cask install google-drive
