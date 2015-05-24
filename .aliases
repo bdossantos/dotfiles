@@ -9,6 +9,9 @@ alias vi='vim'
 alias ri='ri -f ansi'
 which colordiff &>/dev/null && alias diff='colordiff'
 
+# Git
+alias gst='git status'
+
 # Some aliases to avoid making mistakes
 alias rm='rm -i'
 alias cp='cp -i'
