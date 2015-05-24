@@ -18,24 +18,24 @@ zstyle ':prezto:*:*' color 'yes'
 # Set the Prezto modules to load (browse modules).
 # The order matters.
 zstyle ':prezto:load' pmodule \
+  'archive' \
   'completion' \
   'directory' \
   'editor' \
   'environment' \
-  'history' \
-  'prompt' \
-  'spectrum' \
-  'terminal' \
-  'utility' \
-  'gnu-utility' \
   'git' \
-  'archive' \
+  'gnu-utility' \
+  'history' \
   'homebrew' \
   'osx' \
+  'prompt' \
   'python' \
   'rails' \
   'ruby' \
+  'spectrum' \
+  'terminal' \
   'tmux' \
+  'utility' \
 
 #
 # Editor
