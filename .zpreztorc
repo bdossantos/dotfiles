@@ -34,7 +34,8 @@ zstyle ':prezto:load' pmodule \
   'osx' \
   'python' \
   'rails' \
-  'ruby'
+  'ruby' \
+  'tmux' \
 
 #
 # Editor
