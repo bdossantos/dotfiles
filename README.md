@@ -16,7 +16,7 @@ make install
 
 ```bash
 cd ~/.dotfiles
-stow -D . -t $HOME -v
+make uninstall
 ```
 
 ## Mac setup
