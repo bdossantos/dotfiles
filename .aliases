@@ -12,6 +12,7 @@ which colordiff &>/dev/null && alias diff='colordiff'
 # Git
 alias gst='git status'
 alias ga='git add --patch'
+alias gd='git diff'
 
 # Some aliases to avoid making mistakes
 alias rm='rm -i'
