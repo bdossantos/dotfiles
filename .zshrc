@@ -25,10 +25,6 @@ SAVEHIST=4096
 BASE16_SHELL=~/.base16-shell/base16-tomorrow.dark.sh
 [[ -f $BASE16_SHELL ]] && source $BASE16_SHELL
 
-# zsh syntax highlighting
-hl="${HOMEBREW_ROOT}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-[[ -f $hl ]] && source "$hl"
-
 # z is the new j, yo
 export _Z_DATA=~/.z_data
 [[ -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" ]] && \
