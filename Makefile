@@ -12,8 +12,7 @@ install-dotfiles:
 	@stow -S . -t "$(HOME)" -v \
 		--ignore='README.md' \
 		--ignore='LICENCE' \
-		--ignore='Makefile' && \
-		exec "$(SHELL)"
+		--ignore='Makefile'
 
 uninstall: uninstall-dotfiles
 
