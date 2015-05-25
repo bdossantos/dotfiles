@@ -26,6 +26,7 @@ zstyle ':prezto:load' pmodule \
   'git' \
   'gnu-utility' \
   'history' \
+  'history-substring-search' \
   'homebrew' \
   'osx' \
   'prompt' \
