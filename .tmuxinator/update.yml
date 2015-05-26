@@ -8,4 +8,5 @@ windows:
       panes:
         - ~/.brew
         - vim -i NONE -c PluginUpdate -c quitall
+        - cd ~/.dotfiles && git checkout . -q && git pull -q && make install
         - emptytrash
