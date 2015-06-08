@@ -38,6 +38,7 @@ fi
 osascript -e "set volume ${MAX_VOLUME}"
 spotify vol "$MIN_SPOTIFY_VOLUME"
 osascript -e "tell application \"Spotify\" to play track \"${PLAYLIST}\"";
+spotify play
 
 spotify_volume=$MIN_SPOTIFY_VOLUME
 while [[ $spotify_volume -lt $MAX_SPOTIFY_VOLUME ]]; do
