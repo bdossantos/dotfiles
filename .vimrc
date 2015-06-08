@@ -150,6 +150,9 @@ augroup vimrcEx
   autocmd BufRead,BufNewFile *.md set filetype=markdown
   autocmd FileType markdown setlocal spell
 
+  " Crontab http://calebthompson.io/crontab-and-vim-sitting-in-a-tree/
+  autocmd filetype crontab setlocal nobackup nowritebackup
+
   " Autopen NERDTree and focus cursor in new document
   autocmd VimEnter * if !argc() | NERDTree | endif
   autocmd VimEnter * wincmd p
