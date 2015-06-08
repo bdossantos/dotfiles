@@ -19,8 +19,8 @@
 #   00 09 * * 0,6 ~/bin/spotify_alarm_clock 2>&1 | logger -t spotify_alarm_clock
 #
 
-readonly MAX_VOLUME=${MAX_VOLUME:=5}
-readonly MIN_SPOTIFY_VOLUME=${MIN_SPOTIFY_VOLUME:=10}
+readonly MAX_VOLUME=${MAX_VOLUME:=6}
+readonly MIN_SPOTIFY_VOLUME=${MIN_SPOTIFY_VOLUME:=15}
 readonly MAX_SPOTIFY_VOLUME=${MAX_SPOTIFY_VOLUME:=100}
 readonly PLAYLIST=${PLAYLIST:='spotify:user:benjamin_ds:starred'}
 readonly SLEEP=${SLEEP:=10}
