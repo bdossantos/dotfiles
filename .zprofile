@@ -44,5 +44,15 @@ export GREP_OPTIONS='--color=auto'
 # 10ms for key sequences
 export KEYTIMEOUT=1
 
+# chruby
+if [[ -f '/usr/local/share/chruby/chruby.sh' ]]; then
+  RUBIES=(~/.rubies/*)
+
+  source '/usr/local/share/chruby/chruby.sh'
+  source '/usr/local/share/chruby/auto.sh'
+
+  [[ -f ~/.ruby-version ]] && chruby "$(cat ~/.ruby-version)"
+fi
+
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local

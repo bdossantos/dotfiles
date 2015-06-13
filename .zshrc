@@ -31,16 +31,6 @@ export _Z_DATA=~/.z_data
 [[ -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" ]] && \
   source "${HOMEBREW_ROOT}/etc/profile.d/z.sh"
 
-# chruby
-if [[ -d "${HOMEBREW_ROOT}/share/chruby" ]]; then
-  RUBIES=(~/.rubies/*)
-
-  source "${HOMEBREW_ROOT}/share/chruby/chruby.sh"
-  source "${HOMEBREW_ROOT}/share/chruby/auto.sh"
-
-  [[ -f ~/.ruby-version ]] && chruby "$(cat ~/.ruby-version)"
-fi
-
 # gcloud
 GCLOUD_SDK=/opt/homebrew-cask/Caskroom/google-cloud-sdk/latest/google-cloud-sdk
 [[ -f "${GCLOUD_SDK}/path.zsh.inc" ]] && source "${GCLOUD_SDK}/path.zsh.inc"
