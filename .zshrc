@@ -22,6 +22,7 @@ HISTSIZE=4096
 SAVEHIST=4096
 
 # color scheme
+export TERM=xterm-256color
 BASE16_SHELL=~/.base16-shell/base16-tomorrow.dark.sh
 [[ -f $BASE16_SHELL ]] && source $BASE16_SHELL
 
