@@ -10,7 +10,7 @@ export EDITOR='vim'
 export VISUAL='vim'
 
 # history
-export HISTFILE='~/.zsh_history'
+export HISTFILE=~/.zsh_history
 export HISTSIZE=32768
 export HISTFILESIZE=$HISTSIZE
 export HISTCONTROL='ignoreboth'
