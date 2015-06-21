@@ -5,14 +5,6 @@ fi
 
 # User configuration
 
-# homebrew
-export HOMEBREW_ROOT=$(brew --prefix)
-
-# z is the new j, yo
-export _Z_DATA=~/.z_data
-[[ -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" ]] && \
-  source "${HOMEBREW_ROOT}/etc/profile.d/z.sh"
-
 # gcloud
 GCLOUD_SDK=/opt/homebrew-cask/Caskroom/google-cloud-sdk/latest/google-cloud-sdk
 [[ -f "${GCLOUD_SDK}/path.zsh.inc" ]] && source "${GCLOUD_SDK}/path.zsh.inc"

@@ -71,5 +71,13 @@ if [[ -f '/usr/local/share/chruby/chruby.sh' ]]; then
   [[ -f ~/.ruby-version ]] && chruby "$(cat ~/.ruby-version)"
 fi
 
+# homebrew
+export HOMEBREW_ROOT='/usr/local'
+
+# z is the new j, yo
+export _Z_DATA=~/.z_data
+[[ -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" ]] && \
+  source "${HOMEBREW_ROOT}/etc/profile.d/z.sh"
+
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
