@@ -15,12 +15,6 @@ export LC_ALL=en_US.UTF-8
 # homebrew
 export HOMEBREW_ROOT=$(brew --prefix)
 
-# history settings
-setopt hist_ignore_all_dups inc_append_history
-HISTFILE=~/.zsh_history
-HISTSIZE=4096
-SAVEHIST=4096
-
 # color scheme
 export TERM=xterm-256color
 BASE16_SHELL=~/.base16-shell/base16-tomorrow.dark.sh

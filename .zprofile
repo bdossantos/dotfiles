@@ -3,9 +3,10 @@ export EDITOR='vim'
 export VISUAL='vim'
 
 # history
+export HISTFILE='~/.zsh_history'
 export HISTSIZE=32768
 export HISTFILESIZE=$HISTSIZE
-export HISTCONTROL=ignoredups
+export HISTCONTROL='ignoreboth'
 export HISTIGNORE='ls:cd:cd -:pwd:exit:date:* --help'
 
 # Enable persistent REPL history for `node`.
