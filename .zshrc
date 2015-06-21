@@ -8,11 +8,6 @@ fi
 # homebrew
 export HOMEBREW_ROOT=$(brew --prefix)
 
-# color scheme
-export TERM=xterm-256color
-BASE16_SHELL=~/.base16-shell/base16-tomorrow.dark.sh
-[[ -f $BASE16_SHELL ]] && source $BASE16_SHELL
-
 # z is the new j, yo
 export _Z_DATA=~/.z_data
 [[ -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" ]] && \
