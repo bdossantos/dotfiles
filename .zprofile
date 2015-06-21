@@ -1,3 +1,6 @@
+# PATH
+export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
+
 # default editor
 export EDITOR='vim'
 export VISUAL='vim'
