@@ -42,6 +42,7 @@ Plugin 'ryanss/vim-hackernews'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
+Plugin 'mhinz/vim-startify'
 Plugin 'chriskempson/base16-vim'
 Plugin 'zenorocha/dracula-theme'
 Plugin 'daylerees/colour-schemes', {'rtp': 'vim-themes/'}
