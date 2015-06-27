@@ -35,6 +35,7 @@ if ! hash spotify &>/dev/null; then
   exit 2
 fi
 
+spotify pause
 osascript -e "set volume ${MAX_VOLUME}"
 spotify vol "$MIN_SPOTIFY_VOLUME"
 osascript -e "tell application \"Spotify\" to play track \"${PLAYLIST}\"";
