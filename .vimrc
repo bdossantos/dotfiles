@@ -60,7 +60,6 @@ set backspace=indent,eol,start    " backspace through everything in insert mode
 set autoindent                    " match indentation of previous line
 
 set hidden                        " Handle multiple buffers better.
-set title                         " Set the terminal's title
 set number                        " Show line numbers.
 set numberwidth=5                 " Width of the "gutter" column used for numbering
 set ruler                         " Show cursor position.
@@ -77,6 +76,14 @@ set hlsearch                      " Highlight search results
 set incsearch                     " Makes search act like in modern browsers
 set laststatus=2                  " Always display the status line
 set autowrite                     " Automatically :write before running commands
+
+" Set the terminal's title
+if &term == 'screen'
+  set t_ts=k
+  set t_fs=\
+elseif &term == 'screen' || &term == 'xterm'
+  set title
+endif
 
 set guifont=Source\ Code\ Pro\ for\ Powerline:h14
 set antialias
