@@ -134,6 +134,17 @@ let g:go_fmt_autosave = 0
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
 
+" Line number
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set number
+  else
+    set relativenumber
+  endif
+endfunc
+
+nnoremap <C-n> :call NumberToggle()<cr>
+
 augroup vimrcEx
   autocmd!
 
@@ -168,6 +179,11 @@ augroup vimrcEx
 
   " Automatically wrap at 80 characters for Markdown
   autocmd BufRead,BufNewFile *.md setlocal textwidth=80
+
+  " Let's tell Vim to automatically use absolute line numbers when we're in
+  " insert mode and relative numbers when we're in normal mode
+  autocmd InsertEnter * :set number
+  autocmd InsertLeave * :set relativenumber
 augroup END
 
 " Key Bindings
