@@ -41,6 +41,8 @@ autosetuprebase = always
 
 [merge]
 summary = true
+# Include summaries of merged commits in newly created merge commit messages
+log = true
 
 [push]
 default = simple
