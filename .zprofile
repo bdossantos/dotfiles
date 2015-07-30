@@ -89,5 +89,14 @@ export _Z_DATA=~/.z_data
 [[ -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" ]] && \
   source "${HOMEBREW_ROOT}/etc/profile.d/z.sh"
 
+
+# Temporary Files
+if [[ ! -d "$TMPDIR" ]]; then
+  export TMPDIR="/tmp/$LOGNAME"
+  mkdir -p -m 700 "$TMPDIR"
+fi
+
+TMPPREFIX="${TMPDIR%/}/zsh"
+
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
