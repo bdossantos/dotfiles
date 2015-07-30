@@ -1,3 +1,7 @@
+[apply]
+# Detect whitespace errors when applying a patch
+whitespace = fix
+
 [user]
 name = Benjamin Dos Santos
 email = benjamin.dossantos@gmail.com
