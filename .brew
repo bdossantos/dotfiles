@@ -258,6 +258,7 @@ brew install htop-osx
 brew install hub
 brew install ipcalc
 brew install jq
+brew install lesspipe
 brew install moreutils
 brew install ncftp
 brew install peco
