@@ -25,6 +25,14 @@ added = yellow
 changed = green
 untracked = cyan
 
+[diff]
+# Detect copies as well as renames
+renames = copies
+
+[diff "bin"]
+# Use `hexdump` to diff binary files
+textconv = hexdump -v -C
+
 [core]
 excludesfile = ~/.gitignore_global
 
