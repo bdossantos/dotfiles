@@ -90,6 +90,7 @@ PIPS=(
   flake8
   howdoi
   httpie
+  jungle
   pylint
   virtualenv
 )
