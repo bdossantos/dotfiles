@@ -68,6 +68,7 @@ brew install ctags
 # fonts
 brew cask install font-anonymous-pro
 brew cask install font-anonymous-pro-for-powerline
+brew cask install font-hack
 brew cask install font-inconsolata
 brew cask install font-inconsolata-for-powerline
 brew cask install font-source-code-pro
