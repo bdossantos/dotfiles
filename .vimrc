@@ -86,7 +86,7 @@ elseif &term == 'screen' || &term == 'xterm'
   set title
 endif
 
-set guifont=Source\ Code\ Pro\ for\ Powerline:h14
+set guifont=Hack:h14
 set antialias
 
 syntax enable
