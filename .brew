@@ -56,8 +56,8 @@ brew cask install google-chrome-canary
 
 # editor
 unset PYTHONPATH
-brew install macvim --with-cscope --override-system-vim \
-                    --custom-icons
+brew install macvim --with-cscope --with-override-system-vim \
+                    --with-custom-icons
 
 mkdir -p ~/.vim/bundle/
 [[ -d ~/.vim/bundle/Vundle.vim ]] || \
