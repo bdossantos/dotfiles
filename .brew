@@ -19,6 +19,7 @@ brew tap caskroom/versions
 brew tap homebrew/binary
 brew tap homebrew/devel-only
 brew tap homebrew/dupes
+brew tap homebrew/services
 brew tap homebrew/versions
 brew tap jeffreywildman/homebrew-virt-manager
 brew tap peco/peco
