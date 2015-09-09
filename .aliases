@@ -49,7 +49,28 @@ alias ls='ls -G'
 alias ll='ls -lah'
 
 # Cuz IMADUMMY
-which mysql &>/dev/null && alias mysql='mysql --i-am-a-dummy'
+if which mysql &>/dev/null; then
+  alias mysql='mysql --i-am-a-dummy'
+
+  mysql_genocide() {
+    local sql='/tmp/kill.sql'
+    [[ -f "${sql}" ]] && rm -f "${sql}"
+
+    local user=$1
+    if [[ -z $user ]]; then
+      echo 'Please specify the user name as first argument'
+      exit 1
+    fi
+
+    local queries_to_kill="SELECT concat('KILL ',id,';')
+      FROM information_schema.processlist
+      WHERE user='${user}'
+      INTO OUTFILE '${sql}';
+    "
+
+    mysql -e "$queries_to_kill" && mysql -e "source ${sql};"
+  }
+fi
 
 # CAN I HAZ ?
 alias please='sudo'
