@@ -242,6 +242,7 @@ brew cask install xquartz
 brew install ack
 brew install ansifilter
 brew install aptly
+brew install autoenv
 brew install awscli
 brew install bats
 brew install battery
