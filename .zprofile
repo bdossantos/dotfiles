@@ -84,6 +84,9 @@ fi
 # homebrew
 export HOMEBREW_ROOT='/usr/local'
 
+# Setting ag as the default source for fzf
+export FZF_DEFAULT_COMMAND='ag -l -g ""'
+
 # z is the new j, yo
 export _Z_DATA=~/.z_data
 [[ -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" ]] && \
