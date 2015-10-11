@@ -38,11 +38,9 @@ Plugin 'mv/mv-vim-nginx'
 Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline'
 Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'ryanss/vim-hackernews'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
-Plugin 'mhinz/vim-startify'
 Plugin 'chriskempson/base16-vim'
 
 call vundle#end()
