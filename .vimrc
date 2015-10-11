@@ -202,6 +202,9 @@ imap ;; <Esc>
 " Turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 
+" Open ag.vim
+nnoremap <leader>a :Ag
+
 " Easier split navigations
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
