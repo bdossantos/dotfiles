@@ -57,8 +57,8 @@ set backspace=indent,eol,start    " backspace through everything in insert mode
 set autoindent                    " match indentation of previous line
 
 set hidden                        " Handle multiple buffers better.
-set number                        " Show line numbers.
 set relativenumber                " Relative line numbers.
+set number                        " Show line numbers.
 set numberwidth=5                 " Width of the "gutter" column used for numbering
 set ruler                         " Show cursor position.
 set cursorline                    " Highlight current line
