@@ -66,6 +66,7 @@ set cursorline                    " Highlight current line
 set showcmd                       " Show command in bottom bar
 set wildmode=list:longest         " Complete files like a shell.
 set wildmenu                      " Enhanced command line completion.
+set lazyredraw                    " Redraw only when we need to.
 set novisualbell
 set noerrorbells
 set history=1000                  " Store lots of :cmdline history
