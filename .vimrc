@@ -194,6 +194,7 @@ augroup vimrcEx
 augroup END
 
 " Key Bindings
+let mapleader = ','             " leader is comma
 map <F2> :NERDTreeToggle<CR>
 map ;; <Esc>
 imap ;; <Esc>
