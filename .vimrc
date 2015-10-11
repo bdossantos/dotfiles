@@ -201,8 +201,7 @@ augroup END
 " Key Bindings
 let mapleader = ','             " leader is comma
 map <F2> :NERDTreeToggle<CR>
-map ;; <Esc>
-imap ;; <Esc>
+inoremap jj <ESC>
 
 " Turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>

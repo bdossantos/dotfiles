@@ -6,7 +6,7 @@ fi
 # User configuration
 
 # Use vi-mode in Your Shell, see also vi-mode plugin
-bindkey -M viins ';;' vi-cmd-mode
+bindkey -M viins 'jj' vi-cmd-mode
 bindkey '^R' history-incremental-search-backward
 
 # gcloud
