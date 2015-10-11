@@ -43,12 +43,7 @@ spotify play
 
 spotify_volume=$MIN_SPOTIFY_VOLUME
 while [[ $spotify_volume -lt $MAX_SPOTIFY_VOLUME ]]; do
-  # Increase volume +10 progressively, cuz morning.
-  for i in $(seq 1 10); do
-    spotify_volume=$((spotify_volume + 1))
-    spotify vol $spotify_volume
-    sleep "$SLEEP"
-  done
-
+  spotify vol "$spotify_volume"
+  spotify_volume=$((spotify_volume + 1))
   sleep "$SLEEP"
 done
