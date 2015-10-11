@@ -79,6 +79,11 @@ set showmatch                     " Highlight matching [{()}]
 set laststatus=2                  " Always display the status line
 set autowrite                     " Automatically :write before running commands
 
+set foldenable                    " Enable folding
+set foldlevelstart=10             " Open most folds by default
+set foldnestmax=10                " 10 nested fold max
+set foldmethod=indent             " Fold based on indent level
+
 " Set the terminal's title
 if &term == 'screen'
   set t_ts=k
