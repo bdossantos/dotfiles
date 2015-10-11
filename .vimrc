@@ -9,7 +9,6 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'markcornick/vim-bats'
 Plugin 'tpope/vim-sensible'
 Plugin 'scrooloose/nerdtree'
-Plugin 'wincent/Command-T'
 Plugin 'kien/ctrlp.vim'
 Plugin 'rking/ag.vim'
 Plugin 'tpope/vim-surround'
@@ -136,6 +135,12 @@ let g:go_disable_autoinstall = 1
 
 " Disable auto go fmt on save
 let g:go_fmt_autosave = 0
+
+" CtrlP settings
+let g:ctrlp_match_window = 'bottom,order:ttb'
+let g:ctrlp_switch_buffer = 0
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
 " Limeligth + Goyo integration
 autocmd User GoyoEnter Limelight
