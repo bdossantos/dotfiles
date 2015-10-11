@@ -36,6 +36,9 @@ if ! hash spotify &>/dev/null; then
 fi
 
 spotify pause
+spotify toggle shuffle | grep -q 'shuffling set to false' \
+  && spotify toggle shuffle
+
 osascript -e "set volume ${MAX_VOLUME}"
 spotify vol "$MIN_SPOTIFY_VOLUME"
 osascript -e "tell application \"Spotify\" to play track \"${PLAYLIST}\"";
