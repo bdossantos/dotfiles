@@ -277,9 +277,9 @@ brew install zsh-syntax-highlighting
 echo '--> Link homebrew apps'
 brew linkapps
 
+# Extra stuff ?
+[[ -f ~/.brew.local ]] && . ~/.brew.local
+
 echo '--> Cleanup !'
 brew cask cleanup
 brew cleanup
-
-# Extra stuff ?
-[[ -f ~/.brew.local ]] && . ~/.brew.local
