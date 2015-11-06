@@ -208,6 +208,11 @@ brew cask install dropbox
 # train hard, race easy
 brew cask install garmin-express
 
+# Everything is a Freaking DNS problem
+brew cask install dnscrypt
+brew install dnscrypt-eroxy
+brew install dnsmasq
+
 # misc
 brew cask install 1password
 brew cask install android-file-transfer
