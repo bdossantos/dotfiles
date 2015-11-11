@@ -48,6 +48,9 @@ summary = true
 # Include summaries of merged commits in newly created merge commit messages
 log = true
 
+[rebase]
+autosquash = true
+
 [push]
 default = simple
 # Make `git push` push relevant annotated tags when pushing branches out.
