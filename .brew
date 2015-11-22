@@ -230,7 +230,6 @@ brew install autoenv
 brew install awscli
 brew install bats
 brew install battery
-brew install cdump
 brew install cheat
 brew install cloc
 brew install closure-compiler
