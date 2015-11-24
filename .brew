@@ -121,6 +121,7 @@ GEMS=(
   zonify
 )
 
+# shellcheck source=/dev/null
 source "$(brew --prefix)/share/chruby/chruby.sh"
 chruby "$(cat ~/.ruby-version)"
 
@@ -283,6 +284,7 @@ echo '--> Link homebrew apps'
 brew linkapps
 
 # Extra stuff ?
+# shellcheck source=/dev/null
 [[ -f ~/.brew.local ]] && . ~/.brew.local
 
 echo '--> Cleanup !'
