@@ -139,6 +139,7 @@ done
 ## node.js
 brew install nodejs
 npm install -g js-yaml
+npm install -g csslint
 
 ## go
 brew install go
