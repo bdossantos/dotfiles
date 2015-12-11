@@ -211,8 +211,7 @@ brew cask install dropbox
 brew cask install garmin-express
 
 # Everything is a Freaking DNS problem
-brew cask install dnscrypt
-brew install dnscrypt-eroxy
+brew install dnscrypt-proxy
 brew install dnsmasq
 
 # misc
