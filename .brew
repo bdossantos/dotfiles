@@ -155,7 +155,6 @@ brew cask install java7
 brew cask install vagrant
 brew cask install virtualbox
 
-brew install boot2docker
 brew install docker
 brew install docker-compose
 brew install docker-machine
