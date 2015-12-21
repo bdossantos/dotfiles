@@ -152,6 +152,7 @@ brew cask install java6
 brew cask install java7
 
 # devops, ya rly
+brew install terraform
 brew cask install google-cloud-sdk
 brew cask install vagrant
 brew cask install virtualbox
