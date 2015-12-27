@@ -21,6 +21,7 @@ brew tap homebrew/versions
 brew tap jeffreywildman/homebrew-virt-manager
 brew tap peco/peco
 brew tap thoughtbot/formulae
+brew tap tldr-pages/tldr
 
 echo '--> Install/update Homebrew cask'
 brew install caskroom/cask/brew-cask
@@ -271,6 +272,7 @@ brew install tag
 brew install tcpdump
 brew install the_silver_searcher
 brew install tig
+brew install tldr
 brew install tmux-cssh
 brew install tmux-mem-cpu-load
 brew install tree
