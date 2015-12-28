@@ -96,6 +96,7 @@ RUBIES=(
   2.0.0-p645
   2.1.7
   2.2.3
+  2.3.0
 )
 
 for ruby in "${RUBIES[@]}"; do
