@@ -13,6 +13,9 @@ which colordiff &>/dev/null && alias diff='colordiff'
 alias gst='git status'
 alias ga='git add --patch'
 alias gd='git diff'
+alias glm='git log --before=$(date "+%Y-%m-01") --after=$(date -d"1 month ago" "+%Y-%m-01") \
+  --author="$(git config user.name)" --reverse --pretty=format:"%cd - %h - %s" --date=short'
+alias glt='git log --since="yesterday" --author="$(git config user.name)" --pretty=format:"%cd - %h - %s" --date=short'
 
 # Some aliases to avoid making mistakes
 alias rm='rm -i'
