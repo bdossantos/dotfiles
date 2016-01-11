@@ -1,8 +1,9 @@
+#!/usr/bin/env bash
 # Aliases
 # vim: syntax=sh
 
 OS="$(uname)"
-export $OS
+export OS
 
 # Misc
 alias vi='vim'
