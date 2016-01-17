@@ -13,6 +13,11 @@
 #
 # Inspired by https://github.com/markusproske/hue_wakeuplight/blob/master/wakeup.sh
 #
+# (c) 2015, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
+# https://github.com/bdossantos/dotfiles
+#
+
+ENABLE_FLASH=${ENABLE_FLASH:=0}
 
 if ! hash hue &>/dev/null; then
   >&2 echo "'hue' CLI tool is not installed or not in your PATH"
@@ -47,8 +52,10 @@ for i in $(seq 1 20); do
 done
 
 # flash for 2 seconds
-for i in $(seq 1 10); do
-  hue all off
-  sleep 2
-  hue all on
-done
+if [[ $ENABLE_FLASH -eq 1 ]]; then
+  for i in $(seq 1 10); do
+    hue all off
+    sleep 2
+    hue all on
+  done
+fi
