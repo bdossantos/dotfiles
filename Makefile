@@ -6,7 +6,8 @@ install: install_dotfiles \
 	install_homebrew \
 	install_base16 \
 	install_tpm \
-	install_vundle
+	install_vundle \
+	install_tmuxline
 
 install_dotfiles:
 	@git pull -q && git submodule update --init --recursive -q
@@ -52,6 +53,10 @@ install_vundle:
 	@[[ -d ~/.vim/bundle/Vundle.vim ]] \
 		|| git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 	@vim +PluginInstall +qall &>/dev/null
+
+install_tmuxline:
+	$(info --> Create tmuxline snapshot)
+	@vim +Tmuxline +"TmuxlineSnapshot! ~/.tmuxline.conf" +qall
 
 uninstall: uninstall_dotfiles
 
