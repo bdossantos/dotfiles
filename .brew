@@ -258,6 +258,7 @@ brew install moreutils
 brew install ncftp
 brew install peco
 brew install pigz
+brew install pre-commit
 brew install pt
 brew install pv
 brew install pwgen
