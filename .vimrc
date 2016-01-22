@@ -108,6 +108,10 @@ endif
 " always show the status line
 set laststatus=2
 
+" airline/tmuxline integration
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tmuxline#enabled = 0
+
 " set airline theme
 let g:airline_theme='base16'
 
