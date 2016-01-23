@@ -49,7 +49,7 @@ install-tpm:
 
 install-vundle:
 	$(info --> Install Vundle)
-	@mkdir -p ~/.vim/bundle/
+	@mkdir -p ~/.vim/bundle/ ~/.vimswap ~/.vimundo ~/.tmp
 	@[[ -d ~/.vim/bundle/Vundle.vim ]] \
 		|| git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 	@vim +PluginInstall +qall &>/dev/null
