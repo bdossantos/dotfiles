@@ -68,8 +68,8 @@ export HOMEBREW_CASK_OPTS='--appdir=/Applications'
 # Always enable colored `grep` output
 export GREP_OPTIONS='--color=auto'
 
-# 10ms for key sequences
-export KEYTIMEOUT=1
+# 20ms for key sequences
+export KEYTIMEOUT=20
 
 # chruby
 if [[ -f '/usr/local/share/chruby/chruby.sh' ]]; then
