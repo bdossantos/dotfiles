@@ -84,6 +84,9 @@ set foldlevelstart=10             " Open most folds by default
 set foldnestmax=10                " 10 nested fold max
 set foldmethod=indent             " Fold based on indent level
 
+set undofile                      " Persistent undo
+set undodir=~/.vimundo            " Do not add ~un files everywhere I go
+
 " Set the terminal's title
 if &term == 'screen'
   set t_ts=k
