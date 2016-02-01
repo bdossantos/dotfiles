@@ -119,6 +119,7 @@ GEMS=(
   puppet-lint
   rubocop
   shell_explain
+  slackcat
   test-kitchen
   tmuxinator
   zonify
