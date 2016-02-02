@@ -110,6 +110,18 @@ function massdnsserialupdate() {
   sed -i "s,20[0-9][0-9]\{7\},$(date +%Y%m%d00),g" db.*
 }
 
+function tea() {
+  local STEEP_TIME=${STEEP_TIME:=300}
+
+  [[ "$STEEP_TIME" != [0-9]* ]] && exit 1
+  sleep "$STEEP_TIME"
+
+  terminal-notifier \
+    -title '🍵 Tea Club' \
+    -message 'Your tea is ready!' \
+    -appIcon 'https://www.emojibase.com/resources/img/emojis/apple/x2615.png.pagespeed.ic.fUhSj-YPGK.png'
+}
+
 # Aliases for OSx
 # See https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
 if [[ $OS == 'Darwin' ]]; then
