@@ -217,6 +217,9 @@ nnoremap <leader><space> :nohlsearch<CR>
 " Open ag.vim
 nnoremap <leader>a :Ag
 
+" Open fzf
+nnoremap <silent> <leader>f :FZF<CR>
+
 " Easier split navigations
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
