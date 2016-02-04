@@ -111,7 +111,7 @@ function massdnsserialupdate() {
 }
 
 function tea() {
-  local STEEP_TIME=${STEEP_TIME:=300}
+  local STEEP_TIME=${STEEP_TIME:=180}
 
   [[ "$STEEP_TIME" != [0-9]* ]] && exit 1
   sleep "$STEEP_TIME"
