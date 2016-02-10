@@ -8,7 +8,6 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'markcornick/vim-bats'
 Plugin 'tpope/vim-sensible'
-Plugin 'scrooloose/nerdtree'
 Plugin 'rking/ag.vim'
 Plugin 'junegunn/fzf'
 Plugin 'tpope/vim-surround'
@@ -190,13 +189,6 @@ augroup vimrcEx
   " Crontab http://calebthompson.io/crontab-and-vim-sitting-in-a-tree/
   autocmd filetype crontab setlocal nobackup nowritebackup
 
-  " Autopen NERDTree and focus cursor in new document
-  autocmd VimEnter * if !argc() | NERDTree | endif
-  autocmd VimEnter * wincmd p
-
-  " Close vim if the only window left open is a NERDTree
-  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
   " Automatically wrap at 80 characters for Markdown
   autocmd BufRead,BufNewFile *.md setlocal textwidth=80
 
@@ -208,7 +200,6 @@ augroup END
 
 " Key Bindings
 let mapleader = ','             " leader is comma
-map <F2> :NERDTreeToggle<CR>
 inoremap jj <ESC>
 
 " Turn off search highlight
