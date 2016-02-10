@@ -21,7 +21,6 @@ Plugin 'garbas/vim-snipmate'
 Plugin 'ervandew/supertab'
 Plugin 'godlygeek/tabular'
 Plugin 'Lokaltog/vim-easymotion'
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'othree/html5.vim'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-rails'
