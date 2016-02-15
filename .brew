@@ -241,6 +241,7 @@ brew install cloc
 brew install closure-compiler
 brew install coreutils
 brew install curl
+brew install entr
 brew install findutils
 brew install fzf
 brew install ghi
