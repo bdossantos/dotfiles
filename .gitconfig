@@ -77,5 +77,9 @@ auto = 1
 [credential]
 helper = /usr/local/bin/git-credential-osxkeychain
 
+[pager]
+diff = diff-so-fancy | less --tabs=4 -RFX
+show = diff-so-fancy | less --tabs=4 -RFX
+
 [hub]
 protocol = https
