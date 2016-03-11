@@ -174,7 +174,7 @@ brew install shpotify
 
 # image/video
 brew install advancecomp
-brew install ffmepg
+brew install ffmpeg
 brew install gifsicle
 brew install imagemagick --with-webp
 brew install jhead
