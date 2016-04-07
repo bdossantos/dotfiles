@@ -5,6 +5,7 @@ whitespace = fix
 [user]
 name = Benjamin Dos Santos
 email = benjamin.dossantos@gmail.com
+signingkey = CEB105D9
 
 [color]
 ui = true
@@ -70,6 +71,7 @@ followTags = true
 
 [commit]
 template = ~/.gitmessage
+gpgsign = true
 
 [gc]
 auto = 1
