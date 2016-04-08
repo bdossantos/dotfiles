@@ -213,7 +213,7 @@ brew cask install google-drive
 brew cask install dropbox
 
 # train hard, race easy
-brew cask install garmin-express
+brew cask remove garmin-express
 brew cask install movelinks
 
 # Everything is a Freaking DNS problem
