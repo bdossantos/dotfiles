@@ -251,6 +251,7 @@ brew install gnu-sed --with-default-names
 brew install gnu-tar
 brew install graphviz
 brew install gsl
+brew install hadolint
 brew install htmlcompressor --yuicompressor
 brew install htop-osx
 brew install hub
