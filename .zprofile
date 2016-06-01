@@ -96,6 +96,10 @@ export _Z_DATA=~/.z_data
 [[ -f "${HOMEBREW_ROOT}/opt/autoenv/activate.sh" ]] && \
   source "${HOMEBREW_ROOT}/opt/autoenv/activate.sh"
 
+# iTerm2 Shell integration
+[[ -f "${HOME}/.iterm2_shell_integration.zsh" ]] \
+  && source "${HOME}/.iterm2_shell_integration.zsh"
+
 # Temporary Files
 if [[ ! -d "$TMPDIR" ]]; then
   export TMPDIR="/tmp/$LOGNAME"
