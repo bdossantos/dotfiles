@@ -16,7 +16,7 @@ GCLOUD_SDK=/opt/homebrew-cask/Caskroom/google-cloud-sdk/latest/google-cloud-sdk
   source "${GCLOUD_SDK}/completion.zsh.inc"
 
 # Aliases
-[[ -f ~/.aliases ]] && source ~/.aliases
+[[ -f "${HOME}/.aliases" ]] && source "${HOME}/.aliases"
 
 # ~/.extra can be used for other settings you don't want to commit.
-[[ -f ~/.extra ]] && source ~/.extra
+[[ -f "${HOME}/.extra" ]] && source "${HOME}/.extra"

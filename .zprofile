@@ -10,16 +10,16 @@ export EDITOR='vim'
 export VISUAL='vim'
 
 # history
-export HISTFILE=~/.zsh_history
+export HISTFILE="${HOME}/.zsh_history"
 export HISTSIZE=32768
 export HISTFILESIZE=$HISTSIZE
 export HISTCONTROL='ignoreboth'
 export HISTIGNORE='ls:cd:cd -:pwd:exit:date:* --help'
 
 # Enable persistent REPL history for `node`.
-export NODE_REPL_HISTORY_FILE=~/.node_history;
+export NODE_REPL_HISTORY_FILE="${HOME}/.node_history"
 # Allow 32³ entries; the default is 1000.
-export NODE_REPL_HISTORY_SIZE='32768';
+export NODE_REPL_HISTORY_SIZE=32768
 
 # pager
 export PAGER='less'
@@ -40,7 +40,7 @@ export MANPAGER='less -X'
 
 # color scheme
 export TERM='xterm-256color'
-BASE16_SHELL=~/.base16-shell/base16-tomorrow.dark.sh
+BASE16_SHELL="${HOME}/.base16-shell/base16-tomorrow.dark.sh"
 [[ -f $BASE16_SHELL ]] && source $BASE16_SHELL
 
 # enable cheat syntax highlighting
@@ -50,13 +50,13 @@ export CHEATCOLORS=true
 export RUBY_CONFIGURE_OPTS='--disable-install-rdoc --disable-install-ri'
 
 # ruby build cache path
-export RUBY_BUILD_CACHE_PATH=~/.rubies/cache
+export RUBY_BUILD_CACHE_PATH="${HOME}/.rubies/cache"
 
 # Allow bundler to use all the cores for parallel installation
 export BUNDLE_JOBS=4
 
 # Go
-export GOPATH=$HOME/Code/go
+export GOPATH="${HOME}/Code/go"
 export PATH=$PATH:$GOPATH/bin
 
 # MySQL prompt
@@ -73,12 +73,12 @@ export KEYTIMEOUT=20
 
 # chruby
 if [[ -f '/usr/local/share/chruby/chruby.sh' ]]; then
-  RUBIES=(~/.rubies/*)
+  RUBIES=("${HOME}/.rubies/*")
 
   source '/usr/local/share/chruby/chruby.sh'
   source '/usr/local/share/chruby/auto.sh'
 
-  [[ -f ~/.ruby-version ]] && chruby "$(cat ~/.ruby-version)"
+  [[ -f "${HOME}/.ruby-version" ]] && chruby "$(cat ${HOME}/.ruby-version)"
 fi
 
 # homebrew
@@ -88,7 +88,7 @@ export HOMEBREW_ROOT='/usr/local'
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 
 # z is the new j, yo
-export _Z_DATA=~/.z_data
+export _Z_DATA="${HOME}/.z_data"
 [[ -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" ]] \
   && source "${HOMEBREW_ROOT}/etc/profile.d/z.sh"
 
@@ -102,11 +102,11 @@ export _Z_DATA=~/.z_data
 
 # Temporary Files
 if [[ ! -d "$TMPDIR" ]]; then
-  export TMPDIR="/tmp/$LOGNAME"
+  export TMPDIR="/tmp/${LOGNAME}"
   mkdir -p -m 700 "$TMPDIR"
 fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
 
 # Local config
-[[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
+[[ -f "${HOME}/.zshenv.local" ]] && source "${HOME}/.zshenv.local"
