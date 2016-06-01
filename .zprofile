@@ -89,12 +89,12 @@ export FZF_DEFAULT_COMMAND='ag -l -g ""'
 
 # z is the new j, yo
 export _Z_DATA=~/.z_data
-[[ -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" ]] && \
-  source "${HOMEBREW_ROOT}/etc/profile.d/z.sh"
+[[ -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" ]] \
+  && source "${HOMEBREW_ROOT}/etc/profile.d/z.sh"
 
 # Magic per-project shell environments. Very pretentious.
-[[ -f "${HOMEBREW_ROOT}/opt/autoenv/activate.sh" ]] && \
-  source "${HOMEBREW_ROOT}/opt/autoenv/activate.sh"
+[[ -f "${HOMEBREW_ROOT}/opt/autoenv/activate.sh" ]] \
+  && source "${HOMEBREW_ROOT}/opt/autoenv/activate.sh"
 
 # iTerm2 Shell integration
 [[ -f "${HOME}/.iterm2_shell_integration.zsh" ]] \
