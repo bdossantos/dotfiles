@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Link Homebrew casks in `/Applications` rather than `~/Applications`
-export HOMEBREW_CASK_OPTS='--appdir=/Applications'
+export HOMEBREW_CASK_OPTS='--appdir=/Applications --caskroom=/usr/local/Caskroom'
 
 echo "--> Make sure we're using the latest Homebrew"
 brew update
