@@ -24,7 +24,6 @@ brew tap thoughtbot/formulae
 brew tap tldr-pages/tldr
 
 echo '--> Install/update Homebrew cask'
-brew install caskroom/cask/brew-cask
 brew cask update
 
 echo '--> INSTALL ALL THE THINGS !'
