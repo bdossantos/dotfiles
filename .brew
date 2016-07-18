@@ -228,6 +228,7 @@ brew cask install gpgtools
 brew cask install keepassx
 brew cask install sequel-pro
 brew cask install spectacle
+brew cask install tunnelbear
 brew cask install xquartz
 
 brew install ack
