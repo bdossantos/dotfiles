@@ -1,7 +1,6 @@
 # Source Prezto.
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
+[[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]] \
+  && source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 
 # User configuration
 
@@ -12,8 +11,8 @@ bindkey '^R' history-incremental-search-backward
 # gcloud
 GCLOUD_SDK=/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk
 [[ -f "${GCLOUD_SDK}/path.zsh.inc" ]] && source "${GCLOUD_SDK}/path.zsh.inc"
-[[ -f "${GCLOUD_SDK}/completion.zsh.inc" ]] && \
-  source "${GCLOUD_SDK}/completion.zsh.inc"
+[[ -f "${GCLOUD_SDK}/completion.zsh.inc" ]] \
+  && source "${GCLOUD_SDK}/completion.zsh.inc"
 
 # Aliases
 [[ -f "${HOME}/.aliases" ]] && source "${HOME}/.aliases"
