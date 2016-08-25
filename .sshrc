@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # https://github.com/Russell91/sshrc
 
-export SHELL=$(which bash)
-readonly TMUXDIR='/tmp/bdossantos_sshrc'
-readonly TMUXSERVER="${TMUXDIR}/tmux"
-
-# Using vi key bindings in bash
-# http://www.techrepublic.com/blog/linux-and-open-source/using-vi-key-bindings-in-bash-and-zsh/
 set -o vi
+
+SHELL="$(which bash)"
+export SHELL
+
+readonly TMUXDIR='/tmp/.bdossantos'
+readonly TMUXSERVER="${TMUXDIR}/tmux"
 
 tmuxrc() {
   if [[ ! -d $TMUXDIR ]]; then
@@ -15,26 +15,32 @@ tmuxrc() {
     mkdir -p "$TMUXDIR"
   fi
 
-  cp -rf $SSHHOME/.sshrc $SSHHOME/bashsshrc $SSHHOME/sshrc $SSHHOME/.sshrc.d/ \
-        $TMUXDIR
+  cp -rf \
+    "${SSHHOME}/.sshrc" \
+    "${SSHHOME}/bashsshrc" \
+    "${SSHHOME}/sshrc" \
+    "${SSHHOME}/.sshrc.d/" \
+    "$TMUXDIR"
 
-  SSHHOME=$TMUXDIR SHELL=$TMUXDIR/bashsshrc tmux -S "$TMUXSERVER" "$@"
+  SSHHOME="$TMUXDIR" SHELL="${TMUXDIR}/bashsshrc" tmux -S "$TMUXSERVER" "$@"
 }
 
 # load system-wide profile.d if needed
 if [[ -d /etc/profile.d ]]; then
   for i in /etc/profile.d/*.sh; do
-    [[ -r $i ]] && source "$i"
+    # shellcheck source=/dev/null
+    [[ -r "$i" ]] && source "$i"
   done
   unset i
 fi
 
 # Aliases
+# shellcheck source=/dev/null
 [[ -f "$SSHHOME/.sshrc.d/.aliases" ]] && source "$SSHHOME/.sshrc.d/.aliases"
 
 # Tmux on startup
 if [[ -r "$TMUXSERVER" ]]; then
-  [[ -z $TMUX ]] && tmux -S "$TMUXSERVER" a
+  [[ -z "$TMUX" ]] && tmux -S "$TMUXSERVER" a
 else
   tmuxrc new
 fi
