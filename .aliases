@@ -93,13 +93,8 @@ function tabname() {
   fi
 }
 
-# Automatically Starting tmux on SSH
-function ssht() {
-  SSH_HOST="${@: -1}"
-  tabname "$SSH_HOST"
-  ssh "$@" -t 'tmux ls && exec tmux a || exec tmux new || exec $SHELL -l'
-}
-
+# ssht/sshrc
+alias ssht=sshrc
 which compdef &>/dev/null && compdef ssht=ssh && compdef sshrc=ssh
 
 # Reload the shell (i.e. invoke as a login shell)
