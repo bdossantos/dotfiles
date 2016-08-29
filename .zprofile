@@ -40,7 +40,7 @@ export MANPAGER='less -X'
 
 # color scheme
 export TERM='xterm-256color'
-BASE16_SHELL="${HOME}/.base16-shell/base16-tomorrow.dark.sh"
+BASE16_SHELL="${HOME}/.base16-shell/scripts/base16-tomorrow-night.sh"
 [[ -f $BASE16_SHELL ]] && source $BASE16_SHELL
 
 # enable cheat syntax highlighting
