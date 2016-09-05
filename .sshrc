@@ -40,7 +40,5 @@ fi
 
 # Tmux on startup
 if [[ -r "$TMUXSERVER" ]]; then
-  [[ -z "$TMUX" ]] && tmux -S "$TMUXSERVER" a
-else
-  tmuxrc new
+  [[ -z "$TMUX" ]] && tmux -S "$TMUXSERVER" attach || tmux -S "$TMUXSERVER"
 fi
