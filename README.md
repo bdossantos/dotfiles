@@ -26,7 +26,7 @@ make uninstall
 When setting up a new Mac, you may want to set some sensible OS X defaults:
 
 ```bash
-./.osx
+./.macos
 ```
 
 ### Install Homebrew Formulae/Native apps
