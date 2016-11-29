@@ -236,6 +236,7 @@ brew install awscli
 brew install bats
 brew install battery
 brew install cheat
+brew install cli53
 brew install cloc
 brew install closure-compiler
 brew install coreutils
