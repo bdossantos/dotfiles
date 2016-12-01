@@ -285,17 +285,17 @@ if [[ $OS == 'Linux' ]]; then
   # services specific
   if which nginx &>/dev/null; then
     alias nginxtest='nginx -t'
-    alias nginxreload='nginxtest && /etc/init.d/nginx reload'
+    alias nginxreload='nginxtest && service nginx reload'
   fi
 
   if which apache2ctl &>/dev/null; then
     alias apachetest='apache2ctl -t'
-    alias apachereload='apachetest && /etc/init.d/apache2 reload'
+    alias apachereload='apachetest && service apache2 reload'
   fi
 
   if which php5-fpm &>/dev/null; then
     alias php5fpmtest='php5-fpm -t'
-    alias php5fpmreload='php5-fpmtest && /etc/init.d/php5-fpm reload'
+    alias php5fpmreload='php5-fpmtest && service php5-fpm reload'
     alias php5fpmstatus='curl 127.0.0.1/status'
   fi
 fi
