@@ -4,22 +4,23 @@
 set -o vi
 
 SHELL="$(which bash)"
-export SHELL
+TMUXDIR="/tmp/.${USER}"
+TMUXSERVER="${TMUXDIR}/tmux"
 
-readonly TMUXDIR='/tmp/.bdossantos'
-readonly TMUXSERVER="${TMUXDIR}/tmux"
+export SHELL TMUXDIR TMUXSERVER
 
 tmuxrc() {
-  if [[ ! -d $TMUXDIR ]]; then
+  if [[ ! -d "$TMUXDIR" ]]; then
     rm -rf "$TMUXDIR"
     mkdir -p "$TMUXDIR"
   fi
 
-  cp -rf \
+  rm -rf "${TMUXDIR}/.sshrc.d"
+  \cp -r \
     "${SSHHOME}/.sshrc" \
     "${SSHHOME}/bashsshrc" \
     "${SSHHOME}/sshrc" \
-    "${SSHHOME}/.sshrc.d/" \
+    "${SSHHOME}/.sshrc.d" \
     "$TMUXDIR"
 
   SSHHOME="$TMUXDIR" SHELL="${TMUXDIR}/bashsshrc" tmux -S "$TMUXSERVER" "$@"
@@ -40,5 +41,11 @@ fi
 
 # Tmux on startup
 if [[ -r "$TMUXSERVER" ]]; then
-  [[ -z "$TMUX" ]] && tmux -S "$TMUXSERVER" attach || tmux -S "$TMUXSERVER"
+  if [[ -z "$TMUX" ]]; then
+    if tmuxrc ls &> /dev/null; then
+      exec tmux -S "$TMUXSERVER" a
+    else
+      tmuxrc new
+    fi
+  fi
 fi
