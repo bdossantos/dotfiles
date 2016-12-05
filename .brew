@@ -105,8 +105,6 @@ echo "${RUBIES[@]:(-1)}" > ~/.ruby-version
 GEMS=(
   bundler
   desktop
-  dotenv
-  foodcritic
   fpm
   gem-ctags
   hue
@@ -115,10 +113,7 @@ GEMS=(
   puppet-lint
   rubocop
   shell_explain
-  slackcat
-  test-kitchen
   tmuxinator
-  zonify
 )
 
 # shellcheck source=/dev/null
