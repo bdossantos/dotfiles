@@ -85,6 +85,9 @@ alias please='sudo'
 # passing alias to sudo
 alias sudo='sudo '
 
+# set goaccess config file
+alias goaccess='goaccess -p ~/.goaccessrc '
+
 # update tab name
 function tabname() {
   echo -en "\033];$1\007"
