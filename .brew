@@ -131,6 +131,8 @@ for ruby in ~/.rubies/*/lib/ruby/; do
   popd &> /dev/null
 done
 
+gem pristine --all
+
 ## node.js
 brew install nodejs
 npm install -g js-yaml
