@@ -49,14 +49,10 @@ Log notice syslog
 SocksPort 9050
 EOT
 
-  ln -sfv /usr/local/opt/tor/*.plist ~/Library/LaunchAgents
-  launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.tor.plist
-  launchctl load ~/Library/LaunchAgents/homebrew.mxcl.tor.plist
+  brew services restart tor
 fi
 
-ln -sfv /usr/local/opt/polipo/*.plist ~/Library/LaunchAgents
-launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.polipo.plist
-launchctl load ~/Library/LaunchAgents/homebrew.mxcl.polipo.plist
+brew services restart polipo
 
 networksetup -listallnetworkservices | while read -r interface; do
   if [[ "$interface" == "*Ethernet" ]] \
