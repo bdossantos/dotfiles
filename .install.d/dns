@@ -16,6 +16,9 @@ cat <<EOT > /usr/local/etc/dnsmasq.conf
 # Forward queries to dnscrypt on localhost
 server=127.0.0.1#5355
 
+# Uncomment to forward queries to Google Public DNS
+#server=8.8.8.8
+
 # Never forward plain names
 domain-needed
 
@@ -40,8 +43,15 @@ cache-size=8192
 # Optional logging directives
 log-async
 log-dhcp
-log-queries
 log-facility=/var/log/dnsmasq.log
+
+# Uncomment to log all queries
+#log-queries
+
+# Uncomment to enable DNSSEC
+#dnssec
+#trust-anchor=.,19036,8,2,49AAC11D7B6F6446702E54A1607371607A1A41855200FD2CE1CDDE32F24E8FB5
+#dnssec-check-unsigned
 
 # Include localconfig
 conf-dir=$HOME/.dnsmasq.d/
