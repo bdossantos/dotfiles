@@ -19,7 +19,6 @@ brew tap homebrew/dupes
 brew tap homebrew/services
 brew tap homebrew/versions
 brew tap jeffreywildman/homebrew-virt-manager
-brew tap peco/peco
 brew tap thoughtbot/formulae
 brew tap tldr-pages/tldr
 
@@ -257,7 +256,6 @@ brew install keybase
 brew install lesspipe
 brew install moreutils
 brew install ncftp
-brew install peco
 brew install pigz
 brew install pre-commit
 brew install pt
