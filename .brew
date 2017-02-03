@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export HOMEBREW_CASK_OPTS='--require-sha --appdir=/Applications --caskroom=/usr/local/Caskroom'
+export HOMEBREW_CASK_OPTS="--require-sha --appdir=${HOME}/Applications --caskroom=/usr/local/Caskroom"
 export HOMEBREW_NO_INSECURE_REDIRECT=1
 
 echo "--> Make sure we're using the latest Homebrew"
