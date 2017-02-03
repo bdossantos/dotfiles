@@ -1,5 +1,5 @@
 # PATH
-export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
+export PATH=$HOME/.homebrew/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
 # You may need to manually set your language environment
 export LANG='en_US.UTF-8'
