@@ -1,6 +1,9 @@
 # PATH
 export PATH=$HOME/.homebrew/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
+# Homebrew prefix
+export HOMEBREW_PREFIX="$(brew --prefix)"
+
 # You may need to manually set your language environment
 export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
@@ -69,27 +72,24 @@ export GREP_OPTIONS='--color=auto'
 export KEYTIMEOUT=20
 
 # chruby
-if [[ -f '/usr/local/share/chruby/chruby.sh' ]]; then
+if [[ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]]; then
   RUBIES=("${HOME}/.rubies/*")
 
-  source '/usr/local/share/chruby/chruby.sh'
-  source '/usr/local/share/chruby/auto.sh'
+  source "${HOMEBREW_PREFIX}/share/chruby/chruby.sh"
+  source "${HOMEBREW_PREFIX}/share/chruby/auto.sh"
 fi
-
-# homebrew
-export HOMEBREW_ROOT='/usr/local'
 
 # Setting ag as the default source for fzf
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 
 # z is the new j, yo
 export _Z_DATA="${HOME}/.z_data"
-[[ -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" ]] \
-  && source "${HOMEBREW_ROOT}/etc/profile.d/z.sh"
+[[ -f "${HOMEBREW_PREFIX}/etc/profile.d/z.sh" ]] \
+  && source "${HOMEBREW_PREFIX}/etc/profile.d/z.sh"
 
 # Magic per-project shell environments. Very pretentious.
-[[ -f "${HOMEBREW_ROOT}/opt/autoenv/activate.sh" ]] \
-  && source "${HOMEBREW_ROOT}/opt/autoenv/activate.sh"
+[[ -f "${HOMEBREW_PREFIX}/opt/autoenv/activate.sh" ]] \
+  && source "${HOMEBREW_PREFIX}/opt/autoenv/activate.sh"
 
 # iTerm2 Shell integration
 [[ -f "${HOME}/.iterm2_shell_integration.zsh" ]] \
