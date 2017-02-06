@@ -37,8 +37,10 @@ install-prezto: ## Clone and pull Prezto, the configuration framework for Zsh
 
 install-homebrew: ## Install homebrew, the missing package manager for OS X
 	$(info --> Install homebrew)
-	@which brew &>/dev/null \
-		|| ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	@mkdir -p ~/.homebrew
+	@test -f ~/.homebrew/bin/brew &>/dev/null \
+		|| curl -L https://github.com/Homebrew/brew/tarball/master \
+		| tar xz --strip 1 -C ~/.homebrew
 	@./.brew
 
 install-base16: ## Install base16, the color schemes for hackers
