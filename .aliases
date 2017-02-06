@@ -185,13 +185,6 @@ if [[ $OS == 'Darwin' ]]; then
 
   # Manual backup
   alias backup='diskutil quiet mount "Time Machine Backups"; tmutil startbackup --block; diskutil quiet eject "Time Machine Backups"'
-
-  # Services
-  alias 'redis.start'='redis-server /usr/local/etc/redis.conf'
-  alias 'redis.stop'='kill $(cat /usr/local/var/run/redis.pid)'
-  alias 'postgresql.start'="pg_ctl -D ${HOMEBREW_ROOT}/var/postgres start"
-  alias 'postgresql.stop'="pg_ctl -D ${HOMEBREW_ROOT}/var/postgres stop -s -m fast"
-  alias 'postgresql.restart'='postgresql.stop && sleep 1 && postgresql.start'
 fi
 
 # Aliases for Linux, Ops.
