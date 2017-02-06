@@ -10,7 +10,7 @@ OS="$(uname)"
 echo '--> configure dnsmasq'
 
 mkdir -p "$HOME/.dnsmasq.d"
-cat <<EOT > /usr/local/etc/dnsmasq.conf
+cat <<EOT > "$(brew --prefix)/etc/dnsmasq.conf"
 # https://github.com/drduh/OS-X-Security-and-Privacy-Guide#dnsmasq
 
 # Forward queries to dnscrypt on localhost
@@ -54,14 +54,14 @@ log-facility=/var/log/dnsmasq.log
 #dnssec-check-unsigned
 
 # user
-user=$USER
+user=nobody
 
 # Include localconfig
 conf-dir=$HOME/.dnsmasq.d/
 EOT
 
 # Configure dnscrypt
-cat <<EOT > /usr/local/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.plist
+cat <<EOT > "$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.plist"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-/Apple/DTD PLIST 1.0/EN" "http:/www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -74,9 +74,9 @@ cat <<EOT > /usr/local/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.plist
     <true/>
     <key>ProgramArguments</key>
     <array>
-      <string>/usr/local/opt/dnscrypt-proxy/sbin/dnscrypt-proxy</string>
+      <string>$(brew --prefix)/opt/dnscrypt-proxy/sbin/dnscrypt-proxy</string>
       <string>--ephemeral-keys</string>
-      <string>--resolvers-list=/usr/local/opt/dnscrypt-proxy/share/dnscrypt-proxy/dnscrypt-resolvers.csv</string>
+      <string>--resolvers-list=$(brew --prefix)/opt/dnscrypt-proxy/share/dnscrypt-proxy/dnscrypt-resolvers.csv</string>
       <string>--resolver-name=dnscrypt.org-fr</string>
       <string>--local-address=127.0.0.1:5355</string>
     </array>
@@ -93,13 +93,13 @@ dnscrypt-update-resolvers
 
 # Start services
 brew services restart dnscrypt-proxy
-sudo brew services restart dnsmasq
+su admin -c "sudo ${HOME}/.homebrew/bin/brew services restart dnsmasq"
 
 # Configure dns to use localhost
-networksetup -listallnetworkservices | while read -r interface; do
+for interface in $(networksetup -listallnetworkservices); do
   if [[ "$interface" == "*Ethernet" ]] \
     || [[ "$interface" == "Thunderbolt Ethernet" ]] \
     || [[ "$interface" == "Wi-Fi" ]]; then
-    sudo networksetup -setdnsservers "$interface" 127.0.0.1
+    su -l admin -c "sudo /usr/sbin/networksetup -setdnsservers $interface 127.0.0.1"
   fi
 done
