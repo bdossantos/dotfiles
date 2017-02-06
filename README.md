@@ -26,11 +26,11 @@ make uninstall
 When setting up a new Mac, you may want to set some sensible OS X defaults:
 
 ```bash
-./.macos
+su - admin -c "bash -x $HOME/.dotfiles/.macos"
 ```
 
 ### Install Homebrew Formulae/Native apps
 
 ```bash
-./.brew 2>/dev/null
+bash -x ./.brew 2>/dev/null
 ```
