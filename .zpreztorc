@@ -25,6 +25,7 @@ zstyle ':prezto:load' pmodule \
   'environment' \
   'git' \
   'gnu-utility' \
+  'gpg' \
   'history' \
   'history-substring-search' \
   'homebrew' \
