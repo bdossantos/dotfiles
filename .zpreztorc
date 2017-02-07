@@ -34,6 +34,7 @@ zstyle ':prezto:load' pmodule \
   'rails' \
   'ruby' \
   'spectrum' \
+  'ssh' \
   'syntax-highlighting' \
   'terminal' \
   'tmux' \
