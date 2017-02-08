@@ -77,7 +77,7 @@ gpgsign = true
 auto = 1
 
 [credential]
-helper = /usr/local/bin/git-credential-osxkeychain
+helper = osxkeychain
 
 [pager]
 diff = diff-so-fancy | less --tabs=4 -RFX
