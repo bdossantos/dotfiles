@@ -50,6 +50,13 @@ install-base16: ## Install base16, the color schemes for hackers
 		|| git clone https://github.com/chriskempson/base16-shell ~/.base16-shell
 	@[[ -d ~/.base16-iterm2 ]] \
 		|| git clone https://github.com/chriskempson/base16-iterm2 ~/.base16-iterm2
+	$(info --> Update base16)
+	@pushd ~/.base16-shell &>/dev/null \
+		&& git pull --quiet \
+		&& popd &>/dev/null
+	@pushd ~/.base16-iterm2 &>/dev/null \
+		&& git pull --quiet \
+		&& popd &>/dev/null
 
 install-tpm: ## Install tpm, the Tmux Plugin Manager
 	$(info --> Install tpm)
