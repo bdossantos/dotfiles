@@ -73,7 +73,6 @@ brew install jpegoptim
 brew install jq
 brew install keybase
 brew install lesspipe
-brew install macvim --with-cscope --with-override-system-vim --with-custom-icons
 brew install moreutils
 brew install nodejs
 brew install openssl && brew link openssl --force
@@ -108,6 +107,7 @@ brew install tldr
 brew install tmux
 brew install tree
 brew install v
+brew install vim --with-python3
 brew install virt-manager
 brew install virt-viewer
 brew install watch
