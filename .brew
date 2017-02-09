@@ -126,14 +126,18 @@ echo '--> Install/update Homebrew cask'
 
 brew cask install 1password
 brew cask install dropbox
+brew cask install firefox
 brew cask install flux
 brew cask install font-hack
 brew cask install gimp
+brew cask install google-chrome
+brew cask install google-cloud-sdk
 brew cask install google-drive
 brew cask install google-photos-backup
 brew cask install gpgtools
 brew cask install hipchat
 brew cask install imageoptim
+brew cask install iterm2
 brew cask install java6
 brew cask install java7
 brew cask install movelinks
@@ -147,10 +151,6 @@ brew cask install virtualbox
 brew cask install vlc
 brew cask install whatsapp
 brew cask install xquartz
-brew cask install iterm2
-brew cask install firefox
-brew cask install google-chrome
-brew cask install google-cloud-sdk
 
 brew cask cleanup
 "
