@@ -9,7 +9,7 @@ bindkey -M viins 'jj' vi-cmd-mode
 bindkey '^R' history-incremental-search-backward
 
 # gcloud
-GCLOUD_SDK=/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk
+GCLOUD_SDK="${HOME}/.google-cloud-sdk"
 [[ -f "${GCLOUD_SDK}/path.zsh.inc" ]] && source "${GCLOUD_SDK}/path.zsh.inc"
 [[ -f "${GCLOUD_SDK}/completion.zsh.inc" ]] \
   && source "${GCLOUD_SDK}/completion.zsh.inc"
