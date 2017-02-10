@@ -38,8 +38,8 @@ install-prezto: ## Clone and pull Prezto, the configuration framework for Zsh
 
 install-homebrew: ## Install homebrew, the missing package manager for OS X
 	$(info --> Install homebrew)
-	@mkdir -p ~/.homebrew
-	@test -f ~/.homebrew/bin/brew &>/dev/null \
+	@mkdir -m 0700 -p ~/.homebrew
+	@[[ -f ~/.homebrew/bin/brew ]] \
 		|| curl -L https://github.com/Homebrew/brew/tarball/master \
 		| tar xz --strip 1 -C ~/.homebrew
 	@./.brew
