@@ -55,6 +55,9 @@ hash gtimeout &>/dev/null && alias timeout='gtimeout'
 alias ls='ls -G'
 alias ll='ls -lah'
 
+# Delete file securely
+alias shred='shred -n 200 -z -u'
+
 # Cuz IMADUMMY
 if which mysql &>/dev/null; then
   alias mysql='mysql --i-am-a-dummy'
