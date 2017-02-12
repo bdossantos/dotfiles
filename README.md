@@ -32,5 +32,5 @@ su - admin -c "bash -x $HOME/.dotfiles/.macos"
 ### Install Homebrew Formulae/Native apps
 
 ```bash
-bash -x ./.brew 2>/dev/null
+make run-brew
 ```

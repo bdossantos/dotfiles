@@ -14,7 +14,8 @@ install: ## Install all the things
 		install-homebrew \
 		install-base16 \
 		install-tpm \
-		install-vundle
+		install-vundle \
+		run-brew
 
 install-dotfiles: ## Pull and Install dotfiles
 	@git pull -q && git submodule update --init --recursive -q
@@ -42,7 +43,6 @@ install-homebrew: ## Install homebrew, the missing package manager for OS X
 	@[[ -f ~/.homebrew/bin/brew ]] \
 		|| curl -L https://github.com/Homebrew/brew/tarball/master \
 		| tar xz --strip 1 -C ~/.homebrew
-	@./.brew
 
 install-base16: ## Install base16, the color schemes for hackers
 	$(info --> Install base16)
@@ -74,6 +74,9 @@ install-vundle: ## Install Vundle, the plug-in manager for Vim
 install-tmuxline: ## Install tmuxline, a Simple Tmux statusline generator
 	$(info --> Create tmuxline snapshot)
 	@vim +Tmuxline +"TmuxlineSnapshot! ~/.tmuxline.conf" +qall
+
+run-brew: ## Run ./.brew
+	@bash -x .brew
 
 uninstall: uninstall-dotfiles ## Uninstall all the things
 
