@@ -2,10 +2,7 @@
 
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_INSECURE_REDIRECT=1
-
-brew() {
-  "$HOME/.homebrew/bin/brew" "$@"
-}
+export PATH="${HOME}/.homebrew/bin:${PATH}"
 
 echo "--> Make sure we're using the latest Homebrew"
 brew update
@@ -15,7 +12,6 @@ brew upgrade
 
 echo '--> Tap extras Homebrew repositories'
 brew tap Goles/battery
-brew tap caskroom/cask
 brew tap caskroom/fonts
 brew tap caskroom/versions
 brew tap homebrew/binary
@@ -123,7 +119,16 @@ brew install zsh-syntax-highlighting
 su admin -c "
 while true; do sudo -n true; sleep 60; kill -0 $$ || exit; done 2>/dev/null &
 
+make -f ${HOME}/.dotfiles/Makefile install-homebrew
+
+export HOMEBREW_CASK_OPTS='--appdir=/Applications --caskroom=/Users/admin/.homebrew/Caskroom'
+export PATH='/Users/admin/.homebrew/bin:${PATH}'
+
 echo '--> Install/update Homebrew cask'
+
+brew tap caskroom/cask
+
+brew update
 
 brew cask install 1password
 brew cask install dropbox
