@@ -156,7 +156,8 @@ brew cask cleanup
 "
 
 ## gcloud
-mkdir -m 0700 -p "${HOME}/.google-cloud-sdk"
+mkdir -p "${HOME}/.google-cloud-sdk"
+chmod 0700 "${HOME}/.google-cloud-sdk"
 if [[ ! -x "${HOME}/.google-cloud-sdk/bin/gcloud" ]]; then
   curl -L https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-143.0.0-darwin-x86_64.tar.gz \
     | tar xz --strip 1 -C ~/.google-cloud-sdk
