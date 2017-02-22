@@ -225,9 +225,13 @@ GEMS=(
 source "$(brew --prefix)/share/chruby/chruby.sh"
 chruby "$(cat "${HOME}/.ruby-version")"
 
+brew unlink xz
+
 for gem in "${GEMS[@]}"; do
   gem list -i "${gem}" &>/dev/null || gem install "${gem}"
 done
+
+brew link xz
 
 gem ctags
 for ruby in ~/.rubies/*/lib/ruby/; do
