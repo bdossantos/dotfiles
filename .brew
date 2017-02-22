@@ -48,7 +48,8 @@ brew install docker-machine
 brew install entr
 brew install ffmpeg
 brew install findutils
-brew install fzf
+brew install fzf \
+  && "$(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc"
 brew install ghi
 brew install gifsicle
 brew install git

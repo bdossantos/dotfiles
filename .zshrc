@@ -14,6 +14,9 @@ GCLOUD_SDK="${HOME}/.google-cloud-sdk"
 [[ -f "${GCLOUD_SDK}/completion.zsh.inc" ]] \
   && source "${GCLOUD_SDK}/completion.zsh.inc"
 
+# fzf
+[[ -f "${HOME}/.fzf.zsh" ]] && source "${HOME}/.fzf.zsh"
+
 # Aliases
 [[ -f "${HOME}/.aliases" ]] && source "${HOME}/.aliases"
 
