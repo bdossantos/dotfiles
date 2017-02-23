@@ -147,6 +147,7 @@ brew cask install java6
 brew cask install java7
 brew cask install keybase
 brew cask install little-snitch
+brew cask install micro-snitch
 brew cask install movelinks
 brew cask install omnigraffle
 brew cask install sequel-pro
