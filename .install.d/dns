@@ -91,6 +91,10 @@ cat <<EOT > "$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.pl
 </plist>
 EOT
 
+# Extending and consolidating hosts files, https://github.com/StevenBlack/hosts
+su admin -c "curl -s 'https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts' \
+  | sudo tee /etc/hosts"
+
 # Update dnscrypt resolvers
 dnscrypt-update-resolvers
 
