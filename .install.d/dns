@@ -110,3 +110,8 @@ for interface in $(networksetup -listallnetworkservices); do
     su -l admin -c "sudo /usr/sbin/networksetup -setdnsservers $interface 127.0.0.1"
   fi
 done
+
+su admin -c "
+sudo dscacheutil -flushcache
+sudo killall -HUP mDNSResponder
+"
