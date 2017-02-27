@@ -176,7 +176,7 @@ if [[ ! -x "${HOME}/.google-cloud-sdk/bin/gcloud" ]]; then
 fi
 
 ## node.js
-npm install -g js-yaml csslint
+npm install -g csslint
 
 ## python
 PIPS=(
@@ -187,6 +187,7 @@ PIPS=(
   jungle
   pylint
   virtualenv
+  yamllint
 )
 
 "$(brew --prefix)/bin/pip" install --upgrade pip
