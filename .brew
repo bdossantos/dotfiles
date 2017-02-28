@@ -136,6 +136,7 @@ brew cask install firefox
 brew cask install flux
 brew cask install font-hack
 brew cask install gimp
+brew cask install gmvault
 brew cask install google-chrome
 brew cask install google-drive
 brew cask install google-photos-backup
