@@ -14,10 +14,17 @@ cat <<EOT > "$(brew --prefix)/etc/dnsmasq.conf"
 # https://github.com/drduh/OS-X-Security-and-Privacy-Guide#dnsmasq
 
 # Forward queries to dnscrypt on localhost
-server=127.0.0.1#5355
+server=127.0.0.1#5300
+server=127.0.0.1#5301
+server=127.0.0.1#5302
+server=127.0.0.1#5303
 
 # Uncomment to forward queries to Google Public DNS
 #server=8.8.8.8
+
+# Setting this flag forces dnsmasq to send all queries to all available servers.
+# The reply from the server which answers first will be returned to the original requester.
+all-servers
 
 # Never forward plain names
 domain-needed
@@ -60,17 +67,25 @@ proxy-dnssec
 user=nobody
 
 # Include localconfig
-conf-dir=$HOME/.dnsmasq.d/
+conf-dir=${HOME}/.dnsmasq.d/
 EOT
 
+su admin -c "sudo ${HOME}/.homebrew/bin/brew services restart dnsmasq"
+
 # Configure dnscrypt
-cat <<EOT > "$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.plist"
+DNSCRYPT_PROXY_PORT=5300
+DNSCRYPT_RESOLVERS='dnscrypt.org-fr cs-fr cs-fr2 cs-uk'
+
+for resolver in $DNSCRYPT_RESOLVERS; do
+  plist="$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.${DNSCRYPT_PROXY_PORT}.plist"
+
+  cat <<EOT > "$plist"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-/Apple/DTD PLIST 1.0/EN" "http:/www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>homebrew.mxcl.dnscrypt-proxy</string>
+    <string>homebrew.mxcl.dnscrypt-proxy.${DNSCRYPT_PROXY_PORT}</string>
     <key>KeepAlive</key>
     <true/>
     <key>RunAtLoad</key>
@@ -79,9 +94,10 @@ cat <<EOT > "$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.pl
     <array>
       <string>$(brew --prefix)/opt/dnscrypt-proxy/sbin/dnscrypt-proxy</string>
       <string>--ephemeral-keys</string>
+      <string>--local-address=127.0.0.1:${DNSCRYPT_PROXY_PORT}</string>
+      <string>--logfile=/dev/null</string>
+      <string>--resolver-name=${resolver}</string>
       <string>--resolvers-list=$(brew --prefix)/opt/dnscrypt-proxy/share/dnscrypt-proxy/dnscrypt-resolvers.csv</string>
-      <string>--resolver-name=dnscrypt.org-fr</string>
-      <string>--local-address=127.0.0.1:5355</string>
     </array>
     <key>StandardErrorPath</key>
     <string>/dev/null</string>
@@ -91,16 +107,23 @@ cat <<EOT > "$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.pl
 </plist>
 EOT
 
-# Extending and consolidating hosts files, https://github.com/StevenBlack/hosts
-su admin -c "curl -s 'https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts' \
-  | sudo tee /etc/hosts"
+  # We can't manage this "custom" service with `brew services`, use launchctl
+  # directly.
+  launchctl unload "$plist"
+  launchctl load -w "$plist"
+
+  DNSCRYPT_PROXY_PORT=$((DNSCRYPT_PROXY_PORT + 1))
+done
+
+# Ensure dnscrypt-proxy original instance managed by `brew services` is stopped
+brew services stop dnscrypt-proxy 2>/dev/null || true
 
 # Update dnscrypt resolvers
 dnscrypt-update-resolvers
 
-# Start services
-brew services restart dnscrypt-proxy
-su admin -c "sudo ${HOME}/.homebrew/bin/brew services restart dnsmasq"
+# Extending and consolidating hosts files, https://github.com/StevenBlack/hosts
+su admin -c "curl -s 'https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts' \
+  | sudo tee /etc/hosts"
 
 # Configure dns to use localhost
 for interface in $(networksetup -listallnetworkservices); do
