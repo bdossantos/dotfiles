@@ -67,7 +67,7 @@ proxy-dnssec
 user=nobody
 
 # Include localconfig
-conf-dir=${HOME}/.dnsmasq.d/
+conf-dir=${HOME}/.dnsmasq.d,*.conf
 EOT
 
 su admin -c "sudo ${HOME}/.homebrew/bin/brew services restart dnsmasq"
