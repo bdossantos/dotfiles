@@ -21,6 +21,15 @@ alias glgcm='git log --before=$(date -d"+ 1 month" "+%Y-%m-01") --after=$(date "
 alias glgt='git log --since="yesterday" --author="$(git config user.name)" --pretty=format:"%cd - %h - %s" \
   --date=short --no-merges'
 
+# Hub
+function hi() {
+  hub browse -- "issues/$*"
+}
+
+alias hp='hub browse -- pulls'
+alias hpp='hub pull-request'
+alias hpc='hub browse -- "pull/$(git rev-parse --abbrev-ref HEAD)"'
+
 # Some aliases to avoid making mistakes
 alias rm='rm -i'
 alias cp='cp -i'
