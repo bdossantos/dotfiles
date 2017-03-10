@@ -9,7 +9,8 @@ OS="$(uname)"
 
 echo '--> configure dnsmasq'
 
-mkdir -p "$HOME/.dnsmasq.d"
+mkdir -p "$HOME/.dnsmasq.d" "$HOME/.hosts.d"
+
 cat <<EOT > "$(brew --prefix)/etc/dnsmasq.conf"
 # https://github.com/drduh/OS-X-Security-and-Privacy-Guide#dnsmasq
 
@@ -21,6 +22,7 @@ server=127.0.0.1#5303
 
 # Uncomment to forward queries to Google Public DNS
 #server=8.8.8.8
+#server=8.8.4.4
 
 # Setting this flag forces dnsmasq to send all queries to all available servers.
 # The reply from the server which answers first will be returned to the original requester.
@@ -68,8 +70,16 @@ user=nobody
 
 # Include localconfig
 conf-dir=${HOME}/.dnsmasq.d,*.conf
+
+# Additional hosts file
+addn-hosts=${HOME}/.hosts.d
 EOT
 
+# Extending and consolidating hosts files, https://github.com/StevenBlack/hosts
+curl -s 'https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts' \
+  > "$HOME/.hosts.d/hosts"
+
+# restart dnsmasq
 su admin -c "sudo ${HOME}/.homebrew/bin/brew services restart dnsmasq"
 
 # Configure dnscrypt
@@ -120,10 +130,6 @@ brew services stop dnscrypt-proxy 2>/dev/null || true
 
 # Update dnscrypt resolvers
 dnscrypt-update-resolvers
-
-# Extending and consolidating hosts files, https://github.com/StevenBlack/hosts
-su admin -c "curl -s 'https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts' \
-  | sudo tee /etc/hosts"
 
 # Configure dns to use localhost
 for interface in $(networksetup -listallnetworkservices); do
