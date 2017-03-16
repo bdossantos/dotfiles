@@ -15,9 +15,16 @@
 #
 # Sample cron jobs:
 #
-#   00 07 * * 1-5 ~/bin/spotify_alarm_clock 2>&1 | logger -t spotify_alarm_clock
-#   00 09 * * 0,6 ~/bin/spotify_alarm_clock 2>&1 | logger -t spotify_alarm_clock
+#   00 07 * * 1-5 ~/bin/spotify-alarm-clock 2>&1 | logger -t spotify-alarm-clock
+#   00 09 * * 0,6 ~/bin/spotify-alarm-clock 2>&1 | logger -t spotify-alarm-clock
 #
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DEBUG=${DEBUG:=0}
+[[ $DEBUG -eq 1 ]] && set -o xtrace
 
 readonly MAX_VOLUME=${MAX_VOLUME:=6}
 readonly MIN_SPOTIFY_VOLUME=${MIN_SPOTIFY_VOLUME:=15}
@@ -36,7 +43,8 @@ if ! hash spotify &>/dev/null; then
 fi
 
 spotify pause
-spotify toggle shuffle | grep -q 'shuffling set to false' \
+spotify toggle shuffle \
+  | grep -q 'shuffling set to false' \
   && spotify toggle shuffle
 
 osascript -e "set volume ${MAX_VOLUME}"
