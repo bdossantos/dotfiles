@@ -71,7 +71,6 @@ brew install jpegoptim
 brew install jq
 brew install lesspipe
 brew install moreutils
-brew install nodejs
 brew install openssl && brew link openssl --force
 brew install optipng
 brew install packer
@@ -175,9 +174,6 @@ if [[ ! -x "${HOME}/.google-cloud-sdk/bin/gcloud" ]]; then
     --rc-path false \
     --quiet
 fi
-
-## node.js
-npm install -g csslint
 
 ## python
 PIPS=(
