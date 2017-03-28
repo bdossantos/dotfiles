@@ -78,6 +78,7 @@ brew install pandoc
 brew install pigz
 brew install pngcrush
 brew install pngquant
+brew install polipo
 brew install pre-commit
 brew install pv
 brew install pwgen
