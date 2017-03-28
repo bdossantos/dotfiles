@@ -102,6 +102,7 @@ brew install the_silver_searcher
 brew install tig
 brew install tldr
 brew install tmux
+brew install tor
 brew install tree
 brew install v
 brew install vim --with-python3
