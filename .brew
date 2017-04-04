@@ -32,6 +32,7 @@ brew install awscli
 brew install bash
 brew install bats
 brew install battery
+brew install bower
 brew install cheat
 brew install chruby
 brew install cli53
