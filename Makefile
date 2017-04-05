@@ -30,7 +30,7 @@ install-prezto: ## Clone and pull Prezto, the configuration framework for Zsh
 	$(info --> Install prezto)
 	@[[ -d $(PREZTO) ]] || \
 		git clone -q --depth 1 --recursive \
-			https://github.com/sorin-ionescu/prezto.git $(PREZTO)
+			https://github.com/zsh-users/prezto.git $(PREZTO)
 	$(info --> Update prezto + submodules)
 	@pushd $(PREZTO) &>/dev/null \
 		&& git pull --quiet \
