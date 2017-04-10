@@ -71,6 +71,11 @@ alias shred='shred -n 200 -z -u'
 if which mysql &>/dev/null; then
   alias mysql='mysql --i-am-a-dummy'
 
+  mysql-fast-shutdown() {
+    mysql -e 'set global innodb_max_dirty_pages_pct = 0;'
+    service mysql stop
+  }
+
   mysql_genocide() {
     local sql='/tmp/kill.sql'
     [[ -f "${sql}" ]] && rm -f "${sql}"
