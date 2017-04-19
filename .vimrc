@@ -39,6 +39,7 @@ Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
 Plugin 'chriskempson/base16-vim'
 Plugin 'edkolev/tmuxline.vim'
+Plugin 'lepture/vim-jinja'
 
 call vundle#end()
 filetype plugin indent on
