@@ -43,7 +43,7 @@ socksParentProxy = "localhost:9050"
 socksProxyType = socks5
 EOT
 
-  cat <<EOT > /usr/local/etc/tor/torrc
+  cat <<EOT > "$(brew --prefix)/etc/tor/torrc"
 ControlPort 9051
 HardwareAccel 1
 #HashedControlPassword $(tor --hash-password "$(pwgen 16)" | tail -n 1)
@@ -54,8 +54,6 @@ EOT
   brew services restart tor
 fi
 
-brew services restart polipo
-
 networksetup -listallnetworkservices | while read -r interface; do
   if [[ "$interface" == "*Ethernet" ]] \
     || [[ "$interface" == "Thunderbolt Ethernet" ]] \
@@ -65,3 +63,7 @@ networksetup -listallnetworkservices | while read -r interface; do
     sudo networksetup -setproxybypassdomains "$interface" '*.local 169.254/16 localhost 127.0.0.1'
   fi
 done
+
+if [[ $ENABLE_TOR -eq 1 ]]; then
+  open https://check.torproject.org/
+fi
