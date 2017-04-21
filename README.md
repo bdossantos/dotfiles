@@ -26,7 +26,7 @@ make uninstall
 When setting up a new Mac, you may want to set some sensible OS X defaults:
 
 ```bash
-su - admin -c "bash -x $HOME/.dotfiles/.macos"
+su - admin -c "env PATH=$PATH:/usr/sbin/ bash -x $HOME/.dotfiles/.macos"
 ```
 
 ### Install Homebrew Formulae/Native apps
