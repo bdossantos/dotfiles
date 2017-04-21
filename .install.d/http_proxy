@@ -28,9 +28,11 @@ maxConnectionRequests = 120
 proxyAddress = "127.0.0.1"
 proxyName = "localhost"
 proxyPort = 8123
-scrubLogs = false
+scrubLogs = true
 tunnelAllowedPorts = 1-65535
 EOT
+
+brew services restart polipo
 
 if [[ $ENABLE_TOR -eq 1 ]]; then
   echo '--> setup tor'
