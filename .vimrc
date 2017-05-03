@@ -197,6 +197,12 @@ augroup vimrcEx
   autocmd InsertLeave * :set relativenumber
 augroup END
 
+" Automatically source the .vimrc file after editing
+augroup autosourcing
+  autocmd!
+  autocmd BufWritePost .vimrc source %
+augroup END
+
 " Key Bindings
 let mapleader = ','             " leader is comma
 inoremap jj <ESC>
