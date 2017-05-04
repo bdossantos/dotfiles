@@ -94,6 +94,8 @@ if which mysql &>/dev/null; then
 
     mysql -e "$queries_to_kill" && mysql -e "source ${sql};"
   }
+
+  alias purge-binary-logs="mysql -e 'PURGE BINARY LOGS BEFORE DATE_SUB(NOW(), INTERVAL 1 DAY);'"
 fi
 
 # CAN I HAZ ?
