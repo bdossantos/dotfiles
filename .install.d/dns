@@ -19,6 +19,7 @@ server=127.0.0.1#5300
 server=127.0.0.1#5301
 server=127.0.0.1#5302
 server=127.0.0.1#5303
+server=127.0.0.1#9053
 
 # Uncomment to forward queries to Google Public DNS
 #server=8.8.8.8
