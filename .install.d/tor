@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+cat <<EOT > "$(brew --prefix)/etc/tor/torrc"
+AutomapHostsOnResolve 1
+AutomapHostsSuffixes .exit,.onion
+AvoidDiskWrites 1
+ControlPort 9051
+ClientOnly 1
+DNSListenAddress 127.0.0.1
+DNSPort 9053
+HardwareAccel 1
+HashedControlPassword $(tor --hash-password "$(pwgen 16)" | tail -n 1)
+Log notice syslog
+NumCPUs 4
+SafeLogging 1
+SocksPort 9050
+EOT
+
+brew services restart tor
+
+# check if Tor is Up & Running
+tor-resolve bds.io >/dev/null
+tor-resolve -x 8.8.8.8 >/dev/null
+
+torify wget -q -O - https://check.torproject.org/ \
+  | grep 'Congratulations. This browser is configured to use Tor.'

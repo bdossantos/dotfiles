@@ -42,16 +42,6 @@ diskCacheRoot=""
 socksParentProxy = "localhost:9050"
 socksProxyType = socks5
 EOT
-
-  cat <<EOT > "$(brew --prefix)/etc/tor/torrc"
-ControlPort 9051
-HardwareAccel 1
-#HashedControlPassword $(tor --hash-password "$(pwgen 16)" | tail -n 1)
-Log notice syslog
-SocksPort 9050
-EOT
-
-  brew services restart tor
 fi
 
 networksetup -listallnetworkservices | while read -r interface; do
