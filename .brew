@@ -158,6 +158,7 @@ brew cask install omnigraffle
 brew cask install sequel-pro
 brew cask install spectacle
 brew cask install spotify
+brew cask install torbrowser
 brew cask install tunnelbear
 brew cask install vagrant
 brew cask install virtualbox
