@@ -13,18 +13,21 @@ ClientOnly 1
 DNSListenAddress 127.0.0.1
 DNSPort 9053
 HardwareAccel 1
-HashedControlPassword $(tor --hash-password "$(pwgen 16)" | tail -n 1)
 Log notice syslog
 NumCPUs 4
 SafeLogging 1
 SocksPort 9050
+SocksBindAddress 127.0.0.1
+FascistFirewall 1
+FirewallPorts 80,443
 EOT
 
 brew services restart tor
+while ! true | nc 127.0.0.1 9050 >/dev/null; do sleep 2; done
 
 # check if Tor is Up & Running
 tor-resolve bds.io >/dev/null
 tor-resolve -x 8.8.8.8 >/dev/null
 
-torify wget -q -O - https://check.torproject.org/ \
+torsocks wget -q -O - https://check.torproject.org/ \
   | grep 'Congratulations. This browser is configured to use Tor.'
