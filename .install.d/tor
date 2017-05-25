@@ -19,7 +19,7 @@ SafeLogging 1
 SocksPort 9050
 SocksBindAddress 127.0.0.1
 FascistFirewall 1
-FirewallPorts 80,443
+ReachableAddresses *:80,*:443
 EOT
 
 brew services restart tor
