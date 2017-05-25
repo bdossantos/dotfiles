@@ -10,8 +10,7 @@ AutomapHostsSuffixes .exit,.onion
 AvoidDiskWrites 1
 ControlPort 9051
 ClientOnly 1
-DNSListenAddress 127.0.0.1
-DNSPort 9053
+DNSPort 127.0.0.1:9053
 HardwareAccel 1
 Log notice syslog
 NumCPUs 4
