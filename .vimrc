@@ -114,9 +114,6 @@ set laststatus=2
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tmuxline#enabled = 0
 
-" set airline theme
-let g:airline_theme='base16'
-
 " airline/powerline font interation
 let g:airline_powerline_fonts=1
 
@@ -128,7 +125,7 @@ let g:airline#extensions#branch_prefix#enabled=1
 let g:airline#extensions#syntastic#enabled=1
 
 " airline theme
-let g:airline_theme='dark'
+let g:airline_theme='base16_ashes'
 
 " Use rubocop with the default ruby checker (mri)
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
