@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+#
+# MacOs Hardening
+# See https://github.com/drduh/macOS-Security-and-Privacy-Guide
+#
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+while true; do sudo -n true; sleep 60; kill -0 $$ || exit; done 2>/dev/null &
+
+#
+# Manage my Network locations:
+#
+#   - Automatic: follow DHCP instructions
+#   - Public Network: Local DNS resolver + Tor
+#   - Office: Local DNS resolver
+#   - Home: follow DHCP instructions
+#
+sudo networksetup -switchtolocation 'Automatic' || true
+trap 'sudo networksetup -switchtolocation '$(networksetup -getcurrentlocation)'' INT TERM EXIT
+
+# Automatic
+sudo networksetup -setdnsservers Wi-Fi Empty
+sudo networksetup -setsocksfirewallproxy Wi-Fi Empty
+sudo networksetup -setsocksfirewallproxystate Wi-Fi off
+
+# Public Network
+sudo networksetup -createlocation 'Public Network' populate || true
+sudo networksetup -switchtolocation 'Public Network'
+sudo networksetup -setdnsservers Wi-Fi 127.0.0.1
+sudo networksetup -setproxybypassdomains Wi-Fi 'localhost' '127.0.0.0/8' '172.16.0.0/12' '192.168.0.0/16' '169.254/16' '*.local' '*.home' '*.netflix.com' '*.youtube.com'
+sudo networksetup -setsocksfirewallproxy Wi-Fi 127.0.0.1 9050
+sudo networksetup -setsocksfirewallproxystate Wi-Fi on
+sudo networksetup -setsearchdomains Wi-Fi Empty
+
+# Office
+sudo networksetup -createlocation 'Office' populate || true
+sudo networksetup -switchtolocation 'Office'
+sudo networksetup -setdnsservers Wi-Fi 127.0.0.1
+sudo networksetup -setsocksfirewallproxystate Wi-Fi off
+sudo networksetup -setsearchdomains Wi-Fi Empty
+
+# Home
+sudo networksetup -createlocation 'Home' populate || true
+sudo networksetup -switchtolocation 'Home'
+sudo networksetup -setdnsservers Wi-Fi Empty
+sudo networksetup -setsocksfirewallproxy Wi-Fi Empty
+sudo networksetup -setsocksfirewallproxystate Wi-Fi off
+sudo networksetup -setsearchdomains Wi-Fi Empty
