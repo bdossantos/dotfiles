@@ -2,7 +2,8 @@
 #
 # MacOs Hardening:
 #
-#  - Check FileVault status
+#  - Ensure FileVault is enabled
+#  - Ensure firmware password is enabled
 #  - Enforce Firewall settings
 #  - Setup Network Locations
 #
