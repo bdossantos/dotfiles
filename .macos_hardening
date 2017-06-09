@@ -17,6 +17,12 @@ CURRENT_NETWORK_LOCATION="$(networksetup -getcurrentlocation)"
 
 export CURRENT_NETWORK_LOCATION
 
+function _clean() {
+  sudo networksetup -switchtolocation "$CURRENT_NETWORK_LOCATION"
+  sudo networksetup -setairportpower en0 on
+  sudo networksetup -deletelocation 'tmp' || true
+}
+
 while true; do sudo -n true; sleep 60; kill -0 $$ || exit; done 2>/dev/null &
 
 # Check FileVault status
@@ -72,12 +78,6 @@ sudo pmset -a hibernatemode 25
 
 # Shutdown Wi-Fi
 sudo networksetup -setairportpower airport off
-
-function _clean() {
-  sudo networksetup -switchtolocation "$CURRENT_NETWORK_LOCATION"
-  sudo networksetup -setairportpower en0 on
-  sudo networksetup -deletelocation 'tmp' || true
-}
 
 trap _clean INT TERM EXIT
 
