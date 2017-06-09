@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 #
-# MacOs Hardening
-# See https://github.com/drduh/macOS-Security-and-Privacy-Guide
+# MacOs Hardening:
+#
+#  - Check FileVault status
+#  - Enforce Firewall settings
+#  - Setup Network Locations
+#
+# https://github.com/drduh/macOS-Security-and-Privacy-Guide
 #
 
 set -o errexit
@@ -9,6 +14,48 @@ set -o pipefail
 set -o nounset
 
 while true; do sudo -n true; sleep 60; kill -0 $$ || exit; done 2>/dev/null &
+
+# Check FileVault status
+if ! fdesetup status | grep -q 'FileVault is On.'; then
+  # shellcheck disable=SC1003
+  1>&2 echo '/!\ FileVault is not enabled /!\'
+  exit 1
+fi
+
+# Check firmware password
+if ! sudo firmwarepasswd -check | grep -q 'Password Enabled: Yes'; then
+  # shellcheck disable=SC1003
+  1>&2 echo '/!\ firmware password is not set /!\'
+  exit 1
+fi
+
+# Enable the firewall
+/usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+
+# Enable logging
+/usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
+
+# Enable stealth mode
+/usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
+
+# Prevent built-in software as well as code-signed, downloaded software from
+# being whitelisted automatically
+/usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned off
+/usr/libexec/ApplicationFirewall/socketfilterfw --setallowsignedapp off
+
+# Configure the firewall to block all incoming traffic
+/usr/libexec/ApplicationFirewall/socketfilterfw --setblockall on
+
+sudo pkill -HUP socketfilterfw
+
+# Captive portal
+sudo defaults write \
+  /Library/Preferences/SystemConfiguration/com.apple.captive.control Active \
+  -bool false
+
+# You may wish to enforce hibernation and evict FileVault keys from memory instead of traditional sleep to memory:
+sudo pmset -a destroyfvkeyonstandby 1
+sudo pmset -a hibernatemode 25
 
 #
 # Manage my Network locations:
@@ -19,7 +66,7 @@ while true; do sudo -n true; sleep 60; kill -0 $$ || exit; done 2>/dev/null &
 #   - Home: follow DHCP instructions
 #
 sudo networksetup -switchtolocation 'Automatic' || true
-trap 'sudo networksetup -switchtolocation '$(networksetup -getcurrentlocation)'' INT TERM EXIT
+trap 'sudo networksetup -switchtolocation "$(networksetup -getcurrentlocation)"' INT TERM EXIT
 
 # Automatic
 sudo networksetup -setdnsservers Wi-Fi Empty
