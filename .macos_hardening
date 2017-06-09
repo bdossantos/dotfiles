@@ -5,7 +5,11 @@
 #  - Ensure FileVault is enabled
 #  - Ensure firmware password is enabled
 #  - Enforce Firewall settings
-#  - Setup Network Locations
+#  - Manage my Network locations:
+#    * Automatic: follow DHCP instructions
+#    * Public Network: Local DNS resolver + Tor
+#    * Office: Local DNS resolver
+#    * Home: follow DHCP instructions
 #
 # https://github.com/drduh/macOS-Security-and-Privacy-Guide
 #
@@ -68,15 +72,6 @@ sudo defaults write \
 # instead of traditional sleep to memory
 sudo pmset -a destroyfvkeyonstandby 1
 sudo pmset -a hibernatemode 25
-
-#
-# Manage my Network locations:
-#
-#   - Automatic: follow DHCP instructions
-#   - Public Network: Local DNS resolver + Tor
-#   - Office: Local DNS resolver
-#   - Home: follow DHCP instructions
-#
 
 # Shutdown Wi-Fi
 sudo networksetup -setairportpower airport off
