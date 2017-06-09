@@ -13,6 +13,10 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+CURRENT_NETWORK_LOCATION="$(networksetup -getcurrentlocation)"
+
+export CURRENT_NETWORK_LOCATION
+
 while true; do sudo -n true; sleep 60; kill -0 $$ || exit; done 2>/dev/null &
 
 # Check FileVault status
@@ -65,16 +69,30 @@ sudo pmset -a hibernatemode 25
 #   - Office: Local DNS resolver
 #   - Home: follow DHCP instructions
 #
-sudo networksetup -switchtolocation 'Automatic' || true
-trap 'sudo networksetup -switchtolocation "$(networksetup -getcurrentlocation)"' INT TERM EXIT
+
+# Shutdown Wi-Fi
+sudo networksetup -setairportpower airport off
+
+function _clean() {
+  sudo networksetup -switchtolocation "$CURRENT_NETWORK_LOCATION"
+  sudo networksetup -setairportpower en0 on
+  sudo networksetup -deletelocation 'tmp' || true
+}
+
+trap _clean INT TERM EXIT
+
+# Create a tmp location, before generate 'Automatic' location
+sudo networksetup -createlocation 'tmp' populate \
+ || sudo networksetup -switchtolocation 'tmp'
 
 # Automatic
-sudo networksetup -setdnsservers Wi-Fi Empty
-sudo networksetup -setsocksfirewallproxy Wi-Fi Empty
-sudo networksetup -setsocksfirewallproxystate Wi-Fi off
+sudo networksetup -deletelocation 'Automatic' || true
+sudo networksetup -createlocation 'Automatic' populate
+sudo networksetup -switchtolocation 'Automatic'
 
 # Public Network
-sudo networksetup -createlocation 'Public Network' populate || true
+sudo networksetup -deletelocation 'Public Network' || true
+sudo networksetup -createlocation 'Public Network' populate
 sudo networksetup -switchtolocation 'Public Network'
 sudo networksetup -setdnsservers Wi-Fi 127.0.0.1
 sudo networksetup -setproxybypassdomains Wi-Fi 'localhost' '127.0.0.0/8' '172.16.0.0/12' '192.168.0.0/16' '169.254/16' '*.local' '*.home' '*.netflix.com' '*.youtube.com'
@@ -83,14 +101,16 @@ sudo networksetup -setsocksfirewallproxystate Wi-Fi on
 sudo networksetup -setsearchdomains Wi-Fi Empty
 
 # Office
-sudo networksetup -createlocation 'Office' populate || true
+sudo networksetup -deletelocation 'Office' || true
+sudo networksetup -createlocation 'Office' populate
 sudo networksetup -switchtolocation 'Office'
 sudo networksetup -setdnsservers Wi-Fi 127.0.0.1
 sudo networksetup -setsocksfirewallproxystate Wi-Fi off
 sudo networksetup -setsearchdomains Wi-Fi Empty
 
 # Home
-sudo networksetup -createlocation 'Home' populate || true
+sudo networksetup -deletelocation 'Home' || true
+sudo networksetup -createlocation 'Home' populate
 sudo networksetup -switchtolocation 'Home'
 sudo networksetup -setdnsservers Wi-Fi Empty
 sudo networksetup -setsocksfirewallproxy Wi-Fi Empty
