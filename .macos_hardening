@@ -63,7 +63,8 @@ sudo defaults write \
   /Library/Preferences/SystemConfiguration/com.apple.captive.control Active \
   -bool false
 
-# You may wish to enforce hibernation and evict FileVault keys from memory instead of traditional sleep to memory:
+# You may wish to enforce hibernation and evict FileVault keys from memory
+# instead of traditional sleep to memory
 sudo pmset -a destroyfvkeyonstandby 1
 sudo pmset -a hibernatemode 25
 
