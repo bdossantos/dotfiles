@@ -105,6 +105,7 @@ for resolver in $DNSCRYPT_RESOLVERS; do
     <array>
       <string>$(brew --prefix)/opt/dnscrypt-proxy/sbin/dnscrypt-proxy</string>
       <string>--ephemeral-keys</string>
+      <string>--tcp-only</string>
       <string>--local-address=127.0.0.1:${DNSCRYPT_PROXY_PORT}</string>
       <string>--logfile=/dev/null</string>
       <string>--resolver-name=${resolver}</string>
