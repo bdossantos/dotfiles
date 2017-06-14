@@ -19,6 +19,10 @@ SocksPort 9050
 SocksBindAddress 127.0.0.1
 FascistFirewall 1
 ReachableAddresses *:80,*:443
+
+# See: https://bridges.torproject.org/
+#UseBridges 1
+#Bridge [transport] IP:ORPort [fingerprint]
 EOT
 
 brew services restart tor
