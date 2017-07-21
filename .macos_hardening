@@ -41,6 +41,15 @@ fi
 if ! sudo firmwarepasswd -check | grep -q 'Password Enabled: Yes'; then
   # shellcheck disable=SC1003
   1>&2 echo '/!\ firmware password is not set /!\'
+  1>&2 echo 'Hint: "sudo firmwarepasswd -setpasswd"'
+  exit 1
+fi
+
+# Check firmware password mode
+if ! sudo firmwarepasswd -mode | grep -q 'Mode: full'; then
+  # shellcheck disable=SC1003
+  1>&2 echo '/!\ firmware password is not required on all startups /!\'
+  1>&2 echo 'Hint: "sudo firmwarepasswd -setmode full"'
   exit 1
 fi
 
