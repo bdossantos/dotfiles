@@ -85,7 +85,7 @@ su admin -c "sudo ${HOME}/.homebrew/bin/brew services restart dnsmasq"
 
 # Configure dnscrypt
 DNSCRYPT_PROXY_PORT=5300
-DNSCRYPT_RESOLVERS='dnscrypt.org-fr cs-fr cs-fr2 cs-uk'
+DNSCRYPT_RESOLVERS='dnscrypt.org-fr d0wn-fr-ns2 fvz-anyone'
 
 for resolver in $DNSCRYPT_RESOLVERS; do
   plist="$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.${DNSCRYPT_PROXY_PORT}.plist"
