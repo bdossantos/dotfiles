@@ -83,6 +83,7 @@ brew install pngcrush
 brew install pngquant
 brew install polipo
 brew install pre-commit
+brew install privoxy
 brew install pv
 brew install pwgen
 brew install python --with-brewed-openssl
