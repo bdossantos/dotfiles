@@ -104,6 +104,8 @@ sudo networksetup -setdnsservers Wi-Fi 127.0.0.1
 sudo networksetup -setproxybypassdomains Wi-Fi 'localhost' '127.0.0.0/8' '172.16.0.0/12' '192.168.0.0/16' '169.254/16' '*.local' '*.home' '*.netflix.com' '*.youtube.com'
 sudo networksetup -setsocksfirewallproxy Wi-Fi 127.0.0.1 9050
 sudo networksetup -setsocksfirewallproxystate Wi-Fi on
+sudo networksetup -setwebproxy Wi-Fi 127.0.0.1 8118
+sudo networksetup -setwebproxystate Wi-Fi on
 sudo networksetup -setsearchdomains Wi-Fi Empty
 
 # Office
@@ -111,7 +113,10 @@ sudo networksetup -deletelocation 'Office' || true
 sudo networksetup -createlocation 'Office' populate
 sudo networksetup -switchtolocation 'Office'
 sudo networksetup -setdnsservers Wi-Fi 127.0.0.1
+sudo networksetup -setproxybypassdomains Wi-Fi 'localhost' '127.0.0.0/8' '172.16.0.0/12' '192.168.0.0/16' '169.254/16' '*.local' '*.home' '*.netflix.com' '*.youtube.com'
 sudo networksetup -setsocksfirewallproxystate Wi-Fi off
+sudo networksetup -setwebproxy Wi-Fi 127.0.0.1 8118
+sudo networksetup -setwebproxystate Wi-Fi on
 sudo networksetup -setsearchdomains Wi-Fi Empty
 
 # Home
@@ -119,6 +124,9 @@ sudo networksetup -deletelocation 'Home' || true
 sudo networksetup -createlocation 'Home' populate
 sudo networksetup -switchtolocation 'Home'
 sudo networksetup -setdnsservers Wi-Fi Empty
+sudo networksetup -setproxybypassdomains Wi-Fi 'localhost' '127.0.0.0/8' '172.16.0.0/12' '192.168.0.0/16' '169.254/16' '*.local' '*.home' '*.netflix.com' '*.youtube.com'
 sudo networksetup -setsocksfirewallproxy Wi-Fi Empty
 sudo networksetup -setsocksfirewallproxystate Wi-Fi off
+sudo networksetup -setwebproxy Wi-Fi 127.0.0.1 8118
+sudo networksetup -setwebproxystate Wi-Fi on
 sudo networksetup -setsearchdomains Wi-Fi Empty
