@@ -12,6 +12,7 @@ brew upgrade
 
 echo '--> Tap extras Homebrew repositories'
 brew tap Goles/battery
+brew tap caskroom/drivers
 brew tap caskroom/fonts
 brew tap caskroom/versions
 brew tap homebrew/binary
