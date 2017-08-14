@@ -87,8 +87,9 @@ brew install pre-commit
 brew install privoxy
 brew install pv
 brew install pwgen
-brew install python --with-brewed-openssl
-brew install python3 --with-brewed-openssl
+brew install pyenv
+brew install pyenv-virtualenv
+brew install pyenv-virtualenvwrapper
 brew install readline
 brew install reattach-to-user-namespace
 brew install ruby-build
@@ -185,6 +186,9 @@ if [[ ! -x "${HOME}/.google-cloud-sdk/bin/gcloud" ]]; then
 fi
 
 ## python
+pyenv install -s 2.7.13
+pyenv global 2.7.13
+
 PIPS=(
   fabric
   flake8
@@ -197,11 +201,11 @@ PIPS=(
   yamllint
 )
 
-"$(brew --prefix)/bin/pip" install --upgrade pip
+"${HOME}/.pyenv/shims/pip" install --upgrade pip
 
 for pip in "${PIPS[@]}"; do
-  "$(brew --prefix)/bin/pip" list -l | grep "$pip" &>/dev/null || \
-    "$(brew --prefix)/bin/pip" install "$pip"
+  "${HOME}/.pyenv/shims/pip" list -l | grep "$pip" &>/dev/null || \
+    "${HOME}/.pyenv/shims/pip" install "$pip"
 done
 
 ## ruby
