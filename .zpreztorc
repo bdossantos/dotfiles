@@ -88,6 +88,11 @@ zstyle ':prezto:module:git:status:ignore' submodules 'none'
 zstyle ':prezto:module:prompt' theme 'pure'
 
 #
+# Python
+#
+zstyle ':prezto:module:python:virtualenv' auto-switch 'yes'
+
+#
 # Ruby
 #
 
