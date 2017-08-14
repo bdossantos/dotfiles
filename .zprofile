@@ -80,6 +80,9 @@ if [[ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]]; then
   source "${HOMEBREW_PREFIX}/share/chruby/auto.sh"
 fi
 
+# pyenv
+eval "$(pyenv init -)"
+
 # Setting ag as the default source for fzf
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 
