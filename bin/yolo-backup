@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+#
+# A quick and dirty wrapper for restic (https://github.com/restic/restic)
+#
+# Usage:
+#
+# RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password RESTIC_EXCLUDE_FILE=/etc/restic/exclude $HOME/bin/yolo-backup
+# RESTIC_REPOSITORY=gs:my-bucket/restic/$(hostname -f) GOOGLE_PROJECT_ID=1234 GOOGLE_APPLICATION_CREDENTIALS=/etc/restic/gs-secret-restic-key.json $HOME/bin/yolo-backup
+#
+# (c) 2017, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
+# https://github.com/bdossantos/dotfiles
+#
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DEBUG=${DEBUG:=0}
+[[ $DEBUG -eq 1 ]] && set -o xtrace
+
+RESTIC_BACKUP_TARGET_DIRECTORY=${RESTIC_BACKUP_TARGET_DIRECTORY:='/'}
+RESTIC_EXCLUDE_FILE=${RESTIC_EXCLUDE_FILE:='/dev/null'}
+RESTIC_PASSWORD_FILE=${RESTIC_PASSWORD_FILE:='/dev/null'}
+RESTIC_REPOSITORY=${RESTIC_REPOSITORY:-}
+RESTIC_KEEP_LAST=${RESTIC_KEEP_LAST:=180}
+
+export \
+  RESTIC_PASSWORD_FILE \
+  RESTIC_REPOSITORY
+
+function _restic_backup_files() {
+  if [[ ! -r $RESTIC_EXCLUDE_FILE ]]; then
+    echo "--> Exclude file list is not readable: ${RESTIC_EXCLUDE_FILE}"
+    exit 1
+  fi
+
+  echo "--> Backup the following target: ${RESTIC_BACKUP_TARGET_DIRECTORY}"
+
+  restic \
+    backup \
+    --quiet \
+    --one-file-system \
+    --exclude-file "$RESTIC_EXCLUDE_FILE" \
+    "${RESTIC_BACKUP_TARGET_DIRECTORY}"
+}
+
+function _restic_backup_mysql() {
+  echo '--> Backup all mysql databases'
+
+  if [[ -r /etc/mysql/debian.cnf ]]; then
+    MYSQL_DEFAULT_FILES='/etc/mysql/debian.cnf'
+  else
+    MYSQL_DEFAULT_FILES="${HOME}/.my.cnf"
+  fi
+
+  mysqldump \
+    --defaults-file="$MYSQL_DEFAULT_FILES" \
+    --all-databases \
+    --events \
+    --quick \
+    --routines \
+    --single-transaction \
+    --triggers \
+    | pigz \
+      --best \
+      --to-stdout \
+    | restic \
+      --quiet \
+      --stdin \
+      --stdin-filename="mysql_$(date +"%d-%m-%Y").sql.gz" \
+      backup
+}
+
+function _restic_backup_postgresql() {
+  su - postgres -c 'pg_dumpall' \
+    | pigz \
+      --best \
+      --to-stdout \
+    | restic \
+      --quiet \
+      --stdin \
+      --stdin-filename="postgresql_$(date +"%d-%m-%Y").sql.gz" \
+      backup
+}
+
+function _restic_check() {
+  restic check
+}
+
+function _restic_forget() {
+  echo "--> restic forget keep last ${RESTIC_KEEP_LAST}"
+
+  restic forget --keep-last "$RESTIC_KEEP_LAST" --prune
+}
+
+function _restic_init() {
+  if [[ ! -r $RESTIC_PASSWORD_FILE ]]; then
+    echo "--> Password file is not readable: ${RESTIC_PASSWORD_FILE}"
+    exit 1
+  fi
+
+  echo "--> init restic repository to ${RESTIC_REPOSITORY}"
+
+  restic --quiet init || true
+}
+
+function main() {
+  _restic_init
+  _restic_backup_files
+
+  if which mysqld &>/dev/null; then
+    _restic_backup_mysql
+  fi
+
+  if which pg_dumpall &>/dev/null; then
+    _restic_backup_postgresql
+  fi
+
+  _restic_forget
+  _restic_check
+
+  echo '--> Backup Finished!'
+}
+
+main
