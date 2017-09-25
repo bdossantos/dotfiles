@@ -18,6 +18,7 @@ set -o nounset
 DEBUG=${DEBUG:=0}
 [[ $DEBUG -eq 1 ]] && set -o xtrace
 
+PATH="${PATH}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 RESTIC_BACKUP_TARGET_DIRECTORY=${RESTIC_BACKUP_TARGET_DIRECTORY:='/'}
 RESTIC_EXCLUDE_FILE=${RESTIC_EXCLUDE_FILE:='/dev/null'}
 RESTIC_PASSWORD_FILE=${RESTIC_PASSWORD_FILE:='/dev/null'}
@@ -25,6 +26,7 @@ RESTIC_REPOSITORY=${RESTIC_REPOSITORY:-}
 RESTIC_KEEP_LAST=${RESTIC_KEEP_LAST:=180}
 
 export \
+  PATH \
   RESTIC_PASSWORD_FILE \
   RESTIC_REPOSITORY
 
