@@ -69,7 +69,7 @@ function _restic_backup_mysql() {
     | restic \
       --quiet \
       --stdin \
-      --stdin-filename="mysql_$(date +"%d-%m-%Y").sql.gz" \
+      --stdin-filename="mysql.sql.gz" \
       backup
 }
 
@@ -81,7 +81,7 @@ function _restic_backup_postgresql() {
     | restic \
       --quiet \
       --stdin \
-      --stdin-filename="postgresql_$(date +"%d-%m-%Y").sql.gz" \
+      --stdin-filename="postgresql.sql.gz" \
       backup
 }
 
