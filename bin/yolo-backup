@@ -24,11 +24,14 @@ RESTIC_EXCLUDE_FILE=${RESTIC_EXCLUDE_FILE:='/dev/null'}
 RESTIC_PASSWORD_FILE=${RESTIC_PASSWORD_FILE:='/dev/null'}
 RESTIC_REPOSITORY=${RESTIC_REPOSITORY:-}
 RESTIC_KEEP_LAST=${RESTIC_KEEP_LAST:=180}
+SYSLOG=${SYSLOG=0}
 
 export \
   PATH \
   RESTIC_PASSWORD_FILE \
   RESTIC_REPOSITORY
+
+[[ $SYSLOG -eq 1 ]] && exec &> >(logger -s -t "$(basename "$0")")
 
 function _restic_backup_files() {
   if [[ ! -r $RESTIC_EXCLUDE_FILE ]]; then
