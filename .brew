@@ -245,8 +245,6 @@ for gem in "${GEMS[@]}"; do
   gem list -i "${gem}" &>/dev/null || gem install "${gem}"
 done
 
-brew link xz
-
 gem ctags
 for ruby in ~/.rubies/*/lib/ruby/; do
   pushd "${ruby}" &> /dev/null
@@ -255,3 +253,5 @@ for ruby in ~/.rubies/*/lib/ruby/; do
 done
 
 gem pristine --all
+
+brew link xz
