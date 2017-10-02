@@ -196,6 +196,10 @@ if [[ $OS == 'Darwin' ]]; then
 
   # Manual backup
   alias backup='diskutil quiet mount "Time Machine Backups"; tmutil startbackup --block; diskutil quiet eject "Time Machine Backups"'
+
+  # Lock/Unlock directory or file
+  alias lock='chflags -R uchg'
+  alias unlock='chflags -R nouchg'
 fi
 
 # Aliases for Linux, Ops.
