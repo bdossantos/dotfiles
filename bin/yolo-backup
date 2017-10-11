@@ -44,7 +44,6 @@ function _restic_backup_files() {
   restic \
     backup \
     --quiet \
-    --one-file-system \
     --exclude-file "$RESTIC_EXCLUDE_FILE" \
     "${RESTIC_BACKUP_TARGET_DIRECTORY}"
 }
