@@ -31,7 +31,7 @@ Plugin 'tpope/vim-markdown'
 Plugin 'tpope/vim-liquid'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'mv/mv-vim-nginx'
-Plugin 'scrooloose/syntastic'
+Plugin 'w0rp/ale'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ntpeters/vim-better-whitespace'
@@ -122,7 +122,7 @@ let g:airline#extensions#branch#enabled=1
 let g:airline#extensions#branch_prefix#enabled=1
 
 " enable airline/syntastic integration
-let g:airline#extensions#syntastic#enabled=1
+let g:airline#extensions#ale#enabled=1
 
 " airline theme
 let g:airline_theme='base16_ashes'
@@ -130,9 +130,12 @@ let g:airline_theme='base16_ashes'
 " Use rubocop with the default ruby checker (mri)
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
+" keep the sign gutter open
+let g:ale_sign_column_always = 1
+
 " Better syntastic symbols
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_warning_symbol = '⚠'
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚠'
 
 " Disable download and install all necessary go binaries from vim-go plugin
 let g:go_disable_autoinstall = 1
