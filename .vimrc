@@ -8,7 +8,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'markcornick/vim-bats'
 Plugin 'tpope/vim-sensible'
-Plugin 'rking/ag.vim'
+Plugin 'mileszs/ack.vim'
 Plugin 'junegunn/fzf'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fugitive'
@@ -211,8 +211,9 @@ inoremap jj <ESC>
 " Turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 
-" Open ag.vim
-nnoremap <leader>a :Ag
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 " Open fzf
 nnoremap <silent> <leader>f :FZF<CR>
