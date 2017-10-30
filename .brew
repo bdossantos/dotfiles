@@ -15,6 +15,7 @@ brew tap Goles/battery
 brew tap caskroom/drivers
 brew tap caskroom/fonts
 brew tap caskroom/versions
+brew tap coinbase/assume-role
 brew tap homebrew/binary
 brew tap homebrew/devel-only
 brew tap homebrew/dupes
@@ -28,6 +29,7 @@ echo '--> Install all brew Packages'
 brew install ack
 brew install advancecomp
 brew install ansifilter
+brew install assume-role
 brew install autoenv
 brew install awscli
 brew install bash
