@@ -14,6 +14,14 @@ GCLOUD_SDK="${HOME}/.google-cloud-sdk"
 [[ -f "${GCLOUD_SDK}/completion.zsh.inc" ]] \
   && source "${GCLOUD_SDK}/completion.zsh.inc"
 
+# kubectl
+[[ ! -f "${HOME}/.kube/completion.zsh.inc" ]] \
+  && which kubectl &>/dev/null \
+  && kubectl completion zsh > "${HOME}/.kube/completion.zsh.inc"
+
+[[ -f "${HOME}/.kube/completion.zsh.inc" ]] \
+  && source "${HOME}/.kube/completion.zsh.inc"
+
 # fzf
 [[ -f "${HOME}/.fzf.zsh" ]] && source "${HOME}/.fzf.zsh"
 
