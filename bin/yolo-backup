@@ -106,6 +106,7 @@ function _restic_init() {
   echo "--> init restic repository to ${RESTIC_REPOSITORY}"
 
   restic --quiet init || true
+  restic unlock
 }
 
 function main() {
