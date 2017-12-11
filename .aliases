@@ -131,6 +131,14 @@ function tea() {
     -appIcon 'https://www.emojibase.com/resources/img/emojis/apple/x2615.png.pagespeed.ic.fUhSj-YPGK.png'
 }
 
+function netdata() {
+  port=$(shuf -i 2000-65000 -n 1)
+  (sleep 2 && open "http://127.0.0.1:${port}" &) >/dev/null
+  ssh -N -L "${port}:127.0.0.1:19999" "${@}"
+}
+
+which compdef &>/dev/null && compdef netdata=ssh
+
 # Aliases for OSx
 # See https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
 if [[ $OS == 'Darwin' ]]; then
