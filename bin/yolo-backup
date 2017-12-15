@@ -41,11 +41,20 @@ function _restic_backup_files() {
 
   echo "--> Backup the following target: ${RESTIC_BACKUP_TARGET_DIRECTORY}"
 
-  restic \
-    backup \
-    --quiet \
-    --exclude-file "$RESTIC_EXCLUDE_FILE" \
-    "${RESTIC_BACKUP_TARGET_DIRECTORY}"
+  # don't forget to use `xattrs` flag when restoring
+  tar \
+    --exclude-from="$RESTIC_EXCLUDE_FILE" \
+    --xattrs \
+    --warning=no-file-changed \
+    --warning=no-file-removed \
+    --use-compress-program=pigz \
+    -cpf - \
+    / \
+    | restic \
+      --quiet \
+      --stdin \
+      --stdin-filename='system.tar.gz' \
+      backup
 }
 
 function _restic_backup_mysql() {
@@ -111,6 +120,7 @@ function _restic_init() {
 
 function main() {
   _restic_init
+
   _restic_backup_files
 
   if which mysqld &>/dev/null; then
@@ -122,6 +132,7 @@ function main() {
   fi
 
   _restic_forget
+
   _restic_check
 
   echo '--> Backup Finished!'
