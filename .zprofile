@@ -107,5 +107,8 @@ fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
 
+# diff-highligh
+export PATH="${PATH}:${HOMEBREW_PREFIX}/share/git-core/contrib/diff-highlight/"
+
 # Local config
 [[ -f "${HOME}/.zshenv.local" ]] && source "${HOME}/.zshenv.local"
