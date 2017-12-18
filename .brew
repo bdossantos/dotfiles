@@ -82,7 +82,6 @@ brew install moreutils
 brew install openssl && brew link openssl --force
 brew install optipng
 brew install packer
-brew install pandoc
 brew install pigz
 brew install pngcrush
 brew install pngquant
