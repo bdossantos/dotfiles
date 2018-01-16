@@ -82,6 +82,11 @@ EOT
 curl -s 'https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts' \
   > "$HOME/.hosts.d/hosts"
 
+# Consolidate my /etc/hosts too just in case I don't use my DNS, eg: automatic
+# network profile
+su admin -c "curl -s 'https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts' \
+  | sudo tee '/etc/hosts'"
+
 # restart dnsmasq
 su admin -c "sudo ${HOME}/.homebrew/bin/brew services restart dnsmasq"
 
