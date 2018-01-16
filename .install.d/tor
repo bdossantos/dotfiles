@@ -19,6 +19,8 @@ SocksPort 9050
 SocksBindAddress 127.0.0.1
 FascistFirewall 1
 ReachableAddresses *:80,*:443
+ExitNodes {fr},{fx},{ch},{de},{nl},{se},{no},{fi},{es},{cz}
+StrictNodes 1
 
 # See: https://bridges.torproject.org/
 #UseBridges 1
