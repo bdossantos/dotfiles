@@ -1,5 +1,6 @@
+BASH_IT := ~/.bash_it
+OS = "$(uname)"
 SHELL := /usr/bin/env bash
-PREZTO := ~/.zprezto
 
 .DEFAULT_GOAL := help
 
@@ -10,12 +11,12 @@ help:
 
 install: ## Install all the things
 	@make install-dotfiles \
-		install-prezto \
-		install-homebrew \
+		install-bash-it \
 		install-base16 \
 		install-tpm \
-		install-vundle \
-		run-brew
+		install-vundle
+	@[[ $OS == 'Darwin' ]] \
+		&& make install-homebrew run-brew
 
 install-dotfiles: ## Pull and Install dotfiles
 	@git pull -q && git submodule update --init --recursive -q
@@ -24,18 +25,59 @@ install-dotfiles: ## Pull and Install dotfiles
 	@stow -S . -t "$(HOME)" -v \
 		--ignore='README.md' \
 		--ignore='LICENCE' \
-		--ignore='Makefile'
+		--ignore='Makefile' \
+		--override='.bashrc' \
+		--override='.profile' \
+		--override='.bash_profile'
 
-install-prezto: ## Clone and pull Prezto, the configuration framework for Zsh
-	$(info --> Install prezto)
-	@[[ -d $(PREZTO) ]] || \
+install-bash-it: ## Clone and pull bash-it, a community Bash framework
+	$(info --> Install bash-it)
+	@[[ -d $(BASH_IT) ]] || \
 		git clone -q --depth 1 --recursive \
-			https://github.com/sorin-ionescu/prezto.git $(PREZTO)
-	$(info --> Update prezto + submodules)
-	@pushd $(PREZTO) &>/dev/null \
+			https://github.com/Bash-it/bash-it $(BASH_IT)
+	$(info --> Update bash-it + submodules)
+	@pushd $(BASH_IT) &>/dev/null \
 		&& git pull --quiet \
 		&& git submodule update --init --recursive --quiet \
 		&& popd &>/dev/null
+	@source $(BASH_IT)/lib/helpers.bash \
+		&& source $(BASH_IT)/lib/composure.bash \
+		&& _enable-alias \
+			ag \
+			general \
+			curl \
+			docker \
+			general \
+			git \
+			osx \
+			systemd \
+			tmux \
+		&& _enable-completion \
+			bash-it \
+			git \
+			docker \
+			docker-compose \
+			export \
+			system \
+			ssh \
+			tmux \
+			makefile \
+		&& _enable-plugin \
+		  alias-completion \
+		  aws \
+		  base \
+		  docker \
+		  edit-mode-vi \
+		  extract \
+		  git \
+		  go \
+		  history \
+		  jekyll \
+		  osx \
+		  osx-timemachine \
+		  proxy \
+		  sshagent \
+		  xterm
 
 install-homebrew: ## Install homebrew, the missing package manager for OS X
 	$(info --> Install homebrew)

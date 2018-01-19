@@ -328,4 +328,6 @@ if [[ $OS == 'Linux' ]]; then
   fi
 fi
 
-[[ -f ~/.aliases.local ]] && source ~/.aliases.local
+if [[ -f "${HOME}/.aliases.local" ]]; then
+  source "${HOME}/.aliases.local"
+fi
