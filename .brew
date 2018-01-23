@@ -93,6 +93,7 @@ brew install pwgen
 brew install pyenv
 brew install pyenv-virtualenv
 brew install pyenv-virtualenvwrapper
+brew install q
 brew install readline
 brew install reattach-to-user-namespace
 brew install ruby-build
