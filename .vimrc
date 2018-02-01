@@ -139,6 +139,9 @@ let g:ale_sign_warning = '⚠'
 " Disable download and install all necessary go binaries from vim-go plugin
 let g:go_disable_autoinstall = 1
 
+" Disable go version warning
+let g:go_version_warning = 0
+
 " Disable auto go fmt on save
 let g:go_fmt_autosave = 0
 
