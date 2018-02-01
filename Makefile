@@ -113,10 +113,6 @@ install-vundle: ## Install Vundle, the plug-in manager for Vim
 		|| git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 	@vim +PluginInstall +qall &>/dev/null
 
-install-tmuxline: ## Install tmuxline, a Simple Tmux statusline generator
-	$(info --> Create tmuxline snapshot)
-	@vim +Tmuxline +"TmuxlineSnapshot! ~/.tmuxline.conf" +qall
-
 run-brew: ## Run ./.brew
 	@bash -x .brew
 
