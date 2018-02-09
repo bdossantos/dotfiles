@@ -20,6 +20,7 @@ alias glgcm='git log --before=$(date -d"+ 1 month" "+%Y-%m-01") --after=$(date "
   --author="$(git config user.name)" --reverse --pretty=format:"%cd - %h - %s" --date=short'
 alias glgt='git log --since="yesterday" --author="$(git config user.name)" --pretty=format:"%cd - %h - %s" \
   --date=short --no-merges'
+alias reflog='git reflog --pretty=raw | tig --pretty=raw'
 
 # Hub
 function hi() {
