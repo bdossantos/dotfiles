@@ -36,6 +36,15 @@ su - admin -c "env PATH=$PATH:/usr/sbin/ bash -x $HOME/.dotfiles/.macos_hardenin
 make run-brew
 ```
 
+## Bash
+
+### Installation
+
+```bash
+chsh -s "$(brew --prefix)/bin/bash"
+exec $SHELL
+```
+
 ### Choosing between .bashrc, .profile, .bash_profile, etc [...]
 
 * ~/.bash_profile should be super-simple and just load .profile and .bashrc
