@@ -27,7 +27,6 @@ Plugin 'rodjek/vim-puppet'
 Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'klen/python-mode'
 Plugin 'fatih/vim-go'
-Plugin 'tpope/vim-markdown'
 Plugin 'tpope/vim-liquid'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'mv/mv-vim-nginx'
@@ -41,6 +40,7 @@ Plugin 'junegunn/limelight.vim'
 Plugin 'chriskempson/base16-vim'
 Plugin 'edkolev/tmuxline.vim'
 Plugin 'lepture/vim-jinja'
+Plugin 'plasticboy/vim-markdown'
 
 call vundle#end()
 filetype plugin indent on
