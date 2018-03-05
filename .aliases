@@ -213,9 +213,9 @@ if [[ $OS == 'Darwin' ]]; then
   }
 
   function unlock() {
+    chflags -R nouchg "$@"
     find "$@" -type d | xargs -n 1 -I % chmod 0700 '%'
     find "$@" -type f | xargs -n 1 -I % chmod 0600 '%'
-    chflags -R nouchg "$@"
   }
 fi
 
