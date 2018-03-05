@@ -207,14 +207,14 @@ if [[ $OS == 'Darwin' ]]; then
 
   # Lock/Unlock directory or file
   function lock() {
-    find "$@" -type d | xargs -n 1 -I % chmod 0500 %
-    find "$@" -type f | xargs -n 1 -I % chmod 0400 %
+    find "$@" -type d | xargs -n 1 -I % chmod 0500 '%'
+    find "$@" -type f | xargs -n 1 -I % chmod 0400 '%'
     chflags -R uchg "$@"
   }
 
   function unlock() {
-    find "$@" -type d | xargs -n 1 -I % chmod 0700 %
-    find "$@" -type f | xargs -n 1 -I % chmod 0600 %
+    find "$@" -type d | xargs -n 1 -I % chmod 0700 '%'
+    find "$@" -type f | xargs -n 1 -I % chmod 0600 '%'
     chflags -R nouchg "$@"
   }
 fi
