@@ -79,9 +79,6 @@ export KEYTIMEOUT=20
 # Setting ag as the default source for fzf
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 
-# z is the new j, yo
-export _Z_DATA="${HOME}/.z_data"
-
 # Temporary Files
 if [ ! -d "$TMPDIR" ]; then
   export TMPDIR="/tmp/${LOGNAME}"

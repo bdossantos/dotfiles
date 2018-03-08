@@ -11,6 +11,7 @@ alias ri='ri -f ansi'
 which colordiff &>/dev/null && alias diff='colordiff'
 
 # Git
+alias gc='git commit -v'
 alias gst='git status'
 alias ga='git add --patch'
 alias gd='git diff'
