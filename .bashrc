@@ -29,11 +29,6 @@ if [[ -f "${HOMEBREW_PREFIX}/opt/autoenv/activate.sh" ]]; then
   source "${HOMEBREW_PREFIX}/opt/autoenv/activate.sh"
 fi
 
-# iTerm2 Shell integration
-if [[ -f "${HOME}/.iterm2_shell_integration.zsh" ]]; then
-  source "${HOME}/.iterm2_shell_integration.bash"
-fi
-
 # gcloud
 GCLOUD_SDK="${HOME}/.google-cloud-sdk"
 if [[ -f "${GCLOUD_SDK}/path.bash.inc" ]] \
