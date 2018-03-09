@@ -1,0 +1,15 @@
+---
+
+language: python
+sudo: false
+python:
+  - '2.7'
+addons:
+  apt:
+    sources:
+      - debian-sid
+    packages:
+      - shellcheck
+cache: pip
+script:
+  - make test
