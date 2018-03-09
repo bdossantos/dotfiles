@@ -65,6 +65,17 @@ if [[ -f "${HOME}/.fzf.bash" ]]; then
   source "${HOME}/.fzf.bash"
 fi
 
+# Auto start|attach tmux session
+if which tmux &>/dev/null; then
+  if [[ -z "$TMUX" ]] ;then
+    if tmux ls &> /dev/null; then
+      exec tmux attach-session
+    else
+      exec tmux new-session
+    fi
+  fi
+fi
+
 # Aliases
 if [[ -f "${HOME}/.aliases" ]]; then
   source "${HOME}/.aliases"
