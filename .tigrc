@@ -5,4 +5,3 @@ set main-view = line-number:no,interval=5 id:yes date:default author:full commit
 color cursor         white    black    bold
 color title-blur     white    black
 color title-focus    white    black    bold
-
