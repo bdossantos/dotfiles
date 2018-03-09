@@ -1,0 +1,23 @@
+---
+
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  sha: v1.2.0
+  hooks:
+    - id: check-added-large-files
+    - id: check-case-conflict
+    - id: check-executables-have-shebangs
+    - id: check-json
+    - id: check-merge-conflict
+    - id: check-symlinks
+    - id: check-yaml
+    - id: debug-statements
+    - id: detect-aws-credentials
+      args: ['--allow-missing-credentials']
+    - id: detect-private-key
+    - id: end-of-file-fixer
+    - id: requirements-txt-fixer
+    - id: trailing-whitespace
+- repo: https://github.com/detailyang/pre-commit-shell
+  sha: 84c790f2a58b360d7108fec21ff96a6488c99736
+  hooks:
+    - id: shell-lint

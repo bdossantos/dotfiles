@@ -23,6 +23,8 @@ install-dotfiles: ## Pull and Install dotfiles
 	@mkdir -m 0700 -p ~/.ssh
 	@which stow >/dev/null || { echo 'CAN I HAZ STOW ?'; exit 1; }
 	@stow -S . -t "$(HOME)" -v \
+		--ignore='.pre-commit-config.yaml' \
+		--ignore='requirements.txt' \
 		--ignore='README.md' \
 		--ignore='LICENCE' \
 		--ignore='Makefile' \
@@ -113,8 +115,15 @@ install-vundle: ## Install Vundle, the plug-in manager for Vim
 		|| git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 	@vim +PluginInstall +qall &>/dev/null
 
+pre-commit: ## Run pre-commit tests
+	$(info --> Run pre-commit)
+	@pre-commit run --all-files
+
 run-brew: ## Run ./.brew
 	@bash -x .brew
+
+test: ## Run tests suite
+	@$(MAKE) pre-commit
 
 uninstall: uninstall-dotfiles ## Uninstall all the things
 
