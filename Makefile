@@ -1,4 +1,4 @@
-BASH_IT := ~/.bash_it
+BASH_IT = $(HOME)/.bash_it
 OS = "$(uname)"
 SHELL := /usr/bin/env bash
 
@@ -44,7 +44,8 @@ install-bash-it: ## Clone and pull bash-it, a community Bash framework
 		&& popd &>/dev/null
 	@source $(BASH_IT)/lib/helpers.bash \
 		&& source $(BASH_IT)/lib/composure.bash \
-		&& _enable-alias \
+		&& cite _about _param _example _group _author _version \
+		&& bash-it enable alias \
 			ag \
 			general \
 			curl \
@@ -54,7 +55,7 @@ install-bash-it: ## Clone and pull bash-it, a community Bash framework
 			osx \
 			systemd \
 			tmux \
-		&& _enable-completion \
+		&& bash-it enable completion \
 			bash-it \
 			git \
 			docker \
@@ -64,7 +65,7 @@ install-bash-it: ## Clone and pull bash-it, a community Bash framework
 			ssh \
 			tmux \
 			makefile \
-		&& _enable-plugin \
+		&& bash-it enable plugin \
 		  alias-completion \
 		  aws \
 		  base \
