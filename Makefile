@@ -79,7 +79,6 @@ install-bash-it: ## Clone and pull bash-it, a community Bash framework
 		  osx \
 		  osx-timemachine \
 		  proxy \
-		  sshagent \
 		  xterm
 
 install-homebrew: ## Install homebrew, the missing package manager for OS X

@@ -76,6 +76,20 @@ if which tmux &>/dev/null; then
   fi
 fi
 
+# Auto start|attach ssh-agent
+if ! ssh-add -l &>/dev/null; then
+  SSH_AGENT="${HOME}/.ssh-agent"
+
+  [[ -r $SSH_AGENT ]] \
+    && eval "$(< "$SSH_AGENT")" >/dev/null
+
+  if ! ssh-add -l &>/dev/null; then
+    (umask 066; ssh-agent > "$SSH_AGENT")
+    eval "$(< "$SSH_AGENT")" >/dev/null
+    ssh-add
+  fi
+fi
+
 # Aliases
 if [[ -f "${HOME}/.aliases" ]]; then
   source "${HOME}/.aliases"
