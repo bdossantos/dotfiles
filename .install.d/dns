@@ -7,100 +7,94 @@ set -o nounset
 OS="$(uname)"
 [[ $OS != 'Darwin' ]] && exit 0
 
-DNSCRYPT_PROXY_PORT=5300
-DNSCRYPT_RESOLVERS='dnscrypt.org-fr fvz-anyone fvz-anytwo'
-
-echo '--> configure dnsmasq'
-
-mkdir -p "$HOME/.dnsmasq.d" "$HOME/.hosts.d"
-
-cat <<EOT > "$(brew --prefix)/etc/dnsmasq.conf"
-# https://github.com/drduh/OS-X-Security-and-Privacy-Guide#dnsmasq
-
-# Forward queries to dnscrypt on localhost
-server=127.0.0.1#5300
-server=127.0.0.1#5301
-server=127.0.0.1#5302
-server=127.0.0.1#9053
-
-# Uncomment to forward queries to Google Public DNS
-#server=8.8.8.8
-#server=8.8.4.4
-
-# Setting this flag forces dnsmasq to send all queries to all available servers.
-# The reply from the server which answers first will be returned to the original requester.
-all-servers
-
-# Never forward plain names
-domain-needed
-
-# Blackhole Tor hidden services and local TLDs
-address=/.onion/0.0.0.0
-address=/.local/0.0.0.0
-address=/.mycoolnetwork/0.0.0.0
-
-# Never forward addresses in the non-routed address spaces
-bogus-priv
-
-# Reject private addresses from upstream nameservers
-stop-dns-rebind
-
-# Query servers in order
-strict-order
-
-# Set the size of the cache
-# The default is to keep 150 hostnames
-cache-size=8192
-
-# Optional logging directives
-log-async
-log-dhcp
-log-facility=/var/log/dnsmasq.log
-
-# Uncomment to log all queries
-#log-queries
-
-# Uncomment to enable DNSSEC
-#dnssec
-#trust-anchor=.,19036,8,2,49AAC11D7B6F6446702E54A1607371607A1A41855200FD2CE1CDDE32F24E8FB5
-#dnssec-check-unsigned
-
-# Pass through DNSSEC validation results from dnscrypt-proxy.
-proxy-dnssec
-
-# user
-user=nobody
-
-# Include localconfig
-conf-dir=${HOME}/.dnsmasq.d,*.conf
-
-# Additional hosts file
-addn-hosts=${HOME}/.hosts.d
-EOT
-
-# Extending and consolidating hosts files, https://github.com/StevenBlack/hosts
-curl -s 'https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts' \
-  > "$HOME/.hosts.d/hosts"
+# remove dnsmasq
+brew uninstall --force dnsmasq || true
 
 # Consolidate my /etc/hosts too just in case I don't use my DNS, eg: automatic
 # network profile
 su admin -c "curl -s 'https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts' \
   | sudo tee '/etc/hosts'"
 
-# restart dnsmasq
-su admin -c "sudo ${HOME}/.homebrew/bin/brew services restart dnsmasq"
+# cleanup old dnscrypt-proxy 1.9.x configs
+rm -vf "$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.*.plist"
 
 # Configure dnscrypt
-for resolver in $DNSCRYPT_RESOLVERS; do
-  plist="$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.${DNSCRYPT_PROXY_PORT}.plist"
+cat <<DNSCRYPT-PROXY > "$(brew --prefix)/etc/dnscrypt-proxy.toml"
+block_ipv6 = false
+cache = true
+cache_max_ttl = 86400
+cache_min_ttl = 600
+cache_neg_ttl = 60
+cache_size = 16000
+cert_refresh_delay = 30
+cloaking_rules = "$(brew --prefix)/etc/dnscrypt-proxy-cloaking-rules.txt"
+daemonize = false
+dnscrypt_servers = true
+doh_servers = true
+fallback_resolver = '9.9.9.9:53'
+force_tcp = false
+ignore_system_dns = true
+ipv4_servers = true
+ipv6_servers = false
+lb_strategy = 'p2'
+listen_addresses = ['127.0.0.1:53', '[::1]:53']
+max_clients = 100
+require_dnssec = false
+require_nofilter = true
+require_nolog = true
+timeout = 3000
+[query_log]
+  file = "/dev/null"
+  format = "tsv"
+[blacklist]
+  blacklist_file = '$(brew --prefix)/etc/dnscrypt-proxy-blacklist.txt'
+  log_file = '/dev/null'
+[sources]
+  [sources.'public-resolvers']
+  url = 'https://download.dnscrypt.info/resolvers-list/v2/public-resolvers.md'
+  cache_file = '/tmp/public-resolvers.md'
+  format = 'v2'
+  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  refresh_delay = 72
+  prefix = ''
+[schedules]
+  [schedules.'time-to-sleep']
+  mon = [{after='23:00', before='7:00'}]
+  tue = [{after='23:00', before='7:00'}]
+  wed = [{after='23:00', before='7:00'}]
+  thu = [{after='23:00', before='7:00'}]
+  fri = [{after='00:00', before='7:00'}]
+  sat = [{after='00:00', before='7:00'}]
+  sun = [{after='23:00', before='7:00'}]
+  [schedules.'work']
+  mon = [{after='9:00', before='18:00'}]
+  tue = [{after='9:00', before='18:00'}]
+  wed = [{after='9:00', before='18:00'}]
+  thu = [{after='9:00', before='18:00'}]
+  fri = [{after='9:00', before='17:00'}]
+DNSCRYPT-PROXY
 
-  cat <<EOT > "$plist"
+pushd "$(brew --prefix)/etc/"
+	touch dnscrypt-proxy-cloaking-rules.txt
+  wget https://raw.githubusercontent.com/bdossantos/bds.home/master/files/etc/dnscrypt-proxy/domains-blacklist-local-additions.txt
+  wget https://raw.githubusercontent.com/bdossantos/bds.home/master/files/etc/dnscrypt-proxy/domains-blacklist.conf
+  wget https://raw.githubusercontent.com/bdossantos/bds.home/master/files/etc/dnscrypt-proxy/domains-time-restricted.txt
+  wget https://raw.githubusercontent.com/bdossantos/bds.home/master/files/etc/dnscrypt-proxy/domains-whitelist.txt
+
+  # YOLO!
+  python <(curl -Ss https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/25f1de385b50f45032f386aa31c131bbb168f00e/utils/generate-domains-blacklists/generate-domains-blacklist.py) --timeout 60 \
+  > dnscrypt-proxy-blacklist.txt.tmp
+
+  mv -f dnscrypt-proxy-blacklist.txt.tmp dnscrypt-proxy-blacklist.txt
+popd
+
+cat <<EOT > "$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.plist"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-/Apple/DTD PLIST 1.0/EN" "http:/www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>homebrew.mxcl.dnscrypt-proxy.${DNSCRYPT_PROXY_PORT}</string>
+    <string>homebrew.mxcl.dnscrypt-proxy</string>
     <key>KeepAlive</key>
     <true/>
     <key>RunAtLoad</key>
@@ -108,13 +102,11 @@ for resolver in $DNSCRYPT_RESOLVERS; do
     <key>ProgramArguments</key>
     <array>
       <string>$(brew --prefix)/opt/dnscrypt-proxy/sbin/dnscrypt-proxy</string>
-      <string>--ephemeral-keys</string>
-      <string>--tcp-only</string>
-      <string>--local-address=127.0.0.1:${DNSCRYPT_PROXY_PORT}</string>
-      <string>--logfile=/dev/null</string>
-      <string>--resolver-name=${resolver}</string>
-      <string>--resolvers-list=$(brew --prefix)/opt/dnscrypt-proxy/share/dnscrypt-proxy/dnscrypt-resolvers.csv</string>
+      <string>-config</string>
+      <string>$(brew --prefix)/etc/dnscrypt-proxy.toml</string>
     </array>
+    <key>UserName</key>
+    <string>root</string>
     <key>StandardErrorPath</key>
     <string>/dev/null</string>
     <key>StandardOutPath</key>
@@ -123,21 +115,8 @@ for resolver in $DNSCRYPT_RESOLVERS; do
 </plist>
 EOT
 
-  # We can't manage this "custom" service with `brew services`, use launchctl
-  # directly.
-  launchctl unload "$plist"
-  launchctl load -w "$plist"
-
-  DNSCRYPT_PROXY_PORT=$((DNSCRYPT_PROXY_PORT + 1))
-done
-
-# Ensure dnscrypt-proxy original instance managed by `brew services` is stopped
-brew services stop dnscrypt-proxy 2>/dev/null || true
-
-# Update dnscrypt resolvers
-dnscrypt-update-resolvers
-
 su admin -c "
+sudo ${HOME}/.homebrew/bin/brew services restart dnscrypt-proxy
 sudo dscacheutil -flushcache
 sudo killall -HUP mDNSResponder
 "
