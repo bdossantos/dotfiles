@@ -22,6 +22,7 @@ export HISTFILESIZE=$HISTSIZE
 export HISTCONTROL='ignoreboth'
 export HISTIGNORE='ls:cd:cd -:pwd:exit:date:* --help'
 export HISTTIMEFORMAT='%h/%d -- %H:%M:%S '
+export PROMPT_COMMAND='history -a'
 
 # pager
 export PAGER='less'
