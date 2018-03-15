@@ -89,7 +89,7 @@ fi
 
 # diff-highligh
 if [ -d "${HOMEBREW_PREFIX}/share/git-core/contrib/diff-highlight/" ]; then
-  export PATH="${PATH}:${HOMEBREW_PREFIX}/share/git-core/contrib/diff-highlight/"
+  export PATH="${PATH}:${HOMEBREW_PREFIX}/share/git-core/contrib/diff-highlight"
 fi
 
 # Set this to false to turn off version control status checking within the prompt for all themes
