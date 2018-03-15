@@ -44,8 +44,7 @@ brew install closure-compiler
 brew install coreutils
 brew install ctags
 brew install curl --with-openssl && brew link --force curl
-brew install dnscrypt-proxy --with-plugins
-brew install dnsmasq --with-dnssec
+brew install dnscrypt-proxy
 brew install dnstwist
 brew install docker
 brew install docker-compose
