@@ -48,7 +48,7 @@ function _restic_backup_files() {
     --warning=no-file-changed \
     --warning=no-file-removed \
     --use-compress-program=pigz \
-    -czpf - \
+    -cpf - \
     / \
     | restic \
       --quiet \
