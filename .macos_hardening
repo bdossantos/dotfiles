@@ -72,6 +72,10 @@ fi
 
 sudo pkill -HUP socketfilterfw
 
+# Set the screen to lock as soon as the screensaver starts
+defaults write com.apple.screensaver askForPassword -int 1
+defaults write com.apple.screensaver askForPasswordDelay -int 0
+
 # Captive portal
 sudo defaults write \
   /Library/Preferences/SystemConfiguration/com.apple.captive.control Active \
