@@ -80,6 +80,9 @@ defaults write com.apple.screensaver askForPasswordDelay -int 0
 defaults write com.apple.finder AppleShowAllFiles -bool true
 chflags nohidden ~/Library
 
+# Show all filename extensions (so that "Evil.jpg.app" cannot masquerade easily).
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
 # Captive portal
 sudo defaults write \
   /Library/Preferences/SystemConfiguration/com.apple.captive.control Active \
