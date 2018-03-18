@@ -76,6 +76,10 @@ sudo pkill -HUP socketfilterfw
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
+# Expose hidden files and Library folder in Finder
+defaults write com.apple.finder AppleShowAllFiles -bool true
+chflags nohidden ~/Library
+
 # Captive portal
 sudo defaults write \
   /Library/Preferences/SystemConfiguration/com.apple.captive.control Active \
