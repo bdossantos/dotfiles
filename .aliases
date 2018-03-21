@@ -118,6 +118,11 @@ which compdef &>/dev/null && compdef ssht=ssh && compdef sshrc=ssh
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
 
+# Pandoc
+function pandoc() {
+  docker run --rm --name pandoc -v "${PWD}:/pandoc" dalibo/pandocker "$@"
+}
+
 # Mass updating DNS zone serial numbers
 function massdnsserialupdate() {
   sed -i "s,20[0-9][0-9]\{7\},$(date +%Y%m%d00),g" db.*
