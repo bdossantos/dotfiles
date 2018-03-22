@@ -4,6 +4,9 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+touch "$(brew --prefix)/etc/tor/torrc"
+chmod 0700 "$(brew --prefix)/etc/tor/torrc"
+
 cat <<EOT > "$(brew --prefix)/etc/tor/torrc"
 AutomapHostsOnResolve 1
 AutomapHostsSuffixes .exit,.onion
@@ -26,6 +29,8 @@ StrictNodes 1
 #UseBridges 1
 #Bridge [transport] IP:ORPort [fingerprint]
 EOT
+
+chmod 0400 "$(brew --prefix)/etc/tor/torrc"
 
 brew services restart tor
 while ! true | nc 127.0.0.1 9050 >/dev/null; do sleep 2; done
