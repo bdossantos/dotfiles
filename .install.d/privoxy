@@ -6,6 +6,9 @@ set -o nounset
 
 echo '--> setup privoxy'
 
+touch "$(brew --prefix)/etc/privoxy/user.action"
+chmod 0700 "$(brew --prefix)/etc/privoxy/user.action"
+
 cat <<EOT > "$(brew --prefix)/etc/privoxy/user.action"
 { +block{social networking} }
 www.facebook.com/(extern|plugins)/(login_status|like(box)?|activity|fan)\.php
@@ -27,6 +30,8 @@ ads.*.com/
 code.jquery.com
 imgur.com
 EOT
+
+chmod 0400 "$(brew --prefix)/etc/privoxy/user.action"
 
 brew services restart privoxy
 while ! true | nc 127.0.0.1 8118 >/dev/null; do sleep 2; done
