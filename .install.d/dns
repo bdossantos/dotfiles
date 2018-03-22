@@ -19,6 +19,9 @@ su admin -c "curl -s 'https://raw.githubusercontent.com/StevenBlack/hosts/master
 rm -vf "$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.*.plist"
 
 # Configure dnscrypt
+touch "$(brew --prefix)/etc/dnscrypt-proxy.toml"
+chmod 0700 "$(brew --prefix)/etc/dnscrypt-proxy.toml"
+
 cat <<DNSCRYPT-PROXY > "$(brew --prefix)/etc/dnscrypt-proxy.toml"
 block_ipv6 = false
 cache = true
@@ -74,6 +77,8 @@ timeout = 3000
   fri = [{after='9:00', before='17:00'}]
 DNSCRYPT-PROXY
 
+chmod 0444 "$(brew --prefix)/etc/dnscrypt-proxy.toml"
+
 pushd "$(brew --prefix)/etc/"
 	touch dnscrypt-proxy-cloaking-rules.txt
   wget https://raw.githubusercontent.com/bdossantos/bds.home/master/files/etc/dnscrypt-proxy/domains-blacklist-local-additions.txt
@@ -86,7 +91,11 @@ pushd "$(brew --prefix)/etc/"
   > dnscrypt-proxy-blacklist.txt.tmp
 
   mv -f dnscrypt-proxy-blacklist.txt.tmp dnscrypt-proxy-blacklist.txt
+  chmod 0444 dnscrypt-proxy-blacklist.txt
 popd
+
+touch "$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.plist"
+chmod 0700 "$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.plist"
 
 cat <<EOT > "$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.plist"
 <?xml version="1.0" encoding="UTF-8"?>
@@ -114,6 +123,8 @@ cat <<EOT > "$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.pl
   </dict>
 </plist>
 EOT
+
+chmod 0444 "$(brew --prefix)/opt/dnscrypt-proxy/homebrew.mxcl.dnscrypt-proxy.plist"
 
 su admin -c "
 sudo ${HOME}/.homebrew/bin/brew services restart dnscrypt-proxy
