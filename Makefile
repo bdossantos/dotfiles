@@ -24,6 +24,7 @@ install-dotfiles: ## Pull and Install dotfiles
 	@which stow >/dev/null || { echo 'CAN I HAZ STOW ?'; exit 1; }
 	@stow -S . -t "$(HOME)" -v \
 		--ignore='.pre-commit-config.yaml' \
+		--ignore='.travis.yml' \
 		--ignore='requirements.txt' \
 		--ignore='README.md' \
 		--ignore='LICENCE' \
