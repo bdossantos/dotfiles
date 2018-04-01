@@ -34,7 +34,8 @@ cloaking_rules = "$(brew --prefix)/etc/dnscrypt-proxy-cloaking-rules.txt"
 daemonize = false
 dnscrypt_servers = true
 doh_servers = true
-fallback_resolver = '9.9.9.9:53'
+# Other popular options include 8.8.8.8 and 9.9.9.9.
+fallback_resolver = '1.1.1.1:53'
 force_tcp = false
 ignore_system_dns = true
 ipv4_servers = true
