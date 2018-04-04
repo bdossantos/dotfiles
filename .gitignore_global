@@ -27,5 +27,8 @@ tags
 # Compiled Python files
 *.pyc
 
+# Python Rope
+.ropeproject
+
 # Dotenv files
 *.env
