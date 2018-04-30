@@ -90,6 +90,7 @@ brew install pngquant
 brew install polipo
 brew install pre-commit
 brew install privoxy
+brew install proselint
 brew install pv
 brew install pwgen
 brew install pyenv
