@@ -1,3 +1,8 @@
+# bash-completion
+if [[ -f "${HOMEBREW_PREFIX}/share/bash-completion/bash_completion" ]]; then
+  source "${HOMEBREW_PREFIX}/share/bash-completion/bash_completion"
+fi
+
 # Bash-it
 if [[ -f "${BASH_IT}/bash_it.sh" ]]; then
   source "${BASH_IT}/bash_it.sh"
