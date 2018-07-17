@@ -89,7 +89,6 @@ brew install packer
 brew install pigz
 brew install pngcrush
 brew install pngquant
-brew install polipo
 brew install pre-commit
 brew install privoxy
 brew install proselint
