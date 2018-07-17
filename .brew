@@ -37,7 +37,6 @@ brew install awscli
 brew install bash
 brew install bash-completion@2
 brew install bats
-brew install battery
 brew install bower
 brew install cheat
 brew install chruby
@@ -49,7 +48,6 @@ brew install ctags
 brew install ctop
 brew install curl --with-openssl && brew link --force curl
 brew install dnscrypt-proxy
-brew install dnstwist
 brew install docker
 brew install docker-compose
 brew install docker-machine
@@ -60,7 +58,6 @@ brew install ffmpeg
 brew install findutils
 brew install fzf \
   && "$(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc"
-brew install ghi
 brew install gifsicle
 brew install git
 brew install gnu-sed --with-default-names
@@ -90,7 +87,6 @@ brew install pigz
 brew install pngcrush
 brew install pngquant
 brew install pre-commit
-brew install privoxy
 brew install proselint
 brew install pv
 brew install pwgen
@@ -153,7 +149,6 @@ brew cask install font-hack
 brew cask install gimp
 brew cask install google-chrome
 brew cask install google-drive
-brew cask install google-photos-backup
 brew cask install gpgtools
 brew cask install hipchat
 brew cask install imageoptim
