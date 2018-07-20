@@ -13,6 +13,11 @@ if [[ -f $BASE16_SHELL ]]; then
   source $BASE16_SHELL
 fi
 
+# git
+if [[ -f "${HOMEBREW_PREFIX}/etc/bash_completion.d/git-completion.bash" ]]; then
+  source "${HOMEBREW_PREFIX}/etc/bash_completion.d/git-completion.bash"
+fi
+
 # chruby
 if [[ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]]; then
   RUBIES=("${HOME}/.rubies/*")
