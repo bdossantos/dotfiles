@@ -48,14 +48,8 @@ if [[ -f "${GCLOUD_SDK}/path.bash.inc" ]] \
 fi
 
 # kubectl
-if [[ ! -f "${HOME}/.kube/completion.bash.inc" ]]; then
-  mkdir -m 0700 -p "${HOME}/.kube/"
-  which kubectl &>/dev/null \
-    && kubectl completion bash > "${HOME}/.kube/completion.bash.inc"
-fi
-
-if [[ -f "${HOME}/.kube/completion.bash.inc" ]]; then
-  source "${HOME}/.kube/completion.bash.inc"
+if command -v kubectl &>/dev/null; then
+  source <(kubectl completion bash)
 fi
 
 # kops
