@@ -54,6 +54,10 @@ if [[ ! -f "${HOME}/.kube/completion.bash.inc" ]]; then
     && kubectl completion bash > "${HOME}/.kube/completion.bash.inc"
 fi
 
+if [[ -f "${HOME}/.kube/completion.bash.inc" ]]; then
+  source "${HOME}/.kube/completion.bash.inc"
+fi
+
 # kops
 if [[ ! -f "${HOME}/.kops/completion.bash.inc" ]]; then
   mkdir -m 0700 -p "${HOME}/.kops/"
