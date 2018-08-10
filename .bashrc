@@ -8,9 +8,9 @@ if [ -f "${BASE16_SHELL}/profile_helper.sh" ]; then
   eval "$("${BASE16_SHELL}/profile_helper.sh")"
 fi
 
-# git
-if [ -f "${HOMEBREW_PREFIX}/etc/bash_completion.d/git-completion.bash" ]; then
-  source "${HOMEBREW_PREFIX}/etc/bash_completion.d/git-completion.bash"
+# bash completions, MacOS
+if [ -f "${HOMEBREW_PREFIX}/etc/bash_completion" ]; then
+  source "${HOMEBREW_PREFIX}/etc/bash_completion"
 fi
 
 # chruby
