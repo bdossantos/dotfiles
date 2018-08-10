@@ -1,25 +1,20 @@
-# bash-completion
-if [[ -f "${HOMEBREW_PREFIX}/share/bash-completion/bash_completion" ]]; then
-  source "${HOMEBREW_PREFIX}/share/bash-completion/bash_completion"
-fi
-
 # Bash-it
-if [[ -f "${BASH_IT}/bash_it.sh" ]]; then
+if [ -f "${BASH_IT}/bash_it.sh" ]; then
   source "${BASH_IT}/bash_it.sh"
 fi
 
 # base16
-if [[ -f "${BASE16_SHELL}/profile_helper.sh" ]]; then
+if [ -f "${BASE16_SHELL}/profile_helper.sh" ]; then
   eval "$("${BASE16_SHELL}/profile_helper.sh")"
 fi
 
 # git
-if [[ -f "${HOMEBREW_PREFIX}/etc/bash_completion.d/git-completion.bash" ]]; then
+if [ -f "${HOMEBREW_PREFIX}/etc/bash_completion.d/git-completion.bash" ]; then
   source "${HOMEBREW_PREFIX}/etc/bash_completion.d/git-completion.bash"
 fi
 
 # chruby
-if [[ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]]; then
+if [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
   RUBIES=("${HOME}/.rubies/*")
 
   source "${HOMEBREW_PREFIX}/share/chruby/chruby.sh"
@@ -30,19 +25,19 @@ fi
 which pyenv &>/dev/null && eval "$(pyenv init -)"
 
 # z is the new j, yo
-if [[ -f "${HOMEBREW_PREFIX}/etc/profile.d/z.sh" ]]; then
+if [ -f "${HOMEBREW_PREFIX}/etc/profile.d/z.sh" ]; then
   source "${HOMEBREW_PREFIX}/etc/profile.d/z.sh"
 fi
 
 # Magic per-project shell environments. Very pretentious.
-if [[ -f "${HOMEBREW_PREFIX}/opt/autoenv/activate.sh" ]]; then
+if [ -f "${HOMEBREW_PREFIX}/opt/autoenv/activate.sh" ]; then
   source "${HOMEBREW_PREFIX}/opt/autoenv/activate.sh"
 fi
 
 # gcloud
 GCLOUD_SDK="${HOME}/.google-cloud-sdk"
-if [[ -f "${GCLOUD_SDK}/path.bash.inc" ]] \
-  && [[ -f "${GCLOUD_SDK}/completion.bash.inc" ]]; then
+if [ -f "${GCLOUD_SDK}/path.bash.inc" ] \
+  && [ -f "${GCLOUD_SDK}/completion.bash.inc" ]; then
   source "${GCLOUD_SDK}/path.bash.inc"
   source "${GCLOUD_SDK}/completion.bash.inc"
 fi
@@ -53,24 +48,24 @@ if command -v kubectl &>/dev/null; then
 fi
 
 # kops
-if [[ ! -f "${HOME}/.kops/completion.bash.inc" ]]; then
+if [ ! -f "${HOME}/.kops/completion.bash.inc" ]; then
   mkdir -m 0700 -p "${HOME}/.kops/"
   which kops &>/dev/null \
     && kops completion bash > "${HOME}/.kops/completion.bash.inc"
 fi
 
-if [[ -f "${HOME}/.kops/completion.bash.inc" ]]; then
+if [ -f "${HOME}/.kops/completion.bash.inc" ]; then
   source "${HOME}/.kops/completion.bash.inc"
 fi
 
 # fzf
-if [[ -f "${HOME}/.fzf.bash" ]]; then
+if [ -f "${HOME}/.fzf.bash" ]; then
   source "${HOME}/.fzf.bash"
 fi
 
 # Auto start|attach tmux session
 if which tmux &>/dev/null; then
-  if [[ -z "$TMUX" ]] ;then
+  if [ -z "$TMUX" ] ;then
     if tmux ls &> /dev/null; then
       exec tmux attach-session
     else
@@ -83,7 +78,7 @@ fi
 if ! ssh-add -l &>/dev/null; then
   SSH_AGENT="${HOME}/.ssh-agent"
 
-  [[ -r $SSH_AGENT ]] \
+  [ -r $SSH_AGENT ] \
     && eval "$(< "$SSH_AGENT")" >/dev/null
 
   if ! ssh-add -l &>/dev/null; then
@@ -94,11 +89,11 @@ if ! ssh-add -l &>/dev/null; then
 fi
 
 # Aliases
-if [[ -f "${HOME}/.aliases" ]]; then
+if [ -f "${HOME}/.aliases" ]; then
   source "${HOME}/.aliases"
 fi
 
 # ~/.extra can be used for other settings you don't want to commit.
-if [[ -f "${HOME}/.extra" ]]; then
+if [ -f "${HOME}/.extra" ]; then
   source "${HOME}/.extra"
 fi
