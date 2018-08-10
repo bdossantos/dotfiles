@@ -47,40 +47,19 @@ install-bash-it: ## Clone and pull bash-it, a community Bash framework
 		&& source $(BASH_IT)/lib/composure.bash \
 		&& cite _about _param _example _group _author _version \
 		&& bash-it enable alias \
-			ag \
-			general \
-			curl \
-			docker \
 			general \
 			git \
 			osx \
-			systemd \
-			tmux \
 		&& bash-it enable completion \
 			bash-it \
-			git \
-			docker \
-			docker-compose \
-			export \
 			system \
 			ssh \
-			tmux \
-			makefile \
 		&& bash-it enable plugin \
-		  alias-completion \
-		  aws \
-		  base \
-		  docker \
-		  edit-mode-vi \
-		  extract \
-		  git \
-		  go \
-		  history \
-		  jekyll \
-		  osx \
-		  osx-timemachine \
-		  proxy \
-		  xterm
+			alias-completion \
+			base \
+			osx \
+			proxy \
+			xterm
 
 install-homebrew: ## Install homebrew, the missing package manager for OS X
 	$(info --> Install homebrew)
