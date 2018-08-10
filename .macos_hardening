@@ -54,6 +54,14 @@ if ! sudo firmwarepasswd -mode | grep -q 'Mode: full'; then
   exit 1
 fi
 
+# Check System Integrity Protection
+if ! csrutil status | grep -q 'System Integrity Protection status: enabled.'; then
+  # shellcheck disable=SC1003
+  1>&2 echo '/!\ System Integrity protection is disabled /!\'
+  1>&2 echo 'Hint: "sudo csrutil enable"'
+  exit 1
+fi
+
 # Enable the firewall
 /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
 
