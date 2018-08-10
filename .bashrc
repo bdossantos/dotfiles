@@ -11,7 +11,15 @@ if [ -f "${BASE16_SHELL}/profile_helper.sh" ]; then
   eval "$("${BASE16_SHELL}/profile_helper.sh")"
 fi
 
-# bash completions, MacOS
+# bash completions
+if [ -f /etc/bash_completion ]; then
+  source /etc/bash_completion
+fi
+
+if [ -f /etc/profile.d/bash_completion.sh ]; then
+  source /etc/profile.d/bash_completion.sh
+fi
+
 if [ -f "${HOMEBREW_PREFIX}/etc/bash_completion" ]; then
   source "${HOMEBREW_PREFIX}/etc/bash_completion"
 fi
