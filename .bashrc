@@ -1,3 +1,6 @@
+# vi mode
+set -o vi
+
 # Bash-it
 if [ -f "${BASH_IT}/bash_it.sh" ]; then
   source "${BASH_IT}/bash_it.sh"
