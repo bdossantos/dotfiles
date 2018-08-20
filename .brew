@@ -19,6 +19,7 @@ brew tap caskroom/fonts
 brew tap caskroom/versions
 brew tap coinbase/assume-role
 brew tap homebrew/binary
+brew tap homebrew/cask-drivers
 brew tap homebrew/devel-only
 brew tap homebrew/dupes
 brew tap homebrew/services
@@ -163,6 +164,7 @@ brew cask install omnigraffle
 brew cask install sequel-pro
 brew cask install spectacle
 brew cask install spotify
+brew cask install synology-drive
 brew cask install torbrowser
 brew cask install tunnelbear
 brew cask install vagrant
