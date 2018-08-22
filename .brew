@@ -13,7 +13,6 @@ echo '--> Upgrade any already-installed formulae'
 brew upgrade
 
 echo '--> Tap extras Homebrew repositories'
-brew tap Goles/battery
 brew tap caskroom/drivers
 brew tap caskroom/fonts
 brew tap caskroom/versions
@@ -32,26 +31,19 @@ echo '--> Install all brew Packages'
 brew install ack
 brew install advancecomp
 brew install ansifilter
-brew install assume-role
 brew install autoenv
 brew install awscli
 brew install bash
 brew install bash-completion@2
 brew install bats
-brew install bower
 brew install cheat
 brew install chruby
 brew install cli53
-brew install cloc
 brew install closure-compiler
 brew install coreutils
 brew install ctags
-brew install ctop
 brew install curl --with-openssl && brew link --force curl
 brew install dnscrypt-proxy
-brew install docker
-brew install docker-compose
-brew install docker-machine
 brew install entr
 brew install editorconfig
 brew install fd
@@ -70,7 +62,6 @@ brew install gsl
 brew install hadolint
 brew install htmlcompressor --yuicompressor
 brew install htop-osx
-brew install hub
 brew install imagemagick --with-webp
 brew install ipcalc
 brew install jhead
@@ -94,7 +85,6 @@ brew install pwgen
 brew install pyenv
 brew install pyenv-virtualenv
 brew install pyenv-virtualenvwrapper
-brew install q
 brew install readline
 brew install reattach-to-user-namespace
 brew install ruby-build
@@ -121,7 +111,6 @@ brew install vim --with-python3
 brew install virt-manager
 brew install virt-viewer
 brew install watch
-brew install webkit2png
 brew install wget
 brew install xz
 brew install z
@@ -151,7 +140,6 @@ brew cask install gimp
 brew cask install google-chrome
 brew cask install google-drive
 brew cask install gpgtools
-brew cask install hipchat
 brew cask install imageoptim
 brew cask install iterm2
 brew cask install java6
@@ -170,7 +158,6 @@ brew cask install tunnelbear
 brew cask install vagrant
 brew cask install virtualbox
 brew cask install vlc
-brew cask install whatsapp
 brew cask install xquartz
 "
 
