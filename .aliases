@@ -215,7 +215,7 @@ if [[ $OS == 'Darwin' ]]; then
   alias backup='diskutil quiet mount "Time Machine Backups"; tmutil startbackup --block; diskutil quiet eject "Time Machine Backups"'
 
   # Tor new identity
-  alias tornewidentity="docker exec tor bash -c 'kill -HUP \$(pidof tor)'"
+  alias tornewidentity='docker kill --signal=HUP tor'
 
   # Lock/Unlock directory or file
   function lock() {
