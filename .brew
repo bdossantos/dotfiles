@@ -36,6 +36,7 @@ brew install awscli
 brew install bash
 brew install bash-completion@2
 brew install bats
+brew install binutils
 brew install cheat
 brew install chruby
 brew install cli53
@@ -43,12 +44,22 @@ brew install closure-compiler
 brew install coreutils
 brew install ctags
 brew install curl --with-openssl && brew link --force curl
+brew install diffutils
 brew install dnscrypt-proxy
-brew install entr
+brew install ed --with-default-names
 brew install editorconfig
+brew install entr
 brew install fd
 brew install ffmpeg
 brew install findutils
+brew install findutils --with-default-names
+brew install gawk
+brew install gnu-indent --with-default-names
+brew install gnu-sed --with-default-names
+brew install gnu-tar --with-default-names
+brew install gnu-which --with-default-names
+brew install grep --with-default-names
+brew install gzip
 brew install fzf \
   && "$(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc"
 brew install gifsicle
@@ -56,6 +67,7 @@ brew install git
 brew install gnu-sed --with-default-names
 brew install gnu-tar
 brew install go
+brew install gpatch
 brew install gpg
 brew install graphviz
 brew install gsl
@@ -70,7 +82,9 @@ brew install jpegoptim
 brew install jq
 brew install kops
 brew install kubectx
+brew install less
 brew install lesspipe
+brew install make --with-default-names
 brew install moreutils
 brew install openssl && brew link openssl --force
 brew install optipng
@@ -107,7 +121,7 @@ brew install tor
 brew install torsocks
 brew install tree
 brew install v
-brew install vim --with-python3
+brew install vim --with-python3 --override-system-vi
 brew install virt-manager
 brew install virt-viewer
 brew install watch
