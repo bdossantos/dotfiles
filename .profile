@@ -34,9 +34,9 @@ export LESS='-F -g -i -M -R -S -w -X -z-4'
 
 # Set the Less input preprocessor.
 # Try both `lesspipe` and `lesspipe.sh` as either might exist on a system.
-if less_pipe=$(which lesspipe); then
+if less_pipe=$(command -v lesspipe); then
   eval "$($less_pipe)"
-elif less_pipe=$(which lesspipe.sh); then
+elif less_pipe=$(command -v lesspipe.sh); then
   eval "$($less_pipe)"
 fi
 

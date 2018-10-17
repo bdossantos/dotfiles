@@ -1,3 +1,5 @@
+# shellcheck disable=SC1090
+
 # vi mode
 set -o vi
 
@@ -61,7 +63,7 @@ fi
 # kops
 if [ ! -f "${HOME}/.kops/completion.bash.inc" ]; then
   mkdir -m 0700 -p "${HOME}/.kops/"
-  which kops &>/dev/null \
+  command -v kops &>/dev/null \
     && kops completion bash > "${HOME}/.kops/completion.bash.inc"
 fi
 
@@ -75,7 +77,7 @@ if [ -f "${HOME}/.fzf.bash" ]; then
 fi
 
 # Auto start|attach tmux session
-if which tmux &>/dev/null; then
+if command -v tmux &>/dev/null; then
   if [ -z "$TMUX" ] ;then
     if tmux ls &> /dev/null; then
       exec tmux attach-session
@@ -89,7 +91,7 @@ fi
 if ! ssh-add -l &>/dev/null; then
   SSH_AGENT="${HOME}/.ssh-agent"
 
-  [ -r $SSH_AGENT ] \
+  [ -r "$SSH_AGENT" ] \
     && eval "$(< "$SSH_AGENT")" >/dev/null
 
   if ! ssh-add -l &>/dev/null; then

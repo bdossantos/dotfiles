@@ -122,11 +122,11 @@ function main() {
 
   _restic_backup_files
 
-  if which mysqld &>/dev/null; then
+  if command -v mysqld &>/dev/null; then
     _restic_backup_mysql
   fi
 
-  if which pg_dumpall &>/dev/null; then
+  if command -v pg_dumpall &>/dev/null; then
     _restic_backup_postgresql
   fi
 

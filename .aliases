@@ -8,7 +8,7 @@ export OS
 # Misc
 alias vi='vim'
 alias ri='ri -f ansi'
-which colordiff &>/dev/null && alias diff='colordiff'
+command -v colordiff &>/dev/null && alias diff='colordiff'
 
 # Git
 alias gc='git commit -v'
@@ -72,7 +72,7 @@ alias ll='ls -lah'
 alias shred='shred -n 200 -z -u'
 
 # Cuz IMADUMMY
-if which mysql &>/dev/null; then
+if command -v mysql &>/dev/null; then
   alias mysql='mysql --i-am-a-dummy'
 
   mysql-fast-shutdown() {
@@ -113,7 +113,7 @@ alias goaccess='goaccess -p ~/.goaccessrc '
 
 # ssht/sshrc
 alias ssht=sshrc
-which compdef &>/dev/null && compdef ssht=ssh && compdef sshrc=ssh
+command -v compdef &>/dev/null && compdef ssht=ssh && compdef sshrc=ssh
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
@@ -146,7 +146,7 @@ function netdata() {
   ssh -N -L "${port}:127.0.0.1:19999" "${@}"
 }
 
-which compdef &>/dev/null && compdef netdata=ssh
+command -v compdef &>/dev/null && compdef netdata=ssh
 
 # Aliases for OSx
 # See https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
@@ -292,7 +292,7 @@ if [[ $OS == 'Linux' ]]; then
   alias listbans='iptables -L -v -n | grep -e Chain -e DROP'
 
   # Log
-  if which ccze &>/dev/null; then
+  if command -v ccze &>/dev/null; then
     alias syslog='sudo tail -f /var/log/syslog | ccze'
   else
     alias syslog='sudo tail -f /var/log/syslog'
@@ -301,7 +301,7 @@ if [[ $OS == 'Linux' ]]; then
   alias tf='sudo tail -f'
 
   # Memcached
-  if which memcached &>/dev/null; then
+  if command -v memcached &>/dev/null; then
     memcached_ip=$(grep 'IP' -A1 /etc/memcached.conf | tail -n 1 | cut -d' ' -f2)
     memcached_port=$(grep 'port' -A1 /etc/memcached.conf | tail -n 1 | cut -d' ' -f2)
 
@@ -323,17 +323,17 @@ if [[ $OS == 'Linux' ]]; then
   alias http_popular_urls="cat *access.log | awk '{ print $7 }' | sort | uniq -c | sort -rn | head -n 25"
 
   # services specific
-  if which nginx &>/dev/null; then
+  if command -v nginx &>/dev/null; then
     alias nginxtest='nginx -t'
     alias nginxreload='nginxtest && service nginx reload'
   fi
 
-  if which apache2ctl &>/dev/null; then
+  if command -v apache2ctl &>/dev/null; then
     alias apachetest='apache2ctl -t'
     alias apachereload='apachetest && service apache2 reload'
   fi
 
-  if which php5-fpm &>/dev/null; then
+  if command -v php5-fpm &>/dev/null; then
     alias php5fpmtest='php5-fpm -t'
     alias php5fpmreload='php5-fpmtest && service php5-fpm reload'
     alias php5fpmstatus='curl 127.0.0.1/status'
