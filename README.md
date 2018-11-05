@@ -49,19 +49,20 @@ exec $SHELL
 
 ### Choosing between .bashrc, .profile, .bash_profile, etc [...]
 
-* ~/.bash_profile should be super-simple and just load .profile and .bashrc
-  (in that order)
-* ~/.profile has the stuff NOT specifically related to bash, such as environment
-  variables (PATH and friends)
-* ~/.bashrc has anything you'd want at an interactive command line. Command
+* `~/.bash_profile` should be super-simple and just load `~/.profile` and
+  `~/.bashrc` (in that order)
+* `~/.profile` has the stuff NOT specifically related to bash, such as
+  environment variables (PATH and friends)
+* `~/.bashrc` has anything you'd want at an interactive command line. Command
   prompt, EDITOR variable, bash aliases for my use
 
 A few other notes:
 
 * Anything that should be available to graphical applications OR to sh (or bash
-  invoked as sh) MUST be in ~/.profile
-* ~/.bashrc must not output anything
-* Anything that should be available only to login shells should go in ~/.profile
-* Ensure that ~/.bash_login does not exist.
+  invoked as sh) MUST be in `~/.profile`
+* `~/.bashrc` must not output anything
+* Anything that should be available only to login shells should go in
+  `~/.profile`
+* Ensure that `~/.bash_login` does not exist.
 
 See also https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html
