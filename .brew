@@ -121,7 +121,7 @@ brew install tor
 brew install torsocks
 brew install tree
 brew install v
-brew install vim --with-python3 --override-system-vi
+brew install vim
 brew install virt-manager
 brew install virt-viewer
 brew install watch
