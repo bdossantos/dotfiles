@@ -84,6 +84,7 @@ brew install kops
 brew install kubectx
 brew install less
 brew install lesspipe
+brew install macvim
 brew install make --with-default-names
 brew install moreutils
 brew install openssl && brew link openssl --force
@@ -121,7 +122,6 @@ brew install tor
 brew install torsocks
 brew install tree
 brew install v
-brew install vim
 brew install virt-manager
 brew install virt-viewer
 brew install watch
