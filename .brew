@@ -17,12 +17,8 @@ brew tap caskroom/drivers
 brew tap caskroom/fonts
 brew tap caskroom/versions
 brew tap coinbase/assume-role
-brew tap homebrew/binary
 brew tap homebrew/cask-drivers
-brew tap homebrew/devel-only
-brew tap homebrew/dupes
 brew tap homebrew/services
-brew tap homebrew/versions
 brew tap jeffreywildman/homebrew-virt-manager
 brew tap thoughtbot/formulae
 brew tap tldr-pages/tldr
