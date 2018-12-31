@@ -257,4 +257,3 @@ brew link xz
 
 # clean
 brew cleanup
-brew cask cleanup
