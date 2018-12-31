@@ -141,8 +141,6 @@ brew tap caskroom/cask
 brew update
 
 brew cask install 1password
-brew cask install dropbox
-brew cask install etcher
 brew cask install firefox
 brew cask install flux
 brew cask install font-hack
