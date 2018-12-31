@@ -24,106 +24,106 @@ brew tap thoughtbot/formulae
 brew tap tldr-pages/tldr
 
 echo '--> Install all brew Packages'
-brew install ack
-brew install advancecomp
-brew install ansifilter
-brew install autoenv
-brew install awscli
-brew install bash
-brew install bash-completion@2
-brew install bats
-brew install binutils
-brew install cheat
-brew install chruby
-brew install cli53
-brew install closure-compiler
-brew install coreutils
-brew install ctags
-brew install curl --with-openssl && brew link --force curl
-brew install diffutils
-brew install dnscrypt-proxy
-brew install ed --with-default-names
-brew install editorconfig
-brew install entr
-brew install fd
-brew install ffmpeg
-brew install findutils
-brew install findutils --with-default-names
-brew install gawk
-brew install gnu-indent --with-default-names
-brew install gnu-sed --with-default-names
-brew install gnu-tar --with-default-names
-brew install gnu-which --with-default-names
-brew install grep --with-default-names
-brew install gzip
-brew install fzf \
-  && "$(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc"
-brew install gifsicle
-brew install git
-brew install gnu-sed --with-default-names
-brew install gnu-tar
-brew install go
-brew install gpatch
-brew install gpg
-brew install graphviz
-brew install gsl
-brew install hadolint
-brew install htmlcompressor --yuicompressor
-brew install htop-osx
-brew install imagemagick --with-webp
-brew install ipcalc
-brew install jhead
-brew install jpeg
-brew install jpegoptim
-brew install jq
-brew install kops
-brew install kubectx
-brew install less
-brew install lesspipe
-brew install macvim
-brew install make --with-default-names
-brew install moreutils
-brew install openssl && brew link openssl --force
-brew install optipng
-brew install packer
-brew install pigz
-brew install pngcrush
-brew install pngquant
-brew install pre-commit
-brew install proselint
-brew install pv
-brew install pwgen
-brew install pyenv
-brew install pyenv-virtualenv
-brew install pyenv-virtualenvwrapper
-brew install readline
-brew install reattach-to-user-namespace
-brew install ruby-build
-brew install ruby-install
-brew install s3cmd
-brew install shellcheck
-brew install shpotify
-brew install spark
-brew install ssh-copy-id
-brew install sshrc
-brew install stow
-brew install tcpdump
-brew install terminal-notifier
-brew install terraform
-brew install the_silver_searcher
-brew install tig
-brew install tldr
-brew install tmux
-brew install tor
-brew install torsocks
-brew install tree
-brew install v
-brew install virt-manager
-brew install virt-viewer
-brew install watch
-brew install wget
-brew install xz
-brew install z
+brew install \
+  ack \
+  advancecomp \
+  ansifilter \
+  autoenv \
+  awscli \
+  bash \
+  bash-completion@2 \
+  bats \
+  binutils \
+  cheat \
+  chruby \
+  cli53 \
+  closure-compiler \
+  coreutils \
+  ctags \
+  curl --with-openssl \
+  diffutils \
+  dnscrypt-proxy \
+  ed --with-default-names \
+  editorconfig \
+  entr \
+  fd \
+  ffmpeg \
+  findutils \
+  findutils --with-default-names \
+  gawk \
+  gnu-indent --with-default-names \
+  gnu-sed --with-default-names \
+  gnu-tar --with-default-names \
+  gnu-which --with-default-names \
+  grep --with-default-names \
+  gzip \
+  fzf \
+  gifsicle \
+  git \
+  gnu-sed --with-default-names \
+  gnu-tar \
+  go \
+  gpatch \
+  gpg \
+  graphviz \
+  gsl \
+  hadolint \
+  htmlcompressor --yuicompressor \
+  htop-osx \
+  imagemagick --with-webp \
+  ipcalc \
+  jhead \
+  jpeg \
+  jpegoptim \
+  jq \
+  kops \
+  kubectx \
+  less \
+  lesspipe \
+  macvim \
+  make --with-default-names \
+  moreutils \
+  openssl \
+  optipng \
+  packer \
+  pigz \
+  pngcrush \
+  pngquant \
+  pre-commit \
+  proselint \
+  pv \
+  pwgen \
+  pyenv \
+  pyenv-virtualenv \
+  pyenv-virtualenvwrapper \
+  readline \
+  reattach-to-user-namespace \
+  ruby-build \
+  ruby-install \
+  s3cmd \
+  shellcheck \
+  shpotify \
+  spark \
+  ssh-copy-id \
+  sshrc \
+  stow \
+  tcpdump \
+  terminal-notifier \
+  terraform \
+  the_silver_searcher \
+  tig \
+  tldr \
+  tmux \
+  tor \
+  torsocks \
+  tree \
+  v \
+  virt-manager \
+  virt-viewer \
+  watch \
+  wget \
+  xz \
+  z
 
 # login as admin to install all casks system-wide in /Applications
 su admin -c "
@@ -140,33 +140,34 @@ brew tap caskroom/cask
 
 brew update
 
-brew cask install 1password
-brew cask install firefox
-brew cask install flux
-brew cask install font-hack
-brew cask install gimp
-brew cask install google-chrome
-brew cask install google-drive
-brew cask install gpgtools
-brew cask install imageoptim
-brew cask install iterm2
-brew cask install java6
-brew cask install java7
-brew cask install keybase
-brew cask install little-snitch
-brew cask install micro-snitch
-brew cask install movelinks
-brew cask install omnigraffle
-brew cask install sequel-pro
-brew cask install spectacle
-brew cask install spotify
-brew cask install synology-drive
-brew cask install torbrowser
-brew cask install tunnelbear
-brew cask install vagrant
-brew cask install virtualbox
-brew cask install vlc
-brew cask install xquartz
+brew cask install \
+  1password \
+  firefox \
+  flux \
+  font-hack \
+  gimp \
+  google-chrome \
+  google-drive \
+  gpgtools \
+  imageoptim \
+  iterm2 \
+  java6 \
+  java7 \
+  keybase \
+  little-snitch \
+  micro-snitch \
+  movelinks \
+  omnigraffle \
+  sequel-pro \
+  spectacle \
+  spotify \
+  synology-drive \
+  torbrowser \
+  tunnelbear \
+  vagrant \
+  virtualbox \
+  vlc \
+  xquartz
 "
 
 ## gcloud
