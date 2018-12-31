@@ -131,7 +131,7 @@ while true; do sudo -n true; sleep 60; kill -0 $$ || exit; done 2>/dev/null &
 
 make -f ${HOME}/.dotfiles/Makefile install-homebrew
 
-export HOMEBREW_CASK_OPTS='--appdir=/Applications --caskroom=/Users/admin/.homebrew/Caskroom --no-binaries'
+export HOMEBREW_CASK_OPTS='--appdir=/Applications --no-binaries'
 export PATH='/Users/admin/.homebrew/bin:${PATH}'
 
 echo '--> Install/update Homebrew cask'
