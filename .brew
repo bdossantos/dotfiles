@@ -150,7 +150,7 @@ brew cask install \
   gimp \
   google-chrome \
   google-backup-and-sync \
-  gpgtools \
+  gpg-suite \
   imageoptim \
   iterm2 \
   java6 \
