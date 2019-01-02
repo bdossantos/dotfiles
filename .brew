@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+export HOMEBREW_CASK_OPTS="--appdir=${HOME}/Applications --fontdir=/Library/Fonts --no-binaries"
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_INSECURE_REDIRECT=1
 export PATH="${HOME}/.homebrew/bin:${PATH}"
@@ -125,7 +126,30 @@ brew install \
   xz \
   z
 
-# login as admin to install all casks system-wide in /Applications
+# install some casks in ~/Applications
+brew cask install \
+  1password \
+  firefox \
+  flux \
+  font-hack \
+  font-hack-nerd-font \
+  gimp \
+  google-chrome \
+  google-backup-and-sync \
+  imageoptim \
+  iterm2 \
+  keybase \
+  little-snitch \
+  micro-snitch \
+  omnigraffle \
+  sequel-pro \
+  spectacle \
+  spotify \
+  tor-browser \
+  tunnelbear \
+  vlc
+
+# login as admin to install some casks system-wide in /Applications
 su admin -c "
 while true; do sudo -n true; sleep 60; kill -0 $$ || exit; done 2>/dev/null &
 
@@ -142,30 +166,10 @@ brew tap homebrew/cask-fonts
 brew update
 
 brew cask install \
-  1password \
-  firefox \
-  flux \
-  font-hack \
-  font-hack-nerd-font \
-  gimp \
-  google-chrome \
-  google-backup-and-sync \
   gpg-suite \
-  imageoptim \
-  iterm2 \
-  keybase \
-  little-snitch \
-  micro-snitch \
-  omnigraffle \
-  sequel-pro \
-  spectacle \
-  spotify \
   suunto-moveslink \
-  tor-browser \
-  tunnelbear \
   vagrant \
   virtualbox \
-  vlc \
   xquartz
 "
 
