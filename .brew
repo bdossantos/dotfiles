@@ -161,7 +161,7 @@ brew cask install \
   spectacle \
   spotify \
   suunto-moveslink \
-  torbrowser \
+  tor-browser \
   tunnelbear \
   vagrant \
   virtualbox \
