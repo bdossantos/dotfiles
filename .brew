@@ -149,7 +149,7 @@ brew cask install \
   font-hack-nerd-font \
   gimp \
   google-chrome \
-  google-drive \
+  google-backup-and-sync \
   gpgtools \
   imageoptim \
   iterm2 \
