@@ -153,8 +153,6 @@ brew cask install \
   gpg-suite \
   imageoptim \
   iterm2 \
-  java6 \
-  java7 \
   keybase \
   little-snitch \
   micro-snitch \
