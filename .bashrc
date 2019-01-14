@@ -13,6 +13,10 @@ if [ -f "${BASE16_SHELL}/profile_helper.sh" ]; then
   eval "$("${BASE16_SHELL}/profile_helper.sh")"
 fi
 
+if [ -z "$BASE16_THEME" ] && type base16_ia-dark &>/dev/null; then
+  base16_ia-dark
+fi
+
 # bash completions
 if [ -f /etc/bash_completion ]; then
   source /etc/bash_completion
