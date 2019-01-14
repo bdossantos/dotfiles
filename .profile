@@ -53,7 +53,6 @@ fi
 
 # color scheme
 export TERM='xterm-256color'
-export BASE16_THEME='base16-ashes'
 export BASE16_SHELL="${HOME}/.base16-shell"
 
 # enable cheat syntax highlighting
