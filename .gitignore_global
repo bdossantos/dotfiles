@@ -1,3 +1,7 @@
+# Icon must end with two \r
+Icon
+
+
 **/.terraform/*
 *.bak
 *.env
@@ -16,6 +20,7 @@
 .AppleDesktop
 .AppleDouble
 .DS_Store
+.DS_Store
 .DocumentRevisions-V100
 .LSOverride
 .Spotlight-V100
@@ -25,11 +30,14 @@
 .VolumeIcon.icns
 ._*
 .apdisk
+.apdisk
+.com.apple.timemachine.donotpresent
 .com.apple.timemachine.donotpresent
 .directory
 .dropbox
 .dropbox.attr
 .dropbox.cache
+.fseventsd
 .fseventsd
 .fuse_hidden*
 .netrwhist
@@ -39,7 +47,9 @@
 .vagrant/
 Desktop.ini
 Network Trash Folder
+Network Trash Folder
 Session.vim
+Temporary Items
 Temporary Items
 Thumbs.db
 [._]*.s[a-v][a-z]
