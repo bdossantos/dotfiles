@@ -118,6 +118,8 @@ function _restic_init() {
 }
 
 function main() {
+  cd /
+
   _restic_init
 
   _restic_backup_files
