@@ -52,7 +52,7 @@ function _restic_backup_files() {
     | restic \
       --quiet \
       --stdin \
-      --stdin-filename='system.tar.gz' \
+      --stdin-filename='/system.tar.gz' \
       backup
 }
 
@@ -79,7 +79,7 @@ function _restic_backup_mysql() {
     | restic \
       --quiet \
       --stdin \
-      --stdin-filename="mysql.sql.gz" \
+      --stdin-filename="/mysql.sql.gz" \
       backup
 }
 
@@ -91,7 +91,7 @@ function _restic_backup_postgresql() {
     | restic \
       --quiet \
       --stdin \
-      --stdin-filename="postgresql.sql.gz" \
+      --stdin-filename="/postgresql.sql.gz" \
       backup
 }
 
