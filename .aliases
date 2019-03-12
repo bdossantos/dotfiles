@@ -78,6 +78,13 @@ if command -v gshuf &> /dev/null; then
   alias shuf='gshuf'
 fi
 
+# clear
+alias c='clear'
+alias k='clear'
+alias cls='clear'
+
+alias q='exit'
+
 # Cuz IMADUMMY
 if command -v mysql &>/dev/null; then
   alias mysql='mysql --i-am-a-dummy'
