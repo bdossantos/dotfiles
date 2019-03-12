@@ -9,6 +9,7 @@ export OS
 alias vi='vim'
 alias ri='ri -f ansi'
 command -v colordiff &>/dev/null && alias diff='colordiff'
+alias takeover='tmux detach -a'
 
 # Git
 alias gc='git commit -v'
