@@ -3,8 +3,9 @@ export PATH="$HOME/.homebrew/bin:$HOME/.homebrew/sbin:$HOME/bin:/usr/local/bin:/
 
 # Homebrew prefix
 export HOMEBREW_PREFIX='/usr/local'
-if which brew &>/dev/null; then
-  export HOMEBREW_PREFIX="$(brew --prefix)"
+if command -v brew &>/dev/null; then
+  HOMEBREW_PREFIX="$(brew --prefix)"
+  export HOMEBREW_PREFIX
 fi
 
 # You may need to manually set your language environment
