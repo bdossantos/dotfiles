@@ -201,10 +201,6 @@ if [[ $OS == 'Darwin' ]]; then
   # Finally, clear download history from quarantine. https://mths.be/bum
   alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
 
-  # Empty the Trash on all mounted volumes and the main HDD
-  # Also, clear Apple’s System Logs to improve shell startup speed
-  alias emptytrash='sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl'
-
   # Show/hide hidden files in Finder
   alias show='defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder'
   alias hide='defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder'
@@ -241,6 +237,10 @@ if [[ $OS == 'Darwin' ]]; then
 
   # Manual backup
   alias backup='diskutil quiet mount "Time Machine Backups"; tmutil startbackup --block; diskutil quiet eject "Time Machine Backups"'
+
+  # Mute/Unmute the system volume. Plays nice with all other volume settings.
+  alias mute="osascript -e 'set volume output muted true'"
+  alias unmute="osascript -e 'set volume output muted false'"
 
   # Tor new identity
   alias tornewidentity='docker kill --signal=HUP tor'
