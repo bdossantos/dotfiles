@@ -39,7 +39,7 @@ if [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
 fi
 
 # pyenv
-which pyenv &>/dev/null && eval "$(pyenv init -)"
+command -v pyenv &>/dev/null && eval "$(pyenv init -)"
 
 # z is the new j, yo
 if [ -f "${HOMEBREW_PREFIX}/etc/profile.d/z.sh" ]; then
