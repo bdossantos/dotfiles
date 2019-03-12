@@ -73,6 +73,11 @@ alias ll='ls -lah'
 # Delete file securely
 alias shred='shred -n 200 -z -u'
 
+# Shuf
+if command -v gshuf &> /dev/null; then
+  alias shuf='gshuf'
+fi
+
 # Cuz IMADUMMY
 if command -v mysql &>/dev/null; then
   alias mysql='mysql --i-am-a-dummy'
