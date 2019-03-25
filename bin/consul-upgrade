@@ -67,5 +67,6 @@ EOF
   ./consul version | grep "Consul v${CONSUL_VERSION}"
   mv consul /usr/local/bin/consul
 
+  consul snapshot save "${HOME}/consul_$(date '+%Y-%m-%d-%H:%M:%S').snap"
   service consul restart
 popd
