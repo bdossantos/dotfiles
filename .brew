@@ -214,7 +214,7 @@ done
 mkdir -p "${HOME}/.rubies"
 
 RUBIES=(
-  2.6.0
+  2.6.2
 )
 
 for ruby in "${RUBIES[@]}"; do
