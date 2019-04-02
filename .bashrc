@@ -3,6 +3,13 @@
 # vi mode
 set -o vi
 
+# PS1
+export PS1="\[\e[1;30m\]\W\[\e[m\] \\$ "
+
+if [ -f ~/.bds.theme.sh ]; then
+  source ~/.bds.theme.sh
+fi
+
 # base16
 if [ -f "${BASE16_SHELL}/profile_helper.sh" ]; then
   eval "$("${BASE16_SHELL}/profile_helper.sh")"
