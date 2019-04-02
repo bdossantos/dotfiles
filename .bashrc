@@ -3,11 +3,6 @@
 # vi mode
 set -o vi
 
-# Bash-it
-if [ -f "${BASH_IT}/bash_it.sh" ]; then
-  source "${BASH_IT}/bash_it.sh"
-fi
-
 # base16
 if [ -f "${BASE16_SHELL}/profile_helper.sh" ]; then
   eval "$("${BASE16_SHELL}/profile_helper.sh")"
