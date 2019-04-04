@@ -110,6 +110,7 @@ function _restic_init() {
 
   echo "--> init restic repository to ${RESTIC_REPOSITORY}"
 
+  restic version
   restic init || true
   restic unlock
 }
