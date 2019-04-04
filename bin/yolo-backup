@@ -119,8 +119,6 @@ function main() {
 
   _restic_init
 
-  _restic_backup_files
-
   if command -v mysqld; then
     _restic_backup_mysql
   fi
@@ -128,6 +126,8 @@ function main() {
   if command -v pg_dumpall; then
     _restic_backup_postgresql
   fi
+
+  _restic_backup_files
 
   _restic_forget
 
