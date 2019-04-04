@@ -50,7 +50,6 @@ function _restic_backup_files() {
     -cpf - \
     / \
     | restic \
-      --quiet \
       --stdin \
       --stdin-filename='/system.tar.gz' \
       backup
@@ -77,7 +76,6 @@ function _restic_backup_mysql() {
       --best \
       --to-stdout \
     | restic \
-      --quiet \
       --stdin \
       --stdin-filename="/mysql.sql.gz" \
       backup
@@ -89,7 +87,6 @@ function _restic_backup_postgresql() {
       --best \
       --to-stdout \
     | restic \
-      --quiet \
       --stdin \
       --stdin-filename="/postgresql.sql.gz" \
       backup
@@ -113,7 +110,7 @@ function _restic_init() {
 
   echo "--> init restic repository to ${RESTIC_REPOSITORY}"
 
-  restic --quiet init || true
+  restic init || true
   restic unlock
 }
 
@@ -124,11 +121,11 @@ function main() {
 
   _restic_backup_files
 
-  if command -v mysqld &>/dev/null; then
+  if command -v mysqld; then
     _restic_backup_mysql
   fi
 
-  if command -v pg_dumpall &>/dev/null; then
+  if command -v pg_dumpall; then
     _restic_backup_postgresql
   fi
 
