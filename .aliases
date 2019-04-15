@@ -143,6 +143,9 @@ alias goaccess='goaccess -p ~/.goaccessrc '
 alias ssht=sshrc
 command -v compdef &>/dev/null && compdef ssht=ssh && compdef sshrc=ssh
 
+# Secure ssh-agent usage
+alias ssh-add='ssh-add -c -t 4h'
+
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
 
