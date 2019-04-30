@@ -30,6 +30,10 @@ if [ -f "${HOMEBREW_PREFIX}/etc/bash_completion" ]; then
   source "${HOMEBREW_PREFIX}/etc/bash_completion"
 fi
 
+if [ "${BASH_VERSINFO}" -ge 4 ] && [ -f "${HOMEBREW_PREFIX}/share/bash-completion/bash_completion" ]; then
+  source "${HOMEBREW_PREFIX}/share/bash-completion/bash_completion"
+fi
+
 # chruby
 if [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
   RUBIES=("${HOME}/.rubies/*")
