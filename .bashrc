@@ -30,8 +30,8 @@ if [ -f "${HOMEBREW_PREFIX}/etc/bash_completion" ]; then
   source "${HOMEBREW_PREFIX}/etc/bash_completion"
 fi
 
-if [ "${BASH_VERSINFO}" -ge 4 ] && [ -f "${HOMEBREW_PREFIX}/share/bash-completion/bash_completion" ]; then
-  source "${HOMEBREW_PREFIX}/share/bash-completion/bash_completion"
+if [ -f "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]; then
+  source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
 fi
 
 # chruby
