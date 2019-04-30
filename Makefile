@@ -52,7 +52,6 @@ install-bash-it: ## Clone and pull bash-it, a community Bash framework
 			osx \
 		&& bash-it enable completion \
 			bash-it \
-			system \
 			ssh \
 		&& bash-it enable plugin \
 			alias-completion \
