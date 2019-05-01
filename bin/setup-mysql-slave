@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # A quick & dirty script to setup a MySQL slave thanks to Percona Xtrabackup
-# http://www.percona.com/doc/percona-xtrabackup/2.1/howtos/setting_up_replication.html
+# https://www.percona.com/doc/percona-xtrabackup/2.4/howtos/setting_up_replication.html
 
 set -o errexit
 set -o pipefail
@@ -18,8 +18,8 @@ readonly BACKUP_DESTINATION="/home/${SLAVE_SSH_USER}/mysql.$$"
 readonly MYSQL_SETUP_SLAVE_SQL="/tmp/setup_slave.$$.sql"
 readonly NPROC=$(grep -c processor < /proc/cpuinfo || 4)
 
-if ! command -v innobackupex &>/dev/null || ! command -v pigz &>/dev/null; then
-  >&2 echo "innobackupex or pigz aren't installed or in PATH"
+if ! command -v xtrabackup &>/dev/null || ! command -v pigz &>/dev/null; then
+  >&2 echo "xtrabackup or pigz aren't installed or in PATH"
   exit 1
 fi
 
@@ -28,25 +28,25 @@ if ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "mkdir ${BACKUP_DESTINATION}"; then
   exit 1
 fi
 
-if ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "command -v innobackupex" \
+if ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "command -v xtrabackup" \
   || ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "command -v pigz"; then
-  >&2 echo "innobackupex or pigz aren't installed or in PATH on the slave"
+  >&2 echo "xtrabackup or pigz aren't installed or in PATH on the slave"
   exit 1
 fi
 
 ulimit -n 65536
-innobackupex --slave-info --parallel="${NPROC}" --stream=tar ./ | \
+xtrabackup --slave-info --parallel="${NPROC}" --stream=tar ./ | \
   pigz -p "$NPROC" - | \
   ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" \
   "pigz -dc -p ${NPROC} - | tar -C ${BACKUP_DESTINATION} -ixvf -"
 
 if [[ $? -ne 0 ]]; then
-  >&2 echo "Innobackupex command failed"
+  >&2 echo "xtrabackup command failed"
   exit 1
 fi
 
 ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" \
-  "innobackupex --apply-log ${BACKUP_DESTINATION}"
+  "xtrabackup --prepare --target-dir=${BACKUP_DESTINATION}"
 ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "sudo service mysql stop"
 ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "sudo chown -R mysql:mysql ${BACKUP_DESTINATION}"
 ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "sudo mkdir -m 0755 -p ${MYSQL_DATADIR}"
