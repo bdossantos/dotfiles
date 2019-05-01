@@ -41,7 +41,7 @@ brew install \
   closure-compiler \
   coreutils \
   ctags \
-  curl --with-openssl \
+  curl \
   diffutils \
   dnscrypt-proxy \
   ed --with-default-names \
