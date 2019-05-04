@@ -108,10 +108,13 @@ function _restic_init() {
     exit 1
   fi
 
-  echo "--> init restic repository to ${RESTIC_REPOSITORY}"
-
   restic version
-  restic init || true
+
+  if ! restic snapshots; then
+    echo "--> init restic repository to ${RESTIC_REPOSITORY}"
+    restic init
+  fi
+
   restic unlock
 }
 
