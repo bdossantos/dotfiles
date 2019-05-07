@@ -23,7 +23,7 @@ if ! command -v xtrabackup &>/dev/null || ! command -v pigz &>/dev/null; then
   exit 1
 fi
 
-if ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "mkdir ${BACKUP_DESTINATION}"; then
+if ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "mkdir -p ${BACKUP_DESTINATION}"; then
   >&2 echo "Can't connect to slave via SSH"
   exit 1
 fi
@@ -35,10 +35,15 @@ if ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "command -v xtrabackup" \
 fi
 
 ulimit -n 65536
-xtrabackup --slave-info --parallel="${NPROC}" --stream=tar ./ | \
+xtrabackup \
+  --backup \
+  --slave-info \
+  --stream=tar \
+  --parallel="$((NPROC / 2))" \
+  --target-dir=./ | \
   pigz -p "$NPROC" - | \
   ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" \
-  "pigz -dc -p ${NPROC} - | tar -C ${BACKUP_DESTINATION} -ixvf -"
+    "pigz -dc -p \$(grep -c processor < /proc/cpuinfo || 4) - | tar -C ${BACKUP_DESTINATION} -ixvf -"
 
 if [[ $? -ne 0 ]]; then
   >&2 echo "xtrabackup command failed"
