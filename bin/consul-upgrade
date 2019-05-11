@@ -65,8 +65,10 @@ EOF
   chown nobody.nogroup consul
   chmod +x ./consul
   ./consul version | grep "Consul v${CONSUL_VERSION}"
-  mv consul /usr/local/bin/consul
 
   consul snapshot save "${HOME}/consul_$(date '+%Y-%m-%d-%H:%M:%S').snap"
+  consul leave
+
+  mv -f consul /usr/local/bin/consul
   service consul restart
 popd
