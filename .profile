@@ -21,7 +21,7 @@ export HISTFILE="${HOME}/.bash_history"
 export HISTSIZE=32768
 export HISTFILESIZE=$HISTSIZE
 export HISTCONTROL='ignoreboth'
-export HISTIGNORE='ls:cd:cd -:pwd:exit:date:* --help'
+export HISTIGNORE='ls:cd:cd -:pwd:exit:date:* --help:vault*'
 export HISTTIMEFORMAT='%h/%d -- %H:%M:%S '
 export PROMPT_COMMAND='history -a'
 
