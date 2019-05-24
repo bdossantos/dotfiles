@@ -18,7 +18,7 @@ pushd /tmp
   curl --silent --remote-name https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS
   curl --silent --remote-name https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS.sig
 
-cat << EOF > /tmp/hashicorp.asc
+  cat << EOF > /tmp/hashicorp.asc
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v1
 
@@ -70,5 +70,50 @@ EOF
   consul leave
 
   mv -f consul /usr/local/bin/consul
+
+  cat << 'EOF' > /lib/systemd/system/consul.service
+### BEGIN INIT INFO
+# Provides:          consul
+# Required-Start:    $local_fs $remote_fs
+# Required-Stop:     $local_fs $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Consul agent
+# Description:       Consul service discovery framework
+### END INIT INFO
+
+[Unit]
+Description=Consul agent
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+User=nobody
+Group=nogroup
+PIDFile=/var/run/consul/consul.pid
+PermissionsStartOnly=true
+ExecStartPre=-/bin/mkdir -m 0750 -p /var/run/consul
+ExecStartPre=/bin/chown -R nobody:nogroup /var/run/consul
+ExecStart=/usr/local/bin/consul agent \
+    -config-file=/etc/consul/config.json \
+    -config-dir=/etc/consul/consul.d \
+    -pid-file=/var/run/consul/consul.pid
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+KillSignal=SIGTERM
+Restart=on-failure
+RestartSec=42s
+Environment=CONSUL_UI_BETA=false
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+  chown root.root /lib/systemd/system/consul.service
+  chmod 0644 /lib/systemd/system/consul.service
+
+  systemctl enable consul
+  systemctl daemon-reload
   service consul restart
 popd
