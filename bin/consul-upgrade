@@ -6,7 +6,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-CONSUL_VERSION='1.5.0'
+CONSUL_VERSION='1.5.1'
 
 if /usr/local/bin/consul version | grep "Consul v${CONSUL_VERSION}" ; then
   echo 'Consul binary is already updated'
