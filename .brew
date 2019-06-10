@@ -68,9 +68,9 @@ brew install \
   graphviz \
   gsl \
   hadolint \
-  htmlcompressor --yuicompressor \
+  htmlcompressor \
   htop-osx \
-  imagemagick --with-webp \
+  imagemagick \
   ipcalc \
   jhead \
   jpeg \
