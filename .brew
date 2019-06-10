@@ -44,24 +44,23 @@ brew install \
   curl \
   diffutils \
   dnscrypt-proxy \
-  ed --with-default-names \
+  ed \
   editorconfig \
   entr \
   fd \
   ffmpeg \
   findutils \
-  findutils --with-default-names \
   gawk \
-  gnu-indent --with-default-names \
-  gnu-sed --with-default-names \
-  gnu-tar --with-default-names \
-  gnu-which --with-default-names \
-  grep --with-default-names \
+  gnu-indent \
+  gnu-sed \
+  gnu-tar \
+  gnu-which \
+  grep \
   gzip \
   fzf \
   gifsicle \
   git \
-  gnu-sed --with-default-names \
+  gnu-sed \
   gnu-tar \
   go \
   gpatch \
@@ -82,7 +81,7 @@ brew install \
   less \
   lesspipe \
   macvim \
-  make --with-default-names \
+  make \
   moreutils \
   openssl \
   optipng \
