@@ -110,6 +110,10 @@ if exists('+colorcolumn')
   set colorcolumn=80
 endif
 
+" Disable modelines for security reasons
+set modelines=0
+set nomodeline
+
 " always show the status line
 set laststatus=2
 
