@@ -159,6 +159,9 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
 
+" hashivim
+let g:terraform_fmt_on_save=1
+
 " Line number
 function! NumberToggle()
   if(&relativenumber == 1)
