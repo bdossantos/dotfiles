@@ -20,7 +20,6 @@ brew tap caskroom/versions
 brew tap coinbase/assume-role
 brew tap homebrew/cask-drivers
 brew tap homebrew/services
-brew tap jeffreywildman/homebrew-virt-manager
 brew tap thoughtbot/formulae
 brew tap tldr-pages/tldr
 
@@ -43,12 +42,10 @@ brew install \
   ctags \
   curl \
   diffutils \
-  dnscrypt-proxy \
   ed \
   editorconfig \
   entr \
   fd \
-  ffmpeg \
   findutils \
   gawk \
   gnu-indent \
@@ -70,7 +67,6 @@ brew install \
   hadolint \
   htmlcompressor \
   htop-osx \
-  imagemagick \
   ipcalc \
   jhead \
   jpeg \
@@ -80,7 +76,6 @@ brew install \
   kubectx \
   less \
   lesspipe \
-  macvim \
   make \
   moreutils \
   openssl \
@@ -103,7 +98,6 @@ brew install \
   s3cmd \
   shellcheck \
   shpotify \
-  spark \
   ssh-copy-id \
   sshrc \
   stow \
@@ -114,12 +108,9 @@ brew install \
   tig \
   tldr \
   tmux \
-  tor \
-  torsocks \
   tree \
   v \
-  virt-manager \
-  virt-viewer \
+  vim \
   watch \
   wget \
   xz \
