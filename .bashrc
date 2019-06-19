@@ -105,7 +105,7 @@ if ! ssh-add -l &>/dev/null; then
   if ! ssh-add -l &>/dev/null; then
     (umask 066; ssh-agent > "$SSH_AGENT")
     eval "$(< "$SSH_AGENT")" >/dev/null
-    ssh-add -c -t 8h
+    ssh-add -t 8h
   fi
 fi
 
