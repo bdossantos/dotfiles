@@ -30,6 +30,12 @@ if [ -f "${HOMEBREW_PREFIX}/etc/bash_completion" ]; then
   source "${HOMEBREW_PREFIX}/etc/bash_completion"
 fi
 
+if [ -d "${HOMEBREW_PREFIX}/etc/bash_completion.d/" ]; then
+  for completion in "${HOMEBREW_PREFIX}"/etc/bash_completion.d/*; do
+    [[ -f "$completion" ]] && source "$completion"
+  done
+fi
+
 if [ -f "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]; then
   source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
 fi
