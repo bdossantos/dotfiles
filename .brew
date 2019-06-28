@@ -28,7 +28,6 @@ brew install \
   ack \
   advancecomp \
   ansifilter \
-  autoenv \
   awscli \
   bash \
   bash-completion@2 \
@@ -41,6 +40,7 @@ brew install \
   coreutils \
   ctags \
   curl \
+  direnv \
   diffutils \
   ed \
   editorconfig \
