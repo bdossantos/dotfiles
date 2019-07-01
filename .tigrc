@@ -20,6 +20,10 @@ bind diff F !git commit --fixup %(commit)
 # Tag
 bind main T !git tag -f %(prompt) %(commit)
 
+# Push
+bind main P !git push origin
+bind status P !git push origin
+
 # Colors
 color cursor         white    black    bold
 color title-blur     white    black
