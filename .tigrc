@@ -18,7 +18,7 @@ bind main F !git commit --fixup %(commit)
 bind diff F !git commit --fixup %(commit)
 
 # Tag
-bind main T !git tag %(prompt) %(commit)
+bind main T !git tag -f %(prompt) %(commit)
 
 # Colors
 color cursor         white    black    bold
