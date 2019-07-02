@@ -9,7 +9,7 @@ before_script:
   - mkdir -p "$HOME/bin"
   - wget -qO- 'https://storage.googleapis.com/shellcheck/shellcheck-v0.6.0.linux.x86_64.tar.xz' | tar -xJv
   - mv 'shellcheck-v0.6.0/shellcheck' "$HOME/bin/shellcheck"
-  - chmod + "$HOME/bin/shellcheck"
+  - chmod +x "$HOME/bin/shellcheck"
   - export PATH=$HOME/bin:$PATH
 script:
   - make test
