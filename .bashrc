@@ -90,6 +90,11 @@ if [ -f "${HOME}/.fzf.bash" ]; then
   source "${HOME}/.fzf.bash"
 fi
 
+# nomad
+if command -v nomad &>/dev/null; then
+  complete -C nomad nomad
+fi
+
 # Auto start|attach tmux session
 if command -v tmux &>/dev/null; then
   if [ -z "$TMUX" ] ;then
