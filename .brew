@@ -97,6 +97,7 @@ brew install \
   ruby-install \
   s3cmd \
   shellcheck \
+  shfmt \
   shpotify \
   ssh-copy-id \
   sshrc \
