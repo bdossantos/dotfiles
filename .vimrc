@@ -144,6 +144,9 @@ let g:ale_sign_column_always = 1
 let g:ale_sign_error = '✗'
 let g:ale_sign_warning = '⚠'
 
+" fix files when you save them.
+let g:ale_fix_on_save = 1
+
 " Disable download and install all necessary go binaries from vim-go plugin
 let g:go_disable_autoinstall = 1
 

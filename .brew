@@ -168,8 +168,8 @@ brew cask install \
 mkdir -p "${HOME}/.google-cloud-sdk"
 chmod 0700 "${HOME}/.google-cloud-sdk"
 if [[ ! -x "${HOME}/.google-cloud-sdk/bin/gcloud" ]]; then
-  curl -L https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-143.0.0-darwin-x86_64.tar.gz \
-    | tar xz --strip 1 -C ~/.google-cloud-sdk
+  curl -L https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-143.0.0-darwin-x86_64.tar.gz |
+    tar xz --strip 1 -C ~/.google-cloud-sdk
   "${HOME}/.google-cloud-sdk/install.sh" \
     --usage-reporting false \
     --bash-completion false \
@@ -197,7 +197,7 @@ PIPS=(
 "${HOME}/.pyenv/shims/pip" install --upgrade pip
 
 for pip in "${PIPS[@]}"; do
-  "${HOME}/.pyenv/shims/pip" list -l | grep "$pip" &>/dev/null || \
+  "${HOME}/.pyenv/shims/pip" list -l | grep "$pip" &>/dev/null ||
     "${HOME}/.pyenv/shims/pip" install "$pip"
 done
 
@@ -214,7 +214,7 @@ for ruby in "${RUBIES[@]}"; do
   fi
 done
 
-echo "${RUBIES[@]:(-1)}" > ~/.ruby-version
+echo "${RUBIES[@]:(-1)}" >~/.ruby-version
 
 GEMS=(
   bundler
@@ -239,9 +239,9 @@ done
 
 gem ctags
 for ruby in ~/.rubies/*/lib/ruby/; do
-  pushd "${ruby}" &> /dev/null
-    ctags -R ./*
-  popd &> /dev/null
+  pushd "${ruby}" &>/dev/null
+  ctags -R ./*
+  popd &>/dev/null
 done
 
 gem pristine --all
