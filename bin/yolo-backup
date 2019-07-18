@@ -114,7 +114,10 @@ function _restic_init() {
     echo "--> init restic repository to ${RESTIC_REPOSITORY}"
     restic init
   fi
+}
 
+function _unlock() {
+  echo '--> Unlock restic'
   restic unlock
 }
 
@@ -122,6 +125,8 @@ function main() {
   cd /
 
   _restic_init
+
+  trap _unlock INT TERM EXIT
 
   if command -v mysqld; then
     _restic_backup_mysql
