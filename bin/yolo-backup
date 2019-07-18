@@ -50,9 +50,9 @@ function _restic_backup_files() {
     -cpf - \
     / |
     restic \
+      backup \
       --stdin \
-      --stdin-filename='/system.tar.gz' \
-      backup
+      --stdin-filename='/system.tar.gz'
 }
 
 function _restic_backup_mysql() {
@@ -76,9 +76,9 @@ function _restic_backup_mysql() {
       --best \
       --to-stdout |
     restic \
+      backup \
       --stdin \
-      --stdin-filename="/mysql.sql.gz" \
-      backup
+      --stdin-filename="/mysql.sql.gz"
 }
 
 function _restic_backup_postgresql() {
@@ -87,9 +87,9 @@ function _restic_backup_postgresql() {
       --best \
       --to-stdout |
     restic \
+      backup \
       --stdin \
-      --stdin-filename="/postgresql.sql.gz" \
-      backup
+      --stdin-filename="/postgresql.sql.gz"
 }
 
 function _restic_check() {
