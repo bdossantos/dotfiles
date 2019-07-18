@@ -44,6 +44,7 @@ function _restic_backup_files() {
   # don't forget to use `xattrs` flag when restoring
   tar \
     --exclude-from="$RESTIC_EXCLUDE_FILE" \
+    --xattrs \
     --warning=no-file-changed \
     --warning=no-file-removed \
     --use-compress-program=pigz \
