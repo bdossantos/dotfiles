@@ -20,7 +20,7 @@
 ENABLE_FLASH=${ENABLE_FLASH:=0}
 
 if ! hash hue &>/dev/null; then
-  >&2 echo "'hue' CLI tool is not installed or not in your PATH"
+  echo >&2 "'hue' CLI tool is not installed or not in your PATH"
   exit 2
 fi
 

@@ -35,7 +35,7 @@ export \
 
 function _restic_backup_files() {
   if [[ ! -r $RESTIC_EXCLUDE_FILE ]]; then
-    >&2 echo "--> Exclude file list is not readable: ${RESTIC_EXCLUDE_FILE}"
+    echo >&2 "--> Exclude file list is not readable: ${RESTIC_EXCLUDE_FILE}"
     exit 1
   fi
 
@@ -48,8 +48,8 @@ function _restic_backup_files() {
     --warning=no-file-removed \
     --use-compress-program=pigz \
     -cpf - \
-    / \
-    | restic \
+    / |
+    restic \
       --stdin \
       --stdin-filename='/system.tar.gz' \
       backup
@@ -71,22 +71,22 @@ function _restic_backup_mysql() {
     --quick \
     --routines \
     --single-transaction \
-    --triggers \
-    | pigz \
+    --triggers |
+    pigz \
       --best \
-      --to-stdout \
-    | restic \
+      --to-stdout |
+    restic \
       --stdin \
       --stdin-filename="/mysql.sql.gz" \
       backup
 }
 
 function _restic_backup_postgresql() {
-  su - postgres -c 'pg_dumpall' \
-    | pigz \
+  su - postgres -c 'pg_dumpall' |
+    pigz \
       --best \
-      --to-stdout \
-    | restic \
+      --to-stdout |
+    restic \
       --stdin \
       --stdin-filename="/postgresql.sql.gz" \
       backup
@@ -104,7 +104,7 @@ function _restic_forget() {
 
 function _restic_init() {
   if [[ ! -r $RESTIC_PASSWORD_FILE ]]; then
-    >&2 echo "--> Password file is not readable: ${RESTIC_PASSWORD_FILE}"
+    echo >&2 "--> Password file is not readable: ${RESTIC_PASSWORD_FILE}"
     exit 1
   fi
 

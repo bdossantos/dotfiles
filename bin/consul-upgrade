@@ -8,17 +8,17 @@ set -o nounset
 
 CONSUL_VERSION='1.5.2'
 
-if /usr/local/bin/consul version | grep "Consul v${CONSUL_VERSION}" ; then
+if /usr/local/bin/consul version | grep "Consul v${CONSUL_VERSION}"; then
   echo 'Consul binary is already updated'
   exit 1
 fi
 
 pushd /tmp
-  curl --silent --remote-name https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip
-  curl --silent --remote-name https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS
-  curl --silent --remote-name https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS.sig
+curl --silent --remote-name https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip
+curl --silent --remote-name https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS
+curl --silent --remote-name https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS.sig
 
-  cat << EOF > /tmp/hashicorp.asc
+cat <<EOF >/tmp/hashicorp.asc
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v1
 
@@ -51,27 +51,27 @@ oEIgXTMyCILo34Fa/C6VCm2WBgz9zZO8/rHIiQm1J5zqz0DrDwKBUM9C
 -----END PGP PUBLIC KEY BLOCK-----
 EOF
 
-  gpg --import hashicorp.asc
-  gpg --verify \
-    "consul_${CONSUL_VERSION}_SHA256SUMS.sig" \
-    "consul_${CONSUL_VERSION}_SHA256SUMS"
+gpg --import hashicorp.asc
+gpg --verify \
+  "consul_${CONSUL_VERSION}_SHA256SUMS.sig" \
+  "consul_${CONSUL_VERSION}_SHA256SUMS"
 
-  sed -i '/linux_amd64/!d' "consul_${CONSUL_VERSION}_SHA256SUMS"
-  shasum -a 256 -c "consul_${CONSUL_VERSION}_SHA256SUMS"
+sed -i '/linux_amd64/!d' "consul_${CONSUL_VERSION}_SHA256SUMS"
+shasum -a 256 -c "consul_${CONSUL_VERSION}_SHA256SUMS"
 
-  rm -rf /tmp/consul
-  unzip -o "consul_${CONSUL_VERSION}_linux_amd64.zip"
+rm -rf /tmp/consul
+unzip -o "consul_${CONSUL_VERSION}_linux_amd64.zip"
 
-  chown nobody.nogroup consul
-  chmod +x ./consul
-  ./consul version | grep "Consul v${CONSUL_VERSION}"
+chown nobody.nogroup consul
+chmod +x ./consul
+./consul version | grep "Consul v${CONSUL_VERSION}"
 
-  consul snapshot save "${HOME}/consul_$(date '+%Y-%m-%d-%H:%M:%S').snap"
-  consul leave
+consul snapshot save "${HOME}/consul_$(date '+%Y-%m-%d-%H:%M:%S').snap"
+consul leave
 
-  mv -f consul /usr/local/bin/consul
+mv -f consul /usr/local/bin/consul
 
-  cat << 'EOF' > /lib/systemd/system/consul.service
+cat <<'EOF' >/lib/systemd/system/consul.service
 ### BEGIN INIT INFO
 # Provides:          consul
 # Required-Start:    $local_fs $remote_fs
@@ -110,10 +110,10 @@ LimitNOFILE=65536
 WantedBy=multi-user.target
 EOF
 
-  chown root.root /lib/systemd/system/consul.service
-  chmod 0644 /lib/systemd/system/consul.service
+chown root.root /lib/systemd/system/consul.service
+chmod 0644 /lib/systemd/system/consul.service
 
-  systemctl enable consul
-  systemctl daemon-reload
-  service consul restart
+systemctl enable consul
+systemctl daemon-reload
+service consul restart
 popd

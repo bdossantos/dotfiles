@@ -16,21 +16,21 @@ SLAVE_IP=${SLAVE_IP:='172.16.0.2'}
 
 readonly BACKUP_DESTINATION="/home/${SLAVE_SSH_USER}/mysql.$$"
 readonly MYSQL_SETUP_SLAVE_SQL="/tmp/setup_slave.$$.sql"
-readonly NPROC=$(grep -c processor < /proc/cpuinfo || 4)
+readonly NPROC=$(grep -c processor </proc/cpuinfo || 4)
 
 if ! command -v xtrabackup &>/dev/null || ! command -v pigz &>/dev/null; then
-  >&2 echo "xtrabackup or pigz aren't installed or in PATH"
+  echo >&2 "xtrabackup or pigz aren't installed or in PATH"
   exit 1
 fi
 
 if ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "mkdir -p ${BACKUP_DESTINATION}"; then
-  >&2 echo "Can't connect to slave via SSH"
+  echo >&2 "Can't connect to slave via SSH"
   exit 1
 fi
 
-if ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "command -v xtrabackup" \
-  || ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "command -v pigz"; then
-  >&2 echo "xtrabackup or pigz aren't installed or in PATH on the slave"
+if ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "command -v xtrabackup" ||
+  ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "command -v pigz"; then
+  echo >&2 "xtrabackup or pigz aren't installed or in PATH on the slave"
   exit 1
 fi
 
@@ -40,13 +40,13 @@ xtrabackup \
   --slave-info \
   --stream=tar \
   --parallel="$((NPROC / 2))" \
-  --target-dir=./ | \
-  pigz -p "$NPROC" - | \
+  --target-dir=./ |
+  pigz -p "$NPROC" - |
   ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" \
     "pigz -dc -p \$(grep -c processor < /proc/cpuinfo || 4) - | tar -C ${BACKUP_DESTINATION} -ixvf -"
 
 if [[ $? -ne 0 ]]; then
-  >&2 echo "xtrabackup command failed"
+  echo >&2 "xtrabackup command failed"
   exit 1
 fi
 
@@ -73,7 +73,7 @@ MASTER_LOG_FILE='${MYSQL_MASTER_LOG_FILE}',
 MASTER_LOG_POS=${MYSQL_MASTER_LOG_POS};
 START SLAVE;"
 
-echo "${MYSQL_SETUP_SLAVE_QUERY}" > "${MYSQL_SETUP_SLAVE_SQL}"
+echo "${MYSQL_SETUP_SLAVE_QUERY}" >"${MYSQL_SETUP_SLAVE_SQL}"
 scp "$MYSQL_SETUP_SLAVE_SQL" \
   "${SLAVE_SSH_USER}@${SLAVE_IP}:${MYSQL_SETUP_SLAVE_SQL}"
 
