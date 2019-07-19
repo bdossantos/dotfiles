@@ -137,6 +137,17 @@ let g:airline_theme='base16_ashes'
 " Use rubocop with the default ruby checker (mri)
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
+" file fixer
+let g:ale_fixers = {
+\  'css': ['prettier'],
+\  'javascript': ['prettier', 'eslint'],
+\  'json': ['prettier'],
+\  'markdown': ['prettier'],
+\  'sh': ['shfmt'],
+\  'typescript': ['prettier', 'eslint', 'tslint'],
+\  'yaml': ['prettier'],
+\}
+
 " keep the sign gutter open
 let g:ale_sign_column_always = 1
 
