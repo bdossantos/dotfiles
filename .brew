@@ -193,7 +193,6 @@ PIPS=(
   jungle
   pylint
   virtualenv
-  yamllint
 )
 
 "${HOME}/.pyenv/shims/pip" install --upgrade pip
