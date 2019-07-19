@@ -86,6 +86,7 @@ brew install \
   pngcrush \
   pngquant \
   pre-commit \
+  prettier \
   proselint \
   pv \
   pwgen \
