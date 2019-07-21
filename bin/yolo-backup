@@ -46,6 +46,9 @@ function _restic_backup_files() {
 
   echo "--> Backup the following target: ${RESTIC_BACKUP_TARGET_DIRECTORY}"
 
+  # temporarly disable pipefail, see below
+  set +o pipefail
+
   # don't forget to use `xattrs` flag when restoring
   tar \
     --exclude-from="$RESTIC_EXCLUDE_FILE" \
@@ -60,6 +63,19 @@ function _restic_backup_files() {
       --stdin \
       --stdin-filename='/system.tar.gz' \
       --exclude-file="$RESTIC_EXCLUDE_FILE"
+
+  # Ignore exit code == 1, "Some files differ" warning, happen often when backup
+  # the / of a busy (or not) system.
+  # See https://www.gnu.org/software/tar/manual/html_section/tar_19.html
+  # shellcheck disable=SC2181
+  exit_code=$?
+
+  if [[ $exit_code -eq 0 ]] || [[ $exit_code -eq 1 ]]; then
+    set -o pipefail
+    return 0
+  else
+    exit $?
+  fi
 }
 
 function _restic_backup_mysql() {
