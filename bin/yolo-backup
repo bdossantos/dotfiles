@@ -76,7 +76,7 @@ function _restic_backup_mysql() {
     --triggers |
     pigz \
       --best \
-      --to-stdout |
+      --stdout |
     restic \
       backup \
       --stdin \
@@ -88,7 +88,7 @@ function _restic_backup_postgresql() {
   su - postgres -c 'pg_dumpall' |
     pigz \
       --best \
-      --to-stdout |
+      --stdout |
     restic \
       backup \
       --stdin \
