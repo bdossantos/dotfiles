@@ -1,3 +1,4 @@
+TAB: menu-complete
 set completion-ignore-case on
 set editing-mode vi
 set show-all-if-ambiguous on
