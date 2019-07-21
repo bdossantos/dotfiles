@@ -18,6 +18,7 @@ set -o nounset
 DEBUG=${DEBUG:=0}
 [[ $DEBUG -eq 1 ]] && set -o xtrace
 
+COMPRESS_PROGRAM='gzip'
 PATH="${PATH}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 RESTIC_BACKUP_TARGET_DIRECTORY=${RESTIC_BACKUP_TARGET_DIRECTORY:='/'}
 RESTIC_EXCLUDE_FILE=${RESTIC_EXCLUDE_FILE:='/dev/null'}
@@ -25,6 +26,10 @@ RESTIC_PASSWORD_FILE=${RESTIC_PASSWORD_FILE:='/dev/null'}
 RESTIC_REPOSITORY=${RESTIC_REPOSITORY:-}
 RESTIC_KEEP_LAST=${RESTIC_KEEP_LAST:=180}
 SYSLOG=${SYSLOG=0}
+
+if command -v pigz >/dev/null; then
+  COMPRESS_PROGRAM='pigz'
+fi
 
 export \
   PATH \
@@ -47,7 +52,7 @@ function _restic_backup_files() {
     --xattrs \
     --warning=no-file-changed \
     --warning=no-file-removed \
-    --use-compress-program=pigz \
+    --use-compress-program="$COMPRESS_PROGRAM" \
     -cpf - \
     / |
     restic \
@@ -74,7 +79,7 @@ function _restic_backup_mysql() {
     --routines \
     --single-transaction \
     --triggers |
-    pigz \
+    $COMPRESS_PROGRAM \
       --best \
       --stdout |
     restic \
@@ -86,7 +91,7 @@ function _restic_backup_mysql() {
 
 function _restic_backup_postgresql() {
   su - postgres -c 'pg_dumpall' |
-    pigz \
+    $COMPRESS_PROGRAM \
       --best \
       --stdout |
     restic \
@@ -132,11 +137,11 @@ function main() {
 
   trap _unlock INT TERM EXIT
 
-  if command -v mysqld; then
+  if command -v mysqld >/dev/null; then
     _restic_backup_mysql
   fi
 
-  if command -v pg_dumpall; then
+  if command -v pg_dumpall >/dev/null; then
     _restic_backup_postgresql
   fi
 
