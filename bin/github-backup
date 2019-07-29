@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# vi: ft=bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DEBUG=${DEBUG:=0}
+[[ $DEBUG -eq 1 ]] && set -o xtrace
+
+GITHUB_LOGIN=${GITHUB_LOGIN:='bdossantos'}
+BACKUP_VOLUME="/Volumes/${GITHUB_LOGIN}"
+GITHUB_OAUTH_TOKEN=${GITHUB_OAUTH_TOKEN:-}
+
+function _clean() {
+  hdiutil detach "$BACKUP_VOLUME"
+}
+
+if [[ ! -d "$BACKUP_VOLUME" ]]; then
+  hdiutil attach "${HOME}/Google Drive/Personal/github/${GITHUB_LOGIN}.dmg"
+fi
+
+trap _clean INT TERM EXIT
+
+docker run --network host --rm --name "python-github-backup_$(date +'%Y%m%d%H%M%S')" \
+  -v "${BACKUP_VOLUME}:/backup" \
+  bdossantos/python-github-backup:latest \
+  $GITHUB_LOGIN \
+  --token "${GITHUB_OAUTH_TOKEN}" \
+  --output-directory /backup \
+  --all \
+  --private \
+  --incremental
