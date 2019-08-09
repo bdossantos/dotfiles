@@ -63,8 +63,8 @@ fi
 
 # gcloud
 GCLOUD_SDK="${HOME}/.google-cloud-sdk"
-if [ -f "${GCLOUD_SDK}/path.bash.inc" ] \
-  && [ -f "${GCLOUD_SDK}/completion.bash.inc" ]; then
+if [ -f "${GCLOUD_SDK}/path.bash.inc" ] &&
+  [ -f "${GCLOUD_SDK}/completion.bash.inc" ]; then
   source "${GCLOUD_SDK}/path.bash.inc"
   source "${GCLOUD_SDK}/completion.bash.inc"
 fi
@@ -77,8 +77,8 @@ fi
 # kops
 if [ ! -f "${HOME}/.kops/completion.bash.inc" ]; then
   mkdir -m 0700 -p "${HOME}/.kops/"
-  command -v kops &>/dev/null \
-    && kops completion bash > "${HOME}/.kops/completion.bash.inc"
+  command -v kops &>/dev/null &&
+    kops completion bash >"${HOME}/.kops/completion.bash.inc"
 fi
 
 if [ -f "${HOME}/.kops/completion.bash.inc" ]; then
@@ -97,8 +97,8 @@ fi
 
 # Auto start|attach tmux session
 if command -v tmux &>/dev/null; then
-  if [ -z "$TMUX" ] ;then
-    if tmux ls &> /dev/null; then
+  if [ -z "$TMUX" ]; then
+    if tmux ls &>/dev/null; then
       exec tmux attach-session
     else
       exec tmux new-session
@@ -110,12 +110,15 @@ fi
 if ! ssh-add -l &>/dev/null; then
   SSH_AGENT="${HOME}/.ssh-agent"
 
-  [ -r "$SSH_AGENT" ] \
-    && eval "$(< "$SSH_AGENT")" >/dev/null
+  [ -r "$SSH_AGENT" ] &&
+    eval "$(<"$SSH_AGENT")" >/dev/null
 
   if ! ssh-add -l &>/dev/null; then
-    (umask 066; ssh-agent > "$SSH_AGENT")
-    eval "$(< "$SSH_AGENT")" >/dev/null
+    (
+      umask 066
+      ssh-agent >"$SSH_AGENT"
+    )
+    eval "$(<"$SSH_AGENT")" >/dev/null
     ssh-add -t 8h
   fi
 fi
