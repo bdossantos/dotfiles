@@ -177,6 +177,17 @@ function netdata() {
   ssh -N -L "${port}:127.0.0.1:19999" "${@}"
 }
 
+# Nomad
+if command -v nomad &>/dev/null; then
+  nomad-status() {
+    local job
+
+    job=$(nomad job status | tail +2 | fzf -1 -q "$1" | awk '{ print $1 }')
+
+    [[ -n "$job" ]] && nomad job status "$job"
+  }
+fi
+
 command -v compdef &>/dev/null && compdef netdata=ssh
 
 # Aliases for OSx
