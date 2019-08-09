@@ -186,6 +186,15 @@ if command -v nomad &>/dev/null; then
 
     [[ -n "$job" ]] && nomad job status "$job"
   }
+
+  nomad-log() {
+    local allocation job
+
+    job=$(nomad job status | tail +2 | fzf -1 -q "$1" | awk '{ print $1 }')
+    allocation=$(nomad job status "$job" | awk '/Allocations/,EOF' | tail +3 | fzf -1 -q "$1" | awk '{ print $1 }')
+
+    [ -n "$allocation" ] && nomad alloc logs -tail -f -n 100 "$allocation"
+  }
 fi
 
 command -v compdef &>/dev/null && compdef netdata=ssh
