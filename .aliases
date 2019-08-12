@@ -195,6 +195,15 @@ if command -v nomad &>/dev/null; then
 
     [ -n "$allocation" ] && nomad alloc logs -tail -f -n 100 "$allocation"
   }
+
+  nomad-exec() {
+    local allocation job
+
+    job=$(nomad job status | tail +2 | fzf -1 | awk '{ print $1 }')
+    allocation=$(nomad job status "$job" | awk '/Allocations/,EOF' | tail +3 | fzf -1 | awk '{ print $1 }')
+
+    [ -n "$allocation" ] && nomad alloc exec "$allocation" "$@"
+  }
 fi
 
 command -v compdef &>/dev/null && compdef netdata=ssh
