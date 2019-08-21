@@ -88,6 +88,3 @@ protocol = https
 
 [pull]
 rebase = true
-
-[fetch]
-prune = true
