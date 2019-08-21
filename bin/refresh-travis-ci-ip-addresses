@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+#
+# A toy script for:
+#
+#  * Get list of Travis-CI IP (https://docs.travis-ci.com/user/ip-addresses/)
+#  * Sanitize (more or less ...) the list and store the result in a Consul key
+#
+# Then I can do something in an nginx vhost:
+#
+# {{ if keyExists "travis-ci/ip-addresses" }}
+#   {{ range $ip := (key "travis-ci/ip-addresses" | split "\n") }}
+#      allow {{ $ip | trimSpace }};
+#   {{ end }}
+#   deny all;
+# {{ end }}
+#
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+CONSUL_HTTP_ADDR=${CONSUL_HTTP_ADDR:='127.0.0.1:8500'}
+CONSUL_KEY=${CONSUL_KEY:='travis-ci/ip-addresses'}
+
+if ! command -v dig &>/dev/null || ! command -v consul &>/dev/null; then
+  echo >&2 "dig or consul aren't installed or in PATH"
+  exit 1
+fi
+
+travis_ci_ip_addresses=$(
+  dig +short nat.travisci.net |
+    grep -oE "\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b" |
+    sort |
+    xargs -I % echo '%'
+)
+
+if [[ -z $travis_ci_ip_addresses ]]; then
+  echo >&2 'Ip list is empty'
+  exit 1
+fi
+
+echo -n "$travis_ci_ip_addresses" | consul kv put "$CONSUL_KEY" -
