@@ -34,7 +34,7 @@ alias glgcm='git log --before=$(date -d"+ 1 month" "+%Y-%m-01") --after=$(date "
 alias glgt='git log --since="yesterday" --author="$(git config user.name)" --pretty=format:"%cd - %h - %s" \
   --date=short --no-merges'
 alias reflog='git reflog --pretty=raw | tig --pretty=raw'
-alias merged='git branch --merged master | grep -v master | xargs -n 1 git branch -d'
+alias merged='git branch --merged master | grep -v master | xargs -n 1 git branch -d && git fetch --prune'
 
 # Hub
 function hi() {
