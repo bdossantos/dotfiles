@@ -19,6 +19,9 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+DEBUG=${DEBUG:=0}
+[[ $DEBUG -eq 1 ]] && set -o xtrace
+
 CONSUL_HTTP_ADDR=${CONSUL_HTTP_ADDR:='127.0.0.1:8500'}
 CONSUL_KEY=${CONSUL_KEY:='travis-ci/ip-addresses'}
 
