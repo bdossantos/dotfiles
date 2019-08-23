@@ -265,7 +265,7 @@ if [[ $OS == 'Darwin' ]]; then
   alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
 
   # Lock the screen (when going AFK)
-  alias afk='/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend'
+  alias afk="pmset displaysleepnow && osascript -e 'set volume output muted true'"
 
   # Manual backup
   alias backup='diskutil quiet mount "Time Machine Backups"; tmutil startbackup --block; diskutil quiet eject "Time Machine Backups"'
