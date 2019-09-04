@@ -62,7 +62,6 @@ brew install \
   go \
   gpatch \
   gpg \
-  graphviz \
   gsl \
   hadolint \
   htmlcompressor \
@@ -109,7 +108,6 @@ brew install \
   tldr \
   tmux \
   tree \
-  v \
   vim \
   watch \
   wget \
