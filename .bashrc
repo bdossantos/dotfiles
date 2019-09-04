@@ -32,7 +32,7 @@ fi
 
 if [ -d "${HOMEBREW_PREFIX}/etc/bash_completion.d/" ]; then
   for completion in "${HOMEBREW_PREFIX}"/etc/bash_completion.d/*; do
-    [[ -f "$completion" ]] && source "$completion"
+    [ -f "$completion" ] && source "$completion"
   done
 fi
 
