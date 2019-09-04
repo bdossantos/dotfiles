@@ -207,14 +207,9 @@ done
 echo "${RUBIES[@]:(-1)}" >~/.ruby-version
 
 GEMS=(
-  bundler
-  fasterer
-  hue
-  kitchen-vagrant
   puppet-lint
   rubocop
   shell_explain
-  tmuxinator
 )
 
 # shellcheck source=/dev/null
