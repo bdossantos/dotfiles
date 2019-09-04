@@ -48,9 +48,6 @@ if [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
   source "${HOMEBREW_PREFIX}/share/chruby/auto.sh"
 fi
 
-# pyenv
-command -v pyenv &>/dev/null && eval "$(pyenv init -)"
-
 # z is the new j, yo
 if [ -f "${HOMEBREW_PREFIX}/etc/profile.d/z.sh" ]; then
   source "${HOMEBREW_PREFIX}/etc/profile.d/z.sh"

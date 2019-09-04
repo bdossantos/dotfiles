@@ -90,9 +90,6 @@ brew install \
   proselint \
   pv \
   pwgen \
-  pyenv \
-  pyenv-virtualenv \
-  pyenv-virtualenvwrapper \
   readline \
   reattach-to-user-namespace \
   ruby-build \
@@ -181,25 +178,17 @@ if [[ ! -x "${HOME}/.google-cloud-sdk/bin/gcloud" ]]; then
 fi
 
 ## python
-pyenv install -s 2.7.13
-pyenv global 2.7.13
-
 PIPS=(
   fabric
   flake8
-  gmvault
-  howdoi
-  httpie
-  jungle
   pylint
   virtualenv
 )
 
-"${HOME}/.pyenv/shims/pip" install --upgrade pip
+pip install --upgrade pip
 
 for pip in "${PIPS[@]}"; do
-  "${HOME}/.pyenv/shims/pip" list -l | grep "$pip" &>/dev/null ||
-    "${HOME}/.pyenv/shims/pip" install "$pip"
+  pip list -l | grep "$pip" &>/dev/null || pip install "$pip"
 done
 
 ## ruby
