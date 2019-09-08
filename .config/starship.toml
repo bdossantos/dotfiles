@@ -1,0 +1,25 @@
+add_newline = true
+
+[line_break]
+disabled = true
+
+[golang]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[ruby]
+disabled = true
+
+[package]
+disabled = true
+
+[python]
+disabled = true
+
+[rust]
+disabled = true
+
+[nix_shell]
+disabled = true
