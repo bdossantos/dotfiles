@@ -3,6 +3,11 @@
 # vi mode
 set -o vi
 
+# starship
+if command -v starship &>/dev/null; then
+  eval "$(starship init bash)"
+fi
+
 # base16
 if [ -f "${BASE16_SHELL}/profile_helper.sh" ]; then
   eval "$("${BASE16_SHELL}/profile_helper.sh")"
