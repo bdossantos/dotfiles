@@ -1,5 +1,9 @@
 add_newline = true
 
+[character]
+symbol = "$"
+use_symbol_for_status = false
+
 [line_break]
 disabled = true
 
