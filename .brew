@@ -99,6 +99,7 @@ brew install \
   shpotify \
   ssh-copy-id \
   sshrc \
+  starship \
   stow \
   tcpdump \
   terminal-notifier \
