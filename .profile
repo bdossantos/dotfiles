@@ -23,7 +23,10 @@ export HISTFILESIZE=$HISTSIZE
 export HISTCONTROL='ignoreboth'
 export HISTIGNORE='ls:cd:cd -:pwd:exit:date:* --help:vault*'
 export HISTTIMEFORMAT='%h/%d -- %H:%M:%S '
-export PROMPT_COMMAND='history -a'
+
+if ! command -v starship &>/dev/null; then
+  export PROMPT_COMMAND="history -a;history -c;history -r;$PROMPT_COMMAND"
+fi
 
 # pager
 export PAGER='less'

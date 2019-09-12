@@ -5,6 +5,12 @@ set -o vi
 
 # starship
 if command -v starship &>/dev/null; then
+  function tweak_prompt_command() {
+    export PROMPT_COMMAND="history -a;history -c;history -r;${PROMPT_COMMAND}"
+  }
+
+  # shellcheck disable=SC2034
+  starship_precmd_user_func="tweak_prompt_command"
   eval "$(starship init bash)"
 fi
 
@@ -19,10 +25,12 @@ fi
 
 # bash completions
 if [ -f /etc/bash_completion ]; then
+  # shellcheck disable=SC1091
   source /etc/bash_completion
 fi
 
 if [ -f /etc/profile.d/bash_completion.sh ]; then
+  # shellcheck disable=SC1091
   source /etc/profile.d/bash_completion.sh
 fi
 
@@ -42,6 +50,7 @@ fi
 
 # chruby
 if [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
+  # shellcheck disable=SC2034
   RUBIES=("${HOME}/.rubies/*")
 
   source "${HOMEBREW_PREFIX}/share/chruby/chruby.sh"
@@ -73,6 +82,7 @@ fi
 
 # kops
 if [ ! -f "${HOME}/.kops/completion.bash.inc" ]; then
+  # shellcheck disable=SC2174
   mkdir -m 0700 -p "${HOME}/.kops/"
   command -v kops &>/dev/null &&
     kops completion bash >"${HOME}/.kops/completion.bash.inc"
