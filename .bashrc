@@ -5,12 +5,6 @@ set -o vi
 
 # starship
 if command -v starship &>/dev/null; then
-  function tweak_prompt_command() {
-    export PROMPT_COMMAND="history -a;history -c;history -r;${PROMPT_COMMAND}"
-  }
-
-  # shellcheck disable=SC2034
-  starship_precmd_user_func="tweak_prompt_command"
   eval "$(starship init bash)"
 fi
 
