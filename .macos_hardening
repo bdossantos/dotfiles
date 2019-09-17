@@ -144,7 +144,7 @@ sudo networksetup -deletelocation 'Public Network' || true
 sudo networksetup -createlocation 'Public Network' populate
 sudo networksetup -switchtolocation 'Public Network'
 sudo networksetup -setdnsservers Wi-Fi 127.0.0.1
-sudo networksetup -setproxybypassdomains Wi-Fi 'localhost' '127.0.0.0/8' '172.16.0.0/12' '192.168.0.0/16' '169.254/16' '*.local' '*.home' '*.netflix.com' '*.youtube.com'
+sudo networksetup -setproxybypassdomains Wi-Fi 'localhost' '127.0.0.0/8' '172.16.0.0/12' '192.168.0.0/16' '169.254/16' '*.local' '*.home' '*.netflix.com' '*.youtube.com' '*.airbnb.fr'
 sudo networksetup -setsocksfirewallproxy Wi-Fi 127.0.0.1 9050
 sudo networksetup -setsocksfirewallproxystate Wi-Fi on
 sudo networksetup -setwebproxy Wi-Fi 127.0.0.1 8118
