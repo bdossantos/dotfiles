@@ -41,6 +41,7 @@ brew install \
   coreutils \
   ctags \
   curl \
+  diff-so-fancy \
   diffutils \
   ed \
   editorconfig \
