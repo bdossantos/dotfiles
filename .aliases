@@ -90,7 +90,6 @@ fi
 
 # clear
 alias c='clear'
-alias k='clear'
 alias cls='clear'
 
 alias q='exit'
@@ -149,6 +148,12 @@ alias ssh-add='ssh-add -c -t 4h'
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
+
+# kubectl
+if command -v kubectl &>/dev/null; then
+  alias k=kubectl
+  complete -F __start_kubectl k
+fi
 
 # Pandoc
 function pandoc() {
