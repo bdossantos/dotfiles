@@ -120,7 +120,6 @@ brew install \
 brew cask install \
   1password \
   firefox \
-  flux \
   font-hack \
   font-hack-nerd-font \
   gimp \
