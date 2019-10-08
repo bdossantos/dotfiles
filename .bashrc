@@ -18,28 +18,23 @@ if [ -z "$BASE16_THEME" ] && type base16_ia-dark &>/dev/null; then
 fi
 
 # bash completions
-if [ -f /etc/bash_completion ]; then
+if [ -r /etc/bash_completion ]; then
   # shellcheck disable=SC1091
   source /etc/bash_completion
 fi
 
-if [ -f /etc/profile.d/bash_completion.sh ]; then
+if [ -r /etc/profile.d/bash_completion.sh ]; then
   # shellcheck disable=SC1091
   source /etc/profile.d/bash_completion.sh
 fi
 
-if [ -f "${HOMEBREW_PREFIX}/etc/bash_completion" ]; then
-  source "${HOMEBREW_PREFIX}/etc/bash_completion"
-fi
-
-if [ -d "${HOMEBREW_PREFIX}/etc/bash_completion.d/" ]; then
-  for completion in "${HOMEBREW_PREFIX}"/etc/bash_completion.d/*; do
-    [ -f "$completion" ] && source "$completion"
-  done
-fi
-
-if [ -f "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]; then
+# https://docs.brew.sh/Shell-Completion
+if [ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]; then
   source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+elif [ -d "${HOMEBREW_PREFIX}/etc/bash_completion.d/" ]; then
+  for completion in "${HOMEBREW_PREFIX}"/etc/bash_completion.d/*; do
+    [ -r "$completion" ] && source "$completion"
+  done
 fi
 
 # chruby
