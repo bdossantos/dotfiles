@@ -30,8 +30,9 @@ fi
 
 # https://docs.brew.sh/Shell-Completion
 if [ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]; then
+  export BASH_COMPLETION_COMPAT_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d"
   source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
-elif [ -d "${HOMEBREW_PREFIX}/etc/bash_completion.d/" ]; then
+else
   for completion in "${HOMEBREW_PREFIX}"/etc/bash_completion.d/*; do
     [ -r "$completion" ] && source "$completion"
   done
