@@ -117,6 +117,9 @@ set nomodeline
 " always show the status line
 set laststatus=2
 
+" Update sign column every quarter second
+set updatetime=250
+
 " airline/tmuxline integration
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tmuxline#enabled = 0
