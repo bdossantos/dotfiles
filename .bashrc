@@ -65,11 +65,6 @@ if [ -f "${GCLOUD_SDK}/path.bash.inc" ] &&
   source "${GCLOUD_SDK}/completion.bash.inc"
 fi
 
-# kubectl
-if command -v kubectl &>/dev/null; then
-  source <(kubectl completion bash)
-fi
-
 # fzf
 if [ -f "${HOME}/.fzf.bash" ]; then
   source "${HOME}/.fzf.bash"
