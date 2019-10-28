@@ -70,18 +70,6 @@ if command -v kubectl &>/dev/null; then
   source <(kubectl completion bash)
 fi
 
-# kops
-if [ ! -f "${HOME}/.kops/completion.bash.inc" ]; then
-  # shellcheck disable=SC2174
-  mkdir -m 0700 -p "${HOME}/.kops/"
-  command -v kops &>/dev/null &&
-    kops completion bash >"${HOME}/.kops/completion.bash.inc"
-fi
-
-if [ -f "${HOME}/.kops/completion.bash.inc" ]; then
-  source "${HOME}/.kops/completion.bash.inc"
-fi
-
 # fzf
 if [ -f "${HOME}/.fzf.bash" ]; then
   source "${HOME}/.fzf.bash"
