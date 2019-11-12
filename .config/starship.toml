@@ -27,3 +27,6 @@ disabled = true
 
 [nix_shell]
 disabled = true
+
+[java]
+disabled = true
