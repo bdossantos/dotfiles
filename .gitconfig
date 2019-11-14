@@ -52,6 +52,7 @@ trustctime = false
 # Prevent showing files whose names contain non-ASCII symbols as unversioned.
 # http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
 precomposeunicode = false
+commitGraph = true
 
 [branch]
 autosetuprebase = always
@@ -75,6 +76,7 @@ gpgsign = true
 
 [gc]
 auto = 1
+writeCommitGraph = true
 
 [credential]
 helper = osxkeychain
@@ -88,3 +90,6 @@ protocol = https
 
 [pull]
 rebase = true
+
+[fetch]
+writeCommitGraph = true
