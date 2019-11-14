@@ -30,3 +30,6 @@ disabled = true
 
 [java]
 disabled = true
+
+[kubernetes]
+disabled = false
