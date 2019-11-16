@@ -18,7 +18,7 @@ bind main F !git commit --fixup %(commit)
 bind diff F !git commit --fixup %(commit)
 
 # Tag
-bind main T !git tag -f -a %(prompt) %(commit)
+bind main T !git tag -f -s %(prompt) %(commit)
 
 # Push
 bind main P !git push origin
