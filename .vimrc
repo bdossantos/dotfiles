@@ -175,6 +175,9 @@ let g:ctrlp_switch_buffer = 0
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
+" Ensure that this plugin works well with Tim Pope's fugitive
+let g:EditorConfig_exclude_patterns = ['fugitive://.\*']
+
 " Limeligth + Goyo integration
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
