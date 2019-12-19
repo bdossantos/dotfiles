@@ -52,9 +52,8 @@ if [ -f "${HOMEBREW_PREFIX}/etc/profile.d/z.sh" ]; then
   source "${HOMEBREW_PREFIX}/etc/profile.d/z.sh"
 fi
 
-# Magic per-project shell environments. Very pretentious.
-if [ -f "${HOMEBREW_PREFIX}/opt/autoenv/activate.sh" ]; then
-  source "${HOMEBREW_PREFIX}/opt/autoenv/activate.sh"
+if command -v direnv &>/dev/null; then
+  eval "$(direnv hook bash)"
 fi
 
 # gcloud
