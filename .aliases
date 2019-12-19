@@ -36,6 +36,10 @@ alias glgt='git log --since="yesterday" --author="$(git config user.name)" --pre
   --date=short --no-merges'
 alias reflog='git reflog --pretty=raw | tig --pretty=raw'
 alias merged='git branch --merged master | grep -v master | xargs -n 1 git branch -d && git fetch --prune'
+alias gsw='git switch'
+alias gswc='git switch -c'
+alias grs='git restore'
+alias grss='git restore --source'
 
 # Hub
 function hi() {
