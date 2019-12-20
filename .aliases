@@ -13,6 +13,12 @@ alias takeover='tmux detach -a'
 alias ag='ag --smart-case --pager="less -MIRFX"'
 
 # Git
+if command -v hub &>/dev/null; then
+  alias git=hub
+  # https://github.com/github/hub/issues/1792#issuecomment-518227676
+  alias __git=hub
+fi
+
 alias ga='git add --patch'
 alias gbd='git branch -d'
 alias gc='git commit -v'
