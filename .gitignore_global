@@ -37,6 +37,7 @@ Icon
 .dropbox
 .dropbox.attr
 .dropbox.cache
+.envrc
 .fseventsd
 .fseventsd
 .fuse_hidden*
