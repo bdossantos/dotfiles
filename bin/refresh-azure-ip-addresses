@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+#
+# A toy script for:
+#
+#  * Get list of Azure IP (https://www.microsoft.com/en-us/download/details.aspx?id=56519)
+#  * Sanitize (more or less ...) the list and store the result in a Consul key
+#
+# Then I can do something in an nginx vhost:
+#
+# {{ if keyExists "github-action/ip-addresses" }}
+#   {{ range $ip := (key "github-action/ip-addresses" | split "\n") }}
+#      allow {{ $ip | trimSpace }};
+#   {{ end }}
+#   deny all;
+# {{ end }}
+#
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DEBUG=${DEBUG:=0}
+[[ $DEBUG -eq 1 ]] && set -o xtrace
+
+CONSUL_HTTP_ADDR=${CONSUL_HTTP_ADDR:='127.0.0.1:8500'}
+CONSUL_KEY=${CONSUL_KEY:='github-action/ip-addresses'}
+
+if ! command -v consul &>/dev/null; then
+  echo >&2 "consul isn't installed or in PATH"
+  exit 1
+fi
+
+azure_ip_addresses=$(
+  curl -s 'https://www.microsoft.com/en-in/download/confirmation.aspx?id=41653' |
+    grep -Eo '"https://[^"]*PublicIPs[^"]*"' |
+    head -n 1 |
+    cut -d '"' -f 2
+)
+
+azure_ip_addresses=$(
+  curl -s -f "$azure_ip_addresses" |
+    grep 'IpRange Subnet=' | cut -d '"' -f2 |
+    uniq |
+    sort |
+    xargs -I % echo '%'
+)
+
+if [[ -z $azure_ip_addresses ]]; then
+  echo >&2 'Ip list is empty'
+  exit 1
+fi
+
+echo -n "$azure_ip_addresses" | consul kv put "$CONSUL_KEY" -
