@@ -24,6 +24,10 @@ bind main T !git tag -f -s %(prompt) %(commit)
 bind main P !git push origin
 bind status P !git push origin
 
+# Copy to clipboard commit ID or commit subject/message
+bind generic YI @sh -c "printf '%s' %(commit) | pbcopy"
+bind generic YM @sh -c "git rev-list --format=%B --max-count=1 %(commit) | sed '1d' | pbcopy"
+
 # Colors
 color cursor         white    black    bold
 color title-blur     white    black
