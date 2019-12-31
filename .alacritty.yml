@@ -10,8 +10,8 @@ font:
     family: Hack
     style: italic
 live_config_reload: true
-startup_mode: Windowed
 window:
+  startup_mode: Maximized
   decorations: buttonless
   dynamic_padding: true
   padding:
