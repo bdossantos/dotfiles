@@ -36,3 +36,11 @@ disabled = true
 
 [kubernetes]
 disabled = false
+
+[memory_usage]
+disabled = false
+show_percentage = true
+show_swap = true
+threshold = 75
+separator = "/"
+style = "bold dimmed red"
