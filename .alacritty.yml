@@ -8,7 +8,7 @@ font:
     style: Bold
   italic:
     family: Hack
-    style: italic
+    style: Italic
 live_config_reload: true
 window:
   startup_mode: Maximized
