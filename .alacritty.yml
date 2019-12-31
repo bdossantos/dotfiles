@@ -1,0 +1,19 @@
+font:
+  size: 13.0
+  normal:
+    family: Hack
+    style: Regular
+  bold:
+    family: Hack
+    style: Bold
+  italic:
+    family: Hack
+    style: italic
+live_config_reload: true
+startup_mode: Windowed
+window:
+  decorations: buttonless
+  dynamic_padding: true
+  padding:
+    x: 0
+    y: 10
