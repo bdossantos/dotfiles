@@ -7,8 +7,8 @@
 #
 # Then I can do something in an nginx vhost:
 #
-# {{ if keyExists "github-action/ip-addresses" }}
-#   {{ range $ip := (key "github-action/ip-addresses" | split "\n") }}
+# {{ if keyExists "azure/ip-addresses" }}
+#   {{ range $ip := (key "azure/ip-addresses" | split "\n") }}
 #      allow {{ $ip | trimSpace }};
 #   {{ end }}
 #   deny all;
@@ -23,7 +23,7 @@ DEBUG=${DEBUG:=0}
 [[ $DEBUG -eq 1 ]] && set -o xtrace
 
 CONSUL_HTTP_ADDR=${CONSUL_HTTP_ADDR:='127.0.0.1:8500'}
-CONSUL_KEY=${CONSUL_KEY:='github-action/ip-addresses'}
+CONSUL_KEY=${CONSUL_KEY:='azure/ip-addresses'}
 
 if ! command -v consul &>/dev/null; then
   echo >&2 "consul isn't installed or in PATH"
