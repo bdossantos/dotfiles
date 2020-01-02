@@ -40,7 +40,7 @@ disabled = false
 [memory_usage]
 disabled = false
 show_percentage = true
-show_swap = true
+show_swap = false
 threshold = 75
 separator = "/"
 style = "bold dimmed red"
