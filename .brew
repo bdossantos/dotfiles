@@ -32,6 +32,7 @@ brew install \
   awscli \
   bash \
   bash-completion@2 \
+  bat \
   bats \
   binutils \
   cheat \
