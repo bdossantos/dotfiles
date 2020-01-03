@@ -81,6 +81,10 @@ export KEYTIMEOUT=20
 # Setting ag as the default source for fzf
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 
+if command -v bat >/dev/null 2>&1; then
+  export FZF_DEFAULT_OPTS='--preview "bat --style=numbers --color=always {} | head -500" --preview-window=right:50%'
+fi
+
 # Temporary Files
 if [ ! -d "$TMPDIR" ]; then
   export TMPDIR="/tmp/${LOGNAME}"
