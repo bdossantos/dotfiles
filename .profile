@@ -81,6 +81,7 @@ export KEYTIMEOUT=20
 # Setting ag as the default source for fzf
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export FZF_DEFAULT_OPTS='--preview "bat --style=numbers,changes --color=always {} 2>/dev/null || cat {} 2>/dev/null || tree -C {} 2>/dev/null" --preview-window=right:50%'
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 
 # Temporary Files
 if [ ! -d "$TMPDIR" ]; then
