@@ -123,7 +123,6 @@ brew cask install \
   firefox \
   font-hack \
   font-hack-nerd-font \
-  gimp \
   google-chrome \
   google-backup-and-sync \
   imageoptim \
@@ -136,8 +135,7 @@ brew cask install \
   spectacle \
   spotify \
   tor-browser \
-  tunnelbear \
-  vlc
+  tunnelbear
 
 # login as admin to install some casks system-wide in /Applications
 su admin -c "
