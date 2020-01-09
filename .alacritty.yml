@@ -16,7 +16,6 @@ key_bindings:
   - { key: Minus, mods: Alt, chars: "}" }
   - { key: Key5, mods: Alt|Shift, chars: "[" }
   - { key: Minus, mods: Alt|Shift, chars: "]" }
-  - { key: N, mods: Alt, chars: "~" }
   - { key: Return, mods: Command, action: ToggleFullscreen }
 live_config_reload: true
 window:
