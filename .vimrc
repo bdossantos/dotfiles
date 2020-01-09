@@ -243,9 +243,12 @@ inoremap jj <ESC>
 " Turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 
+" Search with ack / ag
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
+
+nnoremap <Leader>a :Ack<Space>
 
 " Open fzf
 nnoremap <silent> <leader>f :FZF<CR>
