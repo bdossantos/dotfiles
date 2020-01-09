@@ -256,6 +256,9 @@ nnoremap <Leader>a :Ack<Space>
 " Open fzf
 nnoremap <silent> <leader>f :FZF<CR>
 
+" Open tig
+nmap <leader>t :execute ":Silent !tig ".GetSmartWd()<CR><CR>
+
 " Easier split navigations
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
