@@ -160,9 +160,6 @@ let g:ale_sign_warning = '⚠'
 " fix files when you save them.
 let g:ale_fix_on_save = 1
 
-" Ale fix
-nmap <leader>s :ALEFix<CR>
-
 " Disable download and install all necessary go binaries from vim-go plugin
 let g:go_disable_autoinstall = 1
 
@@ -258,6 +255,11 @@ nnoremap <silent> <leader>f :FZF<CR>
 
 " Open tig
 nmap <leader>t :execute ":Silent !tig ".GetSmartWd()<CR><CR>
+
+" Ale fix
+nmap <leader>s :ALEFix<CR>
+nmap <leader>se :let g:ale_fix_on_save=1<CR>
+nmap <leader>sd :let g:ale_fix_on_save=0<CR>
 
 " Easier split navigations
 nnoremap <C-J> <C-W><C-J>
