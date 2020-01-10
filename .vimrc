@@ -63,6 +63,7 @@ set numberwidth=5                 " Width of the "gutter" column used for number
 set ruler                         " Show cursor position.
 set cursorline                    " Highlight current line
 set showcmd                       " Show command in bottom bar
+set ttyfast                       " Ensure ttyfast is enabled
 set wildmode=list:longest         " Complete files like a shell.
 set wildmenu                      " Enhanced command line completion.
 set lazyredraw                    " Redraw only when we need to.
