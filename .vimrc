@@ -55,6 +55,7 @@ set expandtab                     " use spaces, not tabs (optional)
 set smarttab
 set backspace=indent,eol,start    " backspace through everything in insert mode
 set autoindent                    " match indentation of previous line
+set clipboard=unnamed             " For OSX clipboard
 
 set hidden                        " Handle multiple buffers better.
 set relativenumber                " Relative line numbers.
