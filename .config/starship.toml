@@ -41,7 +41,7 @@ disabled = false
 disabled = false
 show_percentage = true
 show_swap = false
-threshold = 75
+threshold = 85
 separator = "/"
 style = "bold dimmed red"
 
