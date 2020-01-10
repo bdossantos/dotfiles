@@ -43,52 +43,47 @@ Plugin 'lepture/vim-jinja'
 Plugin 'plasticboy/vim-markdown'
 
 call vundle#end()
-filetype plugin indent on
-
-" Settings
-set encoding=utf-8
 filetype plugin indent on         " load file type plugins + indentation
 
-set nowrap                        " don't wrap lines
-set tabstop=2 shiftwidth=2        " a tab is two spaces (or set this to 4)
-set expandtab                     " use spaces, not tabs (optional)
-set smarttab
-set backspace=indent,eol,start    " backspace through everything in insert mode
+" Settings
 set autoindent                    " match indentation of previous line
+set autowrite                     " Automatically :write before running commands
+set backspace=indent,eol,start    " backspace through everything in insert mode
 set clipboard=unnamed             " For OSX clipboard
-
+set cursorline                    " Highlight current line
+set encoding=utf-8
+set expandtab                     " use spaces, not tabs (optional)
+set foldenable                    " Enable folding
+set foldlevelstart=10             " Open most folds by default
+set foldmethod=indent             " Fold based on indent level
+set foldnestmax=10                " 10 nested fold max
 set hidden                        " Handle multiple buffers better.
-set relativenumber                " Relative line numbers.
+set history=1000                  " Store lots of :cmdline history
+set hlsearch                      " Highlight search results
+set ignorecase                    " Ignore case when searching
+set incsearch                     " Makes search act like in modern browsers
+set laststatus=2                  " Always display the status line
+set lazyredraw                    " Redraw only when we need to.
+set noerrorbells
+set novisualbell
+set nowrap                        " don't wrap lines
 set number                        " Show line numbers.
 set numberwidth=5                 " Width of the "gutter" column used for numbering
+set relativenumber                " Relative line numbers.
 set ruler                         " Show cursor position.
-set cursorline                    " Highlight current line
 set showcmd                       " Show command in bottom bar
+set showmatch                     " Highlight matching [{()}]
+set smartcase                     " When searching try to be smart about cases
+set smarttab
+set spelllang=en                  " Check all regions of English.
+set tabstop=2 shiftwidth=2        " a tab is two spaces (or set this to 4)
 set ttimeout                      " Fast VIM
 set ttimeoutlen=100
 set ttyfast                       " Ensure ttyfast is enabled
-set wildmode=list:longest         " Complete files like a shell.
-set wildmenu                      " Enhanced command line completion.
-set lazyredraw                    " Redraw only when we need to.
-set novisualbell
-set noerrorbells
-set history=1000                  " Store lots of :cmdline history
-
-set ignorecase                    " Ignore case when searching
-set smartcase                     " When searching try to be smart about cases
-set hlsearch                      " Highlight search results
-set incsearch                     " Makes search act like in modern browsers
-set showmatch                     " Highlight matching [{()}]
-set laststatus=2                  " Always display the status line
-set autowrite                     " Automatically :write before running commands
-
-set foldenable                    " Enable folding
-set foldlevelstart=10             " Open most folds by default
-set foldnestmax=10                " 10 nested fold max
-set foldmethod=indent             " Fold based on indent level
-
-set undofile                      " Persistent undo
 set undodir=~/.vimundo            " Do not add ~un files everywhere I go
+set undofile                      " Persistent undo
+set wildmenu                      " Enhanced command line completion.
+set wildmode=list:longest         " Complete files like a shell.
 
 " Set the terminal's title
 if &term == 'screen'
