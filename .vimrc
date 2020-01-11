@@ -8,7 +8,6 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'markcornick/vim-bats'
 Plugin 'tpope/vim-sensible'
-Plugin 'mileszs/ack.vim'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'tpope/vim-surround'
@@ -232,11 +231,6 @@ inoremap jj <ESC>
 " Turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 
-" Search with ack / ag
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-
 " :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
 " :Ag! - Start fzf in fullscreen and display the preview window above
 command! -bang -nargs=* Ag
@@ -246,7 +240,6 @@ command! -bang -nargs=* Ag
   \                 <bang>0)
 
 nnoremap <Leader>a :Ag!<Space>
-nnoremap <Leader>A :Ack<Space>
 
 " Open fzf
 nnoremap <silent> <leader>f :FZF<CR>
