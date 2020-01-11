@@ -10,6 +10,7 @@ Plugin 'markcornick/vim-bats'
 Plugin 'tpope/vim-sensible'
 Plugin 'mileszs/ack.vim'
 Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
@@ -236,7 +237,16 @@ if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
-nnoremap <Leader>a :Ack<Space>
+" :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
+" :Ag! - Start fzf in fullscreen and display the preview window above
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
+
+nnoremap <Leader>a :Ag!<Space>
+nnoremap <Leader>A :Ack<Space>
 
 " Open fzf
 nnoremap <silent> <leader>f :FZF<CR>
