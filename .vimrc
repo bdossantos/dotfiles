@@ -242,7 +242,7 @@ command! -bang -nargs=* Ag
 nnoremap <Leader>a :Ag!<Space>
 
 " Open fzf
-nnoremap <silent> <leader>f :FZF<CR>
+nnoremap <silent> <leader>f :Files<CR>
 
 " Open tig
 nmap <leader>t :execute ":Silent !tig ".GetSmartWd()<CR><CR>
