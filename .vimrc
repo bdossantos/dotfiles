@@ -167,6 +167,9 @@ autocmd User GoyoLeave Limelight!
 " hashivim
 let g:terraform_fmt_on_save=1
 
+" [Tags] Command to generate tags file
+let g:fzf_tags_command = 'ctags -R'
+
 " Line number
 function! NumberToggle()
   if(&relativenumber == 1)
