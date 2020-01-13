@@ -157,12 +157,6 @@ let g:go_version_warning = 0
 " Disable auto go fmt on save
 let g:go_fmt_autosave = 0
 
-" CtrlP settings
-let g:ctrlp_match_window = 'bottom,order:ttb'
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
-
 " Ensure that this plugin works well with Tim Pope's fugitive
 let g:EditorConfig_exclude_patterns = ['fugitive://.\*']
 
