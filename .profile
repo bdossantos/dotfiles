@@ -3,7 +3,7 @@ export PATH="$HOME/.homebrew/bin:$HOME/.homebrew/sbin:$HOME/bin:/usr/local/bin:/
 
 # Homebrew prefix
 export HOMEBREW_PREFIX='/usr/local'
-if command -v brew &>/dev/null; then
+if command -v brew >/dev/null 2>&1; then
   HOMEBREW_PREFIX="$(brew --prefix)"
   export HOMEBREW_PREFIX
 fi
