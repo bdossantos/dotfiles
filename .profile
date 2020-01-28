@@ -89,7 +89,7 @@ export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export FZF_PREVIEW_COMMAND="bat --theme='base16' --style=numbers,changes --wrap never --color always {} || cat {} || tree -C {}"
 export FZF_DEFAULT_OPTS="--preview '($FZF_PREVIEW_COMMAND) 2> /dev/null' --preview-window=right:50%"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden --bind ?:toggle-preview"
-export FZF_CTRL_T_OPTS="--preview '(coderay {} || cat {} || tree -C {}) 2> /dev/null | head -$LINES'"
+export FZF_CTRL_T_OPTS="--preview '($FZF_PREVIEW_COMMAND) 2> /dev/null | head -$LINES'"
 
 # Temporary Files
 if [ ! -d "$TMPDIR" ]; then
