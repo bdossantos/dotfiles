@@ -93,8 +93,8 @@ export FZF_CTRL_T_OPTS="--preview '($FZF_PREVIEW_COMMAND) 2> /dev/null | head -$
 
 # Temporary Files
 if [ ! -d "$TMPDIR" ]; then
-  export TMPDIR="/tmp/${LOGNAME}"
-  mkdir -p -m 700 "$TMPDIR"
+  export TMPDIR="/tmp/${USER}"
+  mkdir -p -m 0700 "$TMPDIR"
 fi
 
 # diff-highligh
