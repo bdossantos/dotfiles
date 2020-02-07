@@ -131,8 +131,8 @@ brew cask install \
   little-snitch \
   micro-snitch \
   omnigraffle \
+  rectangle \
   sequel-pro \
-  spectacle \
   spotify \
   tor-browser \
   tunnelbear
