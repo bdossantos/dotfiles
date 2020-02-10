@@ -5,8 +5,6 @@ export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_INSECURE_REDIRECT=1
 export PATH="${HOME}/.homebrew/bin:${PATH}"
 
-trap 'brew cleanup' INT TERM HUP EXIT
-
 echo "--> Make sure we're using the latest Homebrew"
 brew update
 
@@ -230,6 +228,3 @@ done
 gem pristine --all
 
 brew link xz
-
-# clean
-brew cleanup
