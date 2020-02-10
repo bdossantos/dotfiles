@@ -85,21 +85,24 @@ if command -v tmux &>/dev/null; then
   fi
 fi
 
-# Auto start|attach ssh-agent
+# Auto attach|start ssh-agent
+SSH_AGENT="${HOME}/.ssh-agent"
+
+if [ -r "$SSH_AGENT" ]; then
+  eval "$(<"$SSH_AGENT")" >/dev/null
+fi
+
+if [ -z "$SSH_AGENT_PID" ] || ! kill -0 "$SSH_AGENT_PID" &>/dev/null; then
+  (
+    umask 066
+    ssh-agent >"$SSH_AGENT"
+  )
+
+  eval "$(<"$SSH_AGENT")" >/dev/null
+fi
+
 if ! ssh-add -l &>/dev/null; then
-  SSH_AGENT="${HOME}/.ssh-agent"
-
-  [ -r "$SSH_AGENT" ] &&
-    eval "$(<"$SSH_AGENT")" >/dev/null
-
-  if ! ssh-add -l &>/dev/null; then
-    (
-      umask 066
-      ssh-agent >"$SSH_AGENT"
-    )
-    eval "$(<"$SSH_AGENT")" >/dev/null
-    ssh-add -t 8h
-  fi
+  ssh-add -t 8h
 fi
 
 # Aliases
