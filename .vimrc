@@ -197,17 +197,14 @@ augroup vimrcEx
   autocmd FileType python setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
 
   " Git commit
-  autocmd Filetype gitcommit setlocal spell textwidth=72
+  autocmd Filetype gitcommit setlocal spell textwidth=72 complete+=kspell
 
   " Enable spellchecking for Markdown
   autocmd BufRead,BufNewFile *.md set filetype=markdown
-  autocmd FileType markdown setlocal spell
+  autocmd FileType markdown setlocal spell complete+=kspell
 
   " Crontab http://calebthompson.io/crontab-and-vim-sitting-in-a-tree/
   autocmd filetype crontab setlocal nobackup nowritebackup
-
-  " Automatically wrap at 80 characters for Markdown
-  autocmd BufRead,BufNewFile *.md setlocal textwidth=80
 
   " Let's tell Vim to automatically use absolute line numbers when we're in
   " insert mode and relative numbers when we're in normal mode
