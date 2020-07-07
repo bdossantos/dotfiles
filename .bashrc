@@ -3,6 +3,27 @@
 # vi mode
 set -o vi
 
+# append history instead of rewriting it
+shopt -s histappend
+
+# save multi-line commands in history as single line
+shopt -s cmdhist
+
+# autocorrects cd misspellings
+shopt -s cdspell
+
+# include dotfiles in pathname expansio
+shopt -s dotglob
+
+# expand aliases
+shopt -s expand_aliases
+
+# enable extended pattern-matching features
+shopt -s extglob
+
+# pathname expansion will be treated as case-insensitive
+shopt -s nocaseglob
+
 # starship
 if command -v starship &>/dev/null; then
   eval "$(starship init bash)"
