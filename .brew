@@ -71,6 +71,7 @@ brew install \
   jpeg \
   jpegoptim \
   jq \
+  k9s \
   kops \
   kubectx \
   less \
