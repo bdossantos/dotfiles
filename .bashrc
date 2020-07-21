@@ -123,7 +123,9 @@ if [ -z "$SSH_AGENT_PID" ] || ! kill -0 "$SSH_AGENT_PID" &>/dev/null; then
 fi
 
 if ! ssh-add -l &>/dev/null; then
+  trap '' SIGINT
   ssh-add -t 8h
+  trap - SIGINT
 fi
 
 # Aliases
