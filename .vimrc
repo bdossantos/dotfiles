@@ -23,8 +23,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'w0rp/ale'
 Plugin 'sheerun/vim-polyglot'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plugin 'itchyny/lightline.vim'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'junegunn/goyo.vim'
@@ -108,25 +107,18 @@ set laststatus=2
 " Update sign column every quarter second
 set updatetime=250
 
-" airline/tmuxline integration
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tmuxline#enabled = 0
-
-" airline/powerline font interation
-let g:airline_powerline_fonts=1
-
-" enable airline/fugitive integration
-let g:airline#extensions#branch#enabled=1
-let g:airline#extensions#branch_prefix#enabled=1
-
-" enable airline/syntastic integration
-let g:airline#extensions#ale#enabled=1
-
-" airline theme
-let g:airline_theme='base16_ashes'
-
-" Use rubocop with the default ruby checker (mri)
-let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+let g:lightline = {
+\'colorscheme': 'one',
+\   'active': {
+\     'left': [
+\       [ 'mode', 'paste' ],
+\       [ 'gitbranch', 'readonly', 'filename', 'modified' ]
+\     ]
+\   },
+\   'component_function': {
+\     'gitbranch': 'fugitive#head'
+\   },
+\}
 
 " file fixer
 let g:ale_fixers = {
