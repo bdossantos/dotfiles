@@ -47,10 +47,6 @@ fi
 # Don't clear the screen after quitting a manual page
 export MANPAGER='less -X'
 
-# bash-it
-export BASH_IT="${HOME}/.bash_it"
-export BASH_IT_THEME='minimal'
-
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
   export BASH_IT_THEME='demula'
 fi
