@@ -68,9 +68,8 @@ if [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
   source "${HOMEBREW_PREFIX}/share/chruby/auto.sh"
 fi
 
-# z is the new j, yo
-if [ -f "${HOMEBREW_PREFIX}/etc/profile.d/z.sh" ]; then
-  source "${HOMEBREW_PREFIX}/etc/profile.d/z.sh"
+if command -v zoxide &>/dev/null; then
+  eval "$(zoxide init bash)"
 fi
 
 if command -v direnv &>/dev/null; then
