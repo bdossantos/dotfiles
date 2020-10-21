@@ -154,7 +154,7 @@ brew update
 
 brew cask install \
   gpg-suite \
-  suunto-moveslink \
+  suunto-moveslink2 \
   vagrant \
   virtualbox \
   xquartz
