@@ -12,13 +12,6 @@ echo '--> Upgrade any already-installed formulae'
 brew upgrade
 
 echo '--> Tap extras Homebrew repositories'
-brew tap caskroom/drivers
-brew tap caskroom/fonts
-brew tap caskroom/versions
-brew tap coinbase/assume-role
-brew tap homebrew/cask-drivers
-brew tap homebrew/services
-brew tap thoughtbot/formulae
 brew tap tldr-pages/tldr
 
 echo '--> Install all brew Packages'
