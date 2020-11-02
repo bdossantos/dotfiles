@@ -126,8 +126,7 @@ brew cask install \
   rectangle \
   sequel-pro \
   spotify \
-  tor-browser \
-  tunnelbear
+  tor-browser
 
 # login as admin to install some casks system-wide in /Applications
 su admin -c "
