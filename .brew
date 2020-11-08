@@ -139,9 +139,6 @@ export PATH='/Users/admin/.homebrew/bin:${PATH}'
 
 echo '--> Install/update Homebrew cask'
 
-brew tap caskroom/cask
-brew tap homebrew/cask-fonts
-
 brew update
 
 brew cask install \
