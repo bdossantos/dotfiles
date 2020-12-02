@@ -84,7 +84,6 @@ brew install \
   pv \
   pwgen \
   readline \
-  reattach-to-user-namespace \
   ruby-build \
   ruby-install \
   s3cmd \
