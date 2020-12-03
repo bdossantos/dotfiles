@@ -4,6 +4,12 @@ add_newline = true
 symbol = "$"
 use_symbol_for_status = false
 
+[docker]
+symbol = " "
+
+[git_branch]
+symbol = " "
+
 [line_break]
 disabled = true
 
@@ -41,11 +47,15 @@ disabled = false
 disabled = true
 show_percentage = true
 show_swap = false
+symbol = " "
 threshold = 85
 separator = "/"
 style = "bold dimmed red"
 
 [battery]
+full_symbol = ""
+charging_symbol = ""
+discharging_symbol = ""
 disabled = false
 
 [[battery.display]]
