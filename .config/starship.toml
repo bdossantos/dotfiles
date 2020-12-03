@@ -38,7 +38,7 @@ disabled = true
 disabled = false
 
 [memory_usage]
-disabled = false
+disabled = true
 show_percentage = true
 show_swap = false
 threshold = 85
