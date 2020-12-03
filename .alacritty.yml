@@ -2,13 +2,13 @@ alt_send_esc: false
 font:
   size: 13.0
   normal:
-    family: Hack
+    family: Hack Nerd Font
     style: Regular
   bold:
-    family: Hack
+    family: Hack Nerd Font
     style: Bold
   italic:
-    family: Hack
+    family: Hack Nerd Font
     style: Italic
 key_bindings:
   - { key: L, mods: Alt|Shift, chars: "|" }
