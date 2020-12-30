@@ -142,8 +142,10 @@ function _restic_init() {
 }
 
 function _unlock() {
+  exit="$?"
   echo '--> Unlock restic'
   restic unlock
+  exit $exit
 }
 
 function main() {
