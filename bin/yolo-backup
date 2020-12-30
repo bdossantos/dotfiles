@@ -124,7 +124,7 @@ function _restic_check() {
 function _restic_forget() {
   echo "--> restic forget keep last ${RESTIC_KEEP_LAST}"
 
-  restic forget --keep-last "$RESTIC_KEEP_LAST" --prune
+  restic forget --keep-last "$RESTIC_KEEP_LAST" --prune --cleanup-cache
 }
 
 function _restic_init() {
