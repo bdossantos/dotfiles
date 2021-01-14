@@ -104,6 +104,9 @@ alias cls='clear'
 
 alias q='exit'
 
+# watch alias expend
+alias watch='watch '
+
 # tree
 if [ ! -x "$(command -v tree &>/dev/null)" ]; then
   alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
