@@ -41,6 +41,7 @@ brew install \
   fd \
   findutils \
   gawk \
+  gitlint \
   gnu-indent \
   gnu-sed \
   gnu-tar \
