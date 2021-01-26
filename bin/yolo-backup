@@ -84,7 +84,7 @@ function _restic_backup_mysql() {
   if [[ -r /etc/mysql/debian.cnf ]]; then
     MYSQL_DEFAULT_FILES='/etc/mysql/debian.cnf'
   else
-    MYSQL_DEFAULT_FILES="${HOME}/.my.cnf"
+    MYSQL_DEFAULT_FILES="/root/.my.cnf"
   fi
 
   mysqldump \
