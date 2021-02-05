@@ -46,6 +46,9 @@ disabled = true
 [kubernetes]
 disabled = false
 
+[vagrant]
+disabled = true
+
 [memory_usage]
 disabled = true
 show_percentage = true
