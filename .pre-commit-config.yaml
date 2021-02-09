@@ -1,7 +1,8 @@
 ---
 
+repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  sha: v1.2.0
+  rev: v3.4.0
   hooks:
     - id: check-added-large-files
     - id: check-case-conflict
@@ -18,6 +19,6 @@
     - id: requirements-txt-fixer
     - id: trailing-whitespace
 - repo: https://github.com/detailyang/pre-commit-shell
-  sha: 84c790f2a58b360d7108fec21ff96a6488c99736
+  rev: 1.0.5
   hooks:
     - id: shell-lint
