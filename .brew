@@ -210,9 +210,9 @@ done
 
 gem ctags
 for ruby in ~/.rubies/*/lib/ruby/; do
-  pushd "${ruby}" &>/dev/null
+  pushd "${ruby}" &>/dev/null || exit
   ctags -R ./*
-  popd &>/dev/null
+  popd &>/dev/null || exit
 done
 
 gem pristine --all
