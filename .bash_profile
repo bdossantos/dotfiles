@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # shellcheck disable=SC1090
 if [ -f "${HOME}/.profile" ]; then
   . "${HOME}/.profile"
