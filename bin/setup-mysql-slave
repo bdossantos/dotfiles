@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2029
 # A quick & dirty script to setup a MySQL slave thanks to Percona Xtrabackup
 # https://www.percona.com/doc/percona-xtrabackup/2.4/howtos/setting_up_replication.html
 
@@ -45,6 +46,7 @@ xtrabackup \
   ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" \
     "pigz -dc -p \$(grep -c processor < /proc/cpuinfo || 4) - | tar -C ${BACKUP_DESTINATION} -ixvf -"
 
+# shellcheck disable=SC2181
 if [[ $? -ne 0 ]]; then
   echo >&2 "xtrabackup command failed"
   exit 1
