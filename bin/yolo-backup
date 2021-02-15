@@ -159,7 +159,7 @@ function main() {
 
   _restic_init
 
-  trap _unlock INT TERM EXIT
+  trap _unlock ERR
 
   if command -v mysqld >/dev/null; then
     _restic_backup_mysql
