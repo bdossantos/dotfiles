@@ -30,6 +30,7 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
 Plugin 'chriskempson/base16-vim'
+Plugin 'dracula/vim', { 'name': 'dracula' }
 
 call vundle#end()
 filetype plugin indent on         " load file type plugins + indentation
@@ -89,10 +90,7 @@ syntax enable
 
 set background=dark
 
-if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
-endif
+colorscheme dracula
 
 if exists('+colorcolumn')
   set colorcolumn=80
@@ -123,7 +121,7 @@ let g:airline#extensions#branch_prefix#enabled=1
 let g:airline#extensions#ale#enabled=1
 
 " airline theme
-let g:airline_theme='base16_ashes'
+let g:airline_theme='dracula'
 
 " Use rubocop with the default ruby checker (mri)
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
