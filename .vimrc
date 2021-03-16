@@ -29,7 +29,6 @@ Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
-Plugin 'chriskempson/base16-vim'
 Plugin 'dracula/vim', { 'name': 'dracula' }
 
 call vundle#end()
