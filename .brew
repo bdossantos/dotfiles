@@ -1,9 +1,32 @@
 #!/usr/bin/env bash
 
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DEBUG=${DEBUG:=0}
+[[ $DEBUG -eq 1 ]] && set -o xtrace
+
 export HOMEBREW_CASK_OPTS="--appdir=${HOME}/Applications --fontdir=${HOME}/Library/Fonts --no-binaries"
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_INSECURE_REDIRECT=1
 export PATH="${HOME}/.homebrew/bin:${PATH}"
+
+CPU_BRAND="$(sysctl -n machdep.cpu.brand_string)"
+export CPU_BRAND
+
+echo "--> Detected CPU Brand: ${CPU_BRAND}"
+
+# Enforce cpu architecture because alacritty run in x86_64 compatibility mode and bash process inherit.
+if [[ $CPU_BRAND == 'Apple M1' ]]; then
+  function brew() {
+    arch -arm64 brew "$@"
+  }
+else
+  function brew() {
+    arch -x86_64 brew "$@"
+  }
+fi
 
 echo "--> Make sure we're using the latest Homebrew"
 brew update
@@ -57,9 +80,7 @@ brew install \
   gpatch \
   gpg \
   gsl \
-  hadolint \
   htmlcompressor \
-  htop-osx \
   ipcalc \
   jhead \
   jpeg \
@@ -75,7 +96,6 @@ brew install \
   nmap \
   openssl \
   optipng \
-  packer \
   pigz \
   pngcrush \
   pngquant \
@@ -84,15 +104,14 @@ brew install \
   proselint \
   pv \
   pwgen \
+  python@3.9 \
   readline \
   ruby-build \
   ruby-install \
   s3cmd \
-  shellcheck \
   shfmt \
   shpotify \
   ssh-copy-id \
-  sshrc \
   starship \
   stow \
   tcpdump \
@@ -108,6 +127,23 @@ brew install \
   wget \
   xz \
   zoxide
+
+if [[ $CPU_BRAND == 'Apple M1' ]]; then
+  # Install incompatibles brew formulas with compatibility mode in an isolated homebrew directory
+  arch -x86_64 ~/.homebrew_x86_64/bin/brew update
+  arch -x86_64 ~/.homebrew_x86_64/bin/brew upgrade
+  arch -x86_64 ~/.homebrew_x86_64/bin/brew install \
+    hadolint \
+    packer \
+    htop-osx \
+    shellcheck
+else
+  brew install \
+    hadolint \
+    packer \
+    htop-osx \
+    shellcheck
+fi
 
 # install some casks in ~/Applications
 brew cask install \

@@ -1,5 +1,5 @@
 # PATH
-export PATH="$HOME/.homebrew/bin:$HOME/.homebrew/sbin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+export PATH="$HOME/.homebrew/bin:$HOME/.homebrew_x86_64/bin:$HOME/.homebrew/sbin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
 # Homebrew prefix
 export HOMEBREW_PREFIX='/usr/local'
