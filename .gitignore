@@ -1,2 +1,4 @@
-.gnupg/
+!.config/starship.toml
 !.gnupg/gpg.conf
+.config
+.gnupg/
