@@ -39,6 +39,7 @@ brew tap tldr-pages/tldr
 
 echo '--> Install all brew Packages'
 brew install \
+  1password \
   ack \
   advancecomp \
   ansifilter \
@@ -63,37 +64,48 @@ brew install \
   entr \
   fd \
   findutils \
+  firefox \
+  font-hack \
+  font-hack-nerd-font \
+  fzf \
   gawk \
+  gifsicle \
+  git \
   gitlint \
   gnu-indent \
   gnu-sed \
-  gnu-tar \
-  gnu-which \
-  grep \
-  gzip \
-  fzf \
-  gifsicle \
-  git \
   gnu-sed \
   gnu-tar \
+  gnu-tar \
+  gnu-which \
   go \
+  google-backup-and-sync \
+  google-chrome \
   gpatch \
   gpg \
+  grep \
   gsl \
+  gzip \
   htmlcompressor \
+  imageoptim \
   ipcalc \
+  iterm2 \
   jhead \
   jpeg \
   jpegoptim \
   jq \
   k9s \
+  keybase \
   kops \
   kubectx \
   less \
   lesspipe \
+  little-snitch \
   make \
+  micro-snitch \
   moreutils \
   nmap \
+  omnigraffle \
   openssl \
   optipng \
   pigz \
@@ -106,11 +118,14 @@ brew install \
   pwgen \
   python@3.9 \
   readline \
+  rectangle \
   ruby-build \
   ruby-install \
   s3cmd \
+  sequel-pro \
   shfmt \
   shpotify \
+  spotify \
   ssh-copy-id \
   starship \
   stow \
@@ -121,6 +136,7 @@ brew install \
   tig \
   tldr \
   tmux \
+  tor-browser \
   tree \
   vim \
   watch \
@@ -145,26 +161,9 @@ else
     shellcheck
 fi
 
-# install some casks in ~/Applications
-brew cask install \
-  1password \
-  firefox \
-  font-hack \
-  font-hack-nerd-font \
-  google-chrome \
-  google-backup-and-sync \
-  imageoptim \
-  iterm2 \
-  keybase \
-  little-snitch \
-  micro-snitch \
-  omnigraffle \
-  rectangle \
-  sequel-pro \
-  spotify \
-  tor-browser
+# Yes, I use a non privileged user for daily use
+echo "--> login as admin to install some casks system-wide in /Applications"
 
-# login as admin to install some casks system-wide in /Applications
 su admin -c "
 while true; do sudo -n true; sleep 60; kill -0 $$ || exit; done 2>/dev/null &
 
@@ -177,12 +176,13 @@ echo '--> Install/update Homebrew cask'
 
 brew update
 
-brew cask install \
+brew tap homebrew/cask-drivers
+
+brew install \
   gpg-suite \
   suunto-moveslink2 \
   vagrant \
-  virtualbox \
-  xquartz
+  virtualbox
 "
 
 ## gcloud
