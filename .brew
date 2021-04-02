@@ -199,20 +199,6 @@ if [[ ! -x "${HOME}/.google-cloud-sdk/bin/gcloud" ]]; then
     --quiet
 fi
 
-## python
-PIPS=(
-  fabric
-  flake8
-  pylint
-  virtualenv
-)
-
-pip install --upgrade pip
-
-for pip in "${PIPS[@]}"; do
-  pip list -l | grep "$pip" &>/dev/null || pip install "$pip"
-done
-
 ## ruby
 mkdir -p "${HOME}/.rubies"
 
