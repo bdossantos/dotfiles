@@ -211,32 +211,3 @@ for ruby in "${RUBIES[@]}"; do
     "$(brew --prefix)/bin/ruby-build" "$ruby" "${HOME}/.rubies/ruby-${ruby}"
   fi
 done
-
-echo "${RUBIES[@]:(-1)}" >~/.ruby-version
-
-GEMS=(
-  puppet-lint
-  rubocop
-  shell_explain
-)
-
-# shellcheck source=/dev/null
-source "$(brew --prefix)/share/chruby/chruby.sh"
-chruby "$(cat "${HOME}/.ruby-version")"
-
-brew unlink xz
-
-for gem in "${GEMS[@]}"; do
-  gem list -i "${gem}" &>/dev/null || gem install "${gem}"
-done
-
-gem ctags
-for ruby in ~/.rubies/*/lib/ruby/; do
-  pushd "${ruby}" &>/dev/null || exit
-  ctags -R ./*
-  popd &>/dev/null || exit
-done
-
-gem pristine --all
-
-brew link xz
