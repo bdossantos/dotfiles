@@ -27,6 +27,8 @@ RESTIC_REPOSITORY=${RESTIC_REPOSITORY:-}
 RESTIC_KEEP_LAST=${RESTIC_KEEP_LAST:=180}
 SYSLOG=${SYSLOG=0}
 
+readonly NPROC=$(grep -c processor </proc/cpuinfo || 4)
+
 if command -v pigz >/dev/null; then
   COMPRESS_PROGRAM='pigz'
 fi
@@ -76,6 +78,39 @@ function _restic_backup_files() {
   else
     exit $?
   fi
+}
+
+function _restic_backup_mysql_xtrabackup() {
+  echo '--> Backup all mysql databases'
+
+  if [[ -r /etc/mysql/debian.cnf ]]; then
+    MYSQL_DEFAULT_FILES='/etc/mysql/debian.cnf'
+  else
+    MYSQL_DEFAULT_FILES="/root/.my.cnf"
+  fi
+
+  # How to restore:
+  #   - mkdir /var/tmp/backup/ && restic restore e60e029c --target /var/tmp/
+  #   - xbstream -x -C /var/tmp/backup/ < /var/tmp/xtrabackup.xbstream
+  #   - xtrabackup --decompress --parallel=4 --target-dir=/var/tmp/backup
+  #   - xtrabackup --prepare --target-dir=/var/tmp/backup
+  #   - service mysql stop && mv /var/lib/mysql /var/lib/mysql.back
+  #   - mv /var/tmp/backup /var/lib/mysql && chown -R mysql.mysql /var/lib/mysql
+  xtrabackup \
+    --defaults-file="$MYSQL_DEFAULT_FILES" \
+    --backup \
+    --compress \
+    --compress-threads="$((NPROC / 2))" \
+    --galera-info \
+    --parallel="$((NPROC / 2))" \
+    --slave-info \
+    --stream=xbstream \
+    --target-dir=./ |
+    restic \
+      backup \
+      --stdin \
+      --stdin-filename='/xtrabackup.xbstream' \
+      --exclude-file="$RESTIC_EXCLUDE_FILE"
 }
 
 function _restic_backup_mysql() {
@@ -160,6 +195,10 @@ function main() {
   _restic_init
 
   trap _unlock ERR
+
+  if command -v xtrabackup >/dev/null && command -v xbstream >/dev/null; then
+    _restic_backup_mysql_xtrabackup
+  fi
 
   if command -v mysqld >/dev/null; then
     _restic_backup_mysql
