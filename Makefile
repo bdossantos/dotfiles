@@ -69,6 +69,7 @@ uninstall: uninstall-dotfiles ## Uninstall all the things
 
 uninstall-dotfiles: ## Uninstall dotfiles
 	@stow -D . -t "$(HOME)" -v \
+		--ignore='.github' \
 		--ignore='README.md' \
 		--ignore='LICENCE' \
 		--ignore='Makefile'
