@@ -153,7 +153,13 @@ function _restic_backup_postgresql() {
 }
 
 function _restic_check() {
-  restic check
+  # Tell restic to also verify the integrity of the pack files in the repository
+  # each sunday.
+  if [[ $(date +%w) == 7 ]]; then
+    restic check --read-data
+  else
+    restic check --with-cache
+  fi
 }
 
 function _restic_forget() {
