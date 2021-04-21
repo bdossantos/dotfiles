@@ -72,11 +72,12 @@ function _restic_backup_files() {
   # shellcheck disable=SC2181
   exit_code=$?
 
+  set -o pipefail
+
   if [[ $exit_code -eq 0 ]] || [[ $exit_code -eq 1 ]]; then
-    set -o pipefail
     return 0
   else
-    exit $?
+    exit "$exit_code"
   fi
 }
 
@@ -193,10 +194,9 @@ function _restic_stats() {
 }
 
 function _unlock() {
-  exit="$?"
   echo '--> Unlock restic'
   restic unlock
-  exit $exit
+  exit 2
 }
 
 function main() {
