@@ -5,7 +5,7 @@ success_symbol = "[\\$](bold green)"
 error_symbol = "[\\$](bold red)"
 use_symbol_for_status = false
 
-[docker]
+[docker_context]
 symbol = " "
 
 [git_branch]
