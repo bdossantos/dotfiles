@@ -53,7 +53,7 @@ fi
 
 # color scheme
 export TERM='xterm-256color'
-export BASE16_SHELL="${HOME}/.base16-shell"
+export BAT_THEME='Dracula'
 
 # enable cheat syntax highlighting
 export CHEATCOLORS=true
@@ -81,7 +81,7 @@ export KEYTIMEOUT=20
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 
 # fzf preview
-export FZF_PREVIEW_COMMAND="bat --theme='base16' --style=numbers,changes --wrap never --color always {} || cat {} || tree -C {}"
+export FZF_PREVIEW_COMMAND="bat --style=numbers,changes --wrap never --color always {} || cat {} || tree -C {}"
 export FZF_DEFAULT_OPTS="--preview '($FZF_PREVIEW_COMMAND) 2> /dev/null' --preview-window=right:50%"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden --bind ?:toggle-preview"
 export FZF_CTRL_T_OPTS="--preview '($FZF_PREVIEW_COMMAND) 2> /dev/null | head -$LINES'"
