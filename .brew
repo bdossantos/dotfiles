@@ -131,7 +131,7 @@ brew install \
   stow \
   tcpdump \
   terminal-notifier \
-  terraform \
+  tfenv \
   the_silver_searcher \
   tig \
   tldr \
