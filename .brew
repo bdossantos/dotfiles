@@ -119,6 +119,7 @@ brew install \
   python@3.9 \
   readline \
   rectangle \
+  ripgrep \
   ruby-build \
   ruby-install \
   s3cmd \
