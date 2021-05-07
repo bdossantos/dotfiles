@@ -74,8 +74,8 @@ key_bindings:
 live_config_reload: true
 window:
   startup_mode: Maximized
-  decorations: none
+  decorations: buttonless
   dynamic_padding: true
   padding:
-    x: 0
-    y: 0
+    x: 5
+    y: 5
