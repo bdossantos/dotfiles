@@ -107,6 +107,7 @@ brew install \
   moreutils \
   nmap \
   omnigraffle \
+  openssh \
   openssl \
   optipng \
   pigz \
@@ -213,3 +214,6 @@ for ruby in "${RUBIES[@]}"; do
     "$(brew --prefix)/bin/ruby-build" "$ruby" "${HOME}/.rubies/ruby-${ruby}"
   fi
 done
+
+# Disable the macOS default ssh-agent for your user.
+launchctl disable user/$UID/com.openssh.ssh-agent
