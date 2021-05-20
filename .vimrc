@@ -6,7 +6,6 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'markcornick/vim-bats'
 Plugin 'tpope/vim-sensible'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
