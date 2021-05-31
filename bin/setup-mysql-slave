@@ -10,13 +10,13 @@ set -o nounset
 MYSQL_MASTER_USER=${MYSQL_MASTER_USER:='replication'}
 MYSQL_MASTER_PASSWORD=${MYSQL_MASTER_PASSWORD:=''}
 MYSQL_MASTER_IP=${MYSQL_MASTER_IP:='172.16.0.1'}
-MYSQL_DATADIR=${MYSQL_DATADIR:='/home/dbs/mysql'}
+MYSQL_DATADIR=${MYSQL_DATADIR:='/var/lib/mysql'}
 
 SLAVE_SSH_USER=${SLAVE_SSH_USER:=$(whoami)}
 SLAVE_IP=${SLAVE_IP:='172.16.0.2'}
 
-readonly BACKUP_DESTINATION="/home/${SLAVE_SSH_USER}/mysql.$$"
-readonly MYSQL_SETUP_SLAVE_SQL="/tmp/setup_slave.$$.sql"
+readonly BACKUP_DESTINATION="/var/tmp/${SLAVE_SSH_USER}/mysql.$$"
+readonly MYSQL_SETUP_SLAVE_SQL="/var/tmp/setup_slave.$$.sql"
 readonly NPROC=$(grep -c processor </proc/cpuinfo || 4)
 
 if ! command -v xtrabackup &>/dev/null || ! command -v pigz &>/dev/null; then
