@@ -102,15 +102,14 @@ function _restic_backup_mysql_xtrabackup() {
   # How to restore a single table:
   #
   #   - mkdir /var/tmp/backup/ && restic restore e60e029c --target /var/tmp/
-  #   - xbstream -x -C /var/tmp/backup/ < /var/tmp/xtrabackup.xbstream
+  #   - xbstream -p $(nproc) -x -C /var/tmp/backup/ < /var/tmp/xtrabackup.xbstream
   #   - xtrabackup --decompress --remove-original --parallel=$(nproc) --target-dir=/var/tmp/backup
   #   - xtrabackup --prepare --export --innodb-file-per-table --target-dir=/var/tmp/backup
-  #   - chown -r mysql.mysql /var/tmp/backup
-  #   - mysql > ALTER TABLE my_db.person_tags DISCARD TABLESPACE;
-  #   - mv /var/lib/mysql/my_db/person_tags.frm /var/tmp/person_tags.frm.back
-  #   - mv /var/tmp/backup/my_db/person_tags.exp /var/lib/mysql/my_db/person_tags.exp
-  #   - mv /var/tmp/backup/my_db/person_tags.ibd /var/lib/mysql/my_db/person_tags.ibd
-  #   - mysql >ALTER TABLE my_db.person_tags IMPORT TABLESPACE
+  #   - chown -R mysql.mysql /var/tmp/backup
+  #   - mysql> ALTER TABLE my_db.person_tags DISCARD TABLESPACE;
+  #   - mv /var/lib/mysql/my_db/person_tags.* /var/tmp/
+  #   - cp -v /var/tmp/backup/my_db/person_tags.* /var/lib/mysql/my_db/
+  #   - mysql> ALTER TABLE my_db.person_tags IMPORT TABLESPACE
   xtrabackup \
     --defaults-file="$MYSQL_DEFAULT_FILES" \
     --backup \
