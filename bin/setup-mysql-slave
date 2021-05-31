@@ -19,8 +19,10 @@ readonly BACKUP_DESTINATION="/var/tmp/${SLAVE_SSH_USER}/mysql.$$"
 readonly MYSQL_SETUP_SLAVE_SQL="/var/tmp/setup_slave.$$.sql"
 readonly NPROC=$(grep -c processor </proc/cpuinfo || 4)
 
-if ! command -v xtrabackup &>/dev/null || ! command -v pigz &>/dev/null; then
-  echo >&2 "xtrabackup or pigz aren't installed or in PATH"
+if ! command -v qpress &>/dev/NULL ||
+  ! command -v xbstream &>/dev/null ||
+  ! command -v xtrabackup &>/dev/null; then
+  echo >&2 "qpress, xbstream or xtrabackup aren't installed or in PATH"
   exit 1
 fi
 
@@ -29,22 +31,24 @@ if ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "mkdir -p ${BACKUP_DESTINATION}"; then
   exit 1
 fi
 
-if ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "command -v xtrabackup" ||
-  ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "command -v pigz"; then
-  echo >&2 "xtrabackup or pigz aren't installed or in PATH on the slave"
+if ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "command -v qpress" ||
+  ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "command -v xbstream" ||
+  ! ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "command -v xtrabackup"; then
+  echo >&2 "qpress, xbstream or xtrabackup aren't installed or in PATH on the slave"
   exit 1
 fi
 
 ulimit -n 65536
 xtrabackup \
   --backup \
-  --slave-info \
-  --stream=tar \
+  --compress \
+  --compress-threads="$((NPROC / 2))" \
   --parallel="$((NPROC / 2))" \
+  --slave-info \
+  --stream=xbstream \
   --target-dir=./ |
-  pigz -p "$NPROC" - |
   ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" \
-    "pigz -dc -p \$(grep -c processor < /proc/cpuinfo || 4) - | tar -C ${BACKUP_DESTINATION} -ixvf -"
+    "xbstream -x -C ${BACKUP_DESTINATION}"
 
 # shellcheck disable=SC2181
 if [[ $? -ne 0 ]]; then
@@ -52,6 +56,10 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
+ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" \
+  "xtrabackup --remove-original --decompress \
+    --parallel=\$(grep -c processor < /proc/cpuinfo || 4) \
+    --target-dir=${BACKUP_DESTINATION}"
 ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" \
   "xtrabackup --prepare --target-dir=${BACKUP_DESTINATION}"
 ssh "${SLAVE_SSH_USER}@${SLAVE_IP}" "sudo service mysql stop"

@@ -94,7 +94,7 @@ function _restic_backup_mysql_xtrabackup() {
   #
   #   - mkdir /var/tmp/backup/ && restic restore e60e029c --target /var/tmp/
   #   - xbstream -x -C /var/tmp/backup/ < /var/tmp/xtrabackup.xbstream
-  #   - xtrabackup --decompress --parallel=$(nproc) --target-dir=/var/tmp/backup
+  #   - xtrabackup --decompress --remove-original --parallel=$(nproc) --target-dir=/var/tmp/backup
   #   - xtrabackup --prepare --target-dir=/var/tmp/backup
   #   - service mysql stop && mv /var/lib/mysql /var/lib/mysql.back
   #   - mv /var/tmp/backup /var/lib/mysql && chown -R mysql.mysql /var/lib/mysql
@@ -103,7 +103,7 @@ function _restic_backup_mysql_xtrabackup() {
   #
   #   - mkdir /var/tmp/backup/ && restic restore e60e029c --target /var/tmp/
   #   - xbstream -x -C /var/tmp/backup/ < /var/tmp/xtrabackup.xbstream
-  #   - xtrabackup --decompress --parallel=$(nproc) --target-dir=/var/tmp/backup
+  #   - xtrabackup --decompress --remove-original --parallel=$(nproc) --target-dir=/var/tmp/backup
   #   - xtrabackup --prepare --export --innodb-file-per-table --target-dir=/var/tmp/backup
   #   - chown -r mysql.mysql /var/tmp/backup
   #   - mysql > ALTER TABLE my_db.person_tags DISCARD TABLESPACE;
