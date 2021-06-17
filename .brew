@@ -95,6 +95,7 @@ brew install \
   jpeg \
   jpegoptim \
   jq \
+  jsonnet \
   k9s \
   keybase \
   kops \
