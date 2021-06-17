@@ -80,6 +80,7 @@ brew install \
   gnu-tar \
   gnu-which \
   go \
+  go-jsonnet \
   google-backup-and-sync \
   google-chrome \
   gpatch \
@@ -95,7 +96,6 @@ brew install \
   jpeg \
   jpegoptim \
   jq \
-  jsonnet \
   k9s \
   keybase \
   kops \
