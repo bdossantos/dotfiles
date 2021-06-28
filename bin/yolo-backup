@@ -19,6 +19,8 @@ DEBUG=${DEBUG:=0}
 [[ $DEBUG -eq 1 ]] && set -o xtrace
 
 COMPRESS_PROGRAM='gzip'
+NODE_EXPORTER_TEXTFILE_DIRECTORY=${NODE_EXPORTER_TEXTFILE_DIRECTORY:-}
+NPROC=$(grep -c processor </proc/cpuinfo || 4)
 PATH="${PATH}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 RESTIC_BACKUP_TARGET_DIRECTORY=${RESTIC_BACKUP_TARGET_DIRECTORY:='/'}
 RESTIC_EXCLUDE_FILE=${RESTIC_EXCLUDE_FILE:='/dev/null'}
@@ -26,8 +28,6 @@ RESTIC_PASSWORD_FILE=${RESTIC_PASSWORD_FILE:='/dev/null'}
 RESTIC_REPOSITORY=${RESTIC_REPOSITORY:-}
 RESTIC_KEEP_LAST=${RESTIC_KEEP_LAST:=180}
 SYSLOG=${SYSLOG=0}
-
-readonly NPROC=$(grep -c processor </proc/cpuinfo || 4)
 
 if command -v pigz >/dev/null; then
   COMPRESS_PROGRAM='pigz'
@@ -203,7 +203,22 @@ function _restic_init() {
 }
 
 function _restic_stats() {
-  restic stats
+  if [[ -n $NODE_EXPORTER_TEXTFILE_DIRECTORY ]] && command -v jq >/dev/null; then
+    stats=$(restic stats --json)
+    cat <<EOF >"${NODE_EXPORTER_TEXTFILE_DIRECTORY}/yolo-backup.prom.$$"
+# HELP backup_total_size_bytes Disk space used by backup
+# TYPE backup_total_size_bytes gauge
+backup_total_size_bytes $(echo "$stats" | jq -r '.total_size')
+# HELP backup_total_file_count Number of files in all backups
+# TYPE backup_total_file_count gauge
+backup_total_file_count $(echo "$stats" | jq -r '.total_file_count')
+EOF
+
+    mv "${NODE_EXPORTER_TEXTFILE_DIRECTORY}/yolo-backup.prom.$$" \
+      "${NODE_EXPORTER_TEXTFILE_DIRECTORY}/yolo-backup.prom"
+  else
+    restic stats
+  fi
 }
 
 function _unlock() {
