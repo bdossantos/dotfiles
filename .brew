@@ -49,6 +49,7 @@ brew install \
   bash-completion@2 \
   bat \
   bats \
+  bazel \
   binutils \
   cheat \
   chruby \
