@@ -17,7 +17,7 @@ function _clean() {
 }
 
 if [[ ! -d "$BACKUP_VOLUME" ]]; then
-  hdiutil attach "${HOME}/Google Drive/Personal/github/${GITHUB_LOGIN}.dmg"
+  hdiutil attach "${HOME}/Google Drive/My Drive/Personal/github/${GITHUB_LOGIN}.dmg"
 fi
 
 trap _clean INT TERM EXIT
