@@ -103,6 +103,7 @@ brew install \
   kubectx \
   less \
   lesspipe \
+  libyaml \
   little-snitch \
   make \
   micro-snitch \
