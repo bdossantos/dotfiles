@@ -47,15 +47,6 @@ alias gswc='git switch -c'
 alias grs='git restore'
 alias grss='git restore --source'
 
-# Hub
-function hi() {
-  hub browse -- "issues/$*"
-}
-
-alias hp='hub browse -- pulls'
-alias hpp='hub pull-request'
-alias hpc='hub browse -- "pull/$(git rev-parse --abbrev-ref HEAD)"'
-
 # Some aliases to avoid making mistakes
 alias rm='rm -i'
 alias cp='cp -i'
