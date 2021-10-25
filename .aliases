@@ -165,6 +165,11 @@ alias ssh-add='ssh-add -c -t 4h'
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
 
+# make
+if command -v caffeinate &>/dev/null; then
+  alias make='caffeinate make'
+fi
+
 # kubectl
 if command -v kubectl &>/dev/null; then
   alias k=kubectl
