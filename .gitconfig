@@ -93,3 +93,6 @@ rebase = true
 
 [fetch]
 writeCommitGraph = true
+
+[log]
+follow = true
