@@ -102,3 +102,6 @@ export SCM_CHECK=true
 
 # Don't check mail when opening terminal.
 unset MAILCHECK
+
+# Unset KUBECONFIG, config is defined in each .envrc files
+unset KUBECONFIG
