@@ -104,4 +104,4 @@ export SCM_CHECK=true
 unset MAILCHECK
 
 # Unset KUBECONFIG, config is defined in each .envrc files
-unset KUBECONFIG
+export KUBECONFIG=/dev/null
