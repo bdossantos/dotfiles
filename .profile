@@ -82,7 +82,7 @@ export FZF_DEFAULT_COMMAND='ag -l -g ""'
 
 # fzf preview
 export FZF_PREVIEW_COMMAND="bat --style=numbers,changes --wrap never --color always {} || cat {} || tree -C {}"
-export FZF_DEFAULT_OPTS="--preview '($FZF_PREVIEW_COMMAND) 2> /dev/null' --preview-window=right:50%"
+export FZF_DEFAULT_OPTS="--preview '($FZF_PREVIEW_COMMAND) 2> /dev/null' --preview-window=right:50% --color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden --bind ?:toggle-preview"
 export FZF_CTRL_T_OPTS="--preview '($FZF_PREVIEW_COMMAND) 2> /dev/null | head -$LINES'"
 
