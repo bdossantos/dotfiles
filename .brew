@@ -106,6 +106,7 @@ brew install \
   libyaml \
   little-snitch \
   make \
+  miller \
   micro-snitch \
   moreutils \
   nmap \
