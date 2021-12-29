@@ -89,7 +89,9 @@ brew install \
   grep \
   gsl \
   gzip \
+  hadolint \
   htmlcompressor \
+  htop \
   imageoptim \
   ipcalc \
   iterm2 \
@@ -114,6 +116,7 @@ brew install \
   openssh \
   openssl \
   optipng \
+  packer \
   pigz \
   pngcrush \
   pngquant \
@@ -130,6 +133,7 @@ brew install \
   ruby-install \
   s3cmd \
   sequel-pro \
+  shellcheck \
   shfmt \
   shpotify \
   spotify \
@@ -150,23 +154,6 @@ brew install \
   wget \
   xz \
   zoxide
-
-if [[ $CPU_BRAND == 'Apple M1' ]]; then
-  # Install incompatibles brew formulas with compatibility mode in an isolated homebrew directory
-  arch -x86_64 ~/.homebrew_x86_64/bin/brew update
-  arch -x86_64 ~/.homebrew_x86_64/bin/brew upgrade
-  arch -x86_64 ~/.homebrew_x86_64/bin/brew install \
-    hadolint \
-    packer \
-    htop-osx \
-    shellcheck
-else
-  brew install \
-    hadolint \
-    packer \
-    htop-osx \
-    shellcheck
-fi
 
 # Yes, I use a non privileged user for daily use
 echo "--> login as admin to install some casks system-wide in /Applications"
