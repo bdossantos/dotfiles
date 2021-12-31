@@ -130,7 +130,6 @@ brew install \
   rectangle \
   ripgrep \
   ruby-build \
-  ruby-install \
   s3cmd \
   sequel-pro \
   shellcheck \
@@ -157,8 +156,12 @@ brew install \
 
 if [[ $CPU_BRAND == 'Apple M1' ]]; then
   # Install incompatibles brew formulas with compatibility mode in an isolated homebrew directory
-  arch -x86_64 ~/.homebrew_x86_64/bin/brew update
-  arch -x86_64 ~/.homebrew_x86_64/bin/brew upgrade
+  arch -x86_64 "${HOME}/.homebrew_x86_64/bin/brew" update
+  arch -x86_64 "${HOME}/.homebrew_x86_64/bin/brew" upgrade
+  arch -x86_64 "${HOME}/.homebrew_x86_64/bin/brew" install \
+    chruby \
+    gsl \
+    ruby-build
 fi
 
 # Yes, I use a non privileged user for daily use
@@ -209,7 +212,8 @@ RUBIES=(
 
 for ruby in "${RUBIES[@]}"; do
   if [[ ! -f "${HOME}/.rubies/ruby-${ruby}/bin/ruby" ]]; then
-    "$(brew --prefix)/bin/ruby-build" "$ruby" "${HOME}/.rubies/ruby-${ruby}"
+    arch -x86_64 env RUBY_CONFIGURE_OPTS=--with-readline-dir=$("${HOME}/.homebrew_x86_64/bin/brew" --prefix readline) \
+      "${HOME}/.homebrew_x86_64/bin/ruby-build" "$ruby" "${HOME}/.rubies/ruby-${ruby}"
   fi
 done
 

@@ -44,6 +44,7 @@ fi
 # https://docs.brew.sh/Shell-Completion
 if [ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]; then
   export BASH_COMPLETION_COMPAT_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d"
+  # shellcheck disable=SC1091
   source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
 else
   for completion in "${HOMEBREW_PREFIX}"/etc/bash_completion.d/*; do
@@ -55,7 +56,15 @@ fi
 PROMPT_COMMAND="history -a;history -c;history -r;$PROMPT_COMMAND"
 
 # chruby
-if [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
+if [ "$(sysctl -n machdep.cpu.brand_string)" == "Apple M1" ]; then
+  if [ -f "${HOME}/.homebrew_x86_64/share/chruby/chruby.sh" ]; then
+    # shellcheck disable=SC2034
+    RUBIES=("${HOME}/.rubies/*")
+
+    source "${HOME}/.homebrew_x86_64/share/chruby/chruby.sh"
+    source "${HOME}/.homebrew_x86_64/share/chruby/auto.sh"
+  fi
+elif [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
   # shellcheck disable=SC2034
   RUBIES=("${HOME}/.rubies/*")
 
