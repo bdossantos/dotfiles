@@ -71,6 +71,7 @@ brew install \
   font-hack-nerd-font \
   fzf \
   gawk \
+  gcc \
   gifsicle \
   git \
   gitlint \
@@ -160,6 +161,7 @@ if [[ $CPU_BRAND == 'Apple M1' ]]; then
   arch -x86_64 "${HOME}/.homebrew_x86_64/bin/brew" upgrade
   arch -x86_64 "${HOME}/.homebrew_x86_64/bin/brew" install \
     chruby \
+    gcc \
     gsl \
     ruby-build
 fi
