@@ -34,11 +34,12 @@ install-dotfiles: ## Pull and Install dotfiles
 install-homebrew: ## Install homebrew, the missing package manager for OS X
 	$(info --> Install homebrew)
 	@mkdir -m 0700 -p ~/.homebrew
-	@[[ -f ~/.homebrew/bin/brew ]] \
-		|| curl -L https://github.com/Homebrew/brew/tarball/master \
+	@[[ ! -f ~/.homebrew/bin/brew ]] \
+		&& curl -L https://github.com/Homebrew/brew/tarball/master \
 		| tar xz --strip 1 -C ~/.homebrew
 	@[[ "$(sysctl -n machdep.cpu.brand_string)" == 'Apple M1' ]] \
 		&& mkdir -m 0700 -p ~/.homebrew_x86_64 \
+		&& [[ ! -f ~/.homebrew_x86_64/bin/brew ]] \
 		&& curl -L https://github.com/Homebrew/brew/tarball/master \
 			| tar xz --strip 1 -C ~/.homebrew_x86_64
 
