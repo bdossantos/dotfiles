@@ -163,6 +163,7 @@ if [[ $CPU_BRAND == 'Apple M1' ]]; then
     chruby \
     gcc \
     gsl \
+    openssl@1.1 \
     ruby-build
 fi
 
