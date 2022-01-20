@@ -214,7 +214,7 @@ RUBIES=(
 
 for ruby in "${RUBIES[@]}"; do
   if [[ ! -f "${HOME}/.rubies/ruby-${ruby}/bin/ruby" ]]; then
-    arch -x86_64 env RUBY_CONFIGURE_OPTS="--with-readline-dir=$("${HOME}/.homebrew_x86_64/bin/brew" --prefix readline)" \
+    arch -x86_64 env RUBY_CONFIGURE_OPTS="--with-readline-dir=$("${HOME}/.homebrew_x86_64/bin/brew" --prefix readline) --with-openssl-dir=$("${HOME}/.homebrew_x86_64/bin/brew" --prefix openssl@1.1)" \
       "${HOME}/.homebrew_x86_64/bin/ruby-build" "$ruby" "${HOME}/.rubies/ruby-${ruby}"
   fi
 done
