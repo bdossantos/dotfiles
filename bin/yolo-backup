@@ -170,9 +170,7 @@ function _restic_check() {
   # Tell restic to also verify the integrity of the pack files in the repository
   # each sunday.
   if [[ $(date +%w) == 7 ]]; then
-    restic check --read-data
-  else
-    restic check --with-cache
+    restic check --with-cache --read-data-subset=2%
   fi
 }
 
