@@ -47,10 +47,6 @@ fi
 # Don't clear the screen after quitting a manual page
 export MANPAGER='less -X'
 
-if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-  export BASH_IT_THEME='demula'
-fi
-
 # color scheme
 export TERM='xterm-256color'
 export BAT_THEME='Dracula'

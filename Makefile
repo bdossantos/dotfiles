@@ -1,4 +1,3 @@
-BASH_IT = $(HOME)/.bash_it
 OS = "$(uname)"
 SHELL := /usr/bin/env bash
 
