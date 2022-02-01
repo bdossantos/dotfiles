@@ -1,14 +1,26 @@
+# https://starship.rs/config/
+# https://github.com/dracula/starship/blob/master/starship.toml
 add_newline = true
 
 [character]
-success_symbol = "[\\$](bold green)"
-error_symbol = "[\\$](bold red)"
+error_symbol = "[\\$](bold #ff5555)"
+success_symbol = "[\\$](bold #f8f8f2)"
+
+[cmd_duration]
+style = "bold #f1fa8c"
+
+[directory]
+style = "bold #50fa7b"
 
 [docker_context]
 symbol = " "
 
 [git_branch]
+style = "bold #ff79c6"
 symbol = " "
+
+[git_status]
+style = "bold #ff5555"
 
 [line_break]
 disabled = true
@@ -18,6 +30,9 @@ disabled = true
 
 [golang]
 disabled = true
+
+[hostname]
+style = "bold #ff5555"
 
 [nodejs]
 disabled = true
@@ -45,6 +60,10 @@ disabled = true
 
 [kubernetes]
 disabled = false
+
+[username]
+format = "[$user]($style) on "
+style_user = "bold #bd93f9"
 
 [vagrant]
 disabled = true
