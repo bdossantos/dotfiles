@@ -19,7 +19,7 @@ readonly BACKUP_DESTINATION="/var/tmp/${SLAVE_SSH_USER}/mysql.$$"
 readonly MYSQL_SETUP_SLAVE_SQL="/var/tmp/setup_slave.$$.sql"
 readonly NPROC=$(grep -c processor </proc/cpuinfo || 4)
 
-if ! command -v qpress &>/dev/NULL ||
+if ! command -v qpress &>/dev/null ||
   ! command -v xbstream &>/dev/null ||
   ! command -v xtrabackup &>/dev/null; then
   echo >&2 "qpress, xbstream or xtrabackup aren't installed or in PATH"
