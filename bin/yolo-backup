@@ -179,11 +179,7 @@ function _restic_forget() {
 
   restic forget --keep-last "$RESTIC_KEEP_LAST" --cleanup-cache
 
-  # run restic prune each sunday
-  if [[ $(date +%w) == 7 ]]; then
-    echo "--> Run restic prune"
-    restic prune
-  fi
+  restic prune
 }
 
 function _restic_init() {
