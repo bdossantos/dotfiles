@@ -179,7 +179,7 @@ function _restic_forget() {
 
   restic forget --keep-last "$RESTIC_KEEP_LAST" --cleanup-cache
 
-  restic prune
+  restic prune --max-unused '2%'
 }
 
 function _restic_init() {
