@@ -62,6 +62,9 @@ if [[ $CPU_BRAND != 'Apple M1' ]]; then
     echo 1>&2 'Hint: "sudo firmwarepasswd -setmode full"'
     exit 1
   fi
+
+  # check EFI Firmware Integrity
+  /usr/libexec/firmwarecheckers/eficheck/eficheck --integrity-check
 fi
 
 # Check System Integrity Protection
@@ -71,9 +74,6 @@ if ! csrutil status | grep -q 'System Integrity Protection status: enabled.'; th
   echo 1>&2 'Hint: "sudo csrutil enable"'
   exit 1
 fi
-
-# check EFI Firmware Integrity
-/usr/libexec/firmwarecheckers/eficheck/eficheck --integrity-check
 
 # Enable Gatekeeper
 sudo spctl --master-enable
