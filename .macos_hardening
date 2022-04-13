@@ -19,9 +19,12 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+CPU_BRAND="$(sysctl -n machdep.cpu.brand_string)"
 CURRENT_NETWORK_LOCATION="$(networksetup -getcurrentlocation)"
 
-export CURRENT_NETWORK_LOCATION
+export CPU_BRAND CURRENT_NETWORK_LOCATION
+
+echo "--> Detected CPU Brand: ${CPU_BRAND}"
 
 function _clean() {
   sudo networksetup -switchtolocation "$CURRENT_NETWORK_LOCATION"
@@ -43,20 +46,22 @@ if ! fdesetup status | grep -q 'FileVault is On.'; then
   # sudo fdesetup enable -user $USER > $HOME/FileVault_recovery_key.txt
 fi
 
-# Check firmware password
-if ! sudo firmwarepasswd -check | grep -q 'Password Enabled: Yes'; then
-  # shellcheck disable=SC1003
-  echo 1>&2 '/!\ firmware password is not set /!\'
-  echo 1>&2 'Hint: "sudo firmwarepasswd -setpasswd"'
-  exit 1
-fi
+if [[ $CPU_BRAND != 'Apple M1' ]]; then
+  # Check firmware password
+  if ! sudo firmwarepasswd -check | grep -q 'Password Enabled: Yes'; then
+    # shellcheck disable=SC1003
+    echo 1>&2 '/!\ firmware password is not set /!\'
+    echo 1>&2 'Hint: "sudo firmwarepasswd -setpasswd"'
+    exit 1
+  fi
 
-# Check firmware password mode
-if ! sudo firmwarepasswd -mode | grep -q 'Mode: full'; then
-  # shellcheck disable=SC1003
-  echo 1>&2 '/!\ firmware password is not required on all startups /!\'
-  echo 1>&2 'Hint: "sudo firmwarepasswd -setmode full"'
-  exit 1
+  # Check firmware password mode
+  if ! sudo firmwarepasswd -mode | grep -q 'Mode: full'; then
+    # shellcheck disable=SC1003
+    echo 1>&2 '/!\ firmware password is not required on all startups /!\'
+    echo 1>&2 'Hint: "sudo firmwarepasswd -setmode full"'
+    exit 1
+  fi
 fi
 
 # Check System Integrity Protection
