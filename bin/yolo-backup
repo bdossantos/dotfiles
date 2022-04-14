@@ -117,7 +117,6 @@ function _restic_backup_mysql_xtrabackup() {
     --compress-threads="$((NPROC / 2))" \
     --galera-info \
     --parallel="$((NPROC / 2))" \
-    --slave-info \
     --stream=xbstream \
     --target-dir=./ |
     restic \
