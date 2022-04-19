@@ -93,6 +93,11 @@ else
   alias lt='ls -ltFh'
 fi
 
+if command -v btm &>/dev/null; then
+  alias htop='btm'
+  alias top='btm'
+fi
+
 # Delete file securely
 alias shred='shred -n 200 -z -u'
 
