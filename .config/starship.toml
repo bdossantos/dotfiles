@@ -2,9 +2,12 @@
 # https://github.com/dracula/starship/blob/master/starship.toml
 add_newline = true
 
+[aws]
+style = "bold #ffb86c"
+
 [character]
 error_symbol = "[\\$](bold #ff5555)"
-success_symbol = "[\\$](bold #f8f8f2)"
+success_symbol = "[\\$](bold #50fa7b)"
 
 [cmd_duration]
 style = "bold #f1fa8c"
@@ -32,7 +35,7 @@ disabled = true
 disabled = true
 
 [hostname]
-style = "bold #ff5555"
+style = "bold #bd93f9"
 
 [nodejs]
 disabled = true
@@ -63,7 +66,7 @@ disabled = false
 
 [username]
 format = "[$user]($style) on "
-style_user = "bold #bd93f9"
+style_user = "bold #8be9fd"
 
 [vagrant]
 disabled = true
