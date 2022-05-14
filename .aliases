@@ -161,6 +161,7 @@ alias sudo='sudo '
 alias goaccess='goaccess -p ~/.goaccessrc '
 
 # ssht/sshrc
+alias yolossh='ssh -F /dev/null -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null"'
 alias ssht=sshrc
 command -v compdef &>/dev/null && compdef ssht=ssh && compdef sshrc=ssh
 
