@@ -44,6 +44,9 @@ elif less_pipe=$(command -v lesspipe.sh); then
   eval "$($less_pipe)"
 fi
 
+# man
+export MANPATH="$HOME/.homebrew/share/man${MANPATH+:$MANPATH}:"
+
 # Don't clear the screen after quitting a manual page
 export MANPAGER='less -X'
 
