@@ -123,7 +123,6 @@ brew install \
   pngquant \
   pre-commit \
   prettier \
-  proselint \
   pv \
   pwgen \
   python@3.9 \
@@ -149,6 +148,7 @@ brew install \
   tmux \
   tor-browser \
   tree \
+  vale \
   vim \
   watch \
   wget \
