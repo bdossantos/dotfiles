@@ -108,6 +108,7 @@ brew install \
   lesspipe \
   libyaml \
   little-snitch \
+  logcli \
   make \
   miller \
   micro-snitch \
