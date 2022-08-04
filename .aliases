@@ -306,7 +306,7 @@ if [[ $OS == 'Darwin' ]]; then
   alias afk="pmset displaysleepnow && osascript -e 'set volume output muted true'"
 
   # Manual backup
-  alias backup='diskutil quiet mount "Time Machine Backups"; tmutil startbackup --block; diskutil quiet eject "Time Machine Backups"'
+  alias backup='tmutil startbackup --block && tmutil startbackup --block;'
 
   # Mute/Unmute the system volume. Plays nice with all other volume settings.
   alias mute="osascript -e 'set volume output muted true'"
