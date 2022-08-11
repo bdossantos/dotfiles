@@ -13,7 +13,7 @@ export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_INSECURE_REDIRECT=1
 
 # XDG_CONFIG_DIR
-export XDG_CONFIG_DIR="${XDG_CONFIG_DIR:-${HOME}/.config}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 
 # You may need to manually set your language environment
 export LANG='en_US.UTF-8'
