@@ -12,6 +12,9 @@ export HOMEBREW_CASK_OPTS="--appdir=${HOME}/Applications --fontdir=${HOME}/Libra
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_INSECURE_REDIRECT=1
 
+# XDG_CONFIG_DIR
+export XDG_CONFIG_DIR="${XDG_CONFIG_DIR:-${HOME}/.config}"
+
 # You may need to manually set your language environment
 export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
