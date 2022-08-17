@@ -65,6 +65,7 @@ brew install \
   entr \
   exa \
   fd \
+  findomain \
   findutils \
   firefox \
   font-hack \
