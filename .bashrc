@@ -98,17 +98,6 @@ if command -v nomad &>/dev/null; then
   complete -C nomad nomad
 fi
 
-# Auto start|attach tmux session
-if command -v tmux &>/dev/null; then
-  if [ -z "$TMUX" ]; then
-    if tmux ls &>/dev/null; then
-      exec tmux attach-session
-    else
-      exec tmux new-session
-    fi
-  fi
-fi
-
 # Auto attach|start ssh-agent
 SSH_AGENT="${HOME}/.ssh-agent"
 
@@ -139,4 +128,11 @@ fi
 # ~/.extra can be used for other settings you don't want to commit.
 if [ -f "${HOME}/.extra" ]; then
   source "${HOME}/.extra"
+fi
+
+# Auto start|attach zellij session
+if command -v zellij &>/dev/null; then
+  if [ -z "$ZELLIJ" ]; then
+    zellij attach -c bds
+  fi
 fi
