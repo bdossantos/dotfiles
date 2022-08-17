@@ -1,4 +1,5 @@
 !.config/starship.toml
+!.config/zellij/config.yaml
 !.gnupg/gpg.conf
 .config
 .gnupg/
