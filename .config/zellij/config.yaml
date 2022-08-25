@@ -97,4 +97,5 @@ keybinds:
       key: [Alt: "-"]
     - action: [Detach]
       key: [Char: "d"]
+pane_frames: false
 theme: dracula
