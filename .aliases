@@ -182,6 +182,9 @@ if command -v kubectl &>/dev/null; then
   complete -F __start_kubectl k
 fi
 
+# akamai
+alias akamai='docker run -it -v ${HOME}/.config/akamai/.edgerc:/root/.edgerc:ro akamai/shell:latest akamai'
+
 # Pandoc
 function pandoc() {
   docker run --rm --name pandoc -v "${PWD}:/pandoc" dalibo/pandocker "$@"
