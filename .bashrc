@@ -133,6 +133,6 @@ fi
 # Auto start|attach zellij session
 if command -v zellij &>/dev/null; then
   if [ -z "$ZELLIJ" ]; then
-    zellij attach -c bds
+    zellij attach -c 'BDS 🐑'
   fi
 fi
