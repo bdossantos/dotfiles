@@ -180,6 +180,8 @@ fi
 if command -v kubectl &>/dev/null; then
   alias k=kubectl
   complete -F __start_kubectl k
+
+  alias netshoot='kubectl run netshoot-$(date +%s) --rm -i --tty --image nicolaka/netshoot -- /bin/bash'
 fi
 
 # akamai
