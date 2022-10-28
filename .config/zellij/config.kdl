@@ -1,0 +1,64 @@
+keybinds {
+    normal {
+        bind "Ctrl a" { SwitchToMode "tmux"; }
+    }
+    pane {
+        bind "Ctrl a" { SwitchToMode "tmux"; }
+    }
+    tab {
+        bind "Ctrl a" { SwitchToMode "tmux"; }
+    }
+    resize {
+        bind "Ctrl a" { SwitchToMode "tmux"; }
+    }
+    scroll {
+        bind "Ctrl a" { SwitchToMode "tmux"; }
+    }
+    session {
+        bind "Ctrl a" { SwitchToMode "tmux"; }
+    }
+    search {
+        bind "Ctrl a" { SwitchToMode "tmux"; }
+    }
+    tmux {
+        bind "Ctrl g" { SwitchToMode "locked"; }
+        bind "Ctrl n" { SwitchToMode "resize"; }
+        bind "Ctrl p" { SwitchToMode "pane"; }
+        bind "Ctrl h" { SwitchToMode "move"; }
+        bind "Ctrl t" { SwitchToMode "tab"; }
+        bind "Ctrl o" "Enter" "Space" "Esc" { SwitchToMode "normal"; }
+        bind "Ctrl s" { SwitchToMode "scroll"; }
+        bind "[" { SwitchToMode "scroll"; }
+        bind "Ctrl q" { Quit; }
+        bind "Ctrl b" { Write 2; SwitchToMode "normal"; }
+        bind "\"" { NewPane "Down"; SwitchToMode "normal"; }
+        bind "%" { NewPane "Right"; SwitchToMode "normal"; }
+        bind "z" { ToggleFocusFullscreen; SwitchToMode "normal"; }
+        bind "c" { NewTab; SwitchToMode "normal"; }
+        bind "," { SwitchToMode "RenameTab"; TabNameInput 0; }
+        bind "p" { GoToPreviousTab; SwitchToMode "normal"; }
+        bind "n" { GoToNextTab; SwitchToMode "normal"; }
+        bind "Left" { MoveFocus "Left"; SwitchToMode "normal"; }
+        bind "Right" { MoveFocus "Right"; SwitchToMode "normal"; }
+        bind "Down" { MoveFocus "Down"; SwitchToMode "normal"; }
+        bind "Up" { MoveFocus "Up"; SwitchToMode "normal"; }
+        bind "h" { MoveFocus "Left"; SwitchToMode "normal"; }
+        bind "l" { MoveFocus "Right"; SwitchToMode "normal"; }
+        bind "j" { MoveFocus "Down"; SwitchToMode "normal"; }
+        bind "k" { MoveFocus "Up"; SwitchToMode "normal"; }
+        bind "Alt n" { NewPane; }
+        bind "Alt h" "Alt Left" { MoveFocusOrTab "Left"; }
+        bind "Alt l" "Alt Right" { MoveFocusOrTab "Right"; }
+        bind "Alt j" "Alt Down" { MoveFocus "Down"; }
+        bind "Alt k" "Alt Up" { MoveFocus "Up"; }
+        bind "o" { FocusNextPane; }
+        bind "Alt =" { Resize "Increase"; }
+        bind "Alt +" { Resize "Increase"; }
+        bind "Alt -" { Resize "Decrease"; }
+        bind "d" { Detach; }
+    }
+}
+
+pane_frames false
+theme "dracula"
+mouse_mode true
