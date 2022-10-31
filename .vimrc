@@ -28,7 +28,7 @@ Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
-Plugin 'dracula/vim', { 'name': 'dracula' }
+Plugin 'arcticicestudio/nord-vim', { 'name': 'nord' }
 
 call vundle#end()
 filetype plugin indent on         " load file type plugins + indentation
@@ -88,7 +88,7 @@ syntax enable
 
 set background=dark
 
-colorscheme dracula
+colorscheme nord
 
 if exists('+colorcolumn')
   set colorcolumn=80
