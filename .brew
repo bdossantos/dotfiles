@@ -136,8 +136,8 @@ brew install \
   sequel-pro \
   shellcheck \
   shfmt \
-  shpotify \
-  spotify \
+  spotify-tui \
+  spotifyd \
   ssh-copy-id \
   starship \
   stow \
