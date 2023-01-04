@@ -188,7 +188,6 @@ brew tap homebrew/cask-drivers
 
 brew install \
   gpg-suite \
-  suunto-moveslink2 \
   vagrant \
   virtualbox
 "
