@@ -17,17 +17,6 @@ export CPU_BRAND
 
 echo "--> Detected CPU Brand: ${CPU_BRAND}"
 
-# Enforce cpu architecture because alacritty run in x86_64 compatibility mode and bash process inherit.
-if [[ $CPU_BRAND == 'Apple M1' ]]; then
-  function brew() {
-    arch -arm64 brew "$@"
-  }
-else
-  function brew() {
-    arch -x86_64 brew "$@"
-  }
-fi
-
 echo "--> Make sure we're using the latest Homebrew"
 brew update
 
