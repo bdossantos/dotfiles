@@ -34,9 +34,6 @@ brew update
 echo '--> Upgrade any already-installed formulae'
 brew upgrade
 
-echo '--> Tap extras Homebrew repositories'
-brew tap tldr-pages/tldr
-
 echo '--> Install all brew Packages'
 brew install \
   1password \
