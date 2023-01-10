@@ -17,7 +17,7 @@ install: ## Install all the things
 
 install-dotfiles: ## Pull and Install dotfiles
 	@git pull -q && git submodule update --init --recursive -q
-	@mkdir -m 0700 -p ~/.ssh
+	@mkdir -m 0700 -p ~/.ssh && touch ~/.ssh/allowed_signers
 	@command -v stow >/dev/null || { echo 'CAN I HAZ STOW ?'; exit 1; }
 	@stow -S . -t "$(HOME)" -v \
 		--ignore='.pre-commit-config.yaml' \
