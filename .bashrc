@@ -129,6 +129,7 @@ fi
 
 # Aliases
 if [ -f "${HOME}/.aliases" ]; then
+  # shellcheck source=/dev/null
   source "${HOME}/.aliases"
 fi
 
