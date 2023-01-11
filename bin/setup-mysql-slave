@@ -12,12 +12,14 @@ MYSQL_MASTER_PASSWORD=${MYSQL_MASTER_PASSWORD:=''}
 MYSQL_MASTER_IP=${MYSQL_MASTER_IP:='172.16.0.1'}
 MYSQL_DATADIR=${MYSQL_DATADIR:='/var/lib/mysql'}
 
+NPROC=$(grep -c processor </proc/cpuinfo || 4)
+
 SLAVE_SSH_USER=${SLAVE_SSH_USER:=$(whoami)}
 SLAVE_IP=${SLAVE_IP:='172.16.0.2'}
 
 readonly BACKUP_DESTINATION="/var/tmp/${SLAVE_SSH_USER}/mysql.$$"
 readonly MYSQL_SETUP_SLAVE_SQL="/var/tmp/setup_slave.$$.sql"
-readonly NPROC=$(grep -c processor </proc/cpuinfo || 4)
+readonly NPROC
 
 if ! command -v qpress &>/dev/null ||
   ! command -v xbstream &>/dev/null ||
