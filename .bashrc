@@ -61,14 +61,18 @@ if [ "$(sysctl -n machdep.cpu.brand_string)" == "Apple M1" ]; then
     # shellcheck disable=SC2034
     RUBIES=("${HOME}/.rubies/*")
 
+    # shellcheck source=/dev/null
     source "${HOME}/.homebrew_x86_64/share/chruby/chruby.sh"
+    # shellcheck source=/dev/null
     source "${HOME}/.homebrew_x86_64/share/chruby/auto.sh"
   fi
 elif [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
   # shellcheck disable=SC2034
   RUBIES=("${HOME}/.rubies/*")
 
+  # shellcheck source=/dev/null
   source "${HOMEBREW_PREFIX}/share/chruby/chruby.sh"
+  # shellcheck source=/dev/null
   source "${HOMEBREW_PREFIX}/share/chruby/auto.sh"
 fi
 
@@ -84,12 +88,15 @@ fi
 GCLOUD_SDK="${HOME}/.google-cloud-sdk"
 if [ -f "${GCLOUD_SDK}/path.bash.inc" ] &&
   [ -f "${GCLOUD_SDK}/completion.bash.inc" ]; then
+  # shellcheck source=/dev/null
   source "${GCLOUD_SDK}/path.bash.inc"
+  # shellcheck source=/dev/null
   source "${GCLOUD_SDK}/completion.bash.inc"
 fi
 
 # fzf
 if [ -f "${HOME}/.fzf.bash" ]; then
+  # shellcheck source=/dev/null
   source "${HOME}/.fzf.bash"
 fi
 
@@ -127,6 +134,7 @@ fi
 
 # ~/.extra can be used for other settings you don't want to commit.
 if [ -f "${HOME}/.extra" ]; then
+  # shellcheck source=/dev/null
   source "${HOME}/.extra"
 fi
 
