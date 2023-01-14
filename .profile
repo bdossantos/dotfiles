@@ -80,7 +80,7 @@ export MYSQL_PS1='(\D) \u@\h [\d] > '
 export KEYTIMEOUT=20
 
 # Setting ag as the default source for fzf
-export FZF_DEFAULT_COMMAND='ag --hidden -l -g ""'
+export FZF_DEFAULT_COMMAND='rg --files --ignore-vcs --hidden'
 
 # fzf preview
 export FZF_PREVIEW_COMMAND="bat --style=numbers,changes --wrap never --color always {} || cat {} || tree -C {}"
