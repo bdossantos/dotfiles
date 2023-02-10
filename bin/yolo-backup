@@ -113,7 +113,7 @@ function _restic_backup_mysql_xtrabackup() {
   xtrabackup \
     --defaults-file="$MYSQL_DEFAULT_FILES" \
     --backup \
-    --compress=lz4 \
+    --compress=zstd \
     --compress-threads="$((NPROC / 2))" \
     --galera-info \
     --parallel="$((NPROC / 2))" \
