@@ -43,7 +43,7 @@ fi
 ulimit -n 65536
 xtrabackup \
   --backup \
-  --compress \
+  --compress=lz4 \
   --compress-threads="$((NPROC / 2))" \
   --parallel="$((NPROC / 2))" \
   --slave-info \
