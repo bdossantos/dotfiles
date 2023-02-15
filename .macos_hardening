@@ -135,9 +135,6 @@ sudo defaults write \
 # disable automatic loading of remote content by Mail.app
 defaults write -app mail DisableURLLoading -bool true
 
-# Disable Remote Apple Events
-sudo systemsetup -setremoteappleevents off
-
 # Disable Remote Login
 sudo systemsetup -f -setremotelogin off
 
