@@ -34,7 +34,6 @@ brew install \
   bash \
   bash-completion@2 \
   bat \
-  bats \
   bazel \
   binutils \
   cheat \
