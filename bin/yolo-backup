@@ -90,6 +90,12 @@ function _restic_backup_mysql_xtrabackup() {
     MYSQL_DEFAULT_FILES="/root/.my.cnf"
   fi
 
+  if xtrabackup --version 2>&1 | grep -q 'xtrabackup version 8.0'; then
+    COMPRESS='zstd'
+  else
+    COMPRESS='quicklz'
+  fi
+
   # How to restore a full backup:
   #
   #   - mkdir /var/tmp/backup/ && restic restore e60e029c --target /var/tmp/
@@ -113,7 +119,7 @@ function _restic_backup_mysql_xtrabackup() {
   xtrabackup \
     --defaults-file="$MYSQL_DEFAULT_FILES" \
     --backup \
-    --compress=zstd \
+    --compress="$COMPRESS" \
     --compress-threads="$((NPROC / 2))" \
     --galera-info \
     --parallel="$((NPROC / 2))" \
