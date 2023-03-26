@@ -18,7 +18,6 @@ set -o nounset
 DEBUG=${DEBUG:=0}
 [[ $DEBUG -eq 1 ]] && set -o xtrace
 
-COMPRESS_PROGRAM='gzip'
 NODE_EXPORTER_TEXTFILE_DIRECTORY=${NODE_EXPORTER_TEXTFILE_DIRECTORY:-}
 NPROC=$(grep -c processor </proc/cpuinfo || 4)
 PATH="${PATH}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -28,10 +27,6 @@ RESTIC_PASSWORD_FILE=${RESTIC_PASSWORD_FILE:='/dev/null'}
 RESTIC_REPOSITORY=${RESTIC_REPOSITORY:-}
 RESTIC_KEEP_LAST=${RESTIC_KEEP_LAST:=180}
 SYSLOG=${SYSLOG=0}
-
-if command -v pigz >/dev/null; then
-  COMPRESS_PROGRAM='pigz'
-fi
 
 export \
   PATH \
@@ -57,13 +52,14 @@ function _restic_backup_files() {
     --xattrs \
     --warning=no-file-changed \
     --warning=no-file-removed \
-    --use-compress-program="$COMPRESS_PROGRAM" \
+    --use-compress-program='zstd' \
     -cpf - \
     / |
     restic \
       backup \
       --stdin \
-      --stdin-filename='/system.tar.gz' \
+      --stdin-filename='/system.tar.zst' \
+      --tag='zstd' \
       --exclude-file="$RESTIC_EXCLUDE_FILE"
 
   # Ignore exit code == 1, "Some files differ" warning, happen often when backup
@@ -129,6 +125,7 @@ function _restic_backup_mysql_xtrabackup() {
       backup \
       --stdin \
       --stdin-filename='/xtrabackup.xbstream' \
+      --tag='zstd' \
       --exclude-file="$RESTIC_EXCLUDE_FILE"
 }
 
@@ -149,25 +146,29 @@ function _restic_backup_mysql() {
     --routines \
     --single-transaction \
     --triggers |
-    $COMPRESS_PROGRAM \
-      --best \
+    zstd \
+      --quiet \
+      --adapt \
       --stdout |
     restic \
       backup \
       --stdin \
-      --stdin-filename="/mysql.sql.gz" \
+      --stdin-filename='/mysql.sql.zst' \
+      --tag='zstd' \
       --exclude-file="$RESTIC_EXCLUDE_FILE"
 }
 
 function _restic_backup_postgresql() {
   su - postgres -c 'pg_dumpall' |
-    $COMPRESS_PROGRAM \
-      --best \
+    zstd \
+      --quiet \
+      --adapt \
       --stdout |
     restic \
       backup \
       --stdin \
-      --stdin-filename="/postgresql.sql.gz" \
+      --stdin-filename='/postgresql.sql.zst' \
+      --tag='zstd' \
       --exclude-file="$RESTIC_EXCLUDE_FILE"
 }
 
