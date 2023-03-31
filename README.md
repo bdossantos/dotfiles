@@ -1,7 +1,5 @@
 # ~/.dotfiles
 
-[![Build Status](https://travis-ci.org/bdossantos/dotfiles.svg?branch=master)](https://travis-ci.org/bdossantos/dotfiles)
-
 ## dotfiles
 
 ### Installation
