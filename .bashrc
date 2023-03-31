@@ -56,17 +56,7 @@ fi
 PROMPT_COMMAND="history -a;history -c;history -r;$PROMPT_COMMAND"
 
 # chruby
-if [ "$(sysctl -n machdep.cpu.brand_string)" == "Apple M1" ]; then
-  if [ -f "${HOME}/.homebrew_x86_64/share/chruby/chruby.sh" ]; then
-    # shellcheck disable=SC2034
-    RUBIES=("${HOME}/.rubies/*")
-
-    # shellcheck source=/dev/null
-    source "${HOME}/.homebrew_x86_64/share/chruby/chruby.sh"
-    # shellcheck source=/dev/null
-    source "${HOME}/.homebrew_x86_64/share/chruby/auto.sh"
-  fi
-elif [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
+if [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
   # shellcheck disable=SC2034
   RUBIES=("${HOME}/.rubies/*")
 

@@ -37,11 +37,6 @@ install-homebrew: ## Install homebrew, the missing package manager for OS X
 		curl -L https://github.com/Homebrew/brew/tarball/master \
 			| tar xz --strip 1 -C ~/.homebrew; \
 	fi
-	@if [[ "$$(sysctl -n machdep.cpu.brand_string)" == 'Apple M1' ]] && [[ ! -f ~/.homebrew_x86_64/bin/brew ]]; then \
-		mkdir -m 0700 -p ~/.homebrew_x86_64; \
-		curl -L https://github.com/Homebrew/brew/tarball/master \
-			| tar xz --strip 1 -C ~/.homebrew_x86_64; \
-	fi
 
 install-tpm: ## Install tpm, the Tmux Plugin Manager
 	$(info --> Install tpm)

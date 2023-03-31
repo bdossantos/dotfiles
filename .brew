@@ -142,18 +142,6 @@ brew install \
   xz \
   zoxide
 
-if [[ $CPU_BRAND == 'Apple M1' ]]; then
-  # Install incompatibles brew formulas with compatibility mode in an isolated homebrew directory
-  arch -x86_64 "${HOME}/.homebrew_x86_64/bin/brew" update
-  arch -x86_64 "${HOME}/.homebrew_x86_64/bin/brew" upgrade
-  arch -x86_64 "${HOME}/.homebrew_x86_64/bin/brew" install \
-    chruby \
-    gcc \
-    gsl \
-    openssl@1.1 \
-    ruby-build
-fi
-
 # Yes, I use a non privileged user for daily use
 echo "--> login as admin to install some casks system-wide in /Applications"
 
@@ -202,7 +190,7 @@ RUBIES=(
 
 for ruby in "${RUBIES[@]}"; do
   if [[ ! -f "${HOME}/.rubies/ruby-${ruby}/bin/ruby" ]]; then
-    "${HOME}/.homebrew_x86_64/bin/ruby-build" "$ruby" "${HOME}/.rubies/ruby-${ruby}"
+    "${HOME}/.homebrew/bin/ruby-build" "$ruby" "${HOME}/.rubies/ruby-${ruby}"
   fi
 done
 
