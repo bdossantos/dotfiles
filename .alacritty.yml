@@ -74,7 +74,7 @@ window:
   startup_mode: Maximized
   decorations: buttonless
   dynamic_padding: true
-  option_as_alt: OnlyLeft
+  option_as_alt: None
   padding:
     x: 5
     y: 5
