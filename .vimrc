@@ -82,7 +82,6 @@ elseif &term == 'screen' || &term == 'xterm'
 endif
 
 set guifont=Hack:h14
-set antialias
 
 syntax enable
 
