@@ -7,6 +7,11 @@ export OS
 
 # Misc
 alias vi='vim'
+if command -v nvim &>/dev/null; then
+  alias vi='nvim'
+  alias vim='nvim'
+fi
+
 alias ri='ri -f ansi'
 command -v colordiff &>/dev/null && alias diff='colordiff'
 alias takeover='tmux detach -a'
