@@ -29,6 +29,7 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
 Plugin 'dracula/vim', { 'name': 'dracula' }
+Plugin 'github/copilot.vim'
 
 call vundle#end()
 filetype plugin indent on         " load file type plugins + indentation
