@@ -30,6 +30,7 @@ brew install \
   1password \
   ack \
   advancecomp \
+  alacritty \
   ansifilter \
   autoenv \
   awscli \
