@@ -9,9 +9,8 @@ help:
 		| awk 'BEGIN { FS = ":.*?## " }; { printf "\033[36m%-30s\033[0m %s\n", $$1, $$2 }'
 
 install: ## Install all the things
-	@make install-dotfiles \
-		install-tpm \
-		install-vundle
+@make install-dotfiles \
+		install-vundle \
 	@[[ $OS == 'Darwin' ]] \
 		&& make install-homebrew run-brew
 
@@ -37,12 +36,6 @@ install-homebrew: ## Install homebrew, the missing package manager for OS X
 		curl -L https://github.com/Homebrew/brew/tarball/master \
 			| tar xz --strip 1 -C ~/.homebrew; \
 	fi
-
-install-tpm: ## Install tpm, the Tmux Plugin Manager
-	$(info --> Install tpm)
-	@mkdir -p ~/.tmux/plugins
-	@[[ -d ~/.tmux/plugins/tpm ]] \
-		|| git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 install-vundle: ## Install Vundle, the plug-in manager for Vim
 	$(info --> Install Vundle)
