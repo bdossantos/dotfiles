@@ -25,7 +25,7 @@ trap _clean INT TERM EXIT
 docker run --network host --rm --name "python-github-backup_$(date +'%Y%m%d%H%M%S')" \
   -v "${BACKUP_VOLUME}:/backup" \
   bdossantos/python-github-backup:latest \
-  $GITHUB_LOGIN \
+  "$GITHUB_LOGIN" \
   --token "${GITHUB_OAUTH_TOKEN}" \
   --output-directory /backup \
   --all \
