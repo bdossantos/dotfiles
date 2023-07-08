@@ -33,8 +33,6 @@ fi
 # base16
 if [ -n "$PS1" ] && [ -f "${BASE16_SHELL}/profile_helper.sh" ]; then
   eval "$("${BASE16_SHELL}/profile_helper.sh")"
-  #base16_default-light
-  #base16_default-dark
 fi
 
 # bash completions
