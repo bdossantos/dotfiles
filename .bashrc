@@ -30,6 +30,15 @@ if command -v starship &>/dev/null; then
   eval "$(starship init bash)"
 fi
 
+# base16
+if [ -f "${BASE16_SHELL}/profile_helper.sh" ]; then
+  eval "$("${BASE16_SHELL}/profile_helper.sh")"
+fi
+
+if [ -z "$BASE16_THEME" ] && type base16_ia-dark &>/dev/null; then
+  base16_ia-dark
+fi
+
 # bash completions
 if [ -r /etc/bash_completion ]; then
   # shellcheck disable=SC1091

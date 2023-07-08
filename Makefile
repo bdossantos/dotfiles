@@ -11,6 +11,7 @@ help:
 install: ## Install all the things
 @make install-dotfiles \
 		install-vundle \
+		install-base16
 	@[[ $OS == 'Darwin' ]] \
 		&& make install-homebrew run-brew
 
@@ -43,6 +44,15 @@ install-vundle: ## Install Vundle, the plug-in manager for Vim
 	@[[ -d ~/.vim/bundle/Vundle.vim ]] \
 		|| git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 	@vim +PluginInstall +qall &>/dev/null
+
+install-base16: ## Install base16, the color schemes for hackers
+	$(info --> Install base16)
+	@[[ -d ~/.config/base16-shell ]] \
+		|| git clone https://github.com/chriskempson/base16-shell ~/.config/base16-shell
+	$(info --> Update base16)
+	@pushd ~/.config/base16-shell &>/dev/null \
+		&& git pull --quiet \
+		&& popd &>/dev/null
 
 pre-commit: ## Run pre-commit tests
 	$(info --> Run pre-commit)

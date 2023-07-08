@@ -28,7 +28,7 @@ Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
-Plugin 'dracula/vim', { 'name': 'dracula' }
+Plugin 'chriskempson/base16-vim'
 Plugin 'github/copilot.vim'
 
 call vundle#end()
@@ -88,7 +88,10 @@ syntax enable
 
 set background=dark
 
-colorscheme dracula
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
 
 if exists('+colorcolumn')
   set colorcolumn=80
@@ -119,7 +122,7 @@ let g:airline#extensions#branch_prefix#enabled=1
 let g:airline#extensions#ale#enabled=1
 
 " airline theme
-let g:airline_theme='dracula'
+let g:airline_theme='base16_ashes'
 
 " Use rubocop with the default ruby checker (mri)
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
