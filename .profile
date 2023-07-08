@@ -61,7 +61,7 @@ export MANPAGER='less -X'
 # color scheme
 export TERM='xterm-256color'
 export BASE16_SHELL="$HOME/.config/base16-shell/"
-export BAT_THEME='base16'
+export BAT_THEME='base16-default'
 
 # enable cheat syntax highlighting
 export CHEATCOLORS=true

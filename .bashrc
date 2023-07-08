@@ -31,12 +31,10 @@ if command -v starship &>/dev/null; then
 fi
 
 # base16
-if [ -f "${BASE16_SHELL}/profile_helper.sh" ]; then
+if [ -n "$PS1" ] && [ -f "${BASE16_SHELL}/profile_helper.sh" ]; then
   eval "$("${BASE16_SHELL}/profile_helper.sh")"
-fi
-
-if [ -z "$BASE16_THEME" ] && type base16_ia-dark &>/dev/null; then
-  base16_ia-dark
+  base16_default-light
+  #base16_default-dark
 fi
 
 # bash completions
