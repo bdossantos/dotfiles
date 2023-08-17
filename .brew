@@ -94,7 +94,6 @@ brew install \
   less \
   lesspipe \
   libyaml \
-  little-snitch \
   logcli \
   make \
   miller \
@@ -142,8 +141,10 @@ brew install \
   xz \
   zoxide
 
-# 1password should be installed globally ...
-brew install --appdir /Applications 1password
+# 1password and little-snitch should be installed globally ...
+brew install --appdir /Applications \
+  1password \
+  little-snitch
 
 # Yes, I use a non privileged user for daily use
 echo "--> login as admin to install some casks system-wide in /Applications"
