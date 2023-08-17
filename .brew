@@ -89,6 +89,7 @@ brew install \
   jpegoptim \
   jq \
   k9s \
+  keybase \
   kops \
   kubectx \
   less \
@@ -161,7 +162,6 @@ brew tap homebrew/cask-drivers
 
 brew install \
   gpg-suite \
-  keybase \
   vagrant \
   virtualbox
 "
