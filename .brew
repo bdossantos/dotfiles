@@ -27,7 +27,6 @@ brew upgrade
 
 echo '--> Install all brew Packages'
 brew install \
-  1password \
   ack \
   advancecomp \
   alacritty \
@@ -142,6 +141,9 @@ brew install \
   wget \
   xz \
   zoxide
+
+# 1password should be installed globally ...
+brew install --appdir /Applications 1password
 
 # Yes, I use a non privileged user for daily use
 echo "--> login as admin to install some casks system-wide in /Applications"
