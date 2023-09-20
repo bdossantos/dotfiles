@@ -9,7 +9,7 @@ help:
 		| awk 'BEGIN { FS = ":.*?## " }; { printf "\033[36m%-30s\033[0m %s\n", $$1, $$2 }'
 
 install: ## Install all the things
-@make install-dotfiles \
+	@make install-dotfiles \
 		install-vundle \
 	@[[ $OS == 'Darwin' ]] \
 		&& make install-homebrew run-brew
