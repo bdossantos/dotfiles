@@ -65,8 +65,6 @@ brew install \
   gitlint \
   gnu-indent \
   gnu-sed \
-  gnu-sed \
-  gnu-tar \
   gnu-tar \
   gnu-which \
   go \
