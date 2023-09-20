@@ -340,6 +340,12 @@ if [[ $OS == 'Darwin' ]]; then
     find "$@" -type d | gxargs -d '\n' -n 1 chmod 0700
     find "$@" -type f | gxargs -d '\n' -n 1 chmod 0600
   }
+
+  alias awk='gawk'
+  alias date='gdate'
+  alias find='gfind'
+  alias make='gmake'
+  alias sed='gsed'
 fi
 
 # Aliases for Linux, Ops.
