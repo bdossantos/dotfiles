@@ -16,17 +16,13 @@ vimcmd_symbol = "[❮](green)"
 style = "bold #f1fa8c"
 
 [directory]
-style = "bold #50fa7b"
+style = "bold lavender"
 
 [docker_context]
 symbol = " "
 
 [git_branch]
-style = "bold #ff79c6"
 symbol = " "
-
-[git_status]
-style = "bold #ff5555"
 
 [line_break]
 disabled = true
@@ -36,9 +32,6 @@ disabled = true
 
 [golang]
 disabled = true
-
-[hostname]
-style = "bold #bd93f9"
 
 [nodejs]
 disabled = true
@@ -69,7 +62,6 @@ disabled = false
 
 [username]
 format = "[$user]($style) on "
-style_user = "bold #8be9fd"
 
 [vagrant]
 disabled = true
