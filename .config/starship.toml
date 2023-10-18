@@ -1,5 +1,7 @@
 # https://starship.rs/config/
-# https://github.com/dracula/starship/blob/master/starship.toml
+
+palette = "catppuccin_latte"
+
 add_newline = true
 
 [aws]
@@ -95,7 +97,6 @@ style = "bold red"
 threshold = 30
 style = "bold yellow"
 
-palette = "catppuccin_latte"
 
 # https://raw.githubusercontent.com/catppuccin/starship/main/palettes/latte.toml
 [palettes.catppuccin_latte]
