@@ -44,6 +44,12 @@ install-vundle: ## Install Vundle, the plug-in manager for Vim
 		|| git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 	@vim +PluginInstall +qall &>/dev/null
 
+install-alacritty-theme:
+	$(info --> Install Alacritty themes)
+	@[[ -d ~/.config/alacritty/themes ]] \
+		|| git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
+	@pushd ~/.config/alacritty/themes && git pull && popd
+
 pre-commit: ## Run pre-commit tests
 	$(info --> Run pre-commit)
 	@pre-commit run --all-files
