@@ -92,7 +92,7 @@ set background=light
 
 colorscheme gruvbox
 
-let g:gruvbox_contrast_light='medium'
+let g:gruvbox_contrast_light='hard'
 
 if exists('+colorcolumn')
   set colorcolumn=80
