@@ -29,6 +29,7 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
 Plugin 'dracula/vim', { 'name': 'dracula' }
+Plugin 'morhetz/gruvbox'
 Plugin 'github/copilot.vim'
 Plugin 'google/vim-jsonnet'
 
