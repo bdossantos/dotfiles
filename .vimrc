@@ -92,6 +92,8 @@ set background=dark
 
 colorscheme gruvbox
 
+let g:gruvbox_contrast_light='medium'
+
 if exists('+colorcolumn')
   set colorcolumn=80
 endif
