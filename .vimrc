@@ -90,7 +90,7 @@ syntax enable
 
 set background=dark
 
-colorscheme gruvbox-light-medium
+colorscheme gruvbox
 
 if exists('+colorcolumn')
   set colorcolumn=80
