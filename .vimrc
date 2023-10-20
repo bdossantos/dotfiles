@@ -88,7 +88,7 @@ set guifont=Hack:h14
 
 syntax enable
 
-set background=dark
+set background=light
 
 colorscheme gruvbox
 
