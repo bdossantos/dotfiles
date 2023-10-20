@@ -29,6 +29,7 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
 Plugin 'dracula/vim', { 'name': 'dracula' }
+Plugin 'catppuccin/vim', { 'name': 'catppuccin' }
 Plugin 'github/copilot.vim'
 Plugin 'google/vim-jsonnet'
 
@@ -87,9 +88,9 @@ set guifont=Hack:h14
 
 syntax enable
 
-set background=dark
+set background=light
 
-colorscheme dracula
+colorscheme catppuccin_latte
 
 if exists('+colorcolumn')
   set colorcolumn=80
@@ -120,7 +121,7 @@ let g:airline#extensions#branch_prefix#enabled=1
 let g:airline#extensions#ale#enabled=1
 
 " airline theme
-let g:airline_theme='dracula'
+let g:airline_theme='catppuccin_latte'
 
 " Use rubocop with the default ruby checker (mri)
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']

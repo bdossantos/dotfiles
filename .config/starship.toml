@@ -1,29 +1,28 @@
 # https://starship.rs/config/
-# https://github.com/dracula/starship/blob/master/starship.toml
+
+palette = "catppuccin_latte"
+
 add_newline = true
 
 [aws]
 style = "bold #ffb86c"
 
 [character]
-error_symbol = "[\\$](bold #ff5555)"
-success_symbol = "[\\$](bold #50fa7b)"
+error_symbol = "[\\$](bold green)"
+success_symbol = "[\\$](bold red)"
+vimcmd_symbol = "[❮](green)"
 
 [cmd_duration]
 style = "bold #f1fa8c"
 
 [directory]
-style = "bold #50fa7b"
+style = "bold lavender"
 
 [docker_context]
 symbol = " "
 
 [git_branch]
-style = "bold #ff79c6"
 symbol = " "
-
-[git_status]
-style = "bold #ff5555"
 
 [line_break]
 disabled = true
@@ -33,9 +32,6 @@ disabled = true
 
 [golang]
 disabled = true
-
-[hostname]
-style = "bold #bd93f9"
 
 [nodejs]
 disabled = true
@@ -66,7 +62,6 @@ disabled = false
 
 [username]
 format = "[$user]($style) on "
-style_user = "bold #8be9fd"
 
 [vagrant]
 disabled = true
@@ -93,3 +88,33 @@ style = "bold red"
 [[battery.display]]
 threshold = 30
 style = "bold yellow"
+
+
+# https://raw.githubusercontent.com/catppuccin/starship/main/palettes/latte.toml
+[palettes.catppuccin_latte]
+rosewater = "#dc8a78"
+flamingo = "#dd7878"
+pink = "#ea76cb"
+mauve = "#8839ef"
+red = "#d20f39"
+maroon = "#e64553"
+peach = "#fe640b"
+yellow = "#df8e1d"
+green = "#40a02b"
+teal = "#179299"
+sky = "#04a5e5"
+sapphire = "#209fb5"
+blue = "#1e66f5"
+lavender = "#7287fd"
+text = "#4c4f69"
+subtext1 = "#5c5f77"
+subtext0 = "#6c6f85"
+overlay2 = "#7c7f93"
+overlay1 = "#8c8fa1"
+overlay0 = "#9ca0b0"
+surface2 = "#acb0be"
+surface1 = "#bcc0cc"
+surface0 = "#ccd0da"
+base = "#eff1f5"
+mantle = "#e6e9ef"
+crust = "#dce0e8"
