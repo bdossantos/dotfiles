@@ -29,6 +29,7 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
 Plugin 'dracula/vim', { 'name': 'dracula' }
+Plugin 'morhetz/gruvbox'
 Plugin 'github/copilot.vim'
 Plugin 'google/vim-jsonnet'
 
@@ -87,9 +88,11 @@ set guifont=Hack:h14
 
 syntax enable
 
-set background=dark
+set background=light
 
-colorscheme dracula
+colorscheme gruvbox
+
+let g:gruvbox_contrast_light='hard'
 
 if exists('+colorcolumn')
   set colorcolumn=80
