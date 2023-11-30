@@ -112,3 +112,6 @@ unset MAILCHECK
 
 # Unset KUBECONFIG, config is defined in each .envrc files
 export KUBECONFIG=/dev/null
+
+# Set default platform for docker buildx
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
