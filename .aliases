@@ -79,6 +79,11 @@ alias now='date +"%T"'
 alias nowtime='now'
 alias nowdate='date +"%d-%m-%Y"'
 
+# Copilot
+alias copilot='gh copilot'
+alias gcs='gh copilot suggest'
+alias gce='gh copilot explain'
+
 # Can I haz `timeout` ?
 hash gtimeout &>/dev/null && alias timeout='gtimeout'
 
