@@ -15,7 +15,7 @@ jobs:
         python-version: [3.9]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: cache-pip
         with:
           path: |
@@ -24,14 +24,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
             ${{ runner.os }}-
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: cache-shellcheck
         with:
           path: bin/shellcheck
           key: ${{ runner.os }}-shellcheck
           restore-keys: |
             ${{ runner.os }}-shellcheck
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit
           key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
