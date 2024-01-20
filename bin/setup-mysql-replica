@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2029
+# A quick & dirty script to setup a MySQL slave thanks to Percona Xtrabackup
+# https://www.percona.com/doc/percona-xtrabackup/2.4/howtos/setting_up_replication.html
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+MYSQL_DATADIR=${MYSQL_DATADIR:='/var/lib/mysql'}
+MYSQL_SOURCE_IP=${MYSQL_SOURCE_IP:='172.16.0.1'}
+MYSQL_SOURCE_PASSWORD=${MYSQL_SOURCE_PASSWORD:=''}
+MYSQL_SOURCE_USER=${MYSQL_SOURCE_USER:='replication'}
+MYSQL_VERSION=${MYSQL_VERSION:='8.0'}
+NPROC=$(grep -c processor </proc/cpuinfo || 4)
+REPLICA_IP=${REPLICA_IP:='172.16.0.2'}
+REPLICA_SSH_USER=${REPLICA_SSH_USER:=$(whoami)}
+TMP_DIRECTORY=${TMP_DIRECTORY:='/var/tmp'}
+
+readonly BACKUP_DESTINATION="${TMP_DIRECTORY}/${REPLICA_SSH_USER}/mysql.$$"
+readonly MYSQL_SETUP_SLAVE_SQL="${TMP_DIRECTORY}/setup_slave.$$.sql"
+readonly NPROC
+
+if ! command -v qpress &>/dev/null ||
+  ! command -v xbstream &>/dev/null ||
+  ! command -v xtrabackup &>/dev/null; then
+  echo >&2 "qpress, xbstream or xtrabackup aren't installed or in PATH"
+  exit 1
+fi
+
+if ! ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "mkdir -p ${BACKUP_DESTINATION}"; then
+  echo >&2 "Can't connect to slave via SSH"
+  exit 1
+fi
+
+if ! ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "command -v qpress" ||
+  ! ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "command -v xbstream" ||
+  ! ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "command -v xtrabackup"; then
+  echo >&2 "qpress, xbstream or xtrabackup aren't installed or in PATH on the slave"
+  exit 1
+fi
+
+ulimit -n 65536
+xtrabackup \
+  --backup \
+  --compress=zstd \
+  --compress-threads="$((NPROC / 2))" \
+  --parallel="$((NPROC / 2))" \
+  --slave-info \
+  --stream=xbstream \
+  --target-dir=./ |
+  ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
+    "xbstream -x -C ${BACKUP_DESTINATION}"
+
+# shellcheck disable=SC2181
+if [[ $? -ne 0 ]]; then
+  echo >&2 "xtrabackup command failed"
+  exit 1
+fi
+
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
+  "xtrabackup --remove-original --decompress \
+    --parallel=\$(grep -c processor < /proc/cpuinfo || 4) \
+    --target-dir=${BACKUP_DESTINATION}"
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
+  "xtrabackup --prepare --target-dir=${BACKUP_DESTINATION}"
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo service mysql stop"
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo chown -R mysql:mysql ${BACKUP_DESTINATION}"
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mkdir -m 0755 -p ${MYSQL_DATADIR}"
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mv ${MYSQL_DATADIR} ${MYSQL_DATADIR}.$$ || true"
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mv ${BACKUP_DESTINATION} ${MYSQL_DATADIR}"
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo service mysql start"
+
+MYSQL_SOURCE_LOG_FILE=$(ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
+  "sudo cat ${MYSQL_DATADIR}/xtrabackup_binlog_info | awk '{ print \$1; }'")
+MYSQL_SOURCE_LOG_POS=$(ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
+  "sudo cat ${MYSQL_DATADIR}/xtrabackup_binlog_info | awk '{ print \$2; }'")
+
+if [[ "$MYSQL_VERSION" == '8.0' ]]; then
+  MYSQL_SETUP_SLAVE_QUERY="STOP REPLICA IO_THREAD FOR CHANNEL '';
+CHANGE REPLICATION SOURCE TO
+SOURCE_HOST='${MYSQL_SOURCE_IP}',
+SOURCE_USER='${MYSQL_SOURCE_USER}',
+SOURCE_PASSWORD='${MYSQL_SOURCE_PASSWORD}',
+SOURCE_LOG_FILE='${MYSQL_SOURCE_LOG_FILE}',
+SOURCE_LOG_POS=${MYSQL_SOURCE_LOG_POS};
+START REPLICA;
+"
+else
+  MYSQL_SETUP_SLAVE_QUERY="STOP SLAVE;
+CHANGE MASTER TO
+MASTER_HOST='${MYSQL_SOURCE_IP}',
+MASTER_USER='${MYSQL_SOURCE_USER}',
+MASTER_PASSWORD='${MYSQL_SOURCE_PASSWORD}',
+MASTER_LOG_FILE='${MYSQL_SOURCE_LOG_FILE}',
+MASTER_LOG_POS=${MYSQL_SOURCE_LOG_POS};
+START SLAVE;"
+fi
+
+echo "${MYSQL_SETUP_SLAVE_QUERY}" >"${MYSQL_SETUP_SLAVE_SQL}"
+scp "$MYSQL_SETUP_SLAVE_SQL" \
+  "${REPLICA_SSH_USER}@${REPLICA_IP}:${MYSQL_SETUP_SLAVE_SQL}"
+
+# Use sudo to make sure we use the right ~/.my.cnf file with maintenance
+# credentials
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
+  "sudo mysql -e 'SOURCE ${MYSQL_SETUP_SLAVE_SQL};'"
+
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" 'sudo mysqladmin start-slave'
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo chown -R mysql:mysql ${MYSQL_DATADIR}"
