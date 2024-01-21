@@ -8,7 +8,7 @@ set -o pipefail
 set -o nounset
 
 MYSQL_DATADIR=${MYSQL_DATADIR:='/var/lib/mysql'}
-MYSQL_GTID_MODE=${MYSQL_GTID_MODE:=''}
+MYSQL_GTID_MODE=${MYSQL_GTID_MODE:='ON'}
 MYSQL_SOURCE_IP=${MYSQL_SOURCE_IP:='172.16.0.1'}
 MYSQL_SOURCE_PASSWORD=${MYSQL_SOURCE_PASSWORD:=''}
 MYSQL_SOURCE_USER=${MYSQL_SOURCE_USER:='replication'}
@@ -72,28 +72,10 @@ ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mv ${MYSQL_DATADIR} ${MYSQL_DATADI
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mv ${BACKUP_DESTINATION} ${MYSQL_DATADIR}"
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo service mysql start"
 
-# FIXME: migrate to gtid replication everywhere and decomission all this mess
-if [[ -z "$MYSQL_GTID_MODE" ]]; then
-  MYSQL_SOURCE_LOG_FILE=$(ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
-    "sudo cat ${MYSQL_DATADIR}/xtrabackup_binlog_info | awk '{ print \$1; }'")
-  MYSQL_SOURCE_LOG_POS=$(ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
-    "sudo cat ${MYSQL_DATADIR}/xtrabackup_binlog_info | awk '{ print \$2; }'")
-else
-  MYSQL_GTID_POS=$(ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
-    "sudo cat ${MYSQL_DATADIR}/xtrabackup_binlog_info | awk '{ print \$3; }'")
-fi
+MYSQL_GTID_POS=$(ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
+  "sudo cat ${MYSQL_DATADIR}/xtrabackup_binlog_info | awk '{ print \$3; }'")
 
-if [[ "$MYSQL_VERSION" == '8.0' ]] && [[ -z "$MYSQL_GTID_MODE" ]]; then
-  MYSQL_SETUP_SLAVE_QUERY="STOP REPLICA IO_THREAD FOR CHANNEL '';
-CHANGE REPLICATION SOURCE TO
-SOURCE_HOST='${MYSQL_SOURCE_IP}',
-SOURCE_USER='${MYSQL_SOURCE_USER}',
-SOURCE_PASSWORD='${MYSQL_SOURCE_PASSWORD}',
-SOURCE_LOG_FILE='${MYSQL_SOURCE_LOG_FILE}',
-SOURCE_LOG_POS=${MYSQL_SOURCE_LOG_POS};
-START REPLICA;
-"
-elif [[ "$MYSQL_VERSION" == '8.0' ]] && [[ -n "$MYSQL_GTID_POS" ]]; then
+if [[ "$MYSQL_VERSION" == '8.0' ]]; then
   MYSQL_SETUP_SLAVE_QUERY="STOP REPLICA IO_THREAD FOR CHANNEL '';
 SET SESSION wsrep_on = 0;
 RESET MASTER;
@@ -107,14 +89,12 @@ SOURCE_AUTO_POSITION = 1;
 START REPLICA;
 "
 else
-  # legacy replication with binlog coordinates
   MYSQL_SETUP_SLAVE_QUERY="STOP SLAVE;
 CHANGE MASTER TO
 MASTER_HOST='${MYSQL_SOURCE_IP}',
 MASTER_USER='${MYSQL_SOURCE_USER}',
 MASTER_PASSWORD='${MYSQL_SOURCE_PASSWORD}',
-MASTER_LOG_FILE='${MYSQL_SOURCE_LOG_FILE}',
-MASTER_LOG_POS=${MYSQL_SOURCE_LOG_POS};
+MASTER_AUTO_POSITION = 1;
 START SLAVE;"
 fi
 
