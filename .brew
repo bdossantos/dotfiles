@@ -30,6 +30,7 @@ brew install \
   ack \
   advancecomp \
   alacritty \
+  anki \
   ansifilter \
   autoenv \
   awscli \
