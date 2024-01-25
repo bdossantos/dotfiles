@@ -67,10 +67,11 @@ ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
   "xtrabackup --prepare --target-dir=${BACKUP_DESTINATION}"
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo service mysql stop"
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo chown -R mysql:mysql ${BACKUP_DESTINATION}"
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo umount ${MYSQL_DATADIR} || true"
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mkdir -m 0755 -p ${MYSQL_DATADIR}"
-ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mv ${MYSQL_DATADIR} ${MYSQL_DATADIR}.$$ || true"
-ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mv ${BACKUP_DESTINATION} ${MYSQL_DATADIR}"
-ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo service mysql start"
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mv ${MYSQL_DATADIR} ${MYSQL_DATADIR}.back.$$ || true"
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mount ${MYSQL_DATADIR} || true"
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo xtrabackup -–parallel=$((NPROC / 2)) --copy-back --target-dir=${BACKUP_DESTINATION} --datadir=${MYSQL_DATADIR}"
 
 MYSQL_GTID_POS=$(ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
   "sudo cat ${MYSQL_DATADIR}/xtrabackup_binlog_info | awk '{ print \$3; }'")
@@ -102,10 +103,12 @@ echo "${MYSQL_SETUP_SLAVE_QUERY}" >"${MYSQL_SETUP_SLAVE_SQL}"
 scp "$MYSQL_SETUP_SLAVE_SQL" \
   "${REPLICA_SSH_USER}@${REPLICA_IP}:${MYSQL_SETUP_SLAVE_SQL}"
 
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo chown -R mysql:mysql ${MYSQL_DATADIR}"
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo service mysql start"
+
 # Use sudo to make sure we use the right ~/.my.cnf file with maintenance
 # credentials
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
   "sudo mysql -e 'SOURCE ${MYSQL_SETUP_SLAVE_SQL};'"
 
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" 'sudo mysqladmin start-slave'
-ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo chown -R mysql:mysql ${MYSQL_DATADIR}"
