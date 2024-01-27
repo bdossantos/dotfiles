@@ -19,7 +19,7 @@ REPLICA_SSH_USER=${REPLICA_SSH_USER:=$(whoami)}
 TMP_DIRECTORY=${TMP_DIRECTORY:='/var/tmp'}
 
 readonly BACKUP_DESTINATION="${TMP_DIRECTORY}/${REPLICA_SSH_USER}/mysql.$$"
-readonly MYSQL_SETUP_SLAVE_SQL="${TMP_DIRECTORY}/setup_slave.$$.sql"
+readonly MYSQL_SETUP_SLAVE_SQL="/tmp/setup_slave.$$.sql"
 readonly NPROC
 
 if ! command -v qpress &>/dev/null ||
@@ -69,9 +69,9 @@ ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo service mysql stop"
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo chown -R mysql:mysql ${BACKUP_DESTINATION}"
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo umount ${MYSQL_DATADIR} || true"
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mkdir -m 0755 -p ${MYSQL_DATADIR}"
-ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mv ${MYSQL_DATADIR} ${MYSQL_DATADIR}.back.$$ || true"
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mv ${MYSQL_DATADIR} ${TMP_DIRECTORY}/mysql.back.$$ || true"
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mount ${MYSQL_DATADIR} || true"
-ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo xtrabackup -–parallel=$((NPROC / 2)) --copy-back --target-dir=${BACKUP_DESTINATION} --datadir=${MYSQL_DATADIR}"
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo xtrabackup --copy-back --target-dir=${BACKUP_DESTINATION} --datadir=${MYSQL_DATADIR}"
 
 MYSQL_GTID_POS=$(ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
   "sudo cat ${MYSQL_DATADIR}/xtrabackup_binlog_info | awk '{ print \$3; }'")
