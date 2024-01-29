@@ -71,10 +71,11 @@ ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo umount ${MYSQL_DATADIR} || true"
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mkdir -m 0755 -p ${MYSQL_DATADIR}"
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mv ${MYSQL_DATADIR} ${TMP_DIRECTORY}/mysql.back.$$ || true"
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo mount ${MYSQL_DATADIR} || true"
-ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo xtrabackup --copy-back --target-dir=${BACKUP_DESTINATION} --datadir=${MYSQL_DATADIR}"
 
 MYSQL_GTID_POS=$(ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
-  "sudo cat ${MYSQL_DATADIR}/xtrabackup_binlog_info | awk '{ print \$3; }'")
+  "sudo cat ${BACKUP_DESTINATION}/xtrabackup_binlog_info | awk '{ print \$3; }'")
+
+ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo xtrabackup --copy-back --target-dir=${BACKUP_DESTINATION} --datadir=${MYSQL_DATADIR}"
 
 if [[ "$MYSQL_VERSION" == '8.0' ]]; then
   MYSQL_SETUP_SLAVE_QUERY="STOP REPLICA IO_THREAD FOR CHANNEL '';
@@ -110,5 +111,3 @@ ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo service mysql start"
 # credentials
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
   "sudo mysql -e 'SOURCE ${MYSQL_SETUP_SLAVE_SQL};'"
-
-ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" 'sudo mysqladmin start-slave'
