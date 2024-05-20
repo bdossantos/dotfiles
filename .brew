@@ -20,8 +20,6 @@ echo "--> Detected CPU Brand: ${CPU_BRAND}"
 echo "--> Make sure we're using the latest Homebrew"
 brew update
 
-brew tap homebrew/cask-fonts
-
 echo '--> Upgrade any already-installed formulae'
 brew upgrade
 
