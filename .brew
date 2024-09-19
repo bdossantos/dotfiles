@@ -110,7 +110,6 @@ brew install \
   pwgen \
   python@3.9 \
   readline \
-  rectangle \
   ripgrep \
   ruby-build \
   s3cmd \
