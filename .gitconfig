@@ -5,7 +5,7 @@ whitespace = fix
 [user]
 name = Benjamin Dos Santos
 email = benjamin.dossantos@gmail.com
-signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDCS+u/eivdo87kk6biVHPl1g0kMMu9LjiioC5ek6o2T
+signingkey = ssh-ed25519 ~/.ssh/id_ed25519.pub
 
 [gpg]
 format = ssh
