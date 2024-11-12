@@ -1,5 +1,9 @@
 # https://starship.rs/config/
 # https://github.com/dracula/starship/blob/master/starship.toml
+
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
 add_newline = true
 
 [aws]
