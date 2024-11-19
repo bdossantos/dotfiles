@@ -85,9 +85,8 @@ if [ -f "${GCLOUD_SDK}/path.bash.inc" ] &&
 fi
 
 # fzf
-if [ -f "${HOME}/.fzf.bash" ]; then
-  # shellcheck source=/dev/null
-  source "${HOME}/.fzf.bash"
+if command -v fzf &>/dev/null; then
+  eval "$(fzf --bash)"
 fi
 
 # nomad
