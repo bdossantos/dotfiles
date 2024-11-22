@@ -25,6 +25,11 @@ shopt -s extglob
 # pathname expansion will be treated as case-insensitive
 shopt -s nocaseglob
 
+# brew
+if command -v brew &>/dev/null; then
+  eval "$(brew shellenv)"
+fi
+
 # starship
 if command -v starship &>/dev/null; then
   eval "$(starship init bash)"
