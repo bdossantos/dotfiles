@@ -67,6 +67,9 @@ disabled = true
 
 [kubernetes]
 disabled = false
+contexts = [
+  { context_pattern = "*-prd", style = "bold red", symbol = "⚠️  DANGER ⚠️  " }
+]
 
 [username]
 format = "[$user]($style) on "
