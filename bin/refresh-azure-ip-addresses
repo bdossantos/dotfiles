@@ -25,24 +25,14 @@ DEBUG=${DEBUG:=0}
 CONSUL_HTTP_ADDR=${CONSUL_HTTP_ADDR:='127.0.0.1:8500'}
 CONSUL_KEY=${CONSUL_KEY:='azure/ip-addresses'}
 
-if ! command -v consul &>/dev/null; then
-  echo >&2 "consul isn't installed or in PATH"
+if ! command -v consul &>/dev/null && ! command -v jq &>/dev/null; then
+  echo >&2 "consul or jq isn't installed or in PATH"
   exit 1
 fi
 
 azure_ip_addresses=$(
-  curl -s 'https://www.microsoft.com/en-in/download/confirmation.aspx?id=41653' |
-    grep -Eo '"https://[^"]*PublicIPs[^"]*"' |
-    head -n 1 |
-    cut -d '"' -f 2
-)
-
-azure_ip_addresses=$(
-  curl -s -f "$azure_ip_addresses" |
-    grep 'IpRange Subnet=' | cut -d '"' -f2 |
-    uniq |
-    sort |
-    xargs -I % echo '%'
+  curl -s -H 'Accept: application/vnd.github+json' https://api.github.com/meta |
+    jq -r '.actions[]'
 )
 
 if [[ -z $azure_ip_addresses ]]; then
