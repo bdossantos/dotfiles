@@ -21,10 +21,10 @@ echo "--> Make sure we're using the latest Homebrew"
 brew update
 
 echo '--> Upgrade any already-installed formulae'
-brew upgrade
+brew upgrade --force-bottle
 
 echo '--> Install all brew Packages'
-brew install \
+brew install --force-bottle \
   ack \
   advancecomp \
   alacritty \
