@@ -102,7 +102,6 @@ key = "Return"
 mods = "Command"
 
 [window]
-decorations = "buttonless"
 dynamic_padding = true
 option_as_alt = "None"
 startup_mode = "Maximized"
