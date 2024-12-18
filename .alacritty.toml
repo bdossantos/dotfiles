@@ -1,60 +1,32 @@
-# https://raw.githubusercontent.com/dracula/alacritty/master/dracula.toml
+# https://github.com/alacritty/alacritty-theme/blob/master/themes/everforest_dark.toml
+# Colors (Everforest Dark)
+
+# Default colors
 [colors.primary]
-background = "#282a36"
-foreground = "#f8f8f2"
-bright_foreground = "#ffffff"
+background = '#2d353b'
+foreground = '#d3c6aa'
 
-[colors.cursor]
-text = "#282a36"
-cursor = "#f8f8f2"
-
-[colors.vi_mode_cursor]
-text = "CellBackground"
-cursor = "CellForeground"
-
-[colors.selection]
-text = "CellForeground"
-background = "#44475a"
-
+# Normal colors
 [colors.normal]
-black = "#21222c"
-red = "#ff5555"
-green = "#50fa7b"
-yellow = "#f1fa8c"
-blue = "#bd93f9"
-magenta = "#ff79c6"
-cyan = "#8be9fd"
-white = "#f8f8f2"
+black   = '#475258'
+red     = '#e67e80'
+green   = '#a7c080'
+yellow  = '#dbbc7f'
+blue    = '#7fbbb3'
+magenta = '#d699b6'
+cyan    = '#83c092'
+white   = '#d3c6aa'
 
+# Bright colors
 [colors.bright]
-black = "#6272a4"
-red = "#ff6e6e"
-green = "#69ff94"
-yellow = "#ffffa5"
-blue = "#d6acff"
-magenta = "#ff92df"
-cyan = "#a4ffff"
-white = "#ffffff"
-
-[colors.search.matches]
-foreground = "#44475a"
-background = "#50fa7b"
-
-[colors.search.focused_match]
-foreground = "#44475a"
-background = "#ffb86c"
-
-[colors.footer_bar]
-background = "#282a36"
-foreground = "#f8f8f2"
-
-[colors.hints.start]
-foreground = "#282a36"
-background = "#f1fa8c"
-
-[colors.hints.end]
-foreground = "#f1fa8c"
-background = "#282a36"
+black   = '#475258'
+red     = '#e67e80'
+green   = '#a7c080'
+yellow  = '#dbbc7f'
+blue    = '#7fbbb3'
+magenta = '#d699b6'
+cyan    = '#83c092'
+white   = '#d3c6aa'
 
 [font]
 size = 13.0

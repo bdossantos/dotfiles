@@ -29,6 +29,7 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
 Plugin 'dracula/vim', { 'name': 'dracula' }
+Plugin 'sainnhe/everforest'
 Plugin 'github/copilot.vim'
 Plugin 'google/vim-jsonnet'
 
@@ -89,7 +90,9 @@ syntax enable
 
 set background=dark
 
-colorscheme dracula
+colorscheme everforest
+
+let g:everforest_background = 'soft'
 
 if exists('+colorcolumn')
   set colorcolumn=80
@@ -120,7 +123,7 @@ let g:airline#extensions#branch_prefix#enabled=1
 let g:airline#extensions#ale#enabled=1
 
 " airline theme
-let g:airline_theme='dracula'
+let g:airline_theme='everforest'
 
 " Use rubocop with the default ruby checker (mri)
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
