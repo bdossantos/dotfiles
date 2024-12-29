@@ -83,7 +83,7 @@ elseif &term == 'screen' || &term == 'xterm'
   set title
 endif
 
-set guifont=Hack:h14
+set guifont="JetBrains Mono":h14
 
 syntax enable
 

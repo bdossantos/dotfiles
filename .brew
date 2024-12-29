@@ -60,6 +60,7 @@ brew install --force-bottle \
   fzf \
   gawk \
   gcc \
+  ghostty \
   gifsicle \
   git \
   gitlint \
