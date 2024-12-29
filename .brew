@@ -56,6 +56,7 @@ brew install --force-bottle \
   firefox \
   font-hack \
   font-hack-nerd-font \
+  font-jetbrains-mono \
   fzf \
   gawk \
   gcc \
