@@ -25,9 +25,9 @@ shopt -s extglob
 # pathname expansion will be treated as case-insensitive
 shopt -s nocaseglob
 
-# brew
-if command -v brew &>/dev/null; then
-  eval "$(brew shellenv)"
+# ghostty
+if [[ -n "${GHOSTTY_RESOURCES_DIR}" ]]; then
+  builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash"
 fi
 
 # starship
@@ -44,6 +44,11 @@ fi
 if [ -r /etc/profile.d/bash_completion.sh ]; then
   # shellcheck disable=SC1091
   source /etc/profile.d/bash_completion.sh
+fi
+
+# brew
+if command -v brew &>/dev/null; then
+  eval "$(brew shellenv)"
 fi
 
 # https://docs.brew.sh/Shell-Completion
