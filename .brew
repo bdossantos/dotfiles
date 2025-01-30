@@ -198,7 +198,7 @@ RUBIES=(
 
 for ruby in "${RUBIES[@]}"; do
   if [[ ! -f "${HOME}/.rubies/ruby-${ruby}/bin/ruby" ]]; then
-    "${HOME}/.homebrew/bin/ruby-build" "$ruby" "${HOME}/.rubies/ruby-${ruby}"
+    "${HOME}/.homebrew/bin/ruby-install" "ruby" "$ruby"
   fi
 done
 
