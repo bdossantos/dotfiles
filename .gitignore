@@ -1,4 +1,6 @@
 !.config/k9s/skin.yml
+!.config/spotify-tui/config.yml
+!.config/spotifyd/spotifyd.conf
 !.config/starship.toml
 !.config/zellij/config.yaml
 !.gnupg/gpg.conf
