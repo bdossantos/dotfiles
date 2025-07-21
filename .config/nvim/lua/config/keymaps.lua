@@ -4,18 +4,23 @@
 
 local map = vim.keymap.set
 
+-- Set comma as an additional leader key for compatibility with original vimrc
+map("n", ",", "<nop>")
+map("v", ",", "<nop>")
+
 -- Key Bindings from original vimrc
 -- jj to escape (already handled by LazyVim by default for jk)
 map("i", "jj", "<ESC>", { desc = "Exit insert mode with jj" })
 
--- Turn off search highlight
+-- Turn off search highlight (also works with space leader)
 map("n", "<leader><space>", ":nohlsearch<CR>", { desc = "Clear search highlight" })
+map("n", ",<space>", ":nohlsearch<CR>", { desc = "Clear search highlight" })
 
--- Ag/grep search (will be handled by telescope)
-map("n", "<Leader>a", ":Telescope live_grep<CR>", { desc = "Live grep with Telescope" })
+-- Live grep (also works with space leader from LazyVim)
+map("n", ",a", ":Telescope live_grep<CR>", { desc = "Live grep with Telescope" })
 
--- Open file finder (handled by telescope)
-map("n", "<leader>f", ":Telescope find_files<CR>", { desc = "Find files with Telescope" })
+-- Open file finder (also works with space leader from LazyVim)
+map("n", ",f", ":Telescope find_files<CR>", { desc = "Find files with Telescope" })
 
 -- Easier split navigations (LazyVim already has these but keeping for consistency)
 map("n", "<C-J>", "<C-W><C-J>", { desc = "Move to window below" })
@@ -43,10 +48,21 @@ end
 
 map("n", "<C-n>", number_toggle, { desc = "Toggle relative/absolute line numbers" })
 
--- Git integration (will be handled by lazygit)
-map("n", "<leader>t", ":LazyGit<CR>", { desc = "Open LazyGit" })
+-- Git integration (LazyVim has <leader>gg for lazygit)
+map("n", ",t", ":LazyGit<CR>", { desc = "Open LazyGit" })
 
--- Format/fix current file (will be handled by conform.nvim)
-map("n", "<leader>s", function() 
+-- Format/fix current file (LazyVim has <leader>cf for format)
+map("n", ",s", function()
   require("conform").format({ async = true, lsp_fallback = true })
 end, { desc = "Format current file" })
+
+-- Additional convenience mappings to disable format on save toggle
+map("n", ",se", function()
+  vim.g.autoformat = true
+  vim.print("Auto format on save: enabled")
+end, { desc = "Enable format on save" })
+
+map("n", ",sd", function()
+  vim.g.autoformat = false
+  vim.print("Auto format on save: disabled")
+end, { desc = "Disable format on save" })

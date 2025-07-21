@@ -20,7 +20,7 @@ return {
       })
     end,
   },
-  
+
   -- Configure LazyVim to load dracula
   {
     "LazyVim/LazyVim",
