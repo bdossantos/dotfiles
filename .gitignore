@@ -5,3 +5,4 @@
 !.gnupg/gpg.conf
 .config
 .gnupg/
+nvim.appimage
