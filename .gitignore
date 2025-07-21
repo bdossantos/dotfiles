@@ -1,6 +1,7 @@
 !.config/k9s/skin.yml
 !.config/starship.toml
 !.config/zellij/config.yaml
+!.config/nvim/
 !.gnupg/gpg.conf
 .config
 .gnupg/
