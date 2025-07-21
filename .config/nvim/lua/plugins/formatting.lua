@@ -37,7 +37,7 @@ return {
     opts = function()
       local plugin = require("lazy.core.config").spec.plugins["conform.nvim"]
       local opts = plugin and plugin.opts or {}
-      opts.formatters_by_ft = {
+      opts.formatters_by_ft = vim.tbl_deep_extend("force", opts.formatters_by_ft or {}, {
         ["javascript"] = { "prettier", "eslint" },
         ["javascriptreact"] = { "prettier", "eslint" },
         ["typescript"] = { "prettier", "eslint", "tslint" },
