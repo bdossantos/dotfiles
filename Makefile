@@ -11,6 +11,7 @@ help:
 install: ## Install all the things
 	@make install-dotfiles \
 		install-vundle \
+		install-nvim-deps \
 	@[[ $OS == 'Darwin' ]] \
 		&& make install-homebrew run-brew
 
@@ -43,6 +44,10 @@ install-vundle: ## Install Vundle, the plug-in manager for Vim
 	@[[ -d ~/.vim/bundle/Vundle.vim ]] \
 		|| git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 	@vim +PluginInstall +qall &>/dev/null
+
+install-nvim-deps: ## Install/setup Neovim dependencies
+	$(info --> Setup Neovim directories)
+	@mkdir -p ~/.vimswap ~/.vimundo ~/.tmp
 
 install-alacritty-theme:
 	$(info --> Install Alacritty themes)
