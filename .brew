@@ -114,6 +114,7 @@ brew install --force-bottle \
   readline \
   ripgrep \
   ruby-build \
+  ruff \
   s3cmd \
   shellcheck \
   shfmt \
