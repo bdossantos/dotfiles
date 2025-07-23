@@ -30,6 +30,7 @@ brew install --force-bottle \
   alacritty \
   anki \
   ansifilter \
+  ast-grep \
   autoenv \
   awscli \
   bash \
