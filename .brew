@@ -90,6 +90,7 @@ brew install --force-bottle \
   k9s \
   kops \
   kubectx \
+  lazygit \
   less \
   lesspipe \
   libyaml \
