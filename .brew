@@ -95,6 +95,7 @@ brew install --force-bottle \
   lesspipe \
   libyaml \
   logcli \
+  luarocks \
   make \
   miller \
   micro-snitch \
