@@ -21,7 +21,7 @@ echo "--> Make sure we're using the latest Homebrew"
 brew update
 
 echo '--> Upgrade any already-installed formulae'
-brew upgrade --force-bottle
+brew upgrade
 
 echo '--> Install all brew Packages'
 brew install \
