@@ -24,7 +24,7 @@ echo '--> Upgrade any already-installed formulae'
 brew upgrade --force-bottle
 
 echo '--> Install all brew Packages'
-brew install --force-bottle \
+brew install \
   ack \
   advancecomp \
   alacritty \
