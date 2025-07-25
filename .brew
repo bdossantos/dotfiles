@@ -117,6 +117,7 @@ brew install \
   readline \
   ripgrep \
   ruby-build \
+  ruby-install \
   ruff \
   s3cmd \
   shellcheck \
