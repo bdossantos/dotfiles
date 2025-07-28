@@ -61,6 +61,7 @@ brew install \
   fzf \
   gawk \
   gcc \
+  gcloud-cli \
   ghostty \
   gifsicle \
   git \
@@ -172,25 +173,6 @@ brew install \
   vagrant \
   virtualbox
 "
-
-## gcloud
-mkdir -p "${HOME}/.google-cloud-sdk"
-chmod 0700 "${HOME}/.google-cloud-sdk"
-if [[ ! -x "${HOME}/.google-cloud-sdk/bin/gcloud" ]]; then
-  if [[ $CPU_BRAND == 'Apple M1' ]]; then
-    curl -L https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-435.0.0-darwin-arm.tar.gz |
-      tar xz --strip 1 -C ~/.google-cloud-sdk
-  else
-    curl -L https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-435.0.0-darwin-x86_64.tar.gz |
-      tar xz --strip 1 -C ~/.google-cloud-sdk
-  fi
-  "${HOME}/.google-cloud-sdk/install.sh" \
-    --usage-reporting false \
-    --bash-completion false \
-    --path-update false \
-    --rc-path false \
-    --quiet
-fi
 
 ## ruby
 mkdir -p "${HOME}/.rubies"
