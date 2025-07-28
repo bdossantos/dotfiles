@@ -26,7 +26,7 @@ shopt -s extglob
 shopt -s nocaseglob
 
 # ghostty
-if [[ -n "${GHOSTTY_RESOURCES_DIR}" ]]; then
+if [[ -n ${GHOSTTY_RESOURCES_DIR} ]]; then
   builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash"
 fi
 
@@ -85,13 +85,16 @@ if command -v direnv &>/dev/null; then
 fi
 
 # gcloud
-GCLOUD_SDK="${HOME}/.google-cloud-sdk"
-if [ -f "${GCLOUD_SDK}/path.bash.inc" ] &&
-  [ -f "${GCLOUD_SDK}/completion.bash.inc" ]; then
-  # shellcheck source=/dev/null
-  source "${GCLOUD_SDK}/path.bash.inc"
-  # shellcheck source=/dev/null
-  source "${GCLOUD_SDK}/completion.bash.inc"
+# For Homebrew-installed gcloud-cli
+if command -v brew &>/dev/null; then
+  GCLOUD_SDK="${HOMEBREW_PREFIX}/share/google-cloud-sdk"
+  if [ -f "${GCLOUD_SDK}/path.bash.inc" ] &&
+    [ -f "${GCLOUD_SDK}/completion.bash.inc" ]; then
+    # shellcheck source=/dev/null
+    source "${GCLOUD_SDK}/path.bash.inc"
+    # shellcheck source=/dev/null
+    source "${GCLOUD_SDK}/completion.bash.inc"
+  fi
 fi
 
 # fzf
