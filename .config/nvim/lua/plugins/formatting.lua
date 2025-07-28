@@ -1,26 +1,35 @@
--- Formatting and linting configuration (replaces ALE)
-return { -- Autoformat
+-- Code formatting configuration using conform.nvim
+-- Replaces ALE for formatting functionality
+return {
   "stevearc/conform.nvim",
-  event = { "BufWritePre" },
-  cmd = { "ConformInfo" },
-  lazy = false,
+  event = { "BufWritePre" }, -- Load before writing files
+  cmd = { "ConformInfo" }, -- Load when running ConformInfo command
+  lazy = false, -- Don't lazy load to ensure formatting is available
   opts = {
-    notify_on_error = true,
+    notify_on_error = true, -- Show notification if formatting fails
+
+    -- Define formatters for each file type
     formatters_by_ft = {
-      fish = { "fish_indent" },
+      -- Web development
       javascript = { "prettier" },
+      typescript = { "prettier" },
+      json = { "jq", "prettier" },
+      yaml = { "prettier" },
+
+      -- System languages
       lua = { "stylua" },
       python = { "ruff_format" },
-      sh = { "shfmt" },
-      yaml = { "prettier" },
       go = { "goimports", "gofmt" },
-      json = { "jq", "prettier" },
-      just = { "just" },
       rust = { "rustfmt", lsp_format = "fallback" },
+
+      -- Shell and configuration
+      sh = { "shfmt" },
     },
-    -- Customize formatters
+
+    -- Customize specific formatters
     formatters = {
       shfmt = {
+        -- Shell formatting options: 2-space indent, compact syntax
         prepend_args = { "-i", "2", "-ci", "-s" },
       },
     },
