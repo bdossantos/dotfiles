@@ -63,7 +63,8 @@ else
 fi
 
 # Save bash history after each command, depend `shopt -s histappend`
-PROMPT_COMMAND="history -a;history -c;history -r;$PROMPT_COMMAND"
+# Optimized history management - just append new entries
+PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 
 # chruby
 if [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
