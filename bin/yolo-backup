@@ -1,11 +1,31 @@
 #!/usr/bin/env bash
 #
-# A quick and dirty wrapper for restic (https://github.com/restic/restic)
+# A robust wrapper for restic backup (https://github.com/restic/restic)
 #
 # Usage:
+#   yolo-backup [OPTIONS]
 #
-# RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password RESTIC_EXCLUDE_FILE=/etc/restic/exclude $HOME/bin/yolo-backup
-# RESTIC_REPOSITORY=gs:my-bucket/restic/$(hostname -f) GOOGLE_PROJECT_ID=1234 GOOGLE_APPLICATION_CREDENTIALS=/etc/restic/gs-secret-restic-key.json $HOME/bin/yolo-backup
+# Environment Variables:
+#   RESTIC_REPOSITORY          Repository location (required)
+#   RESTIC_PASSWORD_FILE       Password file path (required)
+#   RESTIC_EXCLUDE_FILE        File patterns to exclude (default: /dev/null)
+#   RESTIC_BACKUP_TARGET_DIRECTORY  Target directory to backup (default: /)
+#   RESTIC_KEEP_LAST           Number of snapshots to keep (default: 180)
+#   NODE_EXPORTER_TEXTFILE_DIRECTORY  Directory for metrics (optional)
+#   DEBUG                      Enable debug mode (default: 0)
+#   SYSLOG                     Enable syslog output (default: 0)
+#   DRY_RUN                    Enable dry-run mode (default: 0)
+#   LOG_LEVEL                  Log level: ERROR, WARN, INFO, DEBUG (default: INFO)
+#   RETRY_COUNT                Number of retries for network operations (default: 3)
+#   COMPRESSION_LEVEL          Compression level (default: auto)
+#   SKIP_MYSQL                 Skip MySQL backup (default: 0)
+#   SKIP_POSTGRESQL            Skip PostgreSQL backup (default: 0)
+#   SKIP_FILES                 Skip file backup (default: 0)
+#   MIN_FREE_SPACE_MB          Minimum free space required in MB (default: 1024)
+#
+# Examples:
+#   RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password yolo-backup
+#   RESTIC_REPOSITORY=gs:my-bucket/restic/$(hostname -f) GOOGLE_PROJECT_ID=1234 yolo-backup --dry-run
 #
 # (c) 2017, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/dotfiles
@@ -15,36 +35,386 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-DEBUG=${DEBUG:=0}
+# Configuration with defaults
+DEBUG=${DEBUG:-0}
+DRY_RUN=${DRY_RUN:-0}
+LOG_LEVEL=${LOG_LEVEL:-INFO}
+RETRY_COUNT=${RETRY_COUNT:-3}
+COMPRESSION_LEVEL=${COMPRESSION_LEVEL:-auto}
+SKIP_MYSQL=${SKIP_MYSQL:-0}
+SKIP_POSTGRESQL=${SKIP_POSTGRESQL:-0}
+SKIP_FILES=${SKIP_FILES:-0}
+MIN_FREE_SPACE_MB=${MIN_FREE_SPACE_MB:-1024}
+
 [[ $DEBUG -eq 1 ]] && set -o xtrace
 
+# Additional configuration
 NODE_EXPORTER_TEXTFILE_DIRECTORY=${NODE_EXPORTER_TEXTFILE_DIRECTORY:-}
-NPROC=$(grep -c processor </proc/cpuinfo || 4)
+NPROC=$(grep -c processor </proc/cpuinfo 2>/dev/null || echo 4)
 PATH="${PATH}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-RESTIC_BACKUP_TARGET_DIRECTORY=${RESTIC_BACKUP_TARGET_DIRECTORY:='/'}
-RESTIC_EXCLUDE_FILE=${RESTIC_EXCLUDE_FILE:='/dev/null'}
-RESTIC_PASSWORD_FILE=${RESTIC_PASSWORD_FILE:='/dev/null'}
+RESTIC_BACKUP_TARGET_DIRECTORY=${RESTIC_BACKUP_TARGET_DIRECTORY:-'/'}
+RESTIC_EXCLUDE_FILE=${RESTIC_EXCLUDE_FILE:-'/dev/null'}
+RESTIC_PASSWORD_FILE=${RESTIC_PASSWORD_FILE:-}
 RESTIC_REPOSITORY=${RESTIC_REPOSITORY:-}
-RESTIC_KEEP_LAST=${RESTIC_KEEP_LAST:=180}
-SYSLOG=${SYSLOG=0}
+RESTIC_KEEP_LAST=${RESTIC_KEEP_LAST:-180}
+SYSLOG=${SYSLOG:-0}
+
+# Script metadata
+SCRIPT_NAME=$(basename "$0")
+readonly SCRIPT_NAME
+readonly SCRIPT_VERSION="2.0.0"
 
 export \
   PATH \
   RESTIC_PASSWORD_FILE \
   RESTIC_REPOSITORY
 
-[[ $SYSLOG -eq 1 ]] && exec &> >(logger -s -t "$(basename "$0")")
+[[ $SYSLOG -eq 1 ]] && exec &> >(logger -s -t "$SCRIPT_NAME")
 
-function _restic_backup_files() {
+# Logging system
+readonly LOG_ERROR=1
+readonly LOG_WARN=2
+readonly LOG_INFO=3
+readonly LOG_DEBUG=4
+
+# Convert log level string to number
+case "${LOG_LEVEL^^}" in
+  ERROR) LOG_LEVEL_NUM=$LOG_ERROR ;;
+  WARN)  LOG_LEVEL_NUM=$LOG_WARN ;;
+  INFO)  LOG_LEVEL_NUM=$LOG_INFO ;;
+  DEBUG) LOG_LEVEL_NUM=$LOG_DEBUG ;;
+  *)     LOG_LEVEL_NUM=$LOG_INFO ;;
+esac
+
+#
+# Log a message with timestamp and level
+#
+# Arguments:
+#   $1 - Log level (ERROR, WARN, INFO, DEBUG)
+#   $2 - Message
+#
+log() {
+  local level="$1"
+  local message="$2"
+  local level_num
+  
+  case "${level^^}" in
+    ERROR) level_num=$LOG_ERROR ;;
+    WARN)  level_num=$LOG_WARN ;;
+    INFO)  level_num=$LOG_INFO ;;
+    DEBUG) level_num=$LOG_DEBUG ;;
+    *) level_num=$LOG_INFO ;;
+  esac
+  
+  if [[ $level_num -le $LOG_LEVEL_NUM ]]; then
+    printf "[%s] [%s] %s\n" "$(date '+%Y-%m-%d %H:%M:%S')" "${level^^}" "$message" >&2
+  fi
+}
+
+#
+# Show usage information
+#
+usage() {
+  cat <<EOF
+$SCRIPT_NAME v$SCRIPT_VERSION - Robust restic backup wrapper
+
+USAGE:
+  $SCRIPT_NAME [OPTIONS]
+
+OPTIONS:
+  --help, -h              Show this help message
+  --version, -v           Show version information
+  --dry-run               Run in dry-run mode (don't perform actual backup)
+  --skip-mysql            Skip MySQL backup
+  --skip-postgresql       Skip PostgreSQL backup
+  --skip-files            Skip file system backup
+  --log-level LEVEL       Set log level (ERROR, WARN, INFO, DEBUG)
+  --compression LEVEL     Set compression level (auto, none, zstd, quicklz)
+
+ENVIRONMENT VARIABLES:
+  RESTIC_REPOSITORY       Repository location (required)
+  RESTIC_PASSWORD_FILE    Password file path (required)
+  RESTIC_EXCLUDE_FILE     File patterns to exclude (default: /dev/null)
+  RESTIC_BACKUP_TARGET_DIRECTORY  Target directory to backup (default: /)
+  RESTIC_KEEP_LAST        Number of snapshots to keep (default: 180)
+  DEBUG                   Enable debug mode (default: 0)
+  DRY_RUN                 Enable dry-run mode (default: 0)
+  RETRY_COUNT             Number of retries for network operations (default: 3)
+  MIN_FREE_SPACE_MB       Minimum free space required in MB (default: 1024)
+
+EXAMPLES:
+  RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password $SCRIPT_NAME
+  RESTIC_REPOSITORY=gs:bucket/restic GOOGLE_PROJECT_ID=1234 $SCRIPT_NAME --dry-run
+  $SCRIPT_NAME --skip-mysql --log-level DEBUG
+
+EOF
+}
+
+#
+# Parse command line arguments
+#
+parse_args() {
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      --help|-h)
+        usage
+        exit 0
+        ;;
+      --version|-v)
+        echo "$SCRIPT_NAME v$SCRIPT_VERSION"
+        exit 0
+        ;;
+      --dry-run)
+        DRY_RUN=1
+        log "INFO" "Dry-run mode enabled"
+        shift
+        ;;
+      --skip-mysql)
+        SKIP_MYSQL=1
+        log "INFO" "MySQL backup will be skipped"
+        shift
+        ;;
+      --skip-postgresql)
+        SKIP_POSTGRESQL=1
+        log "INFO" "PostgreSQL backup will be skipped"
+        shift
+        ;;
+      --skip-files)
+        SKIP_FILES=1
+        log "INFO" "File system backup will be skipped"
+        shift
+        ;;
+      --log-level)
+        LOG_LEVEL="$2"
+        case "${LOG_LEVEL^^}" in
+          ERROR) LOG_LEVEL_NUM=$LOG_ERROR ;;
+          WARN)  LOG_LEVEL_NUM=$LOG_WARN ;;
+          INFO)  LOG_LEVEL_NUM=$LOG_INFO ;;
+          DEBUG) LOG_LEVEL_NUM=$LOG_DEBUG ;;
+          *)
+            log "ERROR" "Invalid log level: $LOG_LEVEL. Valid levels: ERROR, WARN, INFO, DEBUG"
+            exit 1
+            ;;
+        esac
+        log "INFO" "Log level set to ${LOG_LEVEL^^}"
+        shift 2
+        ;;
+      --compression)
+        COMPRESSION_LEVEL="$2"
+        case "$COMPRESSION_LEVEL" in
+          auto|none|zstd|quicklz)
+            log "INFO" "Compression level set to $COMPRESSION_LEVEL"
+            ;;
+          *)
+            log "ERROR" "Invalid compression level: $COMPRESSION_LEVEL. Valid levels: auto, none, zstd, quicklz"
+            exit 1
+            ;;
+        esac
+        shift 2
+        ;;
+      *)
+        log "ERROR" "Unknown option: $1"
+        usage
+        exit 1
+        ;;
+    esac
+  done
+}
+
+#
+# Check if a command exists
+#
+# Arguments:
+#   $1 - Command name
+# Returns:
+#   0 if command exists, 1 otherwise
+#
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+#
+# Check available disk space
+#
+# Arguments:
+#   $1 - Directory path
+#   $2 - Required space in MB
+# Returns:
+#   0 if sufficient space available, 1 otherwise
+#
+check_disk_space() {
+  local path="$1"
+  local required_mb="$2"
+  
+  if ! command_exists df; then
+    log "WARN" "df command not available, skipping disk space check"
+    return 0
+  fi
+  
+  local available_kb
+  available_kb=$(df -k "$path" | awk 'NR==2 {print $4}')
+  local available_mb=$((available_kb / 1024))
+  
+  if [[ $available_mb -lt $required_mb ]]; then
+    log "ERROR" "Insufficient disk space. Available: ${available_mb}MB, Required: ${required_mb}MB"
+    return 1
+  fi
+  
+  log "INFO" "Disk space check passed. Available: ${available_mb}MB"
+  return 0
+}
+
+#
+# Validate configuration and environment
+#
+validate_config() {
+  log "INFO" "Validating configuration..."
+  
+  # Check required environment variables
+  if [[ -z "$RESTIC_REPOSITORY" ]]; then
+    log "ERROR" "RESTIC_REPOSITORY environment variable is required"
+    return 1
+  fi
+  
+  if [[ -z "$RESTIC_PASSWORD_FILE" ]]; then
+    log "ERROR" "RESTIC_PASSWORD_FILE environment variable is required"
+    return 1
+  fi
+  
+  # Check if restic binary is available
+  if ! command_exists restic; then
+    log "ERROR" "restic binary not found in PATH"
+    return 1
+  fi
+  
+  # Check password file
+  if [[ ! -r "$RESTIC_PASSWORD_FILE" ]]; then
+    log "ERROR" "Password file is not readable: $RESTIC_PASSWORD_FILE"
+    return 1
+  fi
+  
+  # Check exclude file if not default
+  if [[ "$RESTIC_EXCLUDE_FILE" != "/dev/null" && ! -r "$RESTIC_EXCLUDE_FILE" ]]; then
+    log "ERROR" "Exclude file is not readable: $RESTIC_EXCLUDE_FILE"
+    return 1
+  fi
+  
+  # Check target directory exists
+  if [[ ! -d "$RESTIC_BACKUP_TARGET_DIRECTORY" ]]; then
+    log "ERROR" "Target directory does not exist: $RESTIC_BACKUP_TARGET_DIRECTORY"
+    return 1
+  fi
+  
+  # Check disk space
+  if ! check_disk_space "/" "$MIN_FREE_SPACE_MB"; then
+    return 1
+  fi
+  
+  log "INFO" "Configuration validation passed"
+  return 0
+}
+
+#
+# Execute command with retry logic
+#
+# Arguments:
+#   $1 - Description of the operation
+#   $@ - Command to execute
+# Returns:
+#   Exit code of the command
+#
+retry_command() {
+  local description="$1"
+  shift
+  local attempt=1
+  local max_attempts=$RETRY_COUNT
+  
+  while [[ $attempt -le $max_attempts ]]; do
+    log "INFO" "Attempting $description (attempt $attempt/$max_attempts)"
+    
+    if [[ $DRY_RUN -eq 1 ]]; then
+      log "INFO" "DRY-RUN: Would execute: $*"
+      return 0
+    fi
+    
+    if "$@"; then
+      log "INFO" "$description completed successfully"
+      return 0
+    else
+      local exit_code=$?
+      if [[ $attempt -eq $max_attempts ]]; then
+        log "ERROR" "$description failed after $max_attempts attempts"
+        return $exit_code
+      else
+        log "WARN" "$description failed (attempt $attempt/$max_attempts), retrying in 5 seconds..."
+        sleep 5
+      fi
+    fi
+    
+    ((attempt++))
+  done
+}
+
+#
+# Cleanup function
+#
+cleanup() {
+  local exit_code=$?
+  log "INFO" "Performing cleanup..."
+  
+  # Unlock restic if it's locked
+  if [[ $exit_code -ne 0 ]]; then
+    log "WARN" "Script exited with error, attempting to unlock restic repository"
+    if [[ $DRY_RUN -eq 0 ]]; then
+      restic unlock 2>/dev/null || true
+    fi
+  fi
+  
+  exit $exit_code
+}
+
+#
+# Backup files using tar and restic
+#
+_restic_backup_files() {
+  if [[ $SKIP_FILES -eq 1 ]]; then
+    log "INFO" "Skipping file system backup (--skip-files)"
+    return 0
+  fi
+  
   if [[ ! -r $RESTIC_EXCLUDE_FILE ]]; then
-    echo >&2 "--> Exclude file list is not readable: ${RESTIC_EXCLUDE_FILE}"
-    exit 1
+    log "ERROR" "Exclude file list is not readable: $RESTIC_EXCLUDE_FILE"
+    return 1
   fi
 
-  echo "--> Backup the following target: ${RESTIC_BACKUP_TARGET_DIRECTORY}"
+  log "INFO" "Starting file system backup of: $RESTIC_BACKUP_TARGET_DIRECTORY"
 
-  # temporarly disable pipefail, see below
+  if [[ $DRY_RUN -eq 1 ]]; then
+    log "INFO" "DRY-RUN: Would backup files from $RESTIC_BACKUP_TARGET_DIRECTORY"
+    return 0
+  fi
+
+  # temporarily disable pipefail, see below
   set +o pipefail
+
+  # Determine compression program based on configuration
+  local compress_prog
+  case "$COMPRESSION_LEVEL" in
+    none) compress_prog="cat" ;;
+    zstd) compress_prog="zstd" ;;
+    quicklz) compress_prog="lz4" ;;
+    auto|*) 
+      if command_exists zstd; then
+        compress_prog="zstd"
+      elif command_exists lz4; then
+        compress_prog="lz4"
+      else
+        compress_prog="cat"
+      fi
+      ;;
+  esac
+
+  log "INFO" "Using compression: $compress_prog"
 
   # don't forget to use `xattrs` flag when restoring
   tar \
@@ -52,45 +422,74 @@ function _restic_backup_files() {
     --xattrs \
     --warning=no-file-changed \
     --warning=no-file-removed \
-    --use-compress-program='zstd' \
+    --use-compress-program="$compress_prog" \
     -cpf - \
-    / |
+    "$RESTIC_BACKUP_TARGET_DIRECTORY" |
     restic \
       backup \
       --stdin \
-      --stdin-filename='/system.tar.zst' \
-      --tag='zstd' \
+      --stdin-filename="/system.tar.$(echo "$compress_prog" | sed 's/.*\///').zst" \
+      --tag="$compress_prog" \
       --exclude-file="$RESTIC_EXCLUDE_FILE"
 
   # Ignore exit code == 1, "Some files differ" warning, happen often when backup
   # the / of a busy (or not) system.
   # See https://www.gnu.org/software/tar/manual/html_section/tar_19.html
   # shellcheck disable=SC2181
-  exit_code=$?
+  local exit_code=$?
 
   set -o pipefail
 
   if [[ $exit_code -eq 0 ]] || [[ $exit_code -eq 1 ]]; then
+    log "INFO" "File system backup completed successfully"
     return 0
   else
-    exit "$exit_code"
+    log "ERROR" "File system backup failed with exit code: $exit_code"
+    return $exit_code
   fi
 }
 
-function _restic_backup_mysql_xtrabackup() {
-  echo '--> Backup all mysql databases'
+#
+# Backup MySQL databases using xtrabackup
+#
+_restic_backup_mysql_xtrabackup() {
+  if [[ $SKIP_MYSQL -eq 1 ]]; then
+    log "INFO" "Skipping MySQL xtrabackup (--skip-mysql)"
+    return 0
+  fi
+  
+  if ! command_exists xtrabackup || ! command_exists xbstream; then
+    log "DEBUG" "xtrabackup or xbstream not available, skipping MySQL xtrabackup"
+    return 0
+  fi
+  
+  log "INFO" "Starting MySQL backup with xtrabackup"
 
+  if [[ $DRY_RUN -eq 1 ]]; then
+    log "INFO" "DRY-RUN: Would backup MySQL databases with xtrabackup"
+    return 0
+  fi
+
+  local mysql_default_files
   if [[ -r /etc/mysql/debian.cnf ]]; then
-    MYSQL_DEFAULT_FILES='/etc/mysql/debian.cnf'
+    mysql_default_files='/etc/mysql/debian.cnf'
   else
-    MYSQL_DEFAULT_FILES="/root/.my.cnf"
+    mysql_default_files="/root/.my.cnf"
   fi
 
-  if xtrabackup --version 2>&1 | grep -q 'xtrabackup version 8.0'; then
-    COMPRESS='zstd'
-  else
-    COMPRESS='quicklz'
+  if [[ ! -r "$mysql_default_files" ]]; then
+    log "ERROR" "MySQL configuration file not readable: $mysql_default_files"
+    return 1
   fi
+
+  local compress
+  if xtrabackup --version 2>&1 | grep -q 'xtrabackup version 8.0'; then
+    compress='zstd'
+  else
+    compress='quicklz'
+  fi
+
+  log "INFO" "Using MySQL compression: $compress"
 
   # How to restore a full backup:
   #
@@ -112,10 +511,11 @@ function _restic_backup_mysql_xtrabackup() {
   #   - mv /var/lib/mysql/my_db/person_tags.* /var/tmp/
   #   - cp -v /var/tmp/backup/my_db/person_tags.* /var/lib/mysql/my_db/
   #   - mysql> ALTER TABLE my_db.person_tags IMPORT TABLESPACE
-  xtrabackup \
-    --defaults-file="$MYSQL_DEFAULT_FILES" \
+  
+  if ! xtrabackup \
+    --defaults-file="$mysql_default_files" \
     --backup \
-    --compress="$COMPRESS" \
+    --compress="$compress" \
     --compress-threads="$((NPROC / 2))" \
     --galera-info \
     --parallel="$((NPROC / 2))" \
@@ -125,21 +525,51 @@ function _restic_backup_mysql_xtrabackup() {
       backup \
       --stdin \
       --stdin-filename='/xtrabackup.xbstream' \
-      --tag='zstd' \
-      --exclude-file="$RESTIC_EXCLUDE_FILE"
+      --tag="$compress" \
+      --exclude-file="$RESTIC_EXCLUDE_FILE"; then
+    log "ERROR" "MySQL xtrabackup failed"
+    return 1
+  fi
+  
+  log "INFO" "MySQL xtrabackup completed successfully"
+  return 0
 }
 
-function _restic_backup_mysql() {
-  echo '--> Backup all mysql databases'
+#
+# Backup MySQL databases using mysqldump
+#
+_restic_backup_mysql() {
+  if [[ $SKIP_MYSQL -eq 1 ]]; then
+    log "INFO" "Skipping MySQL backup (--skip-mysql)"
+    return 0
+  fi
+  
+  if ! command_exists mysqld; then
+    log "DEBUG" "mysqld not available, skipping MySQL backup"
+    return 0
+  fi
+  
+  log "INFO" "Starting MySQL backup with mysqldump"
 
-  if [[ -r /etc/mysql/debian.cnf ]]; then
-    MYSQL_DEFAULT_FILES='/etc/mysql/debian.cnf'
-  else
-    MYSQL_DEFAULT_FILES="/root/.my.cnf"
+  if [[ $DRY_RUN -eq 1 ]]; then
+    log "INFO" "DRY-RUN: Would backup MySQL databases with mysqldump"
+    return 0
   fi
 
-  mysqldump \
-    --defaults-file="$MYSQL_DEFAULT_FILES" \
+  local mysql_default_files
+  if [[ -r /etc/mysql/debian.cnf ]]; then
+    mysql_default_files='/etc/mysql/debian.cnf'
+  else
+    mysql_default_files="/root/.my.cnf"
+  fi
+
+  if [[ ! -r "$mysql_default_files" ]]; then
+    log "ERROR" "MySQL configuration file not readable: $mysql_default_files"
+    return 1
+  fi
+
+  if ! mysqldump \
+    --defaults-file="$mysql_default_files" \
     --all-databases \
     --events \
     --quick \
@@ -155,11 +585,37 @@ function _restic_backup_mysql() {
       --stdin \
       --stdin-filename='/mysql.sql.zst' \
       --tag='zstd' \
-      --exclude-file="$RESTIC_EXCLUDE_FILE"
+      --exclude-file="$RESTIC_EXCLUDE_FILE"; then
+    log "ERROR" "MySQL mysqldump backup failed"
+    return 1
+  fi
+  
+  log "INFO" "MySQL mysqldump backup completed successfully"
+  return 0
 }
 
-function _restic_backup_postgresql() {
-  su - postgres -c 'pg_dumpall' |
+#
+# Backup PostgreSQL databases
+#
+_restic_backup_postgresql() {
+  if [[ $SKIP_POSTGRESQL -eq 1 ]]; then
+    log "INFO" "Skipping PostgreSQL backup (--skip-postgresql)"
+    return 0
+  fi
+  
+  if ! command_exists pg_dumpall; then
+    log "DEBUG" "pg_dumpall not available, skipping PostgreSQL backup"
+    return 0
+  fi
+  
+  log "INFO" "Starting PostgreSQL backup"
+
+  if [[ $DRY_RUN -eq 1 ]]; then
+    log "INFO" "DRY-RUN: Would backup PostgreSQL databases"
+    return 0
+  fi
+
+  if ! su - postgres -c 'pg_dumpall' |
     zstd \
       --quiet \
       --adapt \
@@ -169,92 +625,238 @@ function _restic_backup_postgresql() {
       --stdin \
       --stdin-filename='/postgresql.sql.zst' \
       --tag='zstd' \
-      --exclude-file="$RESTIC_EXCLUDE_FILE"
+      --exclude-file="$RESTIC_EXCLUDE_FILE"; then
+    log "ERROR" "PostgreSQL backup failed"
+    return 1
+  fi
+  
+  log "INFO" "PostgreSQL backup completed successfully"
+  return 0
 }
 
-function _restic_check() {
+#
+# Check repository integrity
+#
+_restic_check() {
+  log "INFO" "Starting repository integrity check"
+  
+  if [[ $DRY_RUN -eq 1 ]]; then
+    log "INFO" "DRY-RUN: Would perform repository integrity check"
+    return 0
+  fi
+  
   # Tell restic to also verify the integrity of the pack files in the repository
   # each sunday.
   if [[ $(date +%w) == 7 ]]; then
-    restic check --with-cache --read-data-subset=2%
+    log "INFO" "Sunday detected, performing thorough integrity check with data verification"
+    if ! retry_command "repository integrity check with data" restic check --with-cache --read-data-subset=2%; then
+      log "ERROR" "Repository integrity check with data verification failed"
+      return 1
+    fi
+  else
+    log "INFO" "Performing standard integrity check"
+    if ! retry_command "repository integrity check" restic check --with-cache; then
+      log "ERROR" "Repository integrity check failed"
+      return 1
+    fi
   fi
+  
+  log "INFO" "Repository integrity check completed successfully"
+  return 0
 }
 
-function _restic_forget() {
-  echo "--> restic forget keep last ${RESTIC_KEEP_LAST}"
+#
+# Clean up old snapshots
+#
+_restic_forget() {
+  log "INFO" "Starting cleanup - keeping last $RESTIC_KEEP_LAST snapshots"
 
-  restic forget --keep-last "$RESTIC_KEEP_LAST" --cleanup-cache
+  if [[ $DRY_RUN -eq 1 ]]; then
+    log "INFO" "DRY-RUN: Would forget old snapshots and cleanup cache"
+    return 0
+  fi
 
-  restic prune --max-unused '2%'
+  if ! retry_command "snapshot cleanup" restic forget --keep-last "$RESTIC_KEEP_LAST" --cleanup-cache; then
+    log "ERROR" "Snapshot cleanup failed"
+    return 1
+  fi
+
+  if ! retry_command "repository prune" restic prune --max-unused '2%'; then
+    log "ERROR" "Repository prune failed"
+    return 1
+  fi
+
+  log "INFO" "Cleanup completed successfully"
+  return 0
 }
 
-function _restic_init() {
+#
+# Initialize restic repository if needed
+#
+_restic_init() {
+  log "INFO" "Initializing restic repository"
+  
   if [[ ! -r $RESTIC_PASSWORD_FILE ]]; then
-    echo >&2 "--> Password file is not readable: ${RESTIC_PASSWORD_FILE}"
-    exit 1
+    log "ERROR" "Password file is not readable: $RESTIC_PASSWORD_FILE"
+    return 1
   fi
 
-  restic version
-
-  if ! restic snapshots; then
-    echo "--> init restic repository to ${RESTIC_REPOSITORY}"
-    restic init
+  log "INFO" "Restic version information:"
+  if ! restic version; then
+    log "ERROR" "Failed to get restic version"
+    return 1
   fi
+
+  if [[ $DRY_RUN -eq 1 ]]; then
+    log "INFO" "DRY-RUN: Would check/initialize repository at $RESTIC_REPOSITORY"
+    return 0
+  fi
+
+  if ! retry_command "repository snapshots check" restic snapshots; then
+    log "INFO" "Repository not initialized, creating new repository at $RESTIC_REPOSITORY"
+    if ! retry_command "repository initialization" restic init; then
+      log "ERROR" "Failed to initialize restic repository"
+      return 1
+    fi
+    log "INFO" "Repository initialized successfully"
+  else
+    log "INFO" "Repository already exists and is accessible"
+  fi
+  
+  return 0
 }
 
-function _restic_stats() {
-  if [[ -n $NODE_EXPORTER_TEXTFILE_DIRECTORY ]] && command -v jq >/dev/null; then
-    stats=$(restic stats --json)
-    cat <<EOF >"${NODE_EXPORTER_TEXTFILE_DIRECTORY}/yolo-backup.prom.$$"
+#
+# Generate backup statistics
+#
+_restic_stats() {
+  log "INFO" "Generating backup statistics"
+  
+  if [[ $DRY_RUN -eq 1 ]]; then
+    log "INFO" "DRY-RUN: Would generate backup statistics"
+    return 0
+  fi
+  
+  if [[ -n $NODE_EXPORTER_TEXTFILE_DIRECTORY ]] && command_exists jq; then
+    log "INFO" "Generating Prometheus metrics"
+    local stats
+    if ! stats=$(restic stats --json); then
+      log "ERROR" "Failed to get repository statistics"
+      return 1
+    fi
+    
+    local temp_file="${NODE_EXPORTER_TEXTFILE_DIRECTORY}/yolo-backup.prom.$$"
+    cat <<EOF >"$temp_file"
 # HELP backup_total_size_bytes Disk space used by backup
 # TYPE backup_total_size_bytes gauge
 backup_total_size_bytes $(echo "$stats" | jq -r '.total_size')
 # HELP backup_total_file_count Number of files in all backups
 # TYPE backup_total_file_count gauge
 backup_total_file_count $(echo "$stats" | jq -r '.total_file_count')
+# HELP backup_last_run_timestamp_seconds Timestamp of last backup run
+# TYPE backup_last_run_timestamp_seconds gauge
+backup_last_run_timestamp_seconds $(date +%s)
 EOF
 
-    mv "${NODE_EXPORTER_TEXTFILE_DIRECTORY}/yolo-backup.prom.$$" \
-      "${NODE_EXPORTER_TEXTFILE_DIRECTORY}/yolo-backup.prom"
+    if mv "$temp_file" "${NODE_EXPORTER_TEXTFILE_DIRECTORY}/yolo-backup.prom"; then
+      log "INFO" "Prometheus metrics written successfully"
+    else
+      log "ERROR" "Failed to write Prometheus metrics"
+      return 1
+    fi
   else
-    restic stats
+    log "INFO" "Generating human-readable statistics"
+    if ! restic stats; then
+      log "ERROR" "Failed to get repository statistics"
+      return 1
+    fi
   fi
+  
+  return 0
 }
 
-function _unlock() {
-  echo '--> Unlock restic'
-  restic unlock
-  exit 2
-}
-
-function main() {
+#
+# Main function
+#
+main() {
+  log "INFO" "Starting $SCRIPT_NAME v$SCRIPT_VERSION"
+  
+  # Parse command line arguments
+  parse_args "$@"
+  
+  # Validate configuration
+  if ! validate_config; then
+    log "ERROR" "Configuration validation failed"
+    exit 1
+  fi
+  
+  # Set up signal traps for cleanup
+  trap cleanup EXIT INT TERM
+  
+  # Change to root directory for backup operations
   cd /
-
-  _restic_init
-
-  trap _unlock ERR
-
-  if command -v xtrabackup >/dev/null && command -v xbstream >/dev/null; then
-    _restic_backup_mysql_xtrabackup
+  
+  # Initialize repository
+  if ! _restic_init; then
+    log "ERROR" "Repository initialization failed"
+    exit 1
   fi
 
-  if command -v mysqld >/dev/null; then
-    _restic_backup_mysql
+  # Perform backups based on available services and configuration
+  local backup_failed=0
+  
+  if command_exists xtrabackup && command_exists xbstream; then
+    if ! _restic_backup_mysql_xtrabackup; then
+      log "ERROR" "MySQL xtrabackup failed"
+      backup_failed=1
+    fi
   fi
 
-  if command -v pg_dumpall >/dev/null; then
-    _restic_backup_postgresql
+  if command_exists mysqld; then
+    if ! _restic_backup_mysql; then
+      log "ERROR" "MySQL backup failed"
+      backup_failed=1
+    fi
   fi
 
-  _restic_backup_files
+  if command_exists pg_dumpall; then
+    if ! _restic_backup_postgresql; then
+      log "ERROR" "PostgreSQL backup failed"
+      backup_failed=1
+    fi
+  fi
 
-  _restic_forget
+  if ! _restic_backup_files; then
+    log "ERROR" "File system backup failed"
+    backup_failed=1
+  fi
 
-  _restic_check
+  # Exit early if any backup failed
+  if [[ $backup_failed -eq 1 ]]; then
+    log "ERROR" "One or more backup operations failed"
+    exit 1
+  fi
 
-  _restic_stats
+  # Cleanup old snapshots
+  if ! _restic_forget; then
+    log "ERROR" "Snapshot cleanup failed"
+    exit 1
+  fi
 
-  echo '--> Backup Finished!'
+  # Check repository integrity
+  if ! _restic_check; then
+    log "ERROR" "Repository check failed"
+    exit 1
+  fi
+
+  # Generate statistics
+  if ! _restic_stats; then
+    log "ERROR" "Statistics generation failed"
+    exit 1
+  fi
+
+  log "INFO" "Backup completed successfully!"
 }
 
-main
+# Run main function with all arguments
+main "$@"
