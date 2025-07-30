@@ -365,9 +365,6 @@ if [[ $OS == 'Darwin' ]]; then
   # Tor new identity
   alias tornewidentity='docker kill --signal=HUP tor'
 
-  # Secure ssh-agent usage
-  alias ssh-add='ssh-add -t 8h'
-
   # Lock/Unlock directory or file
   function lock() {
     find "$@" -type d | gxargs -d '\n' -n 1 chmod 0500
