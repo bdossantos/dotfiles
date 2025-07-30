@@ -16,13 +16,13 @@
 # SOURCE1_USER=replication
 # SOURCE1_PASSWORD=secret123
 # SOURCE1_DATABASES="database1,database2"
-# 
+#
 # # Source 2
 # SOURCE2_HOST=db2.example.com
 # SOURCE2_USER=replication
 # SOURCE2_PASSWORD=secret456
 # SOURCE2_DATABASES="database3,database4"
-# 
+#
 # # Replica settings (optional, can be set as environment variables)
 # REPLICA_USER=root
 # REPLICA_PASSWORD=replica_secret
@@ -57,44 +57,44 @@ readonly TMP_DIR="${TMP_DIRECTORY}/${SCRIPT_NAME}.$$"
 
 # Check if MySQL version is 8.0 or higher
 is_mysql_8_or_higher() {
-    local version=$1
-    # Convert version to integer for comparison (e.g., "8.0" -> 80, "5.7" -> 57)
-    local major minor
-    major=${version%%.*}
-    minor=${version#*.}
-    minor=${minor%%.*}
-    local version_int=$((major * 10 + minor))
-    
-    # MySQL 8.0 = 80
-    [[ $version_int -ge 80 ]]
+  local version=$1
+  # Convert version to integer for comparison (e.g., "8.0" -> 80, "5.7" -> 57)
+  local major minor
+  major=${version%%.*}
+  minor=${version#*.}
+  minor=${minor%%.*}
+  local version_int=$((major * 10 + minor))
+
+  # MySQL 8.0 = 80
+  [[ $version_int -ge 80 ]]
 }
 
 # Logging functions
 log_info() {
-    echo "[INFO] $(date '+%Y-%m-%d %H:%M:%S') - $*" >&2
+  echo "[INFO] $(date '+%Y-%m-%d %H:%M:%S') - $*" >&2
 }
 
 log_error() {
-    echo "[ERROR] $(date '+%Y-%m-%d %H:%M:%S') - $*" >&2
+  echo "[ERROR] $(date '+%Y-%m-%d %H:%M:%S') - $*" >&2
 }
 
 log_warn() {
-    echo "[WARN] $(date '+%Y-%m-%d %H:%M:%S') - $*" >&2
+  echo "[WARN] $(date '+%Y-%m-%d %H:%M:%S') - $*" >&2
 }
 
 # Cleanup function
 cleanup() {
-    if [[ -d "${TMP_DIR}" ]]; then
-        log_info "Cleaning up temporary directory: ${TMP_DIR}"
-        rm -rf "${TMP_DIR}"
-    fi
+  if [[ -d ${TMP_DIR} ]]; then
+    log_info "Cleaning up temporary directory: ${TMP_DIR}"
+    rm -rf "${TMP_DIR}"
+  fi
 }
 
 # Error handler
 error_exit() {
-    log_error "$1"
-    cleanup
-    exit 1
+  log_error "$1"
+  cleanup
+  exit 1
 }
 
 # Set up signal handlers
@@ -103,24 +103,24 @@ trap 'error_exit "Script interrupted"' INT TERM
 
 # Check dependencies
 check_dependencies() {
-    local missing_deps=()
-    
-    if ! command -v mysql &>/dev/null; then
-        missing_deps+=("mysql")
-    fi
-    
-    if ! command -v mysqldump &>/dev/null; then
-        missing_deps+=("mysqldump")
-    fi
-    
-    if [[ ${#missing_deps[@]} -gt 0 ]]; then
-        error_exit "Missing required dependencies: ${missing_deps[*]}"
-    fi
+  local missing_deps=()
+
+  if ! command -v mysql &>/dev/null; then
+    missing_deps+=("mysql")
+  fi
+
+  if ! command -v mysqldump &>/dev/null; then
+    missing_deps+=("mysqldump")
+  fi
+
+  if [[ ${#missing_deps[@]} -gt 0 ]]; then
+    error_exit "Missing required dependencies: ${missing_deps[*]}"
+  fi
 }
 
 # Usage information
 usage() {
-    cat >&2 <<EOF
+  cat >&2 <<EOF
 Usage: $SCRIPT_NAME <config_file>
 
 Configure MySQL multi-source replication with GTID.
@@ -141,7 +141,7 @@ Example config file:
   SOURCE1_USER=replication
   SOURCE1_PASSWORD=secret123
   SOURCE1_DATABASES="database1,database2"
-  
+
   # Source 2
   SOURCE2_HOST=db2.example.com
   SOURCE2_USER=replication
@@ -153,319 +153,319 @@ EOF
 
 # Parse configuration file and extract source definitions
 parse_config() {
-    local config_file=$1
-    
-    if [[ ! -f "$config_file" ]]; then
-        error_exit "Configuration file not found: $config_file"
+  local config_file=$1
+
+  if [[ ! -f $config_file ]]; then
+    error_exit "Configuration file not found: $config_file"
+  fi
+
+  if [[ ! -r $config_file ]]; then
+    error_exit "Configuration file not readable: $config_file"
+  fi
+
+  log_info "Loading configuration from: $config_file"
+
+  # Source the configuration file
+  # shellcheck disable=SC1090
+  source "$config_file"
+
+  # Find all SOURCE*_HOST variables
+  local sources=()
+  while IFS= read -r var; do
+    if [[ $var =~ ^SOURCE[0-9]+_HOST= ]]; then
+      local source_num
+      source_num=${var##SOURCE}
+      source_num=${source_num%%_HOST=*}
+      sources+=("$source_num")
     fi
-    
-    if [[ ! -r "$config_file" ]]; then
-        error_exit "Configuration file not readable: $config_file"
-    fi
-    
-    log_info "Loading configuration from: $config_file"
-    
-    # Source the configuration file
-    # shellcheck disable=SC1090
-    source "$config_file"
-    
-    # Find all SOURCE*_HOST variables
-    local sources=()
-    while IFS= read -r var; do
-        if [[ $var =~ ^SOURCE[0-9]+_HOST= ]]; then
-            local source_num
-            source_num=${var##SOURCE}
-            source_num=${source_num%%_HOST=*}
-            sources+=("$source_num")
-        fi
-    done < <(set | grep "^SOURCE[0-9]\+_HOST=")
-    
-    if [[ ${#sources[@]} -eq 0 ]]; then
-        error_exit "No sources found in configuration file. Expected SOURCE*_HOST variables."
-    fi
-    
-    # Sort sources numerically
-    mapfile -t sources < <(printf '%s\n' "${sources[@]}" | sort -n)
-    
-    log_info "Found ${#sources[@]} source(s): ${sources[*]}"
-    echo "${sources[@]}"
+  done < <(set | grep "^SOURCE[0-9]\+_HOST=")
+
+  if [[ ${#sources[@]} -eq 0 ]]; then
+    error_exit "No sources found in configuration file. Expected SOURCE*_HOST variables."
+  fi
+
+  # Sort sources numerically
+  mapfile -t sources < <(printf '%s\n' "${sources[@]}" | sort -n)
+
+  log_info "Found ${#sources[@]} source(s): ${sources[*]}"
+  echo "${sources[@]}"
 }
 
 # Validate source configuration
 validate_source() {
-    local source_num=$1
-    local host_var="SOURCE${source_num}_HOST"
-    local user_var="SOURCE${source_num}_USER"
-    local password_var="SOURCE${source_num}_PASSWORD"
-    local databases_var="SOURCE${source_num}_DATABASES"
-    
-    if [[ -z "${!host_var:-}" ]]; then
-        error_exit "Missing required variable: $host_var"
-    fi
-    
-    if [[ -z "${!user_var:-}" ]]; then
-        error_exit "Missing required variable: $user_var"
-    fi
-    
-    if [[ -z "${!databases_var:-}" ]]; then
-        error_exit "Missing required variable: $databases_var"
-    fi
-    
-    log_info "Source $source_num validation passed"
+  local source_num=$1
+  local host_var="SOURCE${source_num}_HOST"
+  local user_var="SOURCE${source_num}_USER"
+  local password_var="SOURCE${source_num}_PASSWORD"
+  local databases_var="SOURCE${source_num}_DATABASES"
+
+  if [[ -z ${!host_var:-} ]]; then
+    error_exit "Missing required variable: $host_var"
+  fi
+
+  if [[ -z ${!user_var:-} ]]; then
+    error_exit "Missing required variable: $user_var"
+  fi
+
+  if [[ -z ${!databases_var:-} ]]; then
+    error_exit "Missing required variable: $databases_var"
+  fi
+
+  log_info "Source $source_num validation passed"
 }
 
 # Test MySQL connection
 test_connection() {
-    local host=$1
-    local user=$2
-    local password=$3
-    local connection_name=$4
-    
-    log_info "Testing connection to $connection_name ($host)"
-    
-    local mysql_cmd="mysql -h$host -u$user"
-    if [[ -n "$password" ]]; then
-        mysql_cmd="$mysql_cmd -p$password"
-    fi
-    
-    if ! $mysql_cmd -e "SELECT 1;" &>/dev/null; then
-        error_exit "Failed to connect to $connection_name ($host)"
-    fi
-    
-    log_info "Connection to $connection_name successful"
+  local host=$1
+  local user=$2
+  local password=$3
+  local connection_name=$4
+
+  log_info "Testing connection to $connection_name ($host)"
+
+  local mysql_cmd="mysql -h$host -u$user"
+  if [[ -n $password ]]; then
+    mysql_cmd="$mysql_cmd -p$password"
+  fi
+
+  if ! $mysql_cmd -e "SELECT 1;" &>/dev/null; then
+    error_exit "Failed to connect to $connection_name ($host)"
+  fi
+
+  log_info "Connection to $connection_name successful"
 }
 
 # Dump databases from source
 dump_source_databases() {
-    local source_num=$1
-    local host_var="SOURCE${source_num}_HOST"
-    local user_var="SOURCE${source_num}_USER"
-    local password_var="SOURCE${source_num}_PASSWORD"
-    local databases_var="SOURCE${source_num}_DATABASES"
-    
-    local host=${!host_var}
-    local user=${!user_var}
-    local password=${!password_var:-}
-    local databases=${!databases_var}
-    
-    # Convert comma-separated databases to array
-    IFS=',' read -ra db_array <<< "$databases"
-    
-    log_info "Dumping databases from source $source_num ($host): $databases"
-    
-    local dump_file="${TMP_DIR}/source${source_num}_dump.sql"
-    local mysqldump_cmd="mysqldump -h$host -u$user"
-    
-    if [[ -n "$password" ]]; then
-        mysqldump_cmd="$mysqldump_cmd -p$password"
-    fi
-    
-    # Add GTID and replication options
-    mysqldump_cmd="$mysqldump_cmd --single-transaction --routines --triggers --events"
-    mysqldump_cmd="$mysqldump_cmd --set-gtid-purged=OFF --master-data=2"
-    
-    # Dump all specified databases in one file
-    if ! $mysqldump_cmd --databases "${db_array[@]}" > "$dump_file"; then
-        error_exit "Failed to dump databases from source $source_num"
-    fi
-    
-    log_info "Successfully dumped databases to: $dump_file"
-    echo "$dump_file"
+  local source_num=$1
+  local host_var="SOURCE${source_num}_HOST"
+  local user_var="SOURCE${source_num}_USER"
+  local password_var="SOURCE${source_num}_PASSWORD"
+  local databases_var="SOURCE${source_num}_DATABASES"
+
+  local host=${!host_var}
+  local user=${!user_var}
+  local password=${!password_var:-}
+  local databases=${!databases_var}
+
+  # Convert comma-separated databases to array
+  IFS=',' read -ra db_array <<<"$databases"
+
+  log_info "Dumping databases from source $source_num ($host): $databases"
+
+  local dump_file="${TMP_DIR}/source${source_num}_dump.sql"
+  local mysqldump_cmd="mysqldump -h$host -u$user"
+
+  if [[ -n $password ]]; then
+    mysqldump_cmd="$mysqldump_cmd -p$password"
+  fi
+
+  # Add GTID and replication options
+  mysqldump_cmd="$mysqldump_cmd --single-transaction --routines --triggers --events"
+  mysqldump_cmd="$mysqldump_cmd --set-gtid-purged=OFF --master-data=2"
+
+  # Dump all specified databases in one file
+  if ! $mysqldump_cmd --databases "${db_array[@]}" >"$dump_file"; then
+    error_exit "Failed to dump databases from source $source_num"
+  fi
+
+  log_info "Successfully dumped databases to: $dump_file"
+  echo "$dump_file"
 }
 
 # Restore databases to replica
 restore_to_replica() {
-    local dump_file=$1
-    local source_num=$2
-    
-    log_info "Restoring databases from source $source_num to replica"
-    
-    local mysql_cmd="mysql -h$REPLICA_HOST -u$REPLICA_USER"
-    if [[ -n "$REPLICA_PASSWORD" ]]; then
-        mysql_cmd="$mysql_cmd -p$REPLICA_PASSWORD"
-    fi
-    
-    if ! $mysql_cmd < "$dump_file"; then
-        error_exit "Failed to restore databases from source $source_num to replica"
-    fi
-    
-    log_info "Successfully restored databases from source $source_num"
+  local dump_file=$1
+  local source_num=$2
+
+  log_info "Restoring databases from source $source_num to replica"
+
+  local mysql_cmd="mysql -h$REPLICA_HOST -u$REPLICA_USER"
+  if [[ -n $REPLICA_PASSWORD ]]; then
+    mysql_cmd="$mysql_cmd -p$REPLICA_PASSWORD"
+  fi
+
+  if ! $mysql_cmd <"$dump_file"; then
+    error_exit "Failed to restore databases from source $source_num to replica"
+  fi
+
+  log_info "Successfully restored databases from source $source_num"
 }
 
 # Set up replication channel
 setup_replication_channel() {
-    local source_num=$1
-    local host_var="SOURCE${source_num}_HOST"
-    local user_var="SOURCE${source_num}_USER"
-    local password_var="SOURCE${source_num}_PASSWORD"
-    
-    local host=${!host_var}
-    local user=${!user_var}
-    local password=${!password_var:-}
-    local channel_name="source${source_num}"
-    
-    log_info "Setting up replication channel: $channel_name for source $source_num ($host)"
-    
-    local mysql_cmd="mysql -h$REPLICA_HOST -u$REPLICA_USER"
-    if [[ -n "$REPLICA_PASSWORD" ]]; then
-        mysql_cmd="$mysql_cmd -p$REPLICA_PASSWORD"
-    fi
-    
-    local setup_sql
-    if is_mysql_8_or_higher "$MYSQL_VERSION"; then
-        # MySQL 8.0+ syntax
-        setup_sql="STOP REPLICA FOR CHANNEL '$channel_name';
+  local source_num=$1
+  local host_var="SOURCE${source_num}_HOST"
+  local user_var="SOURCE${source_num}_USER"
+  local password_var="SOURCE${source_num}_PASSWORD"
+
+  local host=${!host_var}
+  local user=${!user_var}
+  local password=${!password_var:-}
+  local channel_name="source${source_num}"
+
+  log_info "Setting up replication channel: $channel_name for source $source_num ($host)"
+
+  local mysql_cmd="mysql -h$REPLICA_HOST -u$REPLICA_USER"
+  if [[ -n $REPLICA_PASSWORD ]]; then
+    mysql_cmd="$mysql_cmd -p$REPLICA_PASSWORD"
+  fi
+
+  local setup_sql
+  if is_mysql_8_or_higher "$MYSQL_VERSION"; then
+    # MySQL 8.0+ syntax
+    setup_sql="STOP REPLICA FOR CHANNEL '$channel_name';
 CHANGE REPLICATION SOURCE TO
   SOURCE_HOST='$host',
   SOURCE_USER='$user',"
-        
-        if [[ -n "$password" ]]; then
-            setup_sql="$setup_sql
+
+    if [[ -n $password ]]; then
+      setup_sql="$setup_sql
   SOURCE_PASSWORD='$password',"
-        fi
-        
-        setup_sql="$setup_sql
+    fi
+
+    setup_sql="$setup_sql
   SOURCE_AUTO_POSITION=1
   FOR CHANNEL '$channel_name';"
-    else
-        # MySQL 5.7 syntax
-        setup_sql="STOP SLAVE FOR CHANNEL '$channel_name';
+  else
+    # MySQL 5.7 syntax
+    setup_sql="STOP SLAVE FOR CHANNEL '$channel_name';
 CHANGE MASTER TO
   MASTER_HOST='$host',
   MASTER_USER='$user',"
-        
-        if [[ -n "$password" ]]; then
-            setup_sql="$setup_sql
+
+    if [[ -n $password ]]; then
+      setup_sql="$setup_sql
   MASTER_PASSWORD='$password',"
-        fi
-        
-        setup_sql="$setup_sql
+    fi
+
+    setup_sql="$setup_sql
   MASTER_AUTO_POSITION=1
   FOR CHANNEL '$channel_name';"
-    fi
-    
-    if ! echo "$setup_sql" | $mysql_cmd; then
-        error_exit "Failed to configure replication channel: $channel_name"
-    fi
-    
-    log_info "Successfully configured replication channel: $channel_name"
+  fi
+
+  if ! echo "$setup_sql" | $mysql_cmd; then
+    error_exit "Failed to configure replication channel: $channel_name"
+  fi
+
+  log_info "Successfully configured replication channel: $channel_name"
 }
 
 # Start replication for channel
 start_replication_channel() {
-    local source_num=$1
-    local channel_name="source${source_num}"
-    
-    log_info "Starting replication for channel: $channel_name"
-    
-    local mysql_cmd="mysql -h$REPLICA_HOST -u$REPLICA_USER"
-    if [[ -n "$REPLICA_PASSWORD" ]]; then
-        mysql_cmd="$mysql_cmd -p$REPLICA_PASSWORD"
-    fi
-    
-    local start_sql
-    if is_mysql_8_or_higher "$MYSQL_VERSION"; then
-        start_sql="START REPLICA FOR CHANNEL '$channel_name';"
-    else
-        start_sql="START SLAVE FOR CHANNEL '$channel_name';"
-    fi
-    
-    if ! echo "$start_sql" | $mysql_cmd; then
-        error_exit "Failed to start replication for channel: $channel_name"
-    fi
-    
-    log_info "Successfully started replication for channel: $channel_name"
+  local source_num=$1
+  local channel_name="source${source_num}"
+
+  log_info "Starting replication for channel: $channel_name"
+
+  local mysql_cmd="mysql -h$REPLICA_HOST -u$REPLICA_USER"
+  if [[ -n $REPLICA_PASSWORD ]]; then
+    mysql_cmd="$mysql_cmd -p$REPLICA_PASSWORD"
+  fi
+
+  local start_sql
+  if is_mysql_8_or_higher "$MYSQL_VERSION"; then
+    start_sql="START REPLICA FOR CHANNEL '$channel_name';"
+  else
+    start_sql="START SLAVE FOR CHANNEL '$channel_name';"
+  fi
+
+  if ! echo "$start_sql" | $mysql_cmd; then
+    error_exit "Failed to start replication for channel: $channel_name"
+  fi
+
+  log_info "Successfully started replication for channel: $channel_name"
 }
 
 # Show replication status
 show_replication_status() {
-    log_info "Checking replication status"
-    
-    local mysql_cmd="mysql -h$REPLICA_HOST -u$REPLICA_USER"
-    if [[ -n "$REPLICA_PASSWORD" ]]; then
-        mysql_cmd="$mysql_cmd -p$REPLICA_PASSWORD"
-    fi
-    
-    local status_sql
-    if is_mysql_8_or_higher "$MYSQL_VERSION"; then
-        status_sql="SHOW REPLICA STATUS FOR CHANNEL;"
-    else
-        status_sql="SHOW SLAVE STATUS FOR CHANNEL;"
-    fi
-    
-    echo "$status_sql" | $mysql_cmd || log_warn "Failed to show replication status"
+  log_info "Checking replication status"
+
+  local mysql_cmd="mysql -h$REPLICA_HOST -u$REPLICA_USER"
+  if [[ -n $REPLICA_PASSWORD ]]; then
+    mysql_cmd="$mysql_cmd -p$REPLICA_PASSWORD"
+  fi
+
+  local status_sql
+  if is_mysql_8_or_higher "$MYSQL_VERSION"; then
+    status_sql="SHOW REPLICA STATUS FOR CHANNEL;"
+  else
+    status_sql="SHOW SLAVE STATUS FOR CHANNEL;"
+  fi
+
+  echo "$status_sql" | $mysql_cmd || log_warn "Failed to show replication status"
 }
 
 # Main function
 main() {
-    if [[ $# -ne 1 ]]; then
-        usage
-        exit 1
-    fi
-    
-    local config_file=$1
-    
-    log_info "Starting multi-source replication configuration"
-    log_info "Script: $SCRIPT_NAME"
-    log_info "Config: $config_file"
-    log_info "Replica: $REPLICA_HOST"
-    log_info "MySQL Version: $MYSQL_VERSION"
-    
-    # Check dependencies
-    check_dependencies
-    
-    # Create temporary directory
-    mkdir -p "$TMP_DIR"
-    log_info "Created temporary directory: $TMP_DIR"
-    
-    # Parse configuration and get sources
-    local sources
-    sources=$(parse_config "$config_file")
-    read -ra source_array <<< "$sources"
-    
-    # Test replica connection
-    test_connection "$REPLICA_HOST" "$REPLICA_USER" "$REPLICA_PASSWORD" "replica"
-    
-    # Process each source
-    for source_num in "${source_array[@]}"; do
-        log_info "Processing source $source_num"
-        
-        # Validate source configuration
-        validate_source "$source_num"
-        
-        # Get source connection details
-        local host_var="SOURCE${source_num}_HOST"
-        local user_var="SOURCE${source_num}_USER"
-        local password_var="SOURCE${source_num}_PASSWORD"
-        
-        local host=${!host_var}
-        local user=${!user_var}
-        local password=${!password_var:-}
-        
-        # Test source connection
-        test_connection "$host" "$user" "$password" "source $source_num"
-        
-        # Dump databases from source
-        local dump_file
-        dump_file=$(dump_source_databases "$source_num")
-        
-        # Restore to replica
-        restore_to_replica "$dump_file" "$source_num"
-        
-        # Set up replication channel
-        setup_replication_channel "$source_num"
-        
-        # Start replication
-        start_replication_channel "$source_num"
-        
-        log_info "Completed processing source $source_num"
-    done
-    
-    # Show final status
-    show_replication_status
-    
-    log_info "Multi-source replication configuration completed successfully"
-    log_info "Configured ${#source_array[@]} replication channel(s)"
+  if [[ $# -ne 1 ]]; then
+    usage
+    exit 1
+  fi
+
+  local config_file=$1
+
+  log_info "Starting multi-source replication configuration"
+  log_info "Script: $SCRIPT_NAME"
+  log_info "Config: $config_file"
+  log_info "Replica: $REPLICA_HOST"
+  log_info "MySQL Version: $MYSQL_VERSION"
+
+  # Check dependencies
+  check_dependencies
+
+  # Create temporary directory
+  mkdir -p "$TMP_DIR"
+  log_info "Created temporary directory: $TMP_DIR"
+
+  # Parse configuration and get sources
+  local sources
+  sources=$(parse_config "$config_file")
+  read -ra source_array <<<"$sources"
+
+  # Test replica connection
+  test_connection "$REPLICA_HOST" "$REPLICA_USER" "$REPLICA_PASSWORD" "replica"
+
+  # Process each source
+  for source_num in "${source_array[@]}"; do
+    log_info "Processing source $source_num"
+
+    # Validate source configuration
+    validate_source "$source_num"
+
+    # Get source connection details
+    local host_var="SOURCE${source_num}_HOST"
+    local user_var="SOURCE${source_num}_USER"
+    local password_var="SOURCE${source_num}_PASSWORD"
+
+    local host=${!host_var}
+    local user=${!user_var}
+    local password=${!password_var:-}
+
+    # Test source connection
+    test_connection "$host" "$user" "$password" "source $source_num"
+
+    # Dump databases from source
+    local dump_file
+    dump_file=$(dump_source_databases "$source_num")
+
+    # Restore to replica
+    restore_to_replica "$dump_file" "$source_num"
+
+    # Set up replication channel
+    setup_replication_channel "$source_num"
+
+    # Start replication
+    start_replication_channel "$source_num"
+
+    log_info "Completed processing source $source_num"
+  done
+
+  # Show final status
+  show_replication_status
+
+  log_info "Multi-source replication configuration completed successfully"
+  log_info "Configured ${#source_array[@]} replication channel(s)"
 }
 
 # Run main function
