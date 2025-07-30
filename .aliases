@@ -38,7 +38,6 @@ alias gpuo='git push --set-upstream origin'
 alias gr='git remote'
 alias grv='git remote -v'
 alias gst='git status'
-alias gd='git diff'
 alias glglm='git log --before=$(date "+%Y-%m-01") --after=$(date -d"1 month ago" "+%Y-%m-01") \
   --author="$(git config user.name)" --reverse --pretty=format:"%cd - %h - %s" --date=short --no-merges'
 alias glgcm='git log --before=$(date -d"+ 1 month" "+%Y-%m-01") --after=$(date "+%Y-%m-01") \
@@ -78,6 +77,14 @@ alias pserve='python -m SimpleHTTPServer'
 alias now='date +"%T"'
 alias nowtime='now'
 alias nowdate='date +"%d-%m-%Y"'
+
+# Enhanced productivity aliases
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias ll1='ls -1'
+alias path='echo -e ${PATH//:/\\n}'
+alias mount='mount | column -t'
 
 # Copilot
 alias copilot='gh copilot'
@@ -176,7 +183,7 @@ alias ssht=sshrc
 command -v compdef &>/dev/null && compdef ssht=ssh && compdef sshrc=ssh
 
 # Secure ssh-agent usage
-alias ssh-add='ssh-add -c -t 4h'
+alias ssh-add='ssh-add -c -t 8h'
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
@@ -223,6 +230,33 @@ function netdata() {
   port=$(shuf -i 2000-65000 -n 1)
   (sleep 2 && open "http://127.0.0.1:${port}" &) >/dev/null
   ssh -N -L "${port}:127.0.0.1:19999" "${@}"
+}
+
+# Quick directory navigation to git repository root
+function git-root() {
+  local root
+  root=$(git rev-parse --show-toplevel 2>/dev/null)
+  if [[ -n "$root" ]]; then
+    cd "$root" || return 1
+  else
+    echo "Not in a git repository"
+    return 1
+  fi
+}
+
+# Enhanced git log with better formatting
+function glog() {
+  local format='%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+  git log --graph --pretty=format:"$format" --abbrev-commit "$@"
+}
+
+# Quick function to create and change to directory
+function mkcd() {
+  if [[ $# -ne 1 ]]; then
+    echo "Usage: mkcd <directory>"
+    return 1
+  fi
+  mkdir -p "$1" && cd "$1" || return 1
 }
 
 # Nomad
@@ -331,7 +365,7 @@ if [[ $OS == 'Darwin' ]]; then
   alias tornewidentity='docker kill --signal=HUP tor'
 
   # Secure ssh-agent usage
-  alias ssh-add='ssh-add -t 4h'
+  alias ssh-add='ssh-add -t 8h'
 
   # Lock/Unlock directory or file
   function lock() {
