@@ -142,6 +142,12 @@ if [ -f "${HOME}/.extra" ]; then
   source "${HOME}/.extra"
 fi
 
+# Theme switcher integration
+if [ -f "${HOME}/.config/theme-switcher/bashrc-addition" ]; then
+  # shellcheck source=/dev/null
+  source "${HOME}/.config/theme-switcher/bashrc-addition"
+fi
+
 # Auto start|attach zellij session
 if command -v zellij &>/dev/null; then
   if [ -z "$ZELLIJ" ]; then

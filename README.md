@@ -1,5 +1,15 @@
 # ~/.dotfiles
 
+Personal configuration files for various tools and applications.
+
+## Features
+
+- **Shell Configuration**: Enhanced Bash setup with completions, history management, and integrations  
+- **Terminal Applications**: Configurations for tmux, vim, neovim, and modern terminal emulators
+- **Development Tools**: Git, SSH, and various development environment setups
+- **Automated Installation**: Makefile-based installation with dependency management
+- **🌅 Automatic Theme Switcher**: Time-based light/dark theme switching for terminal, shell, and editor
+
 ## dotfiles
 
 ### Installation
@@ -11,6 +21,31 @@ git clone https://github.com/bdossantos/dotfiles ~/.dotfiles
 cd ~/.dotfiles
 make install
 ```
+
+### Theme Switcher
+
+The dotfiles include an intelligent theme switching system that automatically adjusts themes based on time of day:
+
+- **Ghostty terminal**: Custom light/dark color palettes
+- **Bash shell**: Theme-aware color variables  
+- **Neovim**: Automatic colorscheme switching (Dracula ↔ Tokyo Night Day)
+
+#### Quick Theme Setup
+
+```bash
+# Initialize theme configuration
+./bin/theme-switcher setup
+
+# Test theme switching
+./bin/theme-switcher light
+./bin/theme-switcher dark
+./bin/theme-switcher auto
+
+# Set up automatic switching (7 AM light, 7 PM dark)
+.config/theme-switcher/setup-cron.sh install
+```
+
+See [Theme Switcher Documentation](.config/theme-switcher/README.md) for detailed usage and customization options.
 
 ### Uninstallation
 

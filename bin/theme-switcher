@@ -1,0 +1,591 @@
+#!/usr/bin/env bash
+
+# =============================================================================
+# Automatic Theme Switcher
+# =============================================================================
+# Switches between light and dark themes based on time of day
+# Supports: Ghostty terminal, Bash shell colors, Neovim
+#
+# Usage:
+#   theme-switcher [light|dark|auto]
+#
+# Configuration:
+#   THEME_LIGHT_HOUR - Hour to switch to light theme (default: 7)
+#   THEME_DARK_HOUR  - Hour to switch to dark theme (default: 19)
+# =============================================================================
+
+set -euo pipefail
+
+# Configuration
+readonly CONFIG_DIR="${HOME}/.config"
+readonly GHOSTTY_CONFIG="${CONFIG_DIR}/ghostty/config"
+readonly GHOSTTY_THEMES_DIR="${CONFIG_DIR}/ghostty/themes"
+readonly NVIM_THEME_FILE="${CONFIG_DIR}/nvim/lua/config/theme.lua"
+
+# Default hours for theme switching (24-hour format)
+readonly DEFAULT_LIGHT_HOUR=7
+readonly DEFAULT_DARK_HOUR=19
+
+# Colors for shell output
+readonly RED='\033[0;31m'
+readonly GREEN='\033[0;32m'
+readonly YELLOW='\033[1;33m'
+readonly BLUE='\033[0;34m'
+readonly NC='\033[0m' # No Color
+
+# =============================================================================
+# Utility Functions
+# =============================================================================
+
+log_info() {
+    echo -e "${BLUE}[INFO]${NC} $*" >&2
+}
+
+log_success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $*" >&2
+}
+
+log_warning() {
+    echo -e "${YELLOW}[WARNING]${NC} $*" >&2
+}
+
+log_error() {
+    echo -e "${RED}[ERROR]${NC} $*" >&2
+}
+
+show_help() {
+    cat << EOF
+Automatic Theme Switcher
+
+USAGE:
+    theme-switcher [COMMAND]
+
+COMMANDS:
+    auto      Switch theme based on time of day (default)
+    light     Force light theme
+    dark      Force dark theme
+    status    Show current theme status
+    setup     Initialize theme configuration files
+    help      Show this help message
+
+CONFIGURATION:
+    Set these environment variables to customize switching times:
+    THEME_LIGHT_HOUR=7   # Hour to switch to light theme (24h format)
+    THEME_DARK_HOUR=19   # Hour to switch to dark theme (24h format)
+
+EXAMPLES:
+    theme-switcher auto    # Auto-switch based on time
+    theme-switcher light   # Force light theme
+    theme-switcher dark    # Force dark theme
+    theme-switcher status  # Show current theme
+EOF
+}
+
+# =============================================================================
+# Theme Detection
+# =============================================================================
+
+get_current_hour() {
+    date +%H | sed 's/^0//'  # Remove leading zero
+}
+
+should_use_light_theme() {
+    local current_hour
+    local light_hour="${THEME_LIGHT_HOUR:-$DEFAULT_LIGHT_HOUR}"
+    local dark_hour="${THEME_DARK_HOUR:-$DEFAULT_DARK_HOUR}"
+    
+    current_hour=$(get_current_hour)
+    
+    # Light theme during daytime hours
+    [[ $current_hour -ge $light_hour && $current_hour -lt $dark_hour ]]
+}
+
+get_auto_theme() {
+    if should_use_light_theme; then
+        echo "light"
+    else
+        echo "dark"
+    fi
+}
+
+# =============================================================================
+# Ghostty Theme Management
+# =============================================================================
+
+setup_ghostty_themes() {
+    log_info "Setting up Ghostty theme configuration..."
+    
+    # Create themes directory
+    mkdir -p "$GHOSTTY_THEMES_DIR"
+    
+    # Create light theme config
+    cat > "${GHOSTTY_THEMES_DIR}/light.conf" << 'EOF'
+# Light theme configuration for Ghostty
+background = #ffffff
+foreground = #000000
+cursor-color = #000000
+
+# Black
+palette = 0=#000000
+palette = 8=#666666
+
+# Red  
+palette = 1=#cc0000
+palette = 9=#ef2929
+
+# Green
+palette = 2=#4e9a06
+palette = 10=#8ae234
+
+# Yellow
+palette = 3=#c4a000
+palette = 11=#fce94f
+
+# Blue
+palette = 4=#3465a4
+palette = 12=#729fcf
+
+# Magenta
+palette = 5=#75507b
+palette = 13=#ad7fa8
+
+# Cyan
+palette = 6=#06989a
+palette = 14=#34e2e2
+
+# White
+palette = 7=#d3d7cf
+palette = 15=#eeeeec
+EOF
+
+    # Create dark theme config (Dracula-based)
+    cat > "${GHOSTTY_THEMES_DIR}/dark.conf" << 'EOF'
+# Dark theme configuration for Ghostty (Dracula-inspired)
+background = #282a36
+foreground = #f8f8f2
+cursor-color = #f8f8f2
+
+# Standard colors
+palette = 0=#21222c
+palette = 1=#ff5555
+palette = 2=#50fa7b
+palette = 3=#f1fa8c
+palette = 4=#bd93f9
+palette = 5=#ff79c6
+palette = 6=#8be9fd
+palette = 7=#f8f8f2
+
+# Bright colors
+palette = 8=#6272a4
+palette = 9=#ff6e6e
+palette = 10=#69ff94
+palette = 11=#ffffa5
+palette = 12=#d6acff
+palette = 13=#ff92df
+palette = 14=#a4ffff
+palette = 15=#ffffff
+EOF
+
+    log_success "Ghostty themes created at $GHOSTTY_THEMES_DIR"
+}
+
+apply_ghostty_theme() {
+    local theme="$1"
+    local theme_file="${GHOSTTY_THEMES_DIR}/${theme}.conf"
+    
+    if [[ ! -f "$theme_file" ]]; then
+        log_error "Theme file not found: $theme_file"
+        return 1
+    fi
+    
+    # Backup original config if it exists and doesn't have our marker
+    if [[ -f "$GHOSTTY_CONFIG" ]] && ! grep -q "# Theme Switcher Managed" "$GHOSTTY_CONFIG"; then
+        cp "$GHOSTTY_CONFIG" "${GHOSTTY_CONFIG}.backup"
+        log_info "Backed up original Ghostty config to ${GHOSTTY_CONFIG}.backup"
+    fi
+    
+    # Create new config with theme
+    {
+        echo "# Theme Switcher Managed Configuration"
+        echo "# Original config backed up to ${GHOSTTY_CONFIG}.backup"
+        echo ""
+        echo "# Base configuration"
+        echo "window-padding-x = 2,4"
+        echo ""
+        echo "# Theme configuration (${theme})"
+        cat "$theme_file"
+    } > "$GHOSTTY_CONFIG"
+    
+    log_success "Applied Ghostty $theme theme"
+}
+
+# =============================================================================
+# Bash Shell Theme Management  
+# =============================================================================
+
+setup_bash_theme_support() {
+    local bashrc_addition="${CONFIG_DIR}/theme-switcher/bashrc-addition"
+    
+    mkdir -p "${CONFIG_DIR}/theme-switcher"
+    
+    cat > "$bashrc_addition" << 'EOF'
+# =============================================================================
+# Theme Switcher Integration for Bash
+# =============================================================================
+
+# Theme-aware prompt colors
+setup_theme_colors() {
+    local theme="${1:-$(theme-switcher status 2>/dev/null || echo 'dark')}"
+    
+    if [[ "$theme" == "light" ]]; then
+        # Light theme colors
+        export THEME_PRIMARY='\033[0;34m'      # Blue
+        export THEME_SECONDARY='\033[0;32m'    # Green  
+        export THEME_ACCENT='\033[0;35m'       # Magenta
+        export THEME_WARNING='\033[0;33m'      # Yellow
+        export THEME_ERROR='\033[0;31m'        # Red
+        export THEME_TEXT='\033[0;30m'         # Black
+        export THEME_DIM='\033[1;30m'          # Dark Gray
+    else
+        # Dark theme colors (default)
+        export THEME_PRIMARY='\033[0;36m'      # Cyan
+        export THEME_SECONDARY='\033[0;32m'    # Green
+        export THEME_ACCENT='\033[0;35m'       # Magenta  
+        export THEME_WARNING='\033[1;33m'      # Bright Yellow
+        export THEME_ERROR='\033[0;31m'        # Red
+        export THEME_TEXT='\033[0;37m'         # White
+        export THEME_DIM='\033[1;30m'          # Dark Gray
+    fi
+    
+    export THEME_RESET='\033[0m'
+}
+
+# Initialize theme colors
+setup_theme_colors
+
+# Function to refresh theme (call after switching)
+refresh_theme() {
+    setup_theme_colors "$1"
+    
+    # Reload starship prompt if available
+    if command -v starship &>/dev/null; then
+        eval "$(starship init bash)"
+    fi
+}
+
+# Auto-refresh theme colors when sourcing bashrc
+if command -v theme-switcher &>/dev/null; then
+    local current_theme
+    current_theme=$(theme-switcher status 2>/dev/null || echo 'dark')
+    setup_theme_colors "$current_theme"
+fi
+EOF
+
+    log_success "Created bash theme support at $bashrc_addition"
+    log_info "Add 'source \"$bashrc_addition\"' to your .bashrc to enable theme switching"
+}
+
+# =============================================================================
+# Neovim Theme Management
+# =============================================================================
+
+setup_nvim_theme_support() {
+    local nvim_config_dir="${CONFIG_DIR}/nvim/lua/config"
+    
+    mkdir -p "$nvim_config_dir"
+    
+    # Create theme configuration file
+    cat > "$NVIM_THEME_FILE" << 'EOF'
+-- Dynamic Theme Configuration
+-- This file is managed by theme-switcher script
+
+local M = {}
+
+-- Theme detection function
+local function get_system_theme()
+  local handle = io.popen("theme-switcher status 2>/dev/null")
+  if handle then
+    local result = handle:read("*a"):gsub("%s+", "")
+    handle:close()
+    return result ~= "" and result or "dark"
+  end
+  return "dark"
+end
+
+-- Available themes
+M.themes = {
+  light = {
+    colorscheme = "tokyonight-day",
+    background = "light"
+  },
+  dark = {
+    colorscheme = "dracula", 
+    background = "dark"
+  }
+}
+
+-- Apply theme based on system setting
+function M.apply_theme(theme_name)
+  theme_name = theme_name or get_system_theme()
+  local theme = M.themes[theme_name] or M.themes.dark
+  
+  vim.opt.background = theme.background
+  
+  -- Apply colorscheme safely
+  local ok, _ = pcall(vim.cmd.colorscheme, theme.colorscheme)
+  if not ok then
+    vim.notify("Failed to load colorscheme: " .. theme.colorscheme, vim.log.levels.WARN)
+    -- Fallback to default
+    pcall(vim.cmd.colorscheme, "default")
+  end
+end
+
+-- Auto-apply theme on startup
+function M.setup()
+  M.apply_theme()
+  
+  -- Create user command for manual theme switching
+  vim.api.nvim_create_user_command("ThemeSwitch", function(opts)
+    M.apply_theme(opts.args)
+  end, {
+    nargs = "?",
+    complete = function()
+      return vim.tbl_keys(M.themes)
+    end,
+    desc = "Switch theme (light/dark)"
+  })
+end
+
+return M
+EOF
+
+    log_success "Created Neovim theme configuration at $NVIM_THEME_FILE"
+}
+
+update_nvim_colorscheme_config() {
+    local colorscheme_file="${CONFIG_DIR}/nvim/lua/plugins/colorscheme.lua"
+    
+    if [[ ! -f "$colorscheme_file" ]]; then
+        log_warning "Neovim colorscheme config not found at $colorscheme_file"
+        return 1
+    fi
+    
+    # Backup original
+    cp "$colorscheme_file" "${colorscheme_file}.backup"
+    
+    # Update colorscheme config to support theme switching
+    cat > "$colorscheme_file" << 'EOF'
+-- Dynamic colorscheme configuration with theme switching support
+return {
+  -- Dracula theme (dark)
+  {
+    "Mofiqul/dracula.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("dracula").setup({
+        colors = {},
+        show_end_of_buffer = true,
+        transparent_bg = false,
+        lualine_bg_color = "#44475a",
+        italic_comment = true,
+      })
+    end,
+  },
+  
+  -- Tokyo Night theme (light variant)
+  {
+    "folke/tokyonight.nvim",
+    lazy = false, 
+    priority = 1000,
+    config = function()
+      require("tokyonight").setup({
+        style = "day", -- Use day variant for light theme
+        light_style = "day",
+        transparent = false,
+        terminal_colors = true,
+        styles = {
+          comments = { italic = true },
+          keywords = { italic = true },
+          functions = {},
+          variables = {},
+        },
+      })
+    end,
+  },
+
+  -- Configure LazyVim to use dynamic theme
+  {
+    "LazyVim/LazyVim",
+    opts = function()
+      -- Load theme configuration
+      local theme_config = require("config.theme")
+      theme_config.setup()
+      
+      return {
+        -- Default to dark theme, will be overridden by theme switcher
+        colorscheme = "dracula",
+      }
+    end,
+  },
+}
+EOF
+
+    log_success "Updated Neovim colorscheme configuration with theme switching support"
+}
+
+# =============================================================================
+# Theme Application
+# =============================================================================
+
+apply_theme() {
+    local theme="$1"
+    
+    log_info "Applying $theme theme..."
+    
+    # Apply to Ghostty
+    if command -v ghostty &>/dev/null && [[ -d "$GHOSTTY_THEMES_DIR" ]]; then
+        apply_ghostty_theme "$theme"
+    else
+        log_warning "Ghostty not found or themes not set up, skipping"
+    fi
+    
+    # Apply to Neovim (if running)
+    if command -v nvim &>/dev/null && [[ -f "$NVIM_THEME_FILE" ]]; then
+        # Create a temporary script to switch nvim theme in running instances
+        local nvim_switch_script="/tmp/nvim_theme_switch_${theme}.lua"
+        cat > "$nvim_switch_script" << EOF
+-- Auto-generated theme switch script
+local theme_config = require("config.theme")
+theme_config.apply_theme("$theme")
+print("Switched to $theme theme")
+EOF
+        
+        # Try to switch theme in running nvim instances via remote commands
+        # This requires nvim server capabilities - will work if user has set up servers
+        if pgrep -f "nvim.*--listen" >/dev/null 2>&1; then
+            log_info "Attempting to switch theme in running Neovim instances..."
+            # Find nvim server sockets and send theme switch command
+            find /tmp -name "nvim*" -type s 2>/dev/null | while read -r socket; do
+                if [[ -S "$socket" ]]; then
+                    nvim --server "$socket" --remote-send ":luafile $nvim_switch_script<CR>" 2>/dev/null || true
+                fi
+            done
+        fi
+        
+        rm -f "$nvim_switch_script"
+        log_success "Neovim theme switching prepared"
+    else
+        log_warning "Neovim not found or theme config not set up, skipping" 
+    fi
+    
+    # Apply to bash (update theme colors for current session)
+    if [[ -n "${BASH_VERSION:-}" ]]; then
+        # Source the theme colors if available
+        local bash_theme_config="${CONFIG_DIR}/theme-switcher/bashrc-addition"
+        if [[ -f "$bash_theme_config" ]]; then
+            # shellcheck source=/dev/null
+            source "$bash_theme_config"
+            if declare -f refresh_theme >/dev/null; then
+                refresh_theme "$theme"
+                log_success "Applied bash theme colors"
+            fi
+        fi
+    fi
+    
+    # Store current theme for status checking
+    echo "$theme" > "${CONFIG_DIR}/theme-switcher/current-theme"
+    
+    log_success "Theme switching complete!"
+}
+
+get_current_theme() {
+    local theme_file="${CONFIG_DIR}/theme-switcher/current-theme"
+    if [[ -f "$theme_file" ]]; then
+        cat "$theme_file"
+    else
+        echo "unknown"
+    fi
+}
+
+show_status() {
+    local current_theme current_hour auto_theme
+    
+    current_theme=$(get_current_theme)
+    current_hour=$(get_current_hour)
+    auto_theme=$(get_auto_theme)
+    
+    echo "Theme Switcher Status:"
+    echo "  Current theme: $current_theme"
+    echo "  Current time: ${current_hour}:$(date +%M)"
+    echo "  Auto theme: $auto_theme"
+    echo "  Light hours: ${THEME_LIGHT_HOUR:-$DEFAULT_LIGHT_HOUR}:00 - $((${THEME_DARK_HOUR:-$DEFAULT_DARK_HOUR} - 1)):59"
+    echo "  Dark hours: ${THEME_DARK_HOUR:-$DEFAULT_DARK_HOUR}:00 - $((${THEME_LIGHT_HOUR:-$DEFAULT_LIGHT_HOUR} - 1)):59"
+}
+
+setup_all() {
+    log_info "Setting up theme switcher configuration..."
+    
+    mkdir -p "${CONFIG_DIR}/theme-switcher"
+    
+    setup_ghostty_themes
+    setup_bash_theme_support  
+    setup_nvim_theme_support
+    update_nvim_colorscheme_config
+    
+    log_success "Theme switcher setup complete!"
+    echo ""
+    echo "Next steps:"
+    echo "1. Add the following to your .bashrc:"
+    echo "   source \"${CONFIG_DIR}/theme-switcher/bashrc-addition\""
+    echo ""
+    echo "2. Restart your terminal or run: source ~/.bashrc"
+    echo ""
+    echo "3. Test theme switching:"
+    echo "   theme-switcher light"
+    echo "   theme-switcher dark"  
+    echo "   theme-switcher auto"
+}
+
+# =============================================================================
+# Main Function
+# =============================================================================
+
+main() {
+    local command="${1:-auto}"
+    
+    case "$command" in
+        "auto")
+            local theme
+            theme=$(get_auto_theme)
+            log_info "Auto-detected theme: $theme (hour: $(get_current_hour))"
+            apply_theme "$theme"
+            ;;
+        "light")
+            apply_theme "light"
+            ;;
+        "dark") 
+            apply_theme "dark"
+            ;;
+        "status")
+            show_status
+            ;;
+        "setup")
+            setup_all
+            ;;
+        "help"|"-h"|"--help")
+            show_help
+            ;;
+        *)
+            log_error "Unknown command: $command"
+            echo ""
+            show_help
+            exit 1
+            ;;
+    esac
+}
+
+# Run main function if script is executed directly
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi
