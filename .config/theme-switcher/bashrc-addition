@@ -1,0 +1,47 @@
+# =============================================================================
+# Theme Switcher Integration for Bash
+# =============================================================================
+
+# Theme-aware prompt colors
+setup_theme_colors() {
+    local theme="${1:-$(theme-switcher status 2>/dev/null | grep "Current theme:" | cut -d: -f2 | xargs || echo 'dark')}"
+    
+    if [[ "$theme" == "light" ]]; then
+        # Light theme colors
+        export THEME_PRIMARY='\033[0;34m'      # Blue
+        export THEME_SECONDARY='\033[0;32m'    # Green  
+        export THEME_ACCENT='\033[0;35m'       # Magenta
+        export THEME_WARNING='\033[0;33m'      # Yellow
+        export THEME_ERROR='\033[0;31m'        # Red
+        export THEME_TEXT='\033[0;30m'         # Black
+        export THEME_DIM='\033[1;30m'          # Dark Gray
+    else
+        # Dark theme colors (default)
+        export THEME_PRIMARY='\033[0;36m'      # Cyan
+        export THEME_SECONDARY='\033[0;32m'    # Green
+        export THEME_ACCENT='\033[0;35m'       # Magenta  
+        export THEME_WARNING='\033[1;33m'      # Bright Yellow
+        export THEME_ERROR='\033[0;31m'        # Red
+        export THEME_TEXT='\033[0;37m'         # White
+        export THEME_DIM='\033[1;30m'          # Dark Gray
+    fi
+    
+    export THEME_RESET='\033[0m'
+}
+
+# Function to refresh theme (call after switching)
+refresh_theme() {
+    setup_theme_colors "$1"
+    
+    # Reload starship prompt if available
+    if command -v starship &>/dev/null; then
+        eval "$(starship init bash)"
+    fi
+}
+
+# Auto-refresh theme colors when sourcing bashrc
+if command -v theme-switcher &>/dev/null; then
+    local current_theme
+    current_theme=$(theme-switcher status 2>/dev/null | grep "Current theme:" | cut -d: -f2 | xargs || echo 'dark')
+    setup_theme_colors "$current_theme"
+fi

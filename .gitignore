@@ -2,6 +2,8 @@
 !.config/starship.toml
 !.config/zellij/config.yaml
 !.config/nvim/
+!.config/ghostty/
+!.config/theme-switcher/
 !.gnupg/gpg.conf
 .config
 .gnupg/
