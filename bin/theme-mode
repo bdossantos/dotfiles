@@ -40,8 +40,14 @@ case "${1:-mode}" in
   "nvim-dark")
     echo "github_dark_high_contrast"
     ;;
+  "zellij-light")
+    echo "default"
+    ;;
+  "zellij-dark")
+    echo "dracula"
+    ;;
   *)
-    echo "Usage: $0 [mode|ghostty-light|ghostty-dark|nvim-light|nvim-dark]" >&2
+    echo "Usage: $0 [mode|ghostty-light|ghostty-dark|nvim-light|nvim-dark|zellij-light|zellij-dark]" >&2
     exit 1
     ;;
 esac

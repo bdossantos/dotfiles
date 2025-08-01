@@ -151,6 +151,13 @@ fi
 
 # Auto start|attach zellij session
 if command -v zellij &>/dev/null; then
+  # Auto-switch Zellij theme based on time of day
+  if [[ -x "${HOME}/.dotfiles/bin/set-zellij-theme" ]]; then
+    "${HOME}/.dotfiles/bin/set-zellij-theme" 2>/dev/null || true
+  elif [[ -x "$(dirname "${BASH_SOURCE[0]}")/bin/set-zellij-theme" ]]; then
+    "$(dirname "${BASH_SOURCE[0]}")/bin/set-zellij-theme" 2>/dev/null || true
+  fi
+  
   if [ -z "$ZELLIJ" ]; then
     zellij attach -c 'BDS 🐑'
   fi
