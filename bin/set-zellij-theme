@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+#
+# set-zellij-theme - Set Zellij theme based on current time
+#
+# This script updates the Zellij configuration to use light or dark theme
+# based on the current hour of the day.
+#
+
+set -euo pipefail
+
+# Get the directory where this script lives to find theme-mode
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+THEME_MODE_SCRIPT="${SCRIPT_DIR}/theme-mode"
+
+# Configuration file path - check both the dotfiles repo and installed location
+DOTFILES_ZELLIJ_CONFIG="$(dirname "$SCRIPT_DIR")/.config/zellij/config.kdl"
+HOME_ZELLIJ_CONFIG="${HOME}/.config/zellij/config.kdl"
+
+# Use the dotfiles repo config if it exists, otherwise use the home config
+if [[ -f "$DOTFILES_ZELLIJ_CONFIG" ]]; then
+  ZELLIJ_CONFIG="$DOTFILES_ZELLIJ_CONFIG"
+else
+  ZELLIJ_CONFIG="$HOME_ZELLIJ_CONFIG"
+fi
+
+# Ensure the theme-mode script exists
+if [[ ! -x "$THEME_MODE_SCRIPT" ]]; then
+  echo "Error: theme-mode script not found or not executable at $THEME_MODE_SCRIPT" >&2
+  exit 1
+fi
+
+# Get current theme mode and corresponding Zellij theme
+MODE=$("$THEME_MODE_SCRIPT")
+case "$MODE" in
+  "light")
+    THEME=$("$THEME_MODE_SCRIPT" zellij-light)
+    ;;
+  "dark")
+    THEME=$("$THEME_MODE_SCRIPT" zellij-dark)
+    ;;
+  *)
+    echo "Error: Unknown theme mode: $MODE" >&2
+    exit 1
+    ;;
+esac
+
+# Update or create the Zellij config file
+if [[ -f "$ZELLIJ_CONFIG" ]]; then
+  # Create a temporary file to ensure atomic update
+  TEMP_CONFIG=$(mktemp)
+  
+  if grep -q "^theme " "$ZELLIJ_CONFIG"; then
+    # Replace existing theme line, preserving other lines
+    sed "s/^theme .*/theme \"$THEME\"/" "$ZELLIJ_CONFIG" > "$TEMP_CONFIG"
+  else
+    # Append theme line if not found
+    cp "$ZELLIJ_CONFIG" "$TEMP_CONFIG"
+    echo "theme \"$THEME\"" >> "$TEMP_CONFIG"
+  fi
+  
+  # Replace original with updated version
+  mv "$TEMP_CONFIG" "$ZELLIJ_CONFIG"
+else
+  # Create config file with theme
+  mkdir -p "$(dirname "$ZELLIJ_CONFIG")"
+  echo "theme \"$THEME\"" > "$ZELLIJ_CONFIG"
+fi
+
+# Optional: print what we did (useful for debugging)
+if [[ "${VERBOSE:-}" == "1" ]]; then
+  echo "Set Zellij theme to '$THEME' (mode: $MODE)"
+fi
