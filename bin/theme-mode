@@ -35,10 +35,10 @@ case "${1:-mode}" in
     echo "dracula"
     ;;
   "nvim-light")
-    echo "github_light_high_contrast"
+    echo "tokyonight-day"
     ;;
   "nvim-dark")
-    echo "github_dark_high_contrast"
+    echo "tokyonight-night"
     ;;
   "zellij-light")
     echo "default"

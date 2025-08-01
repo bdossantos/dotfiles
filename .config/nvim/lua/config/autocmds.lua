@@ -133,9 +133,9 @@ local function switch_theme_by_time()
           handle:close()
           
           if mode == "light" then
-            return "github_light_high_contrast"
+            return "tokyonight-day"
           else
-            return "github_dark_high_contrast"
+            return "tokyonight-night"
           end
         end
       end
@@ -144,9 +144,9 @@ local function switch_theme_by_time()
     -- Fallback: use system time directly
     local hour = tonumber(os.date("%H"))
     if hour >= 7 and hour < 19 then
-      return "github_light_high_contrast"
+      return "tokyonight-day"
     else
-      return "github_dark_high_contrast"
+      return "tokyonight-night"
     end
   end
 
