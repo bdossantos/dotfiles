@@ -29,7 +29,7 @@ case "${1:-mode}" in
     get_theme_mode
     ;;
   "ghostty-light")
-    echo "github-light"
+    echo "GitHub-Light-High-Contrast"
     ;;
   "ghostty-dark") 
     echo "dracula"
