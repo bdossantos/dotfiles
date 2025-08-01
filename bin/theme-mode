@@ -38,7 +38,7 @@ case "${1:-mode}" in
     echo "github_light"
     ;;
   "nvim-dark")
-    echo "dracula"
+    echo "github_dark_high_contrast"
     ;;
   *)
     echo "Usage: $0 [mode|ghostty-light|ghostty-dark|nvim-light|nvim-dark]" >&2

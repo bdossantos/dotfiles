@@ -135,7 +135,7 @@ local function switch_theme_by_time()
           if mode == "light" then
             return "github_light"
           else
-            return "dracula"
+            return "github_dark_high_contrast"
           end
         end
       end
@@ -146,7 +146,7 @@ local function switch_theme_by_time()
     if hour >= 7 and hour < 19 then
       return "github_light"
     else
-      return "dracula"
+      return "github_dark_high_contrast"
     end
   end
 

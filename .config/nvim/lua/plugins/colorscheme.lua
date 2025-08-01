@@ -1,22 +1,6 @@
 -- Colorscheme configuration with automatic light/dark switching
 return {
-  -- Dracula colorscheme (dark mode)
-  {
-    "Mofiqul/dracula.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require("dracula").setup({
-        colors = {},
-        show_end_of_buffer = true,
-        transparent_bg = false,
-        lualine_bg_color = "#44475a",
-        italic_comment = true,
-      })
-    end,
-  },
-
-  -- GitHub colorscheme (light mode)
+  -- GitHub colorscheme (both light and dark modes)
   {
     "projekt0n/github-nvim-theme",
     lazy = false,
@@ -72,7 +56,7 @@ return {
                   if mode == "light" then
                     return "github_light"
                   else
-                    return "dracula"
+                    return "github_dark_high_contrast"
                   end
                 end
               end
@@ -85,7 +69,7 @@ return {
         if hour >= 7 and hour < 19 then
           return "github_light"
         else
-          return "dracula"
+          return "github_dark_high_contrast"
         end
       end
 
