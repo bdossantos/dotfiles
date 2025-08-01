@@ -54,7 +54,7 @@ return {
                   handle:close()
                   
                   if mode == "light" then
-                    return "github_light"
+                    return "github_light_high_contrast"
                   else
                     return "github_dark_high_contrast"
                   end
@@ -67,7 +67,7 @@ return {
         -- Fallback: use system time directly
         local hour = tonumber(os.date("%H"))
         if hour >= 7 and hour < 19 then
-          return "github_light"
+          return "github_light_high_contrast"
         else
           return "github_dark_high_contrast"
         end

@@ -74,7 +74,7 @@ This dotfiles setup includes automatic light/dark mode switching for both Ghostt
 - **Light Mode**: Active from 7:00 AM to 6:59 PM
 - **Dark Mode**: Active from 7:00 PM to 6:59 AM
 - **Ghostty**: Switches between `github-light` and `dracula` themes
-- **Neovim**: Switches between `github_light` and `dracula` colorschemes
+- **Neovim**: Switches between `github_light_high_contrast` and `github_dark_high_contrast` colorschemes
 
 ### Components
 
@@ -97,7 +97,7 @@ You can manually test or force theme changes:
 # Get theme names for different tools
 ~/.dotfiles/bin/theme-mode ghostty-light    # Returns: github-light
 ~/.dotfiles/bin/theme-mode ghostty-dark     # Returns: dracula
-~/.dotfiles/bin/theme-mode nvim-light       # Returns: github_light  
+~/.dotfiles/bin/theme-mode nvim-light       # Returns: github_light_high_contrast  
 ~/.dotfiles/bin/theme-mode nvim-dark        # Returns: dracula
 ```
 
