@@ -64,3 +64,51 @@ A few other notes:
 * Ensure that `~/.bash_login` does not exist.
 
 See also https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html
+
+## Automatic Light/Dark Mode Switching
+
+This dotfiles setup includes automatic light/dark mode switching for both Ghostty terminal and Neovim based on the time of day.
+
+### How it works
+
+- **Light Mode**: Active from 7:00 AM to 6:59 PM
+- **Dark Mode**: Active from 7:00 PM to 6:59 AM
+- **Ghostty**: Switches between `github-light` and `dracula` themes
+- **Neovim**: Switches between `github_light` and `dracula` colorschemes
+
+### Components
+
+1. **`bin/theme-mode`**: Core script that detects current time and returns appropriate theme
+2. **`bin/set-ghostty-theme`**: Updates Ghostty configuration with time-appropriate theme
+3. **Bash Integration**: Automatically runs theme switching on new shell launches
+4. **Neovim Integration**: Automatically sets colorscheme when Neovim starts
+
+### Manual Theme Control
+
+You can manually test or force theme changes:
+
+```bash
+# Check current theme mode
+~/.dotfiles/bin/theme-mode
+
+# Manually switch Ghostty theme
+~/.dotfiles/bin/set-ghostty-theme
+
+# Get theme names for different tools
+~/.dotfiles/bin/theme-mode ghostty-light    # Returns: github-light
+~/.dotfiles/bin/theme-mode ghostty-dark     # Returns: dracula
+~/.dotfiles/bin/theme-mode nvim-light       # Returns: github_light  
+~/.dotfiles/bin/theme-mode nvim-dark        # Returns: dracula
+```
+
+### Requirements
+
+- **Ghostty**: Must have `github-light` and `dracula` themes available
+- **Neovim**: Requires the github-nvim-theme plugin (installed automatically via LazyVim)
+- **Portability**: Works on Linux and macOS systems
+
+The switching happens automatically on:
+- New terminal/shell sessions (Ghostty)  
+- Neovim startup (colorscheme selection)
+
+For troubleshooting, check that the scripts in `bin/` are executable and that your system's `date` command works correctly.

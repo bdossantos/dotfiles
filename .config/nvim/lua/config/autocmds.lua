@@ -110,3 +110,63 @@ autocmd("FileType", {
   end,
   desc = "Disable backups for crontab editing",
 })
+
+-- ===================================================================
+-- TIME-BASED THEME SWITCHING
+-- ===================================================================
+
+-- Auto-switch colorscheme based on time of day
+local function switch_theme_by_time()
+  -- Function to get time-based colorscheme
+  local function get_time_based_colorscheme()
+    -- Try to use our theme-mode script if available
+    local theme_mode_paths = {
+      vim.fn.expand("~/.dotfiles/bin/theme-mode"),
+      vim.fn.expand("~/.config/nvim/../../bin/theme-mode"),
+    }
+    
+    for _, path in ipairs(theme_mode_paths) do
+      if vim.fn.executable(path) == 1 then
+        local handle = io.popen(path .. " 2>/dev/null")
+        if handle then
+          local mode = handle:read("*a"):gsub("%s+", "")
+          handle:close()
+          
+          if mode == "light" then
+            return "github_light"
+          else
+            return "dracula"
+          end
+        end
+      end
+    end
+    
+    -- Fallback: use system time directly
+    local hour = tonumber(os.date("%H"))
+    if hour >= 7 and hour < 19 then
+      return "github_light"
+    else
+      return "dracula"
+    end
+  end
+
+  local new_colorscheme = get_time_based_colorscheme()
+  if vim.g.colors_name ~= new_colorscheme then
+    vim.cmd.colorscheme(new_colorscheme)
+  end
+end
+
+-- Create augroup for theme switching
+local themeGroup = augroup("TimeBasedTheme", { clear = true })
+
+-- Switch theme on entering Neovim
+autocmd("VimEnter", {
+  group = themeGroup,
+  callback = switch_theme_by_time,
+  desc = "Switch colorscheme based on time when entering Neovim",
+})
+
+-- Optionally switch theme periodically (every 30 minutes)
+-- Uncomment the following to enable periodic theme switching:
+-- local theme_timer = vim.loop.new_timer()
+-- theme_timer:start(0, 30 * 60 * 1000, vim.schedule_wrap(switch_theme_by_time))
