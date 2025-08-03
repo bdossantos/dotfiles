@@ -14,7 +14,7 @@
 #   NODE_EXPORTER_TEXTFILE_DIRECTORY  Directory for metrics (optional)
 #   DEBUG                      Enable debug mode (default: 0)
 #   SYSLOG                     Enable syslog output (default: 0)
-#   DRY_RUN                    Enable dry-run mode (default: 0)
+
 #   LOG_LEVEL                  Log level: ERROR, WARN, INFO, DEBUG (default: INFO)
 #   COMPRESSION_LEVEL          Compression level (default: auto)
 #   SKIP_MYSQL                 Skip MySQL backup (default: 0)
@@ -24,7 +24,7 @@
 #
 # Examples:
 #   RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password yolo-backup
-#   RESTIC_REPOSITORY=gs:my-bucket/restic/$(hostname -f) GOOGLE_PROJECT_ID=1234 yolo-backup --dry-run
+#   RESTIC_REPOSITORY=gs:my-bucket/restic/$(hostname -f) GOOGLE_PROJECT_ID=1234 yolo-backup
 #
 # (c) 2017, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/dotfiles
@@ -36,7 +36,6 @@ set -o nounset
 
 # Configuration with defaults
 DEBUG=${DEBUG:-0}
-DRY_RUN=${DRY_RUN:-0}
 LOG_LEVEL=${LOG_LEVEL:-INFO}
 COMPRESSION_LEVEL=${COMPRESSION_LEVEL:-auto}
 SKIP_MYSQL=${SKIP_MYSQL:-0}
@@ -122,7 +121,6 @@ USAGE:
 OPTIONS:
   --help, -h              Show this help message
   --version, -v           Show version information
-  --dry-run               Run in dry-run mode (don't perform actual backup)
   --skip-mysql            Skip MySQL backup
   --skip-postgresql       Skip PostgreSQL backup
   --skip-files            Skip file system backup
@@ -136,12 +134,11 @@ ENVIRONMENT VARIABLES:
   RESTIC_BACKUP_TARGET_DIRECTORY  Target directory to backup (default: /)
   RESTIC_KEEP_LAST        Number of snapshots to keep (default: 180)
   DEBUG                   Enable debug mode (default: 0)
-  DRY_RUN                 Enable dry-run mode (default: 0)
   MIN_FREE_SPACE_MB       Minimum free space required in MB (default: 1024)
 
 EXAMPLES:
   RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password $SCRIPT_NAME
-  RESTIC_REPOSITORY=gs:bucket/restic GOOGLE_PROJECT_ID=1234 $SCRIPT_NAME --dry-run
+  RESTIC_REPOSITORY=gs:bucket/restic GOOGLE_PROJECT_ID=1234 $SCRIPT_NAME
   $SCRIPT_NAME --skip-mysql --log-level DEBUG
 
 EOF
@@ -160,11 +157,6 @@ parse_args() {
       --version|-v)
         echo "$SCRIPT_NAME v$SCRIPT_VERSION"
         exit 0
-        ;;
-      --dry-run)
-        DRY_RUN=1
-        log "INFO" "Dry-run mode enabled"
-        shift
         ;;
       --skip-mysql)
         SKIP_MYSQL=1
@@ -326,11 +318,6 @@ execute_command() {
   
   log "INFO" "Starting $description"
   
-  if [[ $DRY_RUN -eq 1 ]]; then
-    log "INFO" "DRY-RUN: Would execute: $*"
-    return 0
-  fi
-  
   if "$@"; then
     log "INFO" "$description completed successfully"
     return 0
@@ -351,9 +338,7 @@ cleanup() {
   # Unlock restic if it's locked
   if [[ $exit_code -ne 0 ]]; then
     log "WARN" "Script exited with error, attempting to unlock restic repository"
-    if [[ $DRY_RUN -eq 0 ]]; then
-      restic unlock 2>/dev/null || true
-    fi
+    restic unlock 2>/dev/null || true
   fi
   
   exit $exit_code
@@ -374,11 +359,6 @@ _restic_backup_files() {
   fi
 
   log "INFO" "Starting file system backup of: $RESTIC_BACKUP_TARGET_DIRECTORY"
-
-  if [[ $DRY_RUN -eq 1 ]]; then
-    log "INFO" "DRY-RUN: Would backup files from $RESTIC_BACKUP_TARGET_DIRECTORY"
-    return 0
-  fi
 
   # temporarily disable pipefail, see below
   set +o pipefail
@@ -450,11 +430,6 @@ _restic_backup_mysql_xtrabackup() {
   fi
   
   log "INFO" "Starting MySQL backup with xtrabackup"
-
-  if [[ $DRY_RUN -eq 1 ]]; then
-    log "INFO" "DRY-RUN: Would backup MySQL databases with xtrabackup"
-    return 0
-  fi
 
   local mysql_default_files
   if [[ -r /etc/mysql/debian.cnf ]]; then
@@ -537,11 +512,6 @@ _restic_backup_mysql() {
   
   log "INFO" "Starting MySQL backup with mysqldump"
 
-  if [[ $DRY_RUN -eq 1 ]]; then
-    log "INFO" "DRY-RUN: Would backup MySQL databases with mysqldump"
-    return 0
-  fi
-
   local mysql_default_files
   if [[ -r /etc/mysql/debian.cnf ]]; then
     mysql_default_files='/etc/mysql/debian.cnf'
@@ -596,11 +566,6 @@ _restic_backup_postgresql() {
   
   log "INFO" "Starting PostgreSQL backup"
 
-  if [[ $DRY_RUN -eq 1 ]]; then
-    log "INFO" "DRY-RUN: Would backup PostgreSQL databases"
-    return 0
-  fi
-
   if ! su - postgres -c 'pg_dumpall' |
     zstd \
       --quiet \
@@ -625,11 +590,6 @@ _restic_backup_postgresql() {
 #
 _restic_check() {
   log "INFO" "Starting repository integrity check"
-  
-  if [[ $DRY_RUN -eq 1 ]]; then
-    log "INFO" "DRY-RUN: Would perform repository integrity check"
-    return 0
-  fi
   
   # Tell restic to also verify the integrity of the pack files in the repository
   # each sunday.
@@ -656,11 +616,6 @@ _restic_check() {
 #
 _restic_forget() {
   log "INFO" "Starting cleanup - keeping last $RESTIC_KEEP_LAST snapshots"
-
-  if [[ $DRY_RUN -eq 1 ]]; then
-    log "INFO" "DRY-RUN: Would forget old snapshots and cleanup cache"
-    return 0
-  fi
 
   if ! execute_command "snapshot cleanup" restic forget --keep-last "$RESTIC_KEEP_LAST" --cleanup-cache; then
     log "ERROR" "Snapshot cleanup failed"
@@ -693,11 +648,6 @@ _restic_init() {
     return 1
   fi
 
-  if [[ $DRY_RUN -eq 1 ]]; then
-    log "INFO" "DRY-RUN: Would check/initialize repository at $RESTIC_REPOSITORY"
-    return 0
-  fi
-
   if ! execute_command "repository snapshots check" restic snapshots; then
     log "INFO" "Repository not initialized, creating new repository at $RESTIC_REPOSITORY"
     if ! execute_command "repository initialization" restic init; then
@@ -717,11 +667,6 @@ _restic_init() {
 #
 _restic_stats() {
   log "INFO" "Generating backup statistics"
-  
-  if [[ $DRY_RUN -eq 1 ]]; then
-    log "INFO" "DRY-RUN: Would generate backup statistics"
-    return 0
-  fi
   
   if [[ -n $NODE_EXPORTER_TEXTFILE_DIRECTORY ]] && command_exists jq; then
     log "INFO" "Generating Prometheus metrics"
