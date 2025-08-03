@@ -3,7 +3,7 @@
 # A robust wrapper for restic backup (https://github.com/restic/restic)
 #
 # Usage:
-#   yolo-backup [OPTIONS]
+#   yolo-backup
 #
 # Environment Variables:
 #   RESTIC_REPOSITORY          Repository location (required)
@@ -116,16 +116,7 @@ usage() {
 $SCRIPT_NAME v$SCRIPT_VERSION - Robust restic backup wrapper
 
 USAGE:
-  $SCRIPT_NAME [OPTIONS]
-
-OPTIONS:
-  --help, -h              Show this help message
-  --version, -v           Show version information
-  --skip-mysql            Skip MySQL backup
-  --skip-postgresql       Skip PostgreSQL backup
-  --skip-files            Skip file system backup
-  --log-level LEVEL       Set log level (ERROR, WARN, INFO, DEBUG)
-  --compression LEVEL     Set compression level (auto, none, zstd, quicklz)
+  $SCRIPT_NAME
 
 ENVIRONMENT VARIABLES:
   RESTIC_REPOSITORY       Repository location (required)
@@ -135,79 +126,18 @@ ENVIRONMENT VARIABLES:
   RESTIC_KEEP_LAST        Number of snapshots to keep (default: 180)
   DEBUG                   Enable debug mode (default: 0)
   MIN_FREE_SPACE_MB       Minimum free space required in MB (default: 1024)
+  LOG_LEVEL               Log level: ERROR, WARN, INFO, DEBUG (default: INFO)
+  COMPRESSION_LEVEL       Compression level (default: auto)
+  SKIP_MYSQL              Skip MySQL backup (default: 0)
+  SKIP_POSTGRESQL         Skip PostgreSQL backup (default: 0)
+  SKIP_FILES              Skip file backup (default: 0)
 
 EXAMPLES:
   RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password $SCRIPT_NAME
   RESTIC_REPOSITORY=gs:bucket/restic GOOGLE_PROJECT_ID=1234 $SCRIPT_NAME
-  $SCRIPT_NAME --skip-mysql --log-level DEBUG
+  SKIP_MYSQL=1 LOG_LEVEL=DEBUG $SCRIPT_NAME
 
 EOF
-}
-
-#
-# Parse command line arguments
-#
-parse_args() {
-  while [[ $# -gt 0 ]]; do
-    case $1 in
-      --help|-h)
-        usage
-        exit 0
-        ;;
-      --version|-v)
-        echo "$SCRIPT_NAME v$SCRIPT_VERSION"
-        exit 0
-        ;;
-      --skip-mysql)
-        SKIP_MYSQL=1
-        log "INFO" "MySQL backup will be skipped"
-        shift
-        ;;
-      --skip-postgresql)
-        SKIP_POSTGRESQL=1
-        log "INFO" "PostgreSQL backup will be skipped"
-        shift
-        ;;
-      --skip-files)
-        SKIP_FILES=1
-        log "INFO" "File system backup will be skipped"
-        shift
-        ;;
-      --log-level)
-        LOG_LEVEL="$2"
-        case "${LOG_LEVEL^^}" in
-          ERROR) LOG_LEVEL_NUM=$LOG_ERROR ;;
-          WARN)  LOG_LEVEL_NUM=$LOG_WARN ;;
-          INFO)  LOG_LEVEL_NUM=$LOG_INFO ;;
-          DEBUG) LOG_LEVEL_NUM=$LOG_DEBUG ;;
-          *)
-            log "ERROR" "Invalid log level: $LOG_LEVEL. Valid levels: ERROR, WARN, INFO, DEBUG"
-            exit 1
-            ;;
-        esac
-        log "INFO" "Log level set to ${LOG_LEVEL^^}"
-        shift 2
-        ;;
-      --compression)
-        COMPRESSION_LEVEL="$2"
-        case "$COMPRESSION_LEVEL" in
-          auto|none|zstd|quicklz)
-            log "INFO" "Compression level set to $COMPRESSION_LEVEL"
-            ;;
-          *)
-            log "ERROR" "Invalid compression level: $COMPRESSION_LEVEL. Valid levels: auto, none, zstd, quicklz"
-            exit 1
-            ;;
-        esac
-        shift 2
-        ;;
-      *)
-        log "ERROR" "Unknown option: $1"
-        usage
-        exit 1
-        ;;
-    esac
-  done
 }
 
 #
@@ -710,10 +640,19 @@ EOF
 # Main function
 #
 main() {
-  log "INFO" "Starting $SCRIPT_NAME v$SCRIPT_VERSION"
+  # Handle help request
+  if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+    usage
+    exit 0
+  fi
   
-  # Parse command line arguments
-  parse_args "$@"
+  # Handle version request
+  if [[ "${1:-}" == "--version" || "${1:-}" == "-v" ]]; then
+    echo "$SCRIPT_NAME v$SCRIPT_VERSION"
+    exit 0
+  fi
+  
+  log "INFO" "Starting $SCRIPT_NAME v$SCRIPT_VERSION"
   
   # Validate configuration
   if ! validate_config; then
