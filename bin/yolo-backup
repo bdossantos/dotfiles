@@ -16,7 +16,6 @@
 #   SYSLOG                     Enable syslog output (default: 0)
 #   DRY_RUN                    Enable dry-run mode (default: 0)
 #   LOG_LEVEL                  Log level: ERROR, WARN, INFO, DEBUG (default: INFO)
-#   RETRY_COUNT                Number of retries for network operations (default: 3)
 #   COMPRESSION_LEVEL          Compression level (default: auto)
 #   SKIP_MYSQL                 Skip MySQL backup (default: 0)
 #   SKIP_POSTGRESQL            Skip PostgreSQL backup (default: 0)
@@ -39,7 +38,6 @@ set -o nounset
 DEBUG=${DEBUG:-0}
 DRY_RUN=${DRY_RUN:-0}
 LOG_LEVEL=${LOG_LEVEL:-INFO}
-RETRY_COUNT=${RETRY_COUNT:-3}
 COMPRESSION_LEVEL=${COMPRESSION_LEVEL:-auto}
 SKIP_MYSQL=${SKIP_MYSQL:-0}
 SKIP_POSTGRESQL=${SKIP_POSTGRESQL:-0}
@@ -139,7 +137,6 @@ ENVIRONMENT VARIABLES:
   RESTIC_KEEP_LAST        Number of snapshots to keep (default: 180)
   DEBUG                   Enable debug mode (default: 0)
   DRY_RUN                 Enable dry-run mode (default: 0)
-  RETRY_COUNT             Number of retries for network operations (default: 3)
   MIN_FREE_SPACE_MB       Minimum free space required in MB (default: 1024)
 
 EXAMPLES:
@@ -315,7 +312,7 @@ validate_config() {
 }
 
 #
-# Execute command with retry logic
+# Execute command with logging
 #
 # Arguments:
 #   $1 - Description of the operation
@@ -323,36 +320,25 @@ validate_config() {
 # Returns:
 #   Exit code of the command
 #
-retry_command() {
+execute_command() {
   local description="$1"
   shift
-  local attempt=1
-  local max_attempts=$RETRY_COUNT
   
-  while [[ $attempt -le $max_attempts ]]; do
-    log "INFO" "Attempting $description (attempt $attempt/$max_attempts)"
-    
-    if [[ $DRY_RUN -eq 1 ]]; then
-      log "INFO" "DRY-RUN: Would execute: $*"
-      return 0
-    fi
-    
-    if "$@"; then
-      log "INFO" "$description completed successfully"
-      return 0
-    else
-      local exit_code=$?
-      if [[ $attempt -eq $max_attempts ]]; then
-        log "ERROR" "$description failed after $max_attempts attempts"
-        return $exit_code
-      else
-        log "WARN" "$description failed (attempt $attempt/$max_attempts), retrying in 5 seconds..."
-        sleep 5
-      fi
-    fi
-    
-    ((attempt++))
-  done
+  log "INFO" "Starting $description"
+  
+  if [[ $DRY_RUN -eq 1 ]]; then
+    log "INFO" "DRY-RUN: Would execute: $*"
+    return 0
+  fi
+  
+  if "$@"; then
+    log "INFO" "$description completed successfully"
+    return 0
+  else
+    local exit_code=$?
+    log "ERROR" "$description failed"
+    return $exit_code
+  fi
 }
 
 #
@@ -649,13 +635,13 @@ _restic_check() {
   # each sunday.
   if [[ $(date +%w) == 7 ]]; then
     log "INFO" "Sunday detected, performing thorough integrity check with data verification"
-    if ! retry_command "repository integrity check with data" restic check --with-cache --read-data-subset=2%; then
+    if ! execute_command "repository integrity check with data" restic check --with-cache --read-data-subset=2%; then
       log "ERROR" "Repository integrity check with data verification failed"
       return 1
     fi
   else
     log "INFO" "Performing standard integrity check"
-    if ! retry_command "repository integrity check" restic check --with-cache; then
+    if ! execute_command "repository integrity check" restic check --with-cache; then
       log "ERROR" "Repository integrity check failed"
       return 1
     fi
@@ -676,12 +662,12 @@ _restic_forget() {
     return 0
   fi
 
-  if ! retry_command "snapshot cleanup" restic forget --keep-last "$RESTIC_KEEP_LAST" --cleanup-cache; then
+  if ! execute_command "snapshot cleanup" restic forget --keep-last "$RESTIC_KEEP_LAST" --cleanup-cache; then
     log "ERROR" "Snapshot cleanup failed"
     return 1
   fi
 
-  if ! retry_command "repository prune" restic prune --max-unused '2%'; then
+  if ! execute_command "repository prune" restic prune --max-unused '2%'; then
     log "ERROR" "Repository prune failed"
     return 1
   fi
@@ -712,9 +698,9 @@ _restic_init() {
     return 0
   fi
 
-  if ! retry_command "repository snapshots check" restic snapshots; then
+  if ! execute_command "repository snapshots check" restic snapshots; then
     log "INFO" "Repository not initialized, creating new repository at $RESTIC_REPOSITORY"
-    if ! retry_command "repository initialization" restic init; then
+    if ! execute_command "repository initialization" restic init; then
       log "ERROR" "Failed to initialize restic repository"
       return 1
     fi
