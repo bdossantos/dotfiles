@@ -16,7 +16,6 @@
 #   SYSLOG                     Enable syslog output (default: 0)
 
 #   LOG_LEVEL                  Log level: ERROR, WARN, INFO, DEBUG (default: INFO)
-#   COMPRESSION_LEVEL          Compression level (default: auto)
 #   SKIP_MYSQL                 Skip MySQL backup (default: 0)
 #   SKIP_POSTGRESQL            Skip PostgreSQL backup (default: 0)
 #   SKIP_FILES                 Skip file backup (default: 0)
@@ -37,7 +36,6 @@ set -o nounset
 # Configuration with defaults
 DEBUG=${DEBUG:-0}
 LOG_LEVEL=${LOG_LEVEL:-INFO}
-COMPRESSION_LEVEL=${COMPRESSION_LEVEL:-auto}
 SKIP_MYSQL=${SKIP_MYSQL:-0}
 SKIP_POSTGRESQL=${SKIP_POSTGRESQL:-0}
 SKIP_FILES=${SKIP_FILES:-0}
@@ -77,10 +75,10 @@ readonly LOG_DEBUG=4
 # Convert log level string to number
 case "${LOG_LEVEL^^}" in
   ERROR) LOG_LEVEL_NUM=$LOG_ERROR ;;
-  WARN)  LOG_LEVEL_NUM=$LOG_WARN ;;
-  INFO)  LOG_LEVEL_NUM=$LOG_INFO ;;
+  WARN) LOG_LEVEL_NUM=$LOG_WARN ;;
+  INFO) LOG_LEVEL_NUM=$LOG_INFO ;;
   DEBUG) LOG_LEVEL_NUM=$LOG_DEBUG ;;
-  *)     LOG_LEVEL_NUM=$LOG_INFO ;;
+  *) LOG_LEVEL_NUM=$LOG_INFO ;;
 esac
 
 #
@@ -94,15 +92,15 @@ log() {
   local level="$1"
   local message="$2"
   local level_num
-  
+
   case "${level^^}" in
     ERROR) level_num=$LOG_ERROR ;;
-    WARN)  level_num=$LOG_WARN ;;
-    INFO)  level_num=$LOG_INFO ;;
+    WARN) level_num=$LOG_WARN ;;
+    INFO) level_num=$LOG_INFO ;;
     DEBUG) level_num=$LOG_DEBUG ;;
     *) level_num=$LOG_INFO ;;
   esac
-  
+
   if [[ $level_num -le $LOG_LEVEL_NUM ]]; then
     printf "[%s] [%s] %s\n" "$(date '+%Y-%m-%d %H:%M:%S')" "${level^^}" "$message" >&2
   fi
@@ -127,7 +125,6 @@ ENVIRONMENT VARIABLES:
   DEBUG                   Enable debug mode (default: 0)
   MIN_FREE_SPACE_MB       Minimum free space required in MB (default: 1024)
   LOG_LEVEL               Log level: ERROR, WARN, INFO, DEBUG (default: INFO)
-  COMPRESSION_LEVEL       Compression level (default: auto)
   SKIP_MYSQL              Skip MySQL backup (default: 0)
   SKIP_POSTGRESQL         Skip PostgreSQL backup (default: 0)
   SKIP_FILES              Skip file backup (default: 0)
@@ -164,21 +161,21 @@ command_exists() {
 check_disk_space() {
   local path="$1"
   local required_mb="$2"
-  
+
   if ! command_exists df; then
     log "WARN" "df command not available, skipping disk space check"
     return 0
   fi
-  
+
   local available_kb
   available_kb=$(df -k "$path" | awk 'NR==2 {print $4}')
   local available_mb=$((available_kb / 1024))
-  
+
   if [[ $available_mb -lt $required_mb ]]; then
     log "ERROR" "Insufficient disk space. Available: ${available_mb}MB, Required: ${required_mb}MB"
     return 1
   fi
-  
+
   log "INFO" "Disk space check passed. Available: ${available_mb}MB"
   return 0
 }
@@ -188,47 +185,53 @@ check_disk_space() {
 #
 validate_config() {
   log "INFO" "Validating configuration..."
-  
+
   # Check required environment variables
-  if [[ -z "$RESTIC_REPOSITORY" ]]; then
+  if [[ -z $RESTIC_REPOSITORY ]]; then
     log "ERROR" "RESTIC_REPOSITORY environment variable is required"
     return 1
   fi
-  
-  if [[ -z "$RESTIC_PASSWORD_FILE" ]]; then
+
+  if [[ -z $RESTIC_PASSWORD_FILE ]]; then
     log "ERROR" "RESTIC_PASSWORD_FILE environment variable is required"
     return 1
   fi
-  
+
   # Check if restic binary is available
   if ! command_exists restic; then
     log "ERROR" "restic binary not found in PATH"
     return 1
   fi
-  
+
+  # Check if zstd is available for compression
+  if ! command_exists zstd; then
+    log "ERROR" "zstd binary not found in PATH but is required for compression"
+    return 1
+  fi
+
   # Check password file
-  if [[ ! -r "$RESTIC_PASSWORD_FILE" ]]; then
+  if [[ ! -r $RESTIC_PASSWORD_FILE ]]; then
     log "ERROR" "Password file is not readable: $RESTIC_PASSWORD_FILE"
     return 1
   fi
-  
+
   # Check exclude file if not default
-  if [[ "$RESTIC_EXCLUDE_FILE" != "/dev/null" && ! -r "$RESTIC_EXCLUDE_FILE" ]]; then
+  if [[ $RESTIC_EXCLUDE_FILE != "/dev/null" && ! -r $RESTIC_EXCLUDE_FILE ]]; then
     log "ERROR" "Exclude file is not readable: $RESTIC_EXCLUDE_FILE"
     return 1
   fi
-  
+
   # Check target directory exists
-  if [[ ! -d "$RESTIC_BACKUP_TARGET_DIRECTORY" ]]; then
+  if [[ ! -d $RESTIC_BACKUP_TARGET_DIRECTORY ]]; then
     log "ERROR" "Target directory does not exist: $RESTIC_BACKUP_TARGET_DIRECTORY"
     return 1
   fi
-  
+
   # Check disk space
   if ! check_disk_space "/" "$MIN_FREE_SPACE_MB"; then
     return 1
   fi
-  
+
   log "INFO" "Configuration validation passed"
   return 0
 }
@@ -245,9 +248,9 @@ validate_config() {
 execute_command() {
   local description="$1"
   shift
-  
+
   log "INFO" "Starting $description"
-  
+
   if "$@"; then
     log "INFO" "$description completed successfully"
     return 0
@@ -264,13 +267,13 @@ execute_command() {
 cleanup() {
   local exit_code=$?
   log "INFO" "Performing cleanup..."
-  
+
   # Unlock restic if it's locked
   if [[ $exit_code -ne 0 ]]; then
     log "WARN" "Script exited with error, attempting to unlock restic repository"
     restic unlock 2>/dev/null || true
   fi
-  
+
   exit $exit_code
 }
 
@@ -282,7 +285,7 @@ _restic_backup_files() {
     log "INFO" "Skipping file system backup (--skip-files)"
     return 0
   fi
-  
+
   if [[ ! -r $RESTIC_EXCLUDE_FILE ]]; then
     log "ERROR" "Exclude file list is not readable: $RESTIC_EXCLUDE_FILE"
     return 1
@@ -294,21 +297,7 @@ _restic_backup_files() {
   set +o pipefail
 
   # Determine compression program based on configuration
-  local compress_prog
-  case "$COMPRESSION_LEVEL" in
-    none) compress_prog="cat" ;;
-    zstd) compress_prog="zstd" ;;
-    quicklz) compress_prog="lz4" ;;
-    auto|*) 
-      if command_exists zstd; then
-        compress_prog="zstd"
-      elif command_exists lz4; then
-        compress_prog="lz4"
-      else
-        compress_prog="cat"
-      fi
-      ;;
-  esac
+  local compress_prog="zstd"
 
   log "INFO" "Using compression: $compress_prog"
 
@@ -353,12 +342,12 @@ _restic_backup_mysql_xtrabackup() {
     log "INFO" "Skipping MySQL xtrabackup (--skip-mysql)"
     return 0
   fi
-  
+
   if ! command_exists xtrabackup || ! command_exists xbstream; then
     log "DEBUG" "xtrabackup or xbstream not available, skipping MySQL xtrabackup"
     return 0
   fi
-  
+
   log "INFO" "Starting MySQL backup with xtrabackup"
 
   local mysql_default_files
@@ -368,16 +357,15 @@ _restic_backup_mysql_xtrabackup() {
     mysql_default_files="/root/.my.cnf"
   fi
 
-  if [[ ! -r "$mysql_default_files" ]]; then
+  if [[ ! -r $mysql_default_files ]]; then
     log "ERROR" "MySQL configuration file not readable: $mysql_default_files"
     return 1
   fi
 
-  local compress
   if xtrabackup --version 2>&1 | grep -q 'xtrabackup version 8.0'; then
-    compress='zstd'
+    local compress="zstd"
   else
-    compress='quicklz'
+    local compress="quicklz"
   fi
 
   log "INFO" "Using MySQL compression: $compress"
@@ -402,7 +390,7 @@ _restic_backup_mysql_xtrabackup() {
   #   - mv /var/lib/mysql/my_db/person_tags.* /var/tmp/
   #   - cp -v /var/tmp/backup/my_db/person_tags.* /var/lib/mysql/my_db/
   #   - mysql> ALTER TABLE my_db.person_tags IMPORT TABLESPACE
-  
+
   if ! xtrabackup \
     --defaults-file="$mysql_default_files" \
     --backup \
@@ -421,7 +409,7 @@ _restic_backup_mysql_xtrabackup() {
     log "ERROR" "MySQL xtrabackup failed"
     return 1
   fi
-  
+
   log "INFO" "MySQL xtrabackup completed successfully"
   return 0
 }
@@ -434,12 +422,12 @@ _restic_backup_mysql() {
     log "INFO" "Skipping MySQL backup (--skip-mysql)"
     return 0
   fi
-  
+
   if ! command_exists mysqld; then
     log "DEBUG" "mysqld not available, skipping MySQL backup"
     return 0
   fi
-  
+
   log "INFO" "Starting MySQL backup with mysqldump"
 
   local mysql_default_files
@@ -449,7 +437,7 @@ _restic_backup_mysql() {
     mysql_default_files="/root/.my.cnf"
   fi
 
-  if [[ ! -r "$mysql_default_files" ]]; then
+  if [[ ! -r $mysql_default_files ]]; then
     log "ERROR" "MySQL configuration file not readable: $mysql_default_files"
     return 1
   fi
@@ -475,7 +463,7 @@ _restic_backup_mysql() {
     log "ERROR" "MySQL mysqldump backup failed"
     return 1
   fi
-  
+
   log "INFO" "MySQL mysqldump backup completed successfully"
   return 0
 }
@@ -488,12 +476,12 @@ _restic_backup_postgresql() {
     log "INFO" "Skipping PostgreSQL backup (--skip-postgresql)"
     return 0
   fi
-  
+
   if ! command_exists pg_dumpall; then
     log "DEBUG" "pg_dumpall not available, skipping PostgreSQL backup"
     return 0
   fi
-  
+
   log "INFO" "Starting PostgreSQL backup"
 
   if ! su - postgres -c 'pg_dumpall' |
@@ -510,7 +498,7 @@ _restic_backup_postgresql() {
     log "ERROR" "PostgreSQL backup failed"
     return 1
   fi
-  
+
   log "INFO" "PostgreSQL backup completed successfully"
   return 0
 }
@@ -520,7 +508,7 @@ _restic_backup_postgresql() {
 #
 _restic_check() {
   log "INFO" "Starting repository integrity check"
-  
+
   # Tell restic to also verify the integrity of the pack files in the repository
   # each sunday.
   if [[ $(date +%w) == 7 ]]; then
@@ -536,7 +524,7 @@ _restic_check() {
       return 1
     fi
   fi
-  
+
   log "INFO" "Repository integrity check completed successfully"
   return 0
 }
@@ -566,7 +554,7 @@ _restic_forget() {
 #
 _restic_init() {
   log "INFO" "Initializing restic repository"
-  
+
   if [[ ! -r $RESTIC_PASSWORD_FILE ]]; then
     log "ERROR" "Password file is not readable: $RESTIC_PASSWORD_FILE"
     return 1
@@ -588,7 +576,7 @@ _restic_init() {
   else
     log "INFO" "Repository already exists and is accessible"
   fi
-  
+
   return 0
 }
 
@@ -597,7 +585,7 @@ _restic_init() {
 #
 _restic_stats() {
   log "INFO" "Generating backup statistics"
-  
+
   if [[ -n $NODE_EXPORTER_TEXTFILE_DIRECTORY ]] && command_exists jq; then
     log "INFO" "Generating Prometheus metrics"
     local stats
@@ -605,7 +593,7 @@ _restic_stats() {
       log "ERROR" "Failed to get repository statistics"
       return 1
     fi
-    
+
     local temp_file="${NODE_EXPORTER_TEXTFILE_DIRECTORY}/yolo-backup.prom.$$"
     cat <<EOF >"$temp_file"
 # HELP backup_total_size_bytes Disk space used by backup
@@ -632,7 +620,7 @@ EOF
       return 1
     fi
   fi
-  
+
   return 0
 }
 
@@ -641,31 +629,31 @@ EOF
 #
 main() {
   # Handle help request
-  if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+  if [[ ${1:-} == "--help" || ${1:-} == "-h" ]]; then
     usage
     exit 0
   fi
-  
+
   # Handle version request
-  if [[ "${1:-}" == "--version" || "${1:-}" == "-v" ]]; then
+  if [[ ${1:-} == "--version" || ${1:-} == "-v" ]]; then
     echo "$SCRIPT_NAME v$SCRIPT_VERSION"
     exit 0
   fi
-  
+
   log "INFO" "Starting $SCRIPT_NAME v$SCRIPT_VERSION"
-  
+
   # Validate configuration
   if ! validate_config; then
     log "ERROR" "Configuration validation failed"
     exit 1
   fi
-  
+
   # Set up signal traps for cleanup
   trap cleanup EXIT INT TERM
-  
+
   # Change to root directory for backup operations
   cd /
-  
+
   # Initialize repository
   if ! _restic_init; then
     log "ERROR" "Repository initialization failed"
@@ -674,7 +662,7 @@ main() {
 
   # Perform backups based on available services and configuration
   local backup_failed=0
-  
+
   if command_exists xtrabackup && command_exists xbstream; then
     if ! _restic_backup_mysql_xtrabackup; then
       log "ERROR" "MySQL xtrabackup failed"
