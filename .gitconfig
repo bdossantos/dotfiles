@@ -80,6 +80,9 @@ followTags = true
 template = ~/.gitmessage
 gpgsign = true
 
+[tag]
+gpgsign = true
+
 [gc]
 auto = 1
 writeCommitGraph = true
