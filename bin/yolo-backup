@@ -313,7 +313,7 @@ _restic_backup_files() {
     restic \
       backup \
       --stdin \
-      --stdin-filename="/system.tar.$(echo "$compress_prog" | sed 's/.*\///').zst" \
+      --stdin-filename="/system.tar.zst" \
       --tag="$compress_prog" \
       --exclude-file="$RESTIC_EXCLUDE_FILE"
 
