@@ -123,8 +123,8 @@ brew install \
   s3cmd \
   shellcheck \
   shfmt \
-  shpotify \
-  spotify \
+  spotify-tui \
+  spotifyd \
   ssh-copy-id \
   starship \
   stow \
