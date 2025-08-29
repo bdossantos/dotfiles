@@ -23,6 +23,7 @@
 # Examples:
 #   RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password yolo-backup
 #   RESTIC_REPOSITORY=gs:my-bucket/restic/$(hostname -f) GOOGLE_PROJECT_ID=1234 yolo-backup
+#   RESTIC_BACKUP_TARGET_DIRECTORY='/ /media/usb' RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password yolo-backup
 #
 # (c) 2017, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/dotfiles
@@ -290,44 +291,17 @@ _restic_backup_files() {
 
   log "INFO" "Starting file system backup of: $RESTIC_BACKUP_TARGET_DIRECTORY"
 
-  # temporarily disable pipefail, see below
-  set +o pipefail
-
-  # Determine compression program based on configuration
-  local compress_prog="zstd"
-
-  log "INFO" "Using compression: $compress_prog"
-
-  # don't forget to use `xattrs` flag when restoring
-  tar \
-    --exclude-from="$RESTIC_EXCLUDE_FILE" \
-    --xattrs \
-    --warning=no-file-changed \
-    --warning=no-file-removed \
-    --use-compress-program="$compress_prog" \
-    -cpf - \
-    "$RESTIC_BACKUP_TARGET_DIRECTORY" |
-    restic \
-      backup \
-      --stdin \
-      --stdin-filename="/system.tar.zst" \
-      --tag="$compress_prog" \
-      --exclude-file="$RESTIC_EXCLUDE_FILE"
-
-  # Ignore exit code == 1, "Some files differ" warning, happen often when backup
-  # the / of a busy (or not) system.
-  # See https://www.gnu.org/software/tar/manual/html_section/tar_19.html
-  # shellcheck disable=SC2181
-  local exit_code=$?
-
-  set -o pipefail
-
-  if [[ $exit_code -eq 0 ]] || [[ $exit_code -eq 1 ]]; then
+  if ! restic \
+    backup \
+    --one-file-system \
+    --tag='full-system' \
+    --exclude-file="$RESTIC_EXCLUDE_FILE" \
+    "${RESTIC_BACKUP_TARGET_DIRECTORY}"; then
+    log "ERROR" "File system backup failed with exit code: $exit_code"
+    return 1
+  else
     log "INFO" "File system backup completed successfully"
     return 0
-  else
-    log "ERROR" "File system backup failed with exit code: $exit_code"
-    return $exit_code
   fi
 }
 
