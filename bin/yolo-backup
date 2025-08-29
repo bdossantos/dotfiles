@@ -10,7 +10,6 @@
 #   RESTIC_PASSWORD_FILE       Password file path (required)
 #   RESTIC_EXCLUDE_FILE        File patterns to exclude (default: /dev/null)
 #   RESTIC_BACKUP_TARGET_DIRECTORY  Target directory to backup (default: /)
-#   RESTIC_KEEP_LAST           Number of snapshots to keep (default: 180)
 #   NODE_EXPORTER_TEXTFILE_DIRECTORY  Directory for metrics (optional)
 #   DEBUG                      Enable debug mode (default: 0)
 #   SYSLOG                     Enable syslog output (default: 0)
@@ -51,7 +50,6 @@ RESTIC_BACKUP_TARGET_DIRECTORY=${RESTIC_BACKUP_TARGET_DIRECTORY:-'/'}
 RESTIC_EXCLUDE_FILE=${RESTIC_EXCLUDE_FILE:-'/dev/null'}
 RESTIC_PASSWORD_FILE=${RESTIC_PASSWORD_FILE:-}
 RESTIC_REPOSITORY=${RESTIC_REPOSITORY:-}
-RESTIC_KEEP_LAST=${RESTIC_KEEP_LAST:-180}
 SYSLOG=${SYSLOG:-0}
 
 # Script metadata
@@ -121,7 +119,6 @@ ENVIRONMENT VARIABLES:
   RESTIC_PASSWORD_FILE    Password file path (required)
   RESTIC_EXCLUDE_FILE     File patterns to exclude (default: /dev/null)
   RESTIC_BACKUP_TARGET_DIRECTORY  Target directory to backup (default: /)
-  RESTIC_KEEP_LAST        Number of snapshots to keep (default: 180)
   DEBUG                   Enable debug mode (default: 0)
   MIN_FREE_SPACE_MB       Minimum free space required in MB (default: 1024)
   LOG_LEVEL               Log level: ERROR, WARN, INFO, DEBUG (default: INFO)
@@ -533,9 +530,14 @@ _restic_check() {
 # Clean up old snapshots
 #
 _restic_forget() {
-  log "INFO" "Starting cleanup - keeping last $RESTIC_KEEP_LAST snapshots"
+  log "INFO" "Starting cleanup of old snapshots (keep 7 daily, 6 monthly, 4 weekly, 2 yearly)"
 
-  if ! execute_command "snapshot cleanup" restic forget --keep-last "$RESTIC_KEEP_LAST" --cleanup-cache; then
+  if ! execute_command "snapshot cleanup" restic forget \
+    --group-by host \
+    --keep-daily 7 \
+    --keep-monthly 6 \
+    --keep-weekly 4 \
+    --keep-yearly 2; then
     log "ERROR" "Snapshot cleanup failed"
     return 1
   fi
