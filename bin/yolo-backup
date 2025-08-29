@@ -10,7 +10,6 @@
 #   RESTIC_PASSWORD_FILE       Password file path (required)
 #   RESTIC_EXCLUDE_FILE        File patterns to exclude (default: /dev/null)
 #   RESTIC_BACKUP_TARGET_DIRECTORY  Target directory to backup (default: /)
-#   RESTIC_KEEP_LAST           Number of snapshots to keep (default: 180)
 #   NODE_EXPORTER_TEXTFILE_DIRECTORY  Directory for metrics (optional)
 #   DEBUG                      Enable debug mode (default: 0)
 #   SYSLOG                     Enable syslog output (default: 0)
@@ -24,6 +23,7 @@
 # Examples:
 #   RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password yolo-backup
 #   RESTIC_REPOSITORY=gs:my-bucket/restic/$(hostname -f) GOOGLE_PROJECT_ID=1234 yolo-backup
+#   RESTIC_BACKUP_TARGET_DIRECTORY='/ /media/usb' RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password yolo-backup
 #
 # (c) 2017, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/dotfiles
@@ -51,7 +51,6 @@ RESTIC_BACKUP_TARGET_DIRECTORY=${RESTIC_BACKUP_TARGET_DIRECTORY:-'/'}
 RESTIC_EXCLUDE_FILE=${RESTIC_EXCLUDE_FILE:-'/dev/null'}
 RESTIC_PASSWORD_FILE=${RESTIC_PASSWORD_FILE:-}
 RESTIC_REPOSITORY=${RESTIC_REPOSITORY:-}
-RESTIC_KEEP_LAST=${RESTIC_KEEP_LAST:-180}
 SYSLOG=${SYSLOG:-0}
 
 # Script metadata
@@ -121,7 +120,6 @@ ENVIRONMENT VARIABLES:
   RESTIC_PASSWORD_FILE    Password file path (required)
   RESTIC_EXCLUDE_FILE     File patterns to exclude (default: /dev/null)
   RESTIC_BACKUP_TARGET_DIRECTORY  Target directory to backup (default: /)
-  RESTIC_KEEP_LAST        Number of snapshots to keep (default: 180)
   DEBUG                   Enable debug mode (default: 0)
   MIN_FREE_SPACE_MB       Minimum free space required in MB (default: 1024)
   LOG_LEVEL               Log level: ERROR, WARN, INFO, DEBUG (default: INFO)
@@ -293,44 +291,17 @@ _restic_backup_files() {
 
   log "INFO" "Starting file system backup of: $RESTIC_BACKUP_TARGET_DIRECTORY"
 
-  # temporarily disable pipefail, see below
-  set +o pipefail
-
-  # Determine compression program based on configuration
-  local compress_prog="zstd"
-
-  log "INFO" "Using compression: $compress_prog"
-
-  # don't forget to use `xattrs` flag when restoring
-  tar \
-    --exclude-from="$RESTIC_EXCLUDE_FILE" \
-    --xattrs \
-    --warning=no-file-changed \
-    --warning=no-file-removed \
-    --use-compress-program="$compress_prog" \
-    -cpf - \
-    "$RESTIC_BACKUP_TARGET_DIRECTORY" |
-    restic \
-      backup \
-      --stdin \
-      --stdin-filename="/system.tar.zst" \
-      --tag="$compress_prog" \
-      --exclude-file="$RESTIC_EXCLUDE_FILE"
-
-  # Ignore exit code == 1, "Some files differ" warning, happen often when backup
-  # the / of a busy (or not) system.
-  # See https://www.gnu.org/software/tar/manual/html_section/tar_19.html
-  # shellcheck disable=SC2181
-  local exit_code=$?
-
-  set -o pipefail
-
-  if [[ $exit_code -eq 0 ]] || [[ $exit_code -eq 1 ]]; then
+  if ! restic \
+    backup \
+    --one-file-system \
+    --tag='full-system' \
+    --exclude-file="$RESTIC_EXCLUDE_FILE" \
+    "${RESTIC_BACKUP_TARGET_DIRECTORY}"; then
+    log "ERROR" "File system backup failed with exit code: $exit_code"
+    return 1
+  else
     log "INFO" "File system backup completed successfully"
     return 0
-  else
-    log "ERROR" "File system backup failed with exit code: $exit_code"
-    return $exit_code
   fi
 }
 
@@ -533,9 +504,14 @@ _restic_check() {
 # Clean up old snapshots
 #
 _restic_forget() {
-  log "INFO" "Starting cleanup - keeping last $RESTIC_KEEP_LAST snapshots"
+  log "INFO" "Starting cleanup of old snapshots (keep 7 daily, 6 monthly, 4 weekly, 2 yearly)"
 
-  if ! execute_command "snapshot cleanup" restic forget --keep-last "$RESTIC_KEEP_LAST" --cleanup-cache; then
+  if ! execute_command "snapshot cleanup" restic forget \
+    --group-by host \
+    --keep-daily 7 \
+    --keep-monthly 6 \
+    --keep-weekly 4 \
+    --keep-yearly 2; then
     log "ERROR" "Snapshot cleanup failed"
     return 1
   fi
