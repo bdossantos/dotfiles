@@ -60,5 +60,5 @@ keybinds {
 }
 
 pane_frames false
-theme "dracula"
+theme "default"
 mouse_mode true
