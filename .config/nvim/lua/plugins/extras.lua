@@ -8,7 +8,7 @@ return {
 
   -- Surround text objects (replaces tpope/vim-surround)
   {
-    "echasnovski/mini.surround",
+    "nvim-mini/mini.surround",
     keys = function(_, keys)
       local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
       local opts = require("lazy.core.plugin").values(plugin, "opts", false)
@@ -44,7 +44,7 @@ return {
 
   -- Text alignment (replaces godlygeek/tabular)
   {
-    "echasnovski/mini.align",
+    "nvim-mini/mini.align",
     keys = {
       { "ga", mode = { "n", "v" }, desc = "Align with delimiter" },
       { "gA", mode = { "n", "v" }, desc = "Align with preview" },
@@ -58,7 +58,7 @@ return {
 
   -- Trailing whitespace management (replaces ntpeters/vim-better-whitespace)
   {
-    "echasnovski/mini.trailspace",
+    "nvim-mini/mini.trailspace",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       require("mini.trailspace").setup()
