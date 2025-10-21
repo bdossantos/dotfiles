@@ -26,6 +26,7 @@
 # Examples:
 #   RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password yolo-backup
 #   RESTIC_REPOSITORY=gs:my-bucket/restic/$(hostname -f) GOOGLE_PROJECT_ID=1234 yolo-backup
+#   MYSQL_IGNORE_DATABASES="test_db temp_db" MYSQL_IGNORE_TABLES="mydb.cache_table mydb.sessions" yolo-backup
 #
 # (c) 2017, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/dotfiles
@@ -139,6 +140,7 @@ EXAMPLES:
   RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password $SCRIPT_NAME
   RESTIC_REPOSITORY=gs:bucket/restic GOOGLE_PROJECT_ID=1234 $SCRIPT_NAME
   SKIP_MYSQL=1 LOG_LEVEL=DEBUG $SCRIPT_NAME
+  MYSQL_IGNORE_DATABASES="test_db temp_db" MYSQL_IGNORE_TABLES="mydb.cache mydb.sessions" $SCRIPT_NAME
 
 EOF
 }
