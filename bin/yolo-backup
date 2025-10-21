@@ -362,7 +362,7 @@ _restic_backup_mysql_xtrabackup() {
     return 1
   fi
 
-  if xtrabackup --version 2>&1 | grep -q 'xtrabackup version 8.0'; then
+  if xtrabackup --version 2>&1 | grep -q 'xtrabackup version 8'; then
     local compress="zstd"
   else
     local compress="quicklz"
