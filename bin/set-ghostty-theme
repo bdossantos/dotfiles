@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+#
+# set-ghostty-theme - Set Ghostty theme based on current time
+#
+# This script updates the Ghostty configuration to use light or dark theme
+# based on the current hour of the day.
+#
+
+set -euo pipefail
+
+# Get the directory where this script lives to find theme-mode
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+THEME_MODE_SCRIPT="${SCRIPT_DIR}/theme-mode"
+
+# Configuration file path - check both the dotfiles repo and installed location
+DOTFILES_GHOSTTY_CONFIG="$(dirname "$SCRIPT_DIR")/.config/ghostty/config"
+HOME_GHOSTTY_CONFIG="${HOME}/.config/ghostty/config"
+
+# Use the dotfiles repo config if it exists, otherwise use the home config
+if [[ -f "$DOTFILES_GHOSTTY_CONFIG" ]]; then
+  GHOSTTY_CONFIG="$DOTFILES_GHOSTTY_CONFIG"
+else
+  GHOSTTY_CONFIG="$HOME_GHOSTTY_CONFIG"
+fi
+
+# Ensure the theme-mode script exists
+if [[ ! -x "$THEME_MODE_SCRIPT" ]]; then
+  echo "Error: theme-mode script not found or not executable at $THEME_MODE_SCRIPT" >&2
+  exit 1
+fi
+
+# Get current theme mode and corresponding Ghostty theme
+MODE=$("$THEME_MODE_SCRIPT")
+case "$MODE" in
+  "light")
+    THEME=$("$THEME_MODE_SCRIPT" ghostty-light)
+    ;;
+  "dark")
+    THEME=$("$THEME_MODE_SCRIPT" ghostty-dark)
+    ;;
+  *)
+    echo "Error: Unknown theme mode: $MODE" >&2
+    exit 1
+    ;;
+esac
+
+# Update or create the Ghostty config file
+if [[ -f "$GHOSTTY_CONFIG" ]]; then
+  # Create a temporary file to ensure atomic update
+  TEMP_CONFIG=$(mktemp)
+  
+  if grep -q "^theme = " "$GHOSTTY_CONFIG"; then
+    # Replace existing theme line, preserving other lines
+    sed "s/^theme = .*/theme = \"$THEME\"/" "$GHOSTTY_CONFIG" > "$TEMP_CONFIG"
+  else
+    # Append theme line if not found
+    cp "$GHOSTTY_CONFIG" "$TEMP_CONFIG"
+    echo "theme = \"$THEME\"" >> "$TEMP_CONFIG"
+  fi
+  
+  # Replace original with updated version
+  mv "$TEMP_CONFIG" "$GHOSTTY_CONFIG"
+else
+  # Create config file with theme
+  mkdir -p "$(dirname "$GHOSTTY_CONFIG")"
+  echo "theme = \"$THEME\"" > "$GHOSTTY_CONFIG"
+fi
+
+# Optional: print what we did (useful for debugging)
+if [[ "${VERBOSE:-}" == "1" ]]; then
+  echo "Set Ghostty theme to '$THEME' (mode: $MODE)"
+fi
