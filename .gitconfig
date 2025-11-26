@@ -106,5 +106,5 @@ writeCommitGraph = true
 [log]
 follow = true
 
-[includeIf "gitdir:$HOME/Code/work/"]
-path = $HOME/Code/work/.gitconfig
+[includeIf "gitdir:~/Code/work/"]
+path = ~/Code/work/.gitconfig
