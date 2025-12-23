@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# 
+# theme-mode - Detect if current time should use light or dark theme
+# 
+# Returns "light" for hours 7-18 (7:00 AM to 6:59 PM), "dark" otherwise
+# This provides a natural light mode during typical daylight hours.
+#
+
+set -euo pipefail
+
+get_theme_mode() {
+  local hour
+  hour=$(date +%H)
+  
+  # Convert to decimal to handle leading zeros
+  hour=$((10#$hour))
+  
+  # Light mode from 7:00 AM to 6:59 PM (hours 7-18)
+  if [[ $hour -ge 7 && $hour -lt 19 ]]; then
+    echo "light"
+  else
+    echo "dark"
+  fi
+}
+
+# Support different output formats
+case "${1:-mode}" in
+  "mode"|"")
+    get_theme_mode
+    ;;
+  "ghostty-light")
+    echo "GitHub-Light-High-Contrast"
+    ;;
+  "ghostty-dark") 
+    echo "dracula"
+    ;;
+  "nvim-light")
+    echo "tokyonight-day"
+    ;;
+  "nvim-dark")
+    echo "tokyonight-night"
+    ;;
+  "zellij-light")
+    echo "default"
+    ;;
+  "zellij-dark")
+    echo "dracula"
+    ;;
+  *)
+    echo "Usage: $0 [mode|ghostty-light|ghostty-dark|nvim-light|nvim-dark|zellij-light|zellij-dark]" >&2
+    exit 1
+    ;;
+esac
