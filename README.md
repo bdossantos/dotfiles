@@ -1,7 +1,7 @@
 # ~/.dotfiles
 
 [![CI](https://github.com/bdossantos/dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/bdossantos/dotfiles/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENCE)
+[![License: WTFPL](https://img.shields.io/badge/License-WTFPL-brightgreen.svg)](LICENCE)
 
 Personal dotfiles for macOS, managed with
 [GNU Stow](https://www.gnu.org/software/stow/).
@@ -103,4 +103,4 @@ make test
 
 ## Licence
 
-[MIT](LICENCE) © Benjamin Dos Santos
+[WTFPL](LICENCE) © Benjamin Dos Santos
