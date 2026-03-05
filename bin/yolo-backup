@@ -20,10 +20,13 @@
 #   SKIP_POSTGRESQL            Skip PostgreSQL backup (default: 0)
 #   SKIP_FILES                 Skip file backup (default: 0)
 #   MIN_FREE_SPACE_MB          Minimum free space required in MB (default: 1024)
+#   MYSQL_IGNORE_TABLES        Space-separated list of tables to ignore (format: db.table)
+#   MYSQL_IGNORE_DATABASES     Space-separated list of databases to ignore
 #
 # Examples:
 #   RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password yolo-backup
 #   RESTIC_REPOSITORY=gs:my-bucket/restic/$(hostname -f) GOOGLE_PROJECT_ID=1234 yolo-backup
+#   MYSQL_IGNORE_DATABASES="test_db temp_db" MYSQL_IGNORE_TABLES="mydb.cache_table mydb.sessions" yolo-backup
 #
 # (c) 2017, Benjamin Dos Santos <benjamin.dossantos@gmail.com>
 # https://github.com/bdossantos/dotfiles
@@ -40,6 +43,8 @@ SKIP_MYSQL=${SKIP_MYSQL:-0}
 SKIP_POSTGRESQL=${SKIP_POSTGRESQL:-0}
 SKIP_FILES=${SKIP_FILES:-0}
 MIN_FREE_SPACE_MB=${MIN_FREE_SPACE_MB:-1024}
+MYSQL_IGNORE_TABLES=${MYSQL_IGNORE_TABLES:-}
+MYSQL_IGNORE_DATABASES=${MYSQL_IGNORE_DATABASES:-}
 
 [[ $DEBUG -eq 1 ]] && set -o xtrace
 
@@ -128,11 +133,14 @@ ENVIRONMENT VARIABLES:
   SKIP_MYSQL              Skip MySQL backup (default: 0)
   SKIP_POSTGRESQL         Skip PostgreSQL backup (default: 0)
   SKIP_FILES              Skip file backup (default: 0)
+  MYSQL_IGNORE_TABLES     Space-separated list of tables to ignore (format: db.table)
+  MYSQL_IGNORE_DATABASES  Space-separated list of databases to ignore
 
 EXAMPLES:
   RESTIC_REPOSITORY=/backups/restic RESTIC_PASSWORD_FILE=/etc/restic/password $SCRIPT_NAME
   RESTIC_REPOSITORY=gs:bucket/restic GOOGLE_PROJECT_ID=1234 $SCRIPT_NAME
   SKIP_MYSQL=1 LOG_LEVEL=DEBUG $SCRIPT_NAME
+  MYSQL_IGNORE_DATABASES="test_db temp_db" MYSQL_IGNORE_TABLES="mydb.cache mydb.sessions" $SCRIPT_NAME
 
 EOF
 }
@@ -370,6 +378,21 @@ _restic_backup_mysql_xtrabackup() {
 
   log "INFO" "Using MySQL compression: $compress"
 
+  # Build exclude options for xtrabackup
+  local exclude_opts=()
+  if [[ -n $MYSQL_IGNORE_DATABASES ]]; then
+    for db in $MYSQL_IGNORE_DATABASES; do
+      exclude_opts+=("--databases-exclude=$db")
+      log "INFO" "Excluding database from xtrabackup: $db"
+    done
+  fi
+  if [[ -n $MYSQL_IGNORE_TABLES ]]; then
+    for table in $MYSQL_IGNORE_TABLES; do
+      exclude_opts+=("--tables-exclude=$table")
+      log "INFO" "Excluding table from xtrabackup: $table"
+    done
+  fi
+
   # How to restore a full backup:
   #
   #   - mkdir /var/tmp/backup/ && restic restore e60e029c --target /var/tmp/
@@ -399,7 +422,8 @@ _restic_backup_mysql_xtrabackup() {
     --galera-info \
     --parallel="$((NPROC / 2))" \
     --stream=xbstream \
-    --target-dir=./ |
+    --target-dir=./ \
+    "${exclude_opts[@]}" |
     restic \
       backup \
       --stdin \
@@ -442,26 +466,105 @@ _restic_backup_mysql() {
     return 1
   fi
 
-  if ! mysqldump \
-    --defaults-file="$mysql_default_files" \
-    --all-databases \
-    --events \
-    --quick \
-    --routines \
-    --single-transaction \
-    --triggers |
-    zstd \
-      --quiet \
-      --adapt \
-      --stdout |
-    restic \
-      backup \
-      --stdin \
-      --stdin-filename='/mysql.sql.zst' \
-      --tag='zstd' \
-      --exclude-file="$RESTIC_EXCLUDE_FILE"; then
-    log "ERROR" "MySQL mysqldump backup failed"
-    return 1
+  # Build exclude options for mysqldump
+  local exclude_opts=()
+  local excluded_databases=()
+
+  if [[ -n $MYSQL_IGNORE_TABLES ]]; then
+    for table in $MYSQL_IGNORE_TABLES; do
+      exclude_opts+=("--ignore-table=$table")
+      log "INFO" "Excluding table from mysqldump: $table"
+    done
+  fi
+
+  if [[ -n $MYSQL_IGNORE_DATABASES ]]; then
+    for db in $MYSQL_IGNORE_DATABASES; do
+      excluded_databases+=("$db")
+      log "INFO" "Excluding database from mysqldump: $db"
+    done
+  fi
+
+  # If databases are excluded, we need to use --databases with a filtered list
+  # instead of --all-databases
+  if [[ ${#excluded_databases[@]} -gt 0 ]]; then
+    # Get list of all databases and filter out excluded ones
+    local all_databases
+    if ! all_databases=$(mysql --defaults-file="$mysql_default_files" -N -e "SHOW DATABASES" 2>/dev/null); then
+      log "ERROR" "Failed to list databases"
+      return 1
+    fi
+
+    local databases_to_backup=()
+    while IFS= read -r db; do
+      local skip=0
+      for excluded_db in "${excluded_databases[@]}"; do
+        if [[ "$db" == "$excluded_db" ]]; then
+          skip=1
+          break
+        fi
+      done
+      # Skip system databases that shouldn't be backed up
+      if [[ "$db" == "information_schema" || "$db" == "performance_schema" || "$db" == "sys" ]]; then
+        skip=1
+      fi
+      if [[ $skip -eq 0 ]]; then
+        databases_to_backup+=("$db")
+      fi
+    done <<< "$all_databases"
+
+    if [[ ${#databases_to_backup[@]} -eq 0 ]]; then
+      log "WARN" "No databases to backup after applying exclusions"
+      return 0
+    fi
+
+    log "INFO" "Backing up ${#databases_to_backup[@]} database(s)"
+
+    if ! mysqldump \
+      --defaults-file="$mysql_default_files" \
+      --databases "${databases_to_backup[@]}" \
+      --events \
+      --quick \
+      --routines \
+      --single-transaction \
+      --triggers \
+      "${exclude_opts[@]}" |
+      zstd \
+        --quiet \
+        --adapt \
+        --stdout |
+      restic \
+        backup \
+        --stdin \
+        --stdin-filename='/mysql.sql.zst' \
+        --tag='zstd' \
+        --exclude-file="$RESTIC_EXCLUDE_FILE"; then
+      log "ERROR" "MySQL mysqldump backup failed"
+      return 1
+    fi
+  else
+    # No databases excluded, use --all-databases
+    if ! mysqldump \
+      --defaults-file="$mysql_default_files" \
+      --all-databases \
+      --events \
+      --quick \
+      --routines \
+      --single-transaction \
+      --triggers \
+      "${exclude_opts[@]}" |
+      zstd \
+        --quiet \
+        --adapt \
+        --stdout |
+      restic \
+        backup \
+        --stdin \
+        --stdin-filename='/mysql.sql.zst' \
+        --tag='zstd' \
+        --exclude-file="$RESTIC_EXCLUDE_FILE"; then
+      log "ERROR" "MySQL mysqldump backup failed"
+      return 1
+    fi
   fi
 
   log "INFO" "MySQL mysqldump backup completed successfully"
