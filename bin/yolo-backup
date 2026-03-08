@@ -57,7 +57,10 @@ SYSLOG=${SYSLOG:-0}
 # Script metadata
 SCRIPT_NAME=$(basename "$0")
 readonly SCRIPT_NAME
-readonly SCRIPT_VERSION="2.0.0"
+readonly SCRIPT_VERSION="2.1.0"
+
+# Track repository check result for Prometheus metrics (0=unknown/error, 1=ok)
+BACKUP_CHECK_SUCCESS=0
 
 export \
   PATH \
@@ -525,6 +528,7 @@ _restic_check() {
     fi
   fi
 
+  BACKUP_CHECK_SUCCESS=1
   log "INFO" "Repository integrity check completed successfully"
   return 0
 }
@@ -581,27 +585,148 @@ _restic_init() {
 }
 
 #
-# Generate backup statistics
+# Generate backup statistics and export Prometheus metrics
 #
 _restic_stats() {
   log "INFO" "Generating backup statistics"
 
   if [[ -n $NODE_EXPORTER_TEXTFILE_DIRECTORY ]] && command_exists jq; then
     log "INFO" "Generating Prometheus metrics"
+
+    local hostname
+    hostname=$(hostname -f 2>/dev/null || hostname)
+
+    # Repository statistics – restore-size mode (provides total_file_count)
     local stats
-    if ! stats=$(restic stats --json); then
+    if ! stats=$(restic stats --json 2>/dev/null); then
       log "ERROR" "Failed to get repository statistics"
       return 1
     fi
 
+    # Repository statistics – raw-data mode (provides compression metrics,
+    # available in restic >= 0.14 and V2 repositories; silently ignored otherwise)
+    local raw_stats
+    raw_stats=$(restic stats --json --mode raw-data 2>/dev/null) || raw_stats='{}'
+
+    # Latest snapshot details (summary block available in restic >= 0.17)
+    local snapshots
+    snapshots=$(restic snapshots --latest 1 --json 2>/dev/null) || snapshots='[]'
+
+    # Count stale locks (non-fatal; failure treated as zero)
+    local locks_output
+    locks_output=$(restic list locks 2>/dev/null || true)
+    local locks_total
+    locks_total=$(printf '%s' "$locks_output" | grep -c '^[a-f0-9]') || locks_total=0
+
+    # --- Pre-compute global metric values ---
+    local total_size total_file_count total_blob_count snapshots_count
+    total_size=$(echo "$stats" | jq -r '.total_size // -1')
+    total_file_count=$(echo "$stats" | jq -r '.total_file_count // -1')
+    total_blob_count=$(echo "$stats" | jq -r '.total_blob_count // -1')
+    snapshots_count=$(echo "$stats" | jq -r '.snapshots_count // -1')
+
+    local uncompressed_size compression_ratio
+    uncompressed_size=$(echo "$raw_stats" | jq -r '.total_uncompressed_size // -1')
+    compression_ratio=$(echo "$raw_stats" | jq -r '.compression_ratio // -1')
+
+    # --- Pre-compute latest-snapshot metric values ---
+    local snap_ts=-1
+    local snap_time
+    snap_time=$(echo "$snapshots" | jq -r '.[0].time // empty')
+    if [[ -n "$snap_time" ]]; then
+      snap_ts=$(date -d "$snap_time" +%s 2>/dev/null || echo -1)
+    fi
+
+    local snap_files_total snap_size_total
+    local snap_files_new snap_files_changed snap_files_unmodified
+    local snap_dirs_new snap_dirs_changed snap_dirs_unmodified
+    local snap_data_added
+    snap_files_total=$(echo "$snapshots" | jq -r '.[0].summary.total_files_processed // -1')
+    snap_size_total=$(echo "$snapshots" | jq -r '.[0].summary.total_bytes_processed // -1')
+    snap_files_new=$(echo "$snapshots" | jq -r '.[0].summary.files_new // -1')
+    snap_files_changed=$(echo "$snapshots" | jq -r '.[0].summary.files_changed // -1')
+    snap_files_unmodified=$(echo "$snapshots" | jq -r '.[0].summary.files_unmodified // -1')
+    snap_dirs_new=$(echo "$snapshots" | jq -r '.[0].summary.dirs_new // -1')
+    snap_dirs_changed=$(echo "$snapshots" | jq -r '.[0].summary.dirs_changed // -1')
+    snap_dirs_unmodified=$(echo "$snapshots" | jq -r '.[0].summary.dirs_unmodified // -1')
+    snap_data_added=$(echo "$snapshots" | jq -r '.[0].summary.data_added // -1')
+
+    # Compute backup duration from snapshot summary timestamps (integer seconds)
+    local snap_duration=-1
+    local snap_start snap_end
+    snap_start=$(echo "$snapshots" | jq -r '.[0].summary.backup_start // empty')
+    snap_end=$(echo "$snapshots" | jq -r '.[0].summary.backup_end // empty')
+    if [[ -n "$snap_start" && -n "$snap_end" ]]; then
+      local ts_start ts_end
+      ts_start=$(date -d "$snap_start" +%s 2>/dev/null || echo -1)
+      ts_end=$(date -d "$snap_end" +%s 2>/dev/null || echo -1)
+      if [[ "$ts_start" -ge 0 && "$ts_end" -ge 0 ]]; then
+        snap_duration=$((ts_end - ts_start))
+      fi
+    fi
+
     local temp_file="${NODE_EXPORTER_TEXTFILE_DIRECTORY}/yolo-backup.prom.$$"
-    cat <<EOF >"$temp_file"
+    cat >"$temp_file" <<EOF
+# HELP restic_check_success Result of restic check operation in the repository
+# TYPE restic_check_success gauge
+restic_check_success $BACKUP_CHECK_SUCCESS
+# HELP restic_locks_total Total number of locks in the repository
+# TYPE restic_locks_total gauge
+restic_locks_total $locks_total
+# HELP restic_snapshots_total Total number of snapshots in the repository
+# TYPE restic_snapshots_total gauge
+restic_snapshots_total $snapshots_count
+# HELP restic_blob_count_total Total number of blobs in the repository
+# TYPE restic_blob_count_total gauge
+restic_blob_count_total $total_blob_count
+# HELP restic_size_total Total size of the repository in bytes
+# TYPE restic_size_total gauge
+restic_size_total $total_size
+# HELP restic_uncompressed_size_total Total uncompressed size of the repository in bytes
+# TYPE restic_uncompressed_size_total gauge
+restic_uncompressed_size_total $uncompressed_size
+# HELP restic_compression_ratio Compression ratio of the repository
+# TYPE restic_compression_ratio gauge
+restic_compression_ratio $compression_ratio
+# HELP restic_backup_timestamp Timestamp of the last backup
+# TYPE restic_backup_timestamp gauge
+restic_backup_timestamp{hostname="${hostname}"} $snap_ts
+# HELP restic_backup_files_total Number of files processed in the last backup
+# TYPE restic_backup_files_total gauge
+restic_backup_files_total{hostname="${hostname}"} $snap_files_total
+# HELP restic_backup_size_total Total bytes processed in the last backup
+# TYPE restic_backup_size_total gauge
+restic_backup_size_total{hostname="${hostname}"} $snap_size_total
+# HELP restic_backup_files_new Number of new files in the last backup
+# TYPE restic_backup_files_new gauge
+restic_backup_files_new{hostname="${hostname}"} $snap_files_new
+# HELP restic_backup_files_changed Number of changed files in the last backup
+# TYPE restic_backup_files_changed gauge
+restic_backup_files_changed{hostname="${hostname}"} $snap_files_changed
+# HELP restic_backup_files_unmodified Number of unmodified files in the last backup
+# TYPE restic_backup_files_unmodified gauge
+restic_backup_files_unmodified{hostname="${hostname}"} $snap_files_unmodified
+# HELP restic_backup_dirs_new Number of new directories in the last backup
+# TYPE restic_backup_dirs_new gauge
+restic_backup_dirs_new{hostname="${hostname}"} $snap_dirs_new
+# HELP restic_backup_dirs_changed Number of changed directories in the last backup
+# TYPE restic_backup_dirs_changed gauge
+restic_backup_dirs_changed{hostname="${hostname}"} $snap_dirs_changed
+# HELP restic_backup_dirs_unmodified Number of unmodified directories in the last backup
+# TYPE restic_backup_dirs_unmodified gauge
+restic_backup_dirs_unmodified{hostname="${hostname}"} $snap_dirs_unmodified
+# HELP restic_backup_data_added_bytes Amount of data added to the repository by the last backup in bytes
+# TYPE restic_backup_data_added_bytes gauge
+restic_backup_data_added_bytes{hostname="${hostname}"} $snap_data_added
+# HELP restic_backup_duration_seconds Duration of the last backup in seconds
+# TYPE restic_backup_duration_seconds gauge
+restic_backup_duration_seconds{hostname="${hostname}"} $snap_duration
 # HELP backup_total_size_bytes Disk space used by backup
 # TYPE backup_total_size_bytes gauge
-backup_total_size_bytes $(echo "$stats" | jq -r '.total_size')
+backup_total_size_bytes $total_size
 # HELP backup_total_file_count Number of files in all backups
 # TYPE backup_total_file_count gauge
-backup_total_file_count $(echo "$stats" | jq -r '.total_file_count')
+backup_total_file_count $total_file_count
 # HELP backup_last_run_timestamp_seconds Timestamp of last backup run
 # TYPE backup_last_run_timestamp_seconds gauge
 backup_last_run_timestamp_seconds $(date +%s)
@@ -611,6 +736,7 @@ EOF
       log "INFO" "Prometheus metrics written successfully"
     else
       log "ERROR" "Failed to write Prometheus metrics"
+      rm -f "$temp_file"
       return 1
     fi
   else
