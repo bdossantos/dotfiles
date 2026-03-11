@@ -237,7 +237,7 @@ defaults write com.apple.screencapture type -string "png"
 # Disable shadow in screenshots
 defaults write com.apple.screencapture disable-shadow -bool true
 
-# Tweek for having a nice font rendering in alacritty
+# Tweak for having a nice font rendering in terminal emulators
 defaults write NSGlobalDomain AppleFontSmoothing -int 0
 
 # Enable HiDPI display modes (requires restart)

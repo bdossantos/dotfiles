@@ -49,12 +49,6 @@ install-nvim-deps: ## Install/setup Neovim dependencies
 	$(info --> Setup Neovim directories)
 	@mkdir -p ~/.vimswap ~/.vimundo ~/.tmp
 
-install-alacritty-theme:
-	$(info --> Install Alacritty themes)
-	@[[ -d ~/.config/alacritty/themes ]] \
-		|| git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
-	@pushd ~/.config/alacritty/themes && git pull && popd
-
 pre-commit: ## Run pre-commit tests
 	$(info --> Run pre-commit)
 	@pre-commit run --all-files

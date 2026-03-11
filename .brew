@@ -28,7 +28,6 @@ echo '--> Install all brew Packages'
 brew install \
   ack \
   advancecomp \
-  alacritty \
   anki \
   ansifilter \
   ast-grep \

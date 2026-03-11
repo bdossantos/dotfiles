@@ -10,7 +10,7 @@ Personal dotfiles for macOS, managed with
 
 | File / directory    | Description                                      |
 | ------------------- | ------------------------------------------------ |
-| `.alacritty.toml`   | [Alacritty](https://alacritty.org) terminal with Dracula colour scheme |
+| `.config/ghostty/`  | [Ghostty](https://ghostty.org) terminal with Dracula colour scheme |
 | `.aliases`          | Handy shell aliases                              |
 | `.bash_profile` / `.bashrc` / `.profile` | Bash startup files     |
 | `.brew`             | Homebrew formulae and casks                      |

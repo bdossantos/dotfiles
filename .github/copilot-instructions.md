@@ -4,7 +4,7 @@
 
 This repository contains personal dotfiles for Benjamin Dos Santos, managed
 with [GNU Stow](https://www.gnu.org/software/stow/). It includes configuration
-files for Bash, Vim, tmux, Git, Alacritty, SSH, and various command-line tools.
+files for Bash, Vim, tmux, Git, Ghostty, SSH, and various command-line tools.
 
 ## Commit Messages
 
@@ -22,7 +22,7 @@ specification using the Angular commit message format:
 - **type** (required): one of `build`, `ci`, `docs`, `feat`, `fix`, `perf`,
   `refactor`, `revert`, `style`, or `test`
 - **scope** (optional): the area of the change (e.g. `bash`, `vim`, `tmux`,
-  `git`, `ssh`, `alacritty`)
+  `git`, `ssh`, `ghostty`)
 - **subject** (required): short description in imperative, present tense; no
   capitalization; no trailing period; max 100 characters per line
 - **body** (optional): motivation and contrast with previous behaviour
