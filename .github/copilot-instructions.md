@@ -47,6 +47,7 @@ ci: upgrade shellcheck to v0.10.0
   trailing whitespace trimmed, final newline, 80-character line length limit
   (Makefiles use tabs)
 - Shell scripts must be POSIX-compatible where possible and pass `shellcheck`
+- Shell scripts must be formatted with `shfmt -i 2 -ci -s` before committing
 - Use `#!/usr/bin/env bash` shebangs for Bash scripts
 - Keep YAML files consistent with existing formatting (2-space indent, `---`
   document start marker)
