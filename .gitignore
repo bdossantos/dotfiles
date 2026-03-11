@@ -1,4 +1,5 @@
 !.config/k9s/skin.yml
+!.config/k9s/skins/
 !.config/starship.toml
 !.config/zellij/config.yaml
 !.config/nvim/

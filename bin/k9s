@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Wrapper around k9s that automatically applies a red danger skin when the
+# current kubectl context contains "prd", to visually warn the operator that
+# they are working on a production cluster.
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DEBUG=${DEBUG:=0}
+[[ $DEBUG -eq 1 ]] && set -o xtrace
+
+# Find the real k9s binary, skipping this wrapper script itself.
+_self="$(readlink -f "${BASH_SOURCE[0]}")"
+_k9s=''
+
+while IFS= read -rd ':' _dir; do
+  _candidate="${_dir}/k9s"
+  if [[ -x "$_candidate" && "$(readlink -f "$_candidate")" != "$_self" ]]; then
+    _k9s="$_candidate"
+    break
+  fi
+done <<< "${PATH}:"
+
+if [[ -z "$_k9s" ]]; then
+  echo "k9s: command not found" >&2
+  exit 127
+fi
+
+# Use the danger skin when the current context name contains "prd".
+_context="$(kubectl config current-context 2>/dev/null || true)"
+
+if [[ -n "$_context" && "$_context" == *prd* ]]; then
+  export K9S_SKIN="${K9S_SKIN:-prd}"
+fi
+
+exec "$_k9s" "$@"

@@ -1,0 +1,107 @@
+# Production cluster skin - danger/red theme to visually warn when
+# operating on a production cluster (context name contains "prd").
+# Based on the Dracula skin with red-tinted backgrounds and accents.
+foreground: &foreground "#f8f8f2"
+background: &background "#1c0000"
+current_line: &current_line "#3d0000"
+comment: &comment "#6272a4"
+bright_red: &bright_red "#ff8888"
+orange: &orange "#ffb86c"
+red: &red "#ff5555"
+yellow: &yellow "#f1fa8c"
+
+# Skin...
+k9s:
+  # General K9s styles
+  body:
+    fgColor: *foreground
+    bgColor: *background
+    logoColor: *red
+  # Command prompt styles
+  prompt:
+    fgColor: *foreground
+    bgColor: *background
+    suggestColor: *red
+  # ClusterInfoView styles.
+  info:
+    fgColor: *red
+    sectionColor: *foreground
+  # Dialog styles.
+  dialog:
+    fgColor: *foreground
+    bgColor: *background
+    buttonFgColor: *foreground
+    buttonBgColor: *red
+    buttonFocusFgColor: *background
+    buttonFocusBgColor: *bright_red
+    labelFgColor: *orange
+    fieldFgColor: *foreground
+  frame:
+    # Borders styles.
+    border:
+      fgColor: *red
+      focusColor: *current_line
+    menu:
+      fgColor: *foreground
+      keyColor: *red
+      # Used for favorite namespaces
+      numKeyColor: *red
+    # CrumbView attributes for history navigation.
+    crumbs:
+      fgColor: *foreground
+      bgColor: *current_line
+      activeColor: *current_line
+    # Resource status and update styles
+    status:
+      newColor: *bright_red
+      modifyColor: *red
+      addColor: *orange
+      errorColor: *red
+      highlightColor: *orange
+      killColor: *comment
+      completedColor: *comment
+    # Border title styles.
+    title:
+      fgColor: *foreground
+      bgColor: *current_line
+      highlightColor: *orange
+      counterColor: *red
+      filterColor: *red
+  views:
+    # Charts skins...
+    charts:
+      bgColor: default
+      defaultDialColors:
+        - *red
+        - *bright_red
+      defaultChartColors:
+        - *red
+        - *bright_red
+    # TableView attributes.
+    table:
+      fgColor: *foreground
+      bgColor: *background
+      # Header row styles.
+      header:
+        fgColor: *foreground
+        bgColor: *background
+        sorterColor: *orange
+    # Xray view attributes.
+    xray:
+      fgColor: *foreground
+      bgColor: *background
+      cursorColor: *current_line
+      graphicColor: *red
+      showIcons: false
+    # YAML info styles.
+    yaml:
+      keyColor: *red
+      colonColor: *bright_red
+      valueColor: *foreground
+    # Logs styles.
+    logs:
+      fgColor: *foreground
+      bgColor: *background
+      indicator:
+        fgColor: *foreground
+        bgColor: *red
