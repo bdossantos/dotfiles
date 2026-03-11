@@ -7,8 +7,9 @@ set -o nounset
 DEBUG=${DEBUG:=0}
 [[ $DEBUG -eq 1 ]] && set -o xtrace
 
-export HOMEBREW_CASK_OPTS="--appdir=${HOME}/Applications --fontdir=${HOME}/Library/Fonts --no-binaries"
+export HOMEBREW_CASK_OPTS="--appdir=${HOME}/Applications --fontdir=${HOME}/Library/Fonts --no-binaries --require-sha"
 export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_INSECURE_REDIRECT=1
 export PATH="${HOME}/.homebrew/bin:${PATH}"
 
@@ -158,7 +159,7 @@ while true; do sudo -n true; sleep 60; kill -0 $$ || exit; done 2>/dev/null &
 
 make -f ${HOME}/.dotfiles/Makefile install-homebrew
 
-export HOMEBREW_CASK_OPTS='--appdir=/Applications --no-binaries'
+export HOMEBREW_CASK_OPTS='--appdir=/Applications --no-binaries --require-sha'
 export PATH='/Users/admin/.homebrew/bin:${PATH}'
 
 echo '--> Install/update Homebrew cask'
