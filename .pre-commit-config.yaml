@@ -22,3 +22,8 @@ repos:
   rev: 1.0.5
   hooks:
     - id: shell-lint
+- repo: https://github.com/scop/pre-commit-shfmt
+  rev: v3.10.0-1
+  hooks:
+    - id: shfmt
+      args: ['-i', '2', '-ci', '-s', '-w']
