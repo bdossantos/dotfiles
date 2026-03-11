@@ -1,58 +1,51 @@
 
 
-# Git Commit Guidelines
-# =====================
+# Conventional Commits
+# ====================
 #
 # Each commit message consists of a header, a body and a footer. The header has
-# a special format that includes a type, a scope and a subject:
+# a special format that includes a type, an optional scope and a description:
 #
-# <type>(<scope>): <subject>
+# <type>[optional scope]: <description>
 # <BLANK LINE>
 # <body>
 # <BLANK LINE>
-# <footer>
+# <footer(s)>
 #
-# The header is mandatory and the scope of the header is optional.
+# The header is mandatory; the scope is optional. Append `!` after the type or
+# scope to indicate a breaking change:
 #
-# Any line of the commit message cannot be longer 100 characters! This allows
-# the message to be easier to read on GitHub as well as in various git tools.
+# <type>[optional scope]!: <description>
 #
-# Revert
-# ======
-#
-# If the commit reverts a previous commit, it should begin with `revert: `,
-# followed by the header of the reverted commit. In the body it should say:
-# `This reverts commit <hash>.`, where the hash is the SHA of the commit being
-# reverted.
+# Any line of the commit message cannot be longer than 100 characters. This
+# allows the message to be easier to read on GitHub as well as in various git
+# tools.
 #
 # Type
 # ====
 #
-# - build: Changes that affect the build system or external dependencies
-#   (example scopes: gulp, broccoli, npm)
-# - ci: Changes to our CI configuration files and scripts (example scopes:
-#   Travis, Circle, BrowserStack, SauceLabs)
-# - docs: Documentation only changes
-# - feat: A new feature
-# - fix: A bug fix
-# - perf: A code change that improves performance
-# - refactor: A code change that neither fixes a bug or adds a feature
-# - style: Changes that do not affect the meaning of the code (white-space,
-#   formatting, missing semi-colons, etc)
-# - test: Adding missing tests
+# - build: changes that affect the build system or external dependencies
+# - ci: changes to CI configuration files and scripts
+# - docs: documentation only changes
+# - feat: a new feature (correlates with MINOR in Semantic Versioning)
+# - fix: a bug fix (correlates with PATCH in Semantic Versioning)
+# - perf: a code change that improves performance
+# - refactor: a code change that neither fixes a bug nor adds a feature
+# - revert: reverts a previous commit
+# - style: changes that do not affect the meaning of the code (white-space,
+#   formatting, missing semi-colons, etc.)
+# - test: adding missing tests or correcting existing tests
 #
 # Scope
 # =====
 #
-# The scope could be anything specifying place of the commit change.
+# The scope provides additional contextual information and can be anything
+# specifying the place of the commit change (e.g. bash, vim, tmux, git, ssh).
 #
-# For example $location, $browser, $compile, $rootScope, ngHref, ngClick,
-# ngView, etc...
+# Description
+# ===========
 #
-# Subject
-# =======
-#
-# The subject contains a succinct description of the change:
+# The description is a short summary of the code changes:
 #
 # - use the imperative, present tense: "change" not "changed" nor "changes"
 # - don't capitalize the first letter
@@ -61,18 +54,22 @@
 # Body
 # ====
 #
-# Just as in the **subject**, use the imperative, present tense: "change" not
-# "changed" nor "changes". The body should include the motivation for the change
-# and contrast this with previous behavior.
+# The body should include the motivation for the change and contrast this with
+# previous behavior. Use the imperative, present tense: "change" not "changed"
+# nor "changes".
 #
 # Footer
 # ======
 #
-# The footer should contain any information about Breaking Changes and is also
-# the place to reference GitHub issues that this commit Closes.
+# One or more footers may be provided. Each footer token must use `-` in place
+# of whitespace, e.g. `Reviewed-by`. The exception is `BREAKING CHANGE` (or
+# its synonym `BREAKING-CHANGE`), which may also be used as a footer token.
 #
-# Breaking Changes should start with the word BREAKING CHANGE: with a space or
-# two newlines. The rest of the commit message is then used for this.
+# A breaking change MUST be indicated either by a `!` in the header or by a
+# `BREAKING CHANGE: <description>` footer (correlates with MAJOR in Semantic
+# Versioning). Both may be used together.
 #
-# original documentation:
-# https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit
+# The footer is also the place to reference issues that this commit closes,
+# e.g. `Closes #123`.
+#
+# Specification: https://www.conventionalcommits.org/en/v1.0.0/
