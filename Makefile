@@ -78,7 +78,7 @@ run-nix: ## Apply Nix home-manager configuration
 	$(info --> Apply home-manager configuration for $(NIX_SYSTEM))
 	@command -v home-manager >/dev/null || { \
 		echo 'home-manager not found. Install Nix and home-manager first:'; \
-		echo '  curl --proto =https --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install'; \
+		echo '  curl --proto "=https" --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install'; \
 		echo '  nix run home-manager -- switch --flake .#$(NIX_SYSTEM)'; \
 		exit 1; \
 	}
