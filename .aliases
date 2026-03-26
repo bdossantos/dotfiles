@@ -302,8 +302,8 @@ if [[ $OS == 'Darwin' ]]; then
   # Stopwatch
   alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
 
-  # Get OS X Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
-  alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update'
+  # Get OS X Software Updates, and update Nix, Homebrew, npm, and their installed packages
+  alias update='sudo softwareupdate -i -a; nix flake update --flake ~/.dotfiles 2>/dev/null; home-manager switch --flake ~/.dotfiles 2>/dev/null; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update'
 
   # IP addresses
   alias ip="dig +short myip.opendns.com @resolver1.opendns.com"

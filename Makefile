@@ -1,5 +1,19 @@
 OS = "$(uname)"
 SHELL := /usr/bin/env bash
+SYSTEM := $(shell uname -m)-$(shell uname -s | tr '[:upper:]' '[:lower:]')
+
+# Map uname output to Nix system identifiers
+ifeq ($(SYSTEM),arm64-darwin)
+  NIX_SYSTEM := aarch64-darwin
+else ifeq ($(SYSTEM),x86_64-darwin)
+  NIX_SYSTEM := x86_64-darwin
+else ifeq ($(SYSTEM),x86_64-linux)
+  NIX_SYSTEM := x86_64-linux
+else ifeq ($(SYSTEM),aarch64-linux)
+  NIX_SYSTEM := aarch64-linux
+else
+  NIX_SYSTEM := x86_64-linux
+endif
 
 .DEFAULT_GOAL := help
 
@@ -12,6 +26,7 @@ install: ## Install all the things
 	@make install-dotfiles \
 		install-vundle \
 		install-nvim-deps \
+		run-nix
 	@[[ $OS == 'Darwin' ]] \
 		&& make install-homebrew run-brew
 
@@ -26,6 +41,9 @@ install-dotfiles: ## Pull and Install dotfiles
 		--ignore='README.md' \
 		--ignore='LICENCE' \
 		--ignore='Makefile' \
+		--ignore='flake.nix' \
+		--ignore='flake.lock' \
+		--ignore='home.nix' \
 		--override='.bashrc' \
 		--override='.profile' \
 		--override='.bash_profile'
@@ -53,8 +71,18 @@ pre-commit: ## Run pre-commit tests
 	$(info --> Run pre-commit)
 	@pre-commit run --all-files
 
-run-brew: ## Run ./.brew
+run-brew: ## Run ./.brew (GUI / cask apps only)
 	@bash -x .brew
+
+run-nix: ## Apply Nix home-manager configuration
+	$(info --> Apply home-manager configuration for $(NIX_SYSTEM))
+	@command -v home-manager >/dev/null || { \
+		echo 'home-manager not found. Install Nix and home-manager first:'; \
+		echo '  curl --proto =https --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install'; \
+		echo '  nix run home-manager -- switch --flake .#$(NIX_SYSTEM)'; \
+		exit 1; \
+	}
+	@home-manager switch --flake '.#$(NIX_SYSTEM)'
 
 test: ## Run tests suite
 	@$(MAKE) pre-commit
@@ -66,4 +94,7 @@ uninstall-dotfiles: ## Uninstall dotfiles
 		--ignore='.github' \
 		--ignore='README.md' \
 		--ignore='LICENCE' \
-		--ignore='Makefile'
+		--ignore='Makefile' \
+		--ignore='flake.nix' \
+		--ignore='flake.lock' \
+		--ignore='home.nix'

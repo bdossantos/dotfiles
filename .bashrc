@@ -46,9 +46,21 @@ if [ -r /etc/profile.d/bash_completion.sh ]; then
   source /etc/profile.d/bash_completion.sh
 fi
 
-# brew
+# nix & home-manager
+if [ -e "${HOME}/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+  # shellcheck disable=SC1091
+  source "${HOME}/.nix-profile/etc/profile.d/hm-session-vars.sh"
+fi
+
+# brew (kept for GUI / cask apps)
 if command -v brew &>/dev/null; then
   eval "$(brew shellenv)"
+fi
+
+# bash completions — Nix profile
+if [ -r "${HOME}/.nix-profile/etc/profile.d/bash_completion.sh" ]; then
+  # shellcheck disable=SC1091
+  source "${HOME}/.nix-profile/etc/profile.d/bash_completion.sh"
 fi
 
 # https://docs.brew.sh/Shell-Completion
@@ -67,14 +79,21 @@ fi
 PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 
 # chruby
-if [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
+CHRUBY_SH=""
+if [ -f "${HOME}/.nix-profile/share/chruby/chruby.sh" ]; then
+  CHRUBY_SH="${HOME}/.nix-profile/share/chruby"
+elif [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
+  CHRUBY_SH="${HOMEBREW_PREFIX}/share/chruby"
+fi
+
+if [ -n "$CHRUBY_SH" ]; then
   # shellcheck disable=SC2034
   RUBIES=("${HOME}/.rubies/*")
 
   # shellcheck source=/dev/null
-  source "${HOMEBREW_PREFIX}/share/chruby/chruby.sh"
+  source "${CHRUBY_SH}/chruby.sh"
   # shellcheck source=/dev/null
-  source "${HOMEBREW_PREFIX}/share/chruby/auto.sh"
+  source "${CHRUBY_SH}/auto.sh"
 fi
 
 if command -v zoxide &>/dev/null; then
@@ -86,7 +105,7 @@ if command -v direnv &>/dev/null; then
 fi
 
 # gcloud
-# For Homebrew-installed gcloud-cli
+# For Homebrew-installed gcloud-cli (GUI apps are still managed via Homebrew)
 if command -v brew &>/dev/null; then
   GCLOUD_SDK="${HOMEBREW_PREFIX}/share/google-cloud-sdk"
   if [ -f "${GCLOUD_SDK}/path.bash.inc" ] &&

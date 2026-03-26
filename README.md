@@ -6,6 +6,11 @@
 Personal dotfiles for macOS, managed with
 [GNU Stow](https://www.gnu.org/software/stow/).
 
+CLI tools are managed declaratively with [Nix](https://nixos.org/) and
+[home-manager](https://nix-community.github.io/home-manager/). GUI / cask
+applications are still installed via
+[Homebrew](https://brew.sh/).
+
 ## What's included
 
 | File / directory    | Description                                      |
@@ -13,7 +18,8 @@ Personal dotfiles for macOS, managed with
 | `.config/ghostty/`  | [Ghostty](https://ghostty.org) terminal with Dracula colour scheme |
 | `.aliases`          | Handy shell aliases                              |
 | `.bash_profile` / `.bashrc` / `.profile` | Bash startup files     |
-| `.brew`             | Homebrew formulae and casks                      |
+| `.brew`             | Homebrew casks (GUI apps only)                   |
+| `flake.nix` / `home.nix` | Nix home-manager configuration (CLI tools) |
 | `.gitconfig`        | Git settings (diff-so-fancy, GPG signing, …)     |
 | `.gitmessage`       | Conventional Commits message template            |
 | `.gnupg/`           | GPG configuration                                |
@@ -29,6 +35,13 @@ Personal dotfiles for macOS, managed with
 - **git**
 - **[GNU Stow](https://www.gnu.org/software/stow/)** — `brew install stow`
   (macOS) or `apt install stow` (Debian/Ubuntu)
+- **[Nix](https://nixos.org/)** — install with the
+  [Determinate Nix Installer](https://zero-to-nix.com/start/install):
+
+  ```bash
+  curl --proto '=https' --tlsv1.2 -sSf -L \
+    https://install.determinate.systems/nix | sh -s -- install
+  ```
 
 ## Installation
 
@@ -45,6 +58,25 @@ cd ~/.dotfiles
 make uninstall
 ```
 
+## Package management
+
+### CLI tools (Nix + home-manager)
+
+All command-line tools are declared in `home.nix` and installed via
+home-manager. To add or remove a CLI tool, edit `home.nix` and apply:
+
+```bash
+make run-nix
+```
+
+### GUI / cask applications (Homebrew)
+
+GUI applications, fonts, and other casks are still installed via Homebrew:
+
+```bash
+make run-brew
+```
+
 ## macOS setup
 
 ### Sensible macOS defaults
@@ -57,18 +89,12 @@ su - admin -c "env PATH=$PATH:/usr/sbin/ bash -x $HOME/.dotfiles/.macos"
 su - admin -c "env PATH=$PATH:/usr/sbin/ bash -x $HOME/.dotfiles/.macos_hardening"
 ```
 
-### Install Homebrew formulae and apps
-
-```bash
-make run-brew
-```
-
 ## Bash
 
 ### Set Bash as default shell
 
 ```bash
-chsh -s "$(brew --prefix)/bin/bash"
+chsh -s "$(command -v bash)"
 exec $SHELL
 ```
 

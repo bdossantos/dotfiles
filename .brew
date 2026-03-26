@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+#
+# Install GUI / cask-only applications via Homebrew.
+# CLI tools are managed declaratively with Nix — see flake.nix and home.nix.
+#
 
 set -o errexit
 set -o pipefail
@@ -21,129 +25,27 @@ echo "--> Detected CPU Brand: ${CPU_BRAND}"
 echo "--> Make sure we're using the latest Homebrew"
 brew update
 
-echo '--> Upgrade any already-installed formulae'
+echo '--> Upgrade any already-installed casks'
 brew upgrade
 
-echo '--> Install all brew Packages'
+echo '--> Install GUI / cask applications'
 brew install \
-  ack \
-  advancecomp \
+  1password \
   anki \
-  ansifilter \
-  ast-grep \
-  autoenv \
-  awscli \
-  bash \
-  bash-completion@2 \
-  bat \
-  bazel \
-  binutils \
-  cheat \
-  chruby \
-  cli53 \
-  closure-compiler \
-  coreutils \
-  ctags \
-  curl \
-  diff-so-fancy \
-  diffutils \
-  ed \
-  editorconfig \
-  entr \
-  eza \
-  fd \
-  findomain \
-  findutils \
   firefox \
   font-hack \
   font-hack-nerd-font \
   font-jetbrains-mono \
-  fzf \
-  gawk \
-  gcc \
   gcloud-cli \
   ghostty \
-  gifsicle \
-  git \
-  gitlint \
-  gnu-indent \
-  gnu-sed \
-  gnu-tar \
-  gnu-which \
-  go \
-  go-jsonnet \
   google-chrome \
-  gpatch \
-  gpg \
-  grep \
-  gsl \
-  gzip \
-  hadolint \
-  htmlcompressor \
-  htop \
   imageoptim \
-  ipcalc \
   iterm2 \
-  jhead \
-  jpeg \
-  jpegoptim \
-  jq \
-  k9s \
-  kops \
-  kubectx \
-  lazygit \
-  less \
-  lesspipe \
-  libyaml \
-  logcli \
-  luarocks \
-  make \
-  miller \
   micro-snitch \
-  moreutils \
-  nmap \
   omnigraffle \
-  openssh \
-  openssl \
-  optipng \
-  packer \
-  pigz \
-  pngcrush \
-  pngquant \
-  pre-commit \
-  prettier \
-  pv \
-  pwgen \
-  python@3.9 \
-  readline \
-  ripgrep \
-  ruby-build \
-  ruby-install \
-  ruff \
-  s3cmd \
-  shellcheck \
-  shfmt \
-  shpotify \
   spotify \
-  ssh-copy-id \
-  starship \
-  stow \
-  tcpdump \
-  terminal-notifier \
-  tfenv \
-  the_silver_searcher \
-  tig \
-  tldr \
-  tmux \
   tor-browser \
-  tree \
-  vale \
-  vim \
-  vlc \
-  watch \
-  wget \
-  xz \
-  zoxide
+  vlc
 
 # 1password and little-snitch should be installed globally ...
 brew install --appdir /Applications \
@@ -165,14 +67,15 @@ echo '--> Install/update Homebrew cask'
 
 brew update
 
-brew tap homebrew/cask-drivers
-
 brew install \
   gpg-suite \
   keybase \
   vagrant \
   virtualbox
 "
+
+echo '--> Clean up Homebrew'
+brew autoremove && brew cleanup
 
 ## ruby
 mkdir -p "${HOME}/.rubies"
@@ -185,9 +88,9 @@ RUBIES=(
 
 for ruby in "${RUBIES[@]}"; do
   if [[ ! -f "${HOME}/.rubies/ruby-${ruby}/bin/ruby" ]]; then
-    "${HOME}/.homebrew/bin/ruby-install" "ruby" "$ruby"
+    ruby-install "ruby" "$ruby"
   fi
 done
 
 # Disable the macOS default ssh-agent for your user.
-launchctl disable user/$UID/com.openssh.ssh-agent
+launchctl disable "user/$UID/com.openssh.ssh-agent"

@@ -1,7 +1,16 @@
-# PATH
-export PATH="$HOME/.homebrew/bin:$HOME/.homebrew/sbin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+# Nix
+if [ -e "${HOME}/.nix-profile/etc/profile.d/nix.sh" ]; then
+  # shellcheck disable=SC1091
+  . "${HOME}/.nix-profile/etc/profile.d/nix.sh"
+elif [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  # shellcheck disable=SC1091
+  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
 
-# Homebrew prefix
+# PATH
+export PATH="$HOME/.nix-profile/bin:$HOME/.homebrew/bin:$HOME/.homebrew/sbin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+
+# Homebrew prefix (kept for GUI / cask apps)
 export HOMEBREW_PREFIX='/usr/local'
 if command -v brew >/dev/null 2>&1; then
   HOMEBREW_PREFIX="$(brew --prefix)"
@@ -54,7 +63,7 @@ elif less_pipe=$(command -v lesspipe.sh); then
 fi
 
 # man
-export MANPATH="$HOME/.homebrew/share/man${MANPATH+:$MANPATH}:"
+export MANPATH="$HOME/.nix-profile/share/man:$HOME/.homebrew/share/man${MANPATH+:$MANPATH}:"
 
 # Don't clear the screen after quitting a manual page
 export MANPAGER='less -X'
@@ -101,7 +110,9 @@ if [ ! -d "$TMPDIR" ]; then
 fi
 
 # diff-highligh
-if [ -d "${HOMEBREW_PREFIX}/share/git-core/contrib/diff-highlight/" ]; then
+if [ -d "${HOME}/.nix-profile/share/git-core/contrib/diff-highlight/" ]; then
+  export PATH="${PATH}:${HOME}/.nix-profile/share/git-core/contrib/diff-highlight"
+elif [ -d "${HOMEBREW_PREFIX}/share/git-core/contrib/diff-highlight/" ]; then
   export PATH="${PATH}:${HOMEBREW_PREFIX}/share/git-core/contrib/diff-highlight"
 fi
 
