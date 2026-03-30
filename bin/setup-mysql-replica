@@ -7,6 +7,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+BACKUP_MYSQL_DATADIR=${BACKUP_MYSQL_DATADIR:=''}
 MYSQL_DATADIR=${MYSQL_DATADIR:='/var/lib/mysql'}
 MYSQL_SOURCE_IP=${MYSQL_SOURCE_IP:='172.16.0.1'}
 MYSQL_SOURCE_PASSWORD=${MYSQL_SOURCE_PASSWORD:=''}
@@ -65,6 +66,11 @@ ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
   "xtrabackup --prepare --target-dir=${BACKUP_DESTINATION}"
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo service mysql stop"
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo chown -R mysql:mysql ${BACKUP_DESTINATION}"
+# Optionally backup the old datadir before cleaning
+if [[ -n $BACKUP_MYSQL_DATADIR ]]; then
+  ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
+    "sudo cp -a ${MYSQL_DATADIR} ${TMP_DIRECTORY}/mysql.back.$$"
+fi
 # Clean the datadir contents instead of moving the directory, as it may be a
 # bind mount (e.g. /data/mysql -> /var/lib/mysql)
 ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
@@ -80,7 +86,7 @@ ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
 
 MYSQL_SETUP_REPLICA_QUERY="STOP REPLICA IO_THREAD FOR CHANNEL '';
 SET SESSION wsrep_on = 0;
-RESET MASTER;
+RESET BINARY LOGS AND GTIDS;
 SET SESSION wsrep_on = 1;
 SET GLOBAL gtid_purged='${MYSQL_GTID_POS}';
 CHANGE REPLICATION SOURCE TO
