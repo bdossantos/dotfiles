@@ -17,6 +17,7 @@
 
 #   LOG_LEVEL                  Log level: ERROR, WARN, INFO, DEBUG (default: INFO)
 #   SKIP_MYSQL                 Skip MySQL backup (default: 0)
+#   SKIP_MYSQLDUMP             Skip MySQL mysqldump backup (default: 0)
 #   SKIP_POSTGRESQL            Skip PostgreSQL backup (default: 0)
 #   SKIP_FILES                 Skip file backup (default: 0)
 #   MIN_FREE_SPACE_MB          Minimum free space required in MB (default: 1024)
@@ -37,6 +38,7 @@ set -o nounset
 DEBUG=${DEBUG:-0}
 LOG_LEVEL=${LOG_LEVEL:-INFO}
 SKIP_MYSQL=${SKIP_MYSQL:-0}
+SKIP_MYSQLDUMP=${SKIP_MYSQLDUMP:-0}
 SKIP_POSTGRESQL=${SKIP_POSTGRESQL:-0}
 SKIP_FILES=${SKIP_FILES:-0}
 MIN_FREE_SPACE_MB=${MIN_FREE_SPACE_MB:-1024}
@@ -129,6 +131,7 @@ ENVIRONMENT VARIABLES:
   MIN_FREE_SPACE_MB       Minimum free space required in MB (default: 1024)
   LOG_LEVEL               Log level: ERROR, WARN, INFO, DEBUG (default: INFO)
   SKIP_MYSQL              Skip MySQL backup (default: 0)
+  SKIP_MYSQLDUMP          Skip MySQL mysqldump backup (default: 0)
   SKIP_POSTGRESQL         Skip PostgreSQL backup (default: 0)
   SKIP_FILES              Skip file backup (default: 0)
 
@@ -423,6 +426,11 @@ _restic_backup_mysql_xtrabackup() {
 _restic_backup_mysql() {
   if [[ $SKIP_MYSQL -eq 1 ]]; then
     log "INFO" "Skipping MySQL backup (--skip-mysql)"
+    return 0
+  fi
+
+  if [[ $SKIP_MYSQLDUMP -eq 1 ]]; then
+    log "INFO" "Skipping MySQL mysqldump backup (--skip-mysqldump)"
     return 0
   fi
 
