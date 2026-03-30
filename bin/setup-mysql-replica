@@ -69,7 +69,7 @@ ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "sudo chown -R mysql:mysql ${BACKUP_DEST
 # Optionally backup the old datadir before cleaning
 if [[ -n $BACKUP_MYSQL_DATADIR ]]; then
   ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" \
-    "sudo cp -a ${MYSQL_DATADIR} ${TMP_DIRECTORY}/mysql.back.$$"
+    "sudo mkdir -p ${TMP_DIRECTORY} && sudo cp -a ${MYSQL_DATADIR} ${TMP_DIRECTORY}/mysql.back.$$"
 fi
 # Clean the datadir contents instead of moving the directory, as it may be a
 # bind mount (e.g. /data/mysql -> /var/lib/mysql)
