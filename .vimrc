@@ -35,6 +35,12 @@ Plugin 'google/vim-jsonnet'
 call vundle#end()
 filetype plugin indent on         " load file type plugins + indentation
 
+" Enable Copilot for YAML files
+let g:copilot_filetypes = {
+\  'yaml': v:true,
+\  'yml': v:true,
+\}
+
 " Settings
 set autoindent                    " match indentation of previous line
 set autowrite                     " Automatically :write before running commands
