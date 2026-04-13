@@ -52,15 +52,10 @@ in
       "google-chrome"
       "gpg-suite"
       "imageoptim"
-      "iterm2"
-      "keybase"
       "little-snitch"
       "micro-snitch"
-      "omnigraffle"
       "spotify"
       "tor-browser"
-      "vagrant"
-      "virtualbox"
       "vlc"
     ];
   };
