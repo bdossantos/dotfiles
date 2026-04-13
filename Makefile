@@ -1,4 +1,4 @@
-OS = "$(uname)"
+OS := $(shell uname)
 SHELL := /usr/bin/env bash
 SYSTEM := $(shell uname -m)-$(shell uname -s | tr '[:upper:]' '[:lower:]')
 
@@ -26,7 +26,7 @@ install: ## Install all the things
 	@make install-dotfiles \
 		install-vundle \
 		install-nvim-deps
-	@if [[ $OS == 'Darwin' ]]; then \
+	@if [[ "$(OS)" == 'Darwin' ]]; then \
 		make run-darwin; \
 	else \
 		make run-nix; \

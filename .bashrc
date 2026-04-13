@@ -79,21 +79,21 @@ fi
 PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 
 # chruby
-CHRUBY_SH=""
+CHRUBY_DIR=""
 if [ -f "${HOME}/.nix-profile/share/chruby/chruby.sh" ]; then
-  CHRUBY_SH="${HOME}/.nix-profile/share/chruby"
+  CHRUBY_DIR="${HOME}/.nix-profile/share/chruby"
 elif [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
-  CHRUBY_SH="${HOMEBREW_PREFIX}/share/chruby"
+  CHRUBY_DIR="${HOMEBREW_PREFIX}/share/chruby"
 fi
 
-if [ -n "$CHRUBY_SH" ]; then
+if [ -n "$CHRUBY_DIR" ]; then
   # shellcheck disable=SC2034
   RUBIES=("${HOME}/.rubies/*")
 
   # shellcheck source=/dev/null
-  source "${CHRUBY_SH}/chruby.sh"
+  source "${CHRUBY_DIR}/chruby.sh"
   # shellcheck source=/dev/null
-  source "${CHRUBY_SH}/auto.sh"
+  source "${CHRUBY_DIR}/auto.sh"
 fi
 
 if command -v zoxide &>/dev/null; then

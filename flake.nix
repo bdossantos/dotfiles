@@ -42,6 +42,8 @@
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
+              # Keep packages in ~/.nix-profile/bin for compatibility with
+              # the manually managed PATH in .profile
               home-manager.useUserPackages = false;
               home-manager.users.bdossantos = import ./home.nix;
             }
