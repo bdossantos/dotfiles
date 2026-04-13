@@ -21,8 +21,7 @@ readonly BACKUP_DESTINATION="${TMP_DIRECTORY}/${REPLICA_SSH_USER}/mysql.$$"
 readonly MYSQL_SETUP_REPLICA_SQL="/tmp/setup_replica.$$.sql"
 readonly NPROC
 
-if ! command -v qpress &>/dev/null ||
-  ! command -v xbstream &>/dev/null ||
+if ! command -v xbstream &>/dev/null ||
   ! command -v xtrabackup &>/dev/null; then
   echo >&2 "qpress, xbstream or xtrabackup aren't installed or in PATH"
   exit 1
@@ -33,8 +32,7 @@ if ! ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "mkdir -p ${BACKUP_DESTINATION}"; t
   exit 1
 fi
 
-if ! ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "command -v qpress" ||
-  ! ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "command -v xbstream" ||
+if ! ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "command -v xbstream" ||
   ! ssh "${REPLICA_SSH_USER}@${REPLICA_IP}" "command -v xtrabackup"; then
   echo >&2 "qpress, xbstream or xtrabackup aren't installed or in PATH on the replica"
   exit 1
