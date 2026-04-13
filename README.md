@@ -6,10 +6,13 @@
 Personal dotfiles for macOS, managed with
 [GNU Stow](https://www.gnu.org/software/stow/).
 
-CLI tools are managed declaratively with [Nix](https://nixos.org/) and
-[home-manager](https://nix-community.github.io/home-manager/). GUI / cask
-applications are still installed via
-[Homebrew](https://brew.sh/).
+On macOS, system configuration and packages are managed declaratively with
+[nix-darwin](https://github.com/LnL7/nix-darwin) (which includes
+[home-manager](https://nix-community.github.io/home-manager/) for user-level
+packages and [Homebrew](https://brew.sh/) for GUI / cask applications).
+
+On Linux, [home-manager](https://nix-community.github.io/home-manager/) is
+used standalone for CLI tools.
 
 ## What's included
 
@@ -18,8 +21,9 @@ applications are still installed via
 | `.config/ghostty/`  | [Ghostty](https://ghostty.org) terminal with Dracula colour scheme |
 | `.aliases`          | Handy shell aliases                              |
 | `.bash_profile` / `.bashrc` / `.profile` | Bash startup files     |
-| `.brew`             | Homebrew casks (GUI apps only)                   |
-| `flake.nix` / `home.nix` | Nix home-manager configuration (CLI tools) |
+| `flake.nix`         | Nix flake (nix-darwin + home-manager)            |
+| `darwin.nix`        | macOS system config (Homebrew casks, launchd, …)  |
+| `home.nix`          | Home-manager config (CLI tools, shared across OS) |
 | `.gitconfig`        | Git settings (diff-so-fancy, GPG signing, …)     |
 | `.gitmessage`       | Conventional Commits message template            |
 | `.gnupg/`           | GPG configuration                                |
@@ -43,6 +47,15 @@ applications are still installed via
     https://install.determinate.systems/nix | sh -s -- install
   ```
 
+- **[Homebrew](https://brew.sh/)** (macOS only) — nix-darwin manages casks
+  through Homebrew, so it must be installed first:
+
+  ```bash
+  mkdir -m 0700 -p ~/.homebrew
+  curl -L https://github.com/Homebrew/brew/tarball/master \
+    | tar xz --strip 1 -C ~/.homebrew
+  ```
+
 ## Installation
 
 ```bash
@@ -50,6 +63,9 @@ git clone https://github.com/bdossantos/dotfiles ~/.dotfiles
 cd ~/.dotfiles
 make install
 ```
+
+On a fresh macOS where `darwin-rebuild` is not yet available, nix-darwin is
+bootstrapped automatically via `nix run nix-darwin -- switch`.
 
 ## Uninstallation
 
@@ -60,21 +76,33 @@ make uninstall
 
 ## Package management
 
-### CLI tools (Nix + home-manager)
+### macOS (nix-darwin)
 
-All command-line tools are declared in `home.nix` and installed via
-home-manager. To add or remove a CLI tool, edit `home.nix` and apply:
+A single `darwin-rebuild switch` manages **everything** — CLI tools (via
+home-manager), GUI applications (via Homebrew casks), and system settings:
+
+```bash
+make run-darwin
+```
+
+- **CLI tools** — edit `home.nix`, then `make run-darwin`
+- **GUI / cask apps** — edit `darwin.nix` (`homebrew.casks`), then
+  `make run-darwin`
+
+### Linux (home-manager)
+
+On Linux, only home-manager is used for CLI tools:
 
 ```bash
 make run-nix
 ```
 
-### GUI / cask applications (Homebrew)
+### Ruby versions
 
-GUI applications, fonts, and other casks are still installed via Homebrew:
+Ruby versions are installed via `ruby-install` (managed by Nix):
 
 ```bash
-make run-brew
+make install-rubies
 ```
 
 ## macOS setup

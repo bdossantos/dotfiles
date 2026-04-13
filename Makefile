@@ -25,10 +25,12 @@ help:
 install: ## Install all the things
 	@make install-dotfiles \
 		install-vundle \
-		install-nvim-deps \
-		run-nix
-	@[[ $OS == 'Darwin' ]] \
-		&& make install-homebrew run-brew
+		install-nvim-deps
+	@if [[ $OS == 'Darwin' ]]; then \
+		make run-darwin; \
+	else \
+		make run-nix; \
+	fi
 
 install-dotfiles: ## Pull and Install dotfiles
 	@git pull -q && git submodule update --init --recursive -q
@@ -44,17 +46,10 @@ install-dotfiles: ## Pull and Install dotfiles
 		--ignore='flake.nix' \
 		--ignore='flake.lock' \
 		--ignore='home.nix' \
+		--ignore='darwin.nix' \
 		--override='.bashrc' \
 		--override='.profile' \
 		--override='.bash_profile'
-
-install-homebrew: ## Install homebrew, the missing package manager for OS X
-	$(info --> Install homebrew)
-	@mkdir -m 0700 -p ~/.homebrew
-	@if [[ ! -f ~/.homebrew/bin/brew ]]; then \
-		curl -L https://github.com/Homebrew/brew/tarball/master \
-			| tar xz --strip 1 -C ~/.homebrew; \
-	fi
 
 install-vundle: ## Install Vundle, the plug-in manager for Vim
 	$(info --> Install Vundle)
@@ -67,14 +62,29 @@ install-nvim-deps: ## Install/setup Neovim dependencies
 	$(info --> Setup Neovim directories)
 	@mkdir -p ~/.vimswap ~/.vimundo ~/.tmp
 
+install-rubies: ## Install Ruby versions via ruby-install
+	$(info --> Install Ruby versions)
+	@mkdir -p ~/.rubies
+	@for ruby in 3.4.1 3.3.6 3.2.6; do \
+		if [[ ! -f "$$HOME/.rubies/ruby-$$ruby/bin/ruby" ]]; then \
+			ruby-install ruby "$$ruby"; \
+		fi; \
+	done
+
 pre-commit: ## Run pre-commit tests
 	$(info --> Run pre-commit)
 	@pre-commit run --all-files
 
-run-brew: ## Run ./.brew (GUI / cask apps only)
-	@bash -x .brew
+run-darwin: ## Apply nix-darwin configuration (macOS — includes home-manager + Homebrew casks)
+	$(info --> Apply nix-darwin configuration for $(NIX_SYSTEM))
+	@command -v darwin-rebuild >/dev/null && { \
+		darwin-rebuild switch --flake '.#$(NIX_SYSTEM)'; \
+	} || { \
+		echo 'Bootstrapping nix-darwin for the first time...'; \
+		nix run nix-darwin -- switch --flake '.#$(NIX_SYSTEM)'; \
+	}
 
-run-nix: ## Apply Nix home-manager configuration
+run-nix: ## Apply Nix home-manager configuration (Linux)
 	$(info --> Apply home-manager configuration for $(NIX_SYSTEM))
 	@command -v home-manager >/dev/null || { \
 		echo 'home-manager not found. Install Nix and home-manager first:'; \
@@ -97,4 +107,5 @@ uninstall-dotfiles: ## Uninstall dotfiles
 		--ignore='Makefile' \
 		--ignore='flake.nix' \
 		--ignore='flake.lock' \
-		--ignore='home.nix'
+		--ignore='home.nix' \
+		--ignore='darwin.nix'

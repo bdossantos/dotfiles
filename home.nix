@@ -94,6 +94,7 @@ in
       # --- ruby ---
       chruby
       ruby-build
+      ruby-install
 
       # --- linters & formatters ---
       hadolint

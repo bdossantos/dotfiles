@@ -52,7 +52,7 @@ if [ -e "${HOME}/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
   source "${HOME}/.nix-profile/etc/profile.d/hm-session-vars.sh"
 fi
 
-# brew (kept for GUI / cask apps)
+# brew (managed by nix-darwin on macOS)
 if command -v brew &>/dev/null; then
   eval "$(brew shellenv)"
 fi
@@ -105,7 +105,7 @@ if command -v direnv &>/dev/null; then
 fi
 
 # gcloud
-# For Homebrew-installed gcloud-cli (GUI apps are still managed via Homebrew)
+# gcloud-cli is managed by nix-darwin's Homebrew module on macOS
 if command -v brew &>/dev/null; then
   GCLOUD_SDK="${HOMEBREW_PREFIX}/share/google-cloud-sdk"
   if [ -f "${GCLOUD_SDK}/path.bash.inc" ] &&

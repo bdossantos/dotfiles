@@ -302,14 +302,16 @@ if [[ $OS == 'Darwin' ]]; then
   # Stopwatch
   alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
 
-  # Get OS X Software Updates, and update Nix, Homebrew, npm, and their installed packages
+  # Get OS X Software Updates and apply nix-darwin / home-manager changes
   update() {
     sudo softwareupdate -i -a
-    if command -v nix &>/dev/null; then
+    if command -v darwin-rebuild &>/dev/null; then
+      nix flake update --flake ~/.dotfiles
+      darwin-rebuild switch --flake ~/.dotfiles
+    elif command -v nix &>/dev/null; then
       nix flake update --flake ~/.dotfiles
       home-manager switch --flake ~/.dotfiles
     fi
-    brew update && brew upgrade && brew cleanup
     npm install npm -g && npm update -g
     sudo gem update --system && sudo gem update
   }

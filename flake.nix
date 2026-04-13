@@ -1,8 +1,13 @@
 {
-  description = "bdossantos dotfiles — managed with home-manager";
+  description = "bdossantos dotfiles — managed with nix-darwin and home-manager";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+
+    nix-darwin = {
+      url = "github:nix-community/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -11,14 +16,37 @@
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }:
+    {
+      nixpkgs,
+      nix-darwin,
+      home-manager,
+      ...
+    }:
     let
-      supportedSystems = [
+      supportedDarwinSystems = [
         "aarch64-darwin"
         "x86_64-darwin"
+      ];
+
+      supportedLinuxSystems = [
         "x86_64-linux"
         "aarch64-linux"
       ];
+
+      mkDarwinConfiguration =
+        system:
+        nix-darwin.lib.darwinSystem {
+          inherit system;
+          modules = [
+            ./darwin.nix
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = false;
+              home-manager.users.bdossantos = import ./home.nix;
+            }
+          ];
+        };
 
       mkHomeConfiguration =
         system:
@@ -28,11 +56,18 @@
         };
     in
     {
+      darwinConfigurations = builtins.listToAttrs (
+        map (system: {
+          name = system;
+          value = mkDarwinConfiguration system;
+        }) supportedDarwinSystems
+      );
+
       homeConfigurations = builtins.listToAttrs (
         map (system: {
           name = system;
           value = mkHomeConfiguration system;
-        }) supportedSystems
+        }) supportedLinuxSystems
       );
     };
 }

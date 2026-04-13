@@ -10,7 +10,7 @@ fi
 # PATH
 export PATH="$HOME/.nix-profile/bin:$HOME/.homebrew/bin:$HOME/.homebrew/sbin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
-# Homebrew prefix (kept for GUI / cask apps)
+# Homebrew prefix (managed by nix-darwin on macOS)
 export HOMEBREW_PREFIX='/usr/local'
 if command -v brew >/dev/null 2>&1; then
   HOMEBREW_PREFIX="$(brew --prefix)"
