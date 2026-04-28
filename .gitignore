@@ -6,3 +6,5 @@
 .config
 .gnupg/
 nvim.appimage
+result
+.direnv
