@@ -202,6 +202,19 @@ if command -v kubectl &>/dev/null; then
   alias netshoot='kubectl run netshoot-$(date +%s) --rm -i --tty --image nicolaka/netshoot -- /bin/bash'
 fi
 
+# k9s - apply danger skin when current context contains "prd"
+if command -v k9s &>/dev/null; then
+  function k9s() {
+    local context
+    context="$(kubectl config current-context 2>/dev/null || true)"
+    if [[ -n "$context" && "${context,,}" == *prd* ]]; then
+      K9S_SKIN="${K9S_SKIN:-prd}" command k9s "$@"
+    else
+      command k9s "$@"
+    fi
+  }
+fi
+
 # akamai
 alias akamai='docker run -it -v ${HOME}/.config/akamai/.edgerc:/root/.edgerc:ro akamai/shell:latest akamai'
 
