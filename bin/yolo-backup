@@ -537,7 +537,6 @@ _restic_check() {
   fi
 
   BACKUP_CHECK_SUCCESS=1
-  log "INFO" "Repository integrity check completed successfully"
   return 0
 }
 
