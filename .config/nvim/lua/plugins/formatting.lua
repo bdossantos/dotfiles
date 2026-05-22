@@ -2,6 +2,7 @@
 -- Replaces ALE for formatting functionality
 return {
   "stevearc/conform.nvim",
+  commit = "18aeab3d63d350dcf44d64c462cc489a3412af40",
   event = { "BufWritePre" }, -- Load before writing files
   cmd = { "ConformInfo" }, -- Load when running ConformInfo command
   lazy = false, -- Don't lazy load to ensure formatting is available

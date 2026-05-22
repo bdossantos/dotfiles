@@ -2,6 +2,7 @@
 return {
   {
     "Mofiqul/dracula.nvim",
+    commit = "ae752c13e95fb7c5f58da4b5123cb804ea7568ee",
     lazy = false, -- Load immediately (colorscheme should be available early)
     priority = 1000, -- High priority to load before other plugins
     config = function()
@@ -19,6 +20,7 @@ return {
   -- Configure LazyVim to use dracula as default colorscheme
   {
     "LazyVim/LazyVim",
+    commit = "83d90f339defdb109a6ede333865a66ffc7ef6aa",
     opts = {
       colorscheme = "dracula",
     },
