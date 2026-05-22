@@ -11,6 +11,7 @@ Personal dotfiles for macOS, managed with
 | File / directory    | Description                                      |
 | ------------------- | ------------------------------------------------ |
 | `.config/ghostty/`  | [Ghostty](https://ghostty.org) terminal with Dracula colour scheme |
+| `.config/nvim/`     | Neovim config with [lazy.nvim](https://github.com/folke/lazy.nvim) plugin manager and a pinned `lazy-lock.json` lockfile |
 | `.aliases`          | Handy shell aliases                              |
 | `.bash_profile` / `.bashrc` / `.profile` | Bash startup files     |
 | `.brew`             | Homebrew formulae and casks                      |
@@ -91,6 +92,45 @@ A few other notes:
 * Ensure that `~/.bash_login` does not exist.
 
 See also <https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html>
+
+## Neovim
+
+### Updating plugins safely
+
+> **Do not blindly run `:Lazy update`.** A supply chain attack relies on
+> developers pulling malicious updates without reviewing them first.
+
+Follow these steps instead:
+
+1. **Check for updates without applying them**
+
+   ```
+   :Lazy check
+   ```
+
+   This fetches the latest commits for every plugin but does **not** install
+   anything.
+
+2. **Review the pending changes**
+
+   Open the Lazy UI (`:Lazy`). It lists every commit between your locked
+   version and the remote tip. Skim the commit messages for anything
+   suspicious before proceeding.
+
+3. **Update deliberately**
+
+   Once you are satisfied that the updates are legitimate, press <kbd>U</kbd>
+   inside the Lazy UI to apply them.
+
+4. **Commit the updated lockfile**
+
+   Immediately after updating and confirming Neovim still works, commit
+   `lazy-lock.json` so that the pinned versions are recorded:
+
+   ```bash
+   git add .config/nvim/lazy-lock.json
+   git commit -m "chore(nvim): update lazy-lock.json"
+   ```
 
 ## Testing
 
