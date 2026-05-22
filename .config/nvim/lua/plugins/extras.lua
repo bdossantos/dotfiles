@@ -9,6 +9,7 @@ return {
   -- Surround text objects (replaces tpope/vim-surround)
   {
     "nvim-mini/mini.surround",
+    commit = "990ce30f724d08e79670107de6b915a3f1bb9a9b",
     keys = function(_, keys)
       local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
       local opts = require("lazy.core.plugin").values(plugin, "opts", false)
@@ -45,6 +46,7 @@ return {
   -- Text alignment (replaces godlygeek/tabular)
   {
     "nvim-mini/mini.align",
+    commit = "c701192658ddac4e3b20956a964c2b03157b5e51",
     keys = {
       { "ga", mode = { "n", "v" }, desc = "Align with delimiter" },
       { "gA", mode = { "n", "v" }, desc = "Align with preview" },
@@ -59,6 +61,7 @@ return {
   -- Trailing whitespace management (replaces ntpeters/vim-better-whitespace)
   {
     "nvim-mini/mini.trailspace",
+    commit = "ae2fd422564c6e781caf6545355ca6051e20fa26",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       require("mini.trailspace").setup()
@@ -76,6 +79,7 @@ return {
   -- Zen mode for distraction-free writing (replaces junegunn/goyo.vim + limelight.vim)
   {
     "folke/zen-mode.nvim",
+    commit = "8564ce6d29ec7554eb9df578efa882d33b3c23a7",
     cmd = "ZenMode",
     keys = {
       { "<leader>z", "<cmd>ZenMode<cr>", desc = "Toggle Zen Mode" },
@@ -96,6 +100,7 @@ return {
   -- Enhanced motion (replaces Lokaltog/vim-easymotion)
   {
     "folke/flash.nvim",
+    commit = "fcea7ff883235d9024dc41e638f164a450c14ca2",
     event = "VeryLazy",
     vscode = true,
     opts = {},
@@ -150,6 +155,7 @@ return {
   -- EditorConfig support (same as editorconfig/editorconfig-vim)
   {
     "editorconfig/editorconfig-vim",
+    commit = "c0227885a06b155d5aa5465e08b9800e8c939f70",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       -- Ensure compatibility with fugitive git plugin
@@ -160,12 +166,14 @@ return {
   -- Jsonnet support (same as google/vim-jsonnet)
   {
     "google/vim-jsonnet",
+    commit = "4ebc6619ddce5d032a985b42a9864154c3d20e4a",
     ft = { "jsonnet", "libsonnet" },
   },
 
   -- HashiCorp Terraform support (replaces hashivim/vim-hashicorp-tools)
   {
     "hashivim/vim-terraform",
+    commit = "520498fab16a3a11f2ae1b8cb65e0a1684bc317a",
     ft = { "terraform", "hcl" },
     config = function()
       -- Auto-format Terraform files on save
