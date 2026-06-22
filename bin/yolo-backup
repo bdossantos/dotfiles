@@ -604,20 +604,23 @@ _restic_stats() {
     hostname=$(hostname -f 2>/dev/null || hostname)
 
     # Repository statistics – restore-size mode (provides total_file_count)
+    # grep strips progress lines that restic >= 0.19 emits on stdout before JSON
     local stats
-    if ! stats=$(restic stats --json 2>/dev/null); then
+    if ! stats=$(restic stats --json 2>/dev/null | grep '^{'); then
       log "ERROR" "Failed to get repository statistics"
       return 1
     fi
 
     # Repository statistics – raw-data mode (provides compression metrics,
     # available in restic >= 0.14 and V2 repositories; silently ignored otherwise)
+    # grep strips progress lines that restic >= 0.19 emits on stdout before JSON
     local raw_stats
-    raw_stats=$(restic stats --json --mode raw-data 2>/dev/null) || raw_stats='{}'
+    raw_stats=$(restic stats --json --mode raw-data 2>/dev/null | grep '^{') || raw_stats='{}'
 
     # Latest snapshot details (summary block available in restic >= 0.17)
+    # grep strips progress lines that restic >= 0.19 emits on stdout before JSON
     local snapshots
-    snapshots=$(restic snapshots --latest 1 --json 2>/dev/null) || snapshots='[]'
+    snapshots=$(restic snapshots --latest 1 --json 2>/dev/null | grep '^\[') || snapshots='[]'
 
     # Count stale locks (non-fatal; failure treated as zero)
     local locks_output
