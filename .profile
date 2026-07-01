@@ -60,13 +60,17 @@ export MANPATH="$HOME/.homebrew/share/man${MANPATH+:$MANPATH}:"
 export MANPAGER='less -X'
 
 # color scheme
-# Fall back to `xterm` if `xterm-256color` isn't in the local terminfo
-# database (e.g. minimal remote hosts) to avoid "unknown terminal type"
-# errors from ncurses-based tools (less, git log, ag, etc.).
-if infocmp xterm-256color &>/dev/null; then
-  export TERM='xterm-256color'
-else
-  export TERM='xterm'
+# Keep the terminal's own TERM value (e.g. `xterm-ghostty`) when its terminfo
+# entry is available, so terminal-specific features aren't lost. Otherwise
+# fall back to `xterm-256color`, then `xterm`, to avoid "unknown terminal
+# type" errors from ncurses-based tools (less, git log, ag, etc.) on hosts
+# that lack the terminal's terminfo entry (e.g. minimal remote hosts).
+if [ -z "${TERM}" ] || ! infocmp "${TERM}" &>/dev/null; then
+  if infocmp xterm-256color &>/dev/null; then
+    export TERM='xterm-256color'
+  else
+    export TERM='xterm'
+  fi
 fi
 export BAT_THEME='Dracula'
 
