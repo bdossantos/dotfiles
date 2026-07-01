@@ -60,7 +60,14 @@ export MANPATH="$HOME/.homebrew/share/man${MANPATH+:$MANPATH}:"
 export MANPAGER='less -X'
 
 # color scheme
-export TERM='xterm-256color'
+# Fall back to `xterm` if `xterm-256color` isn't in the local terminfo
+# database (e.g. minimal remote hosts) to avoid "unknown terminal type"
+# errors from ncurses-based tools (less, git log, ag, etc.).
+if infocmp xterm-256color &>/dev/null; then
+  export TERM='xterm-256color'
+else
+  export TERM='xterm'
+fi
 export BAT_THEME='Dracula'
 
 # enable cheat syntax highlighting
