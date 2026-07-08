@@ -6,7 +6,6 @@
 !.config/zellij/config.yaml
 !.config/starship.toml
 !.config/bash/
-!.config/bash/**
 .gnupg/*
 !.gnupg/gpg.conf
 nvim.appimage
