@@ -13,7 +13,7 @@ shopt -s cmdhist
 # auto-correct minor cd misspellings
 shopt -s cdspell
 
-# include dotfiles in glob expansion
+# include dotfiles in pathname expansion (globbing)
 shopt -s dotglob
 
 # expand aliases in interactive shells
