@@ -10,7 +10,7 @@ _bash_config="${HOME}/.config/bash"
 # 2. Prompt — Ghostty integration + starship (sets PROMPT_COMMAND)
 [[ -r "${_bash_config}/prompt.bash" ]] && source "${_bash_config}/prompt.bash"
 
-# 3. Tool integrations — brew, chruby, zoxide, direnv (may append to
+# 3. Tool integrations — brew, chruby, zoxide, direnv (appends to
 #    PROMPT_COMMAND), fzf, gcloud, nomad; must precede history.bash
 [[ -r "${_bash_config}/tools.bash" ]] && source "${_bash_config}/tools.bash"
 
