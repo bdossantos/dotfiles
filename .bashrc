@@ -1,150 +1,42 @@
 # shellcheck shell=bash
-# shellcheck disable=SC1090
+# shellcheck disable=SC1090,SC1091
+# ~/.bashrc — thin loader; all logic lives in ~/.config/bash/*.bash
 
-# vi mode
-set -o vi
+_bash_config="${HOME}/.config/bash"
 
-# append history instead of rewriting it
-shopt -s histappend
+# 1. Shell options (shopt, set -o vi, …)
+[[ -r "${_bash_config}/options.bash" ]] && source "${_bash_config}/options.bash"
 
-# save multi-line commands in history as single line
-shopt -s cmdhist
+# 2. Prompt — Ghostty integration + starship (sets PROMPT_COMMAND)
+[[ -r "${_bash_config}/prompt.bash" ]] && source "${_bash_config}/prompt.bash"
 
-# autocorrects cd misspellings
-shopt -s cdspell
+# 3. Tool integrations — brew, chruby, zoxide, direnv (may append to
+#    PROMPT_COMMAND), fzf, gcloud, nomad; must precede history.bash
+[[ -r "${_bash_config}/tools.bash" ]] && source "${_bash_config}/tools.bash"
 
-# include dotfiles in pathname expansio
-shopt -s dotglob
+# 4. History — prepends 'history -a' to PROMPT_COMMAND; must run after all
+#    other PROMPT_COMMAND setters (starship, direnv, …)
+[[ -r "${_bash_config}/history.bash" ]] && source "${_bash_config}/history.bash"
 
-# expand aliases
-shopt -s expand_aliases
+# 5. Tab completions (system + Homebrew)
+[[ -r "${_bash_config}/completions.bash" ]] && source "${_bash_config}/completions.bash"
 
-# enable extended pattern-matching features
-shopt -s extglob
+# 6. SSH agent — auto-start / attach
+[[ -r "${_bash_config}/ssh_agent.bash" ]] && source "${_bash_config}/ssh_agent.bash"
 
-# pathname expansion will be treated as case-insensitive
-shopt -s nocaseglob
+unset _bash_config
 
-# ghostty
-if [[ -n ${GHOSTTY_RESOURCES_DIR} ]]; then
-  builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash"
-fi
-
-# starship
-if command -v starship &>/dev/null; then
-  eval "$(starship init bash)"
-fi
-
-# bash completions
-if [ -r /etc/bash_completion ]; then
-  # shellcheck disable=SC1091
-  source /etc/bash_completion
-fi
-
-if [ -r /etc/profile.d/bash_completion.sh ]; then
-  # shellcheck disable=SC1091
-  source /etc/profile.d/bash_completion.sh
-fi
-
-# brew
-if command -v brew &>/dev/null; then
-  eval "$(brew shellenv)"
-fi
-
-# https://docs.brew.sh/Shell-Completion
-if [ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]; then
-  export BASH_COMPLETION_COMPAT_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d"
-  # shellcheck disable=SC1091
-  source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
-else
-  for completion in "${HOMEBREW_PREFIX}"/etc/bash_completion.d/*; do
-    [ -r "$completion" ] && source "$completion"
-  done
-fi
-
-# Save bash history after each command, depend `shopt -s histappend`
-# Optimized history management - just append new entries
-PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
-
-# chruby
-if [ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]; then
-  # shellcheck disable=SC2034
-  RUBIES=("${HOME}/.rubies/*")
-
-  # shellcheck source=/dev/null
-  source "${HOMEBREW_PREFIX}/share/chruby/chruby.sh"
-  # shellcheck source=/dev/null
-  source "${HOMEBREW_PREFIX}/share/chruby/auto.sh"
-fi
-
-if command -v zoxide &>/dev/null; then
-  eval "$(zoxide init bash)"
-fi
-
-if command -v direnv &>/dev/null; then
-  eval "$(direnv hook bash)"
-fi
-
-# gcloud
-# For Homebrew-installed gcloud-cli
-if command -v brew &>/dev/null; then
-  GCLOUD_SDK="${HOMEBREW_PREFIX}/share/google-cloud-sdk"
-  if [ -f "${GCLOUD_SDK}/path.bash.inc" ] &&
-    [ -f "${GCLOUD_SDK}/completion.bash.inc" ]; then
-    # shellcheck source=/dev/null
-    source "${GCLOUD_SDK}/path.bash.inc"
-    # shellcheck source=/dev/null
-    source "${GCLOUD_SDK}/completion.bash.inc"
-  fi
-fi
-
-# fzf
-if command -v fzf &>/dev/null; then
-  eval "$(fzf --bash)"
-fi
-
-# nomad
-if command -v nomad &>/dev/null; then
-  complete -C nomad nomad
-fi
-
-# Auto attach|start ssh-agent
-SSH_AGENT="${HOME}/.ssh-agent"
-
-if [ -r "$SSH_AGENT" ]; then
-  eval "$(<"$SSH_AGENT")" >/dev/null
-fi
-
-if [ -z "$SSH_AGENT_PID" ] || ! kill -0 "$SSH_AGENT_PID" &>/dev/null; then
-  (
-    umask 066
-    ssh-agent >"$SSH_AGENT"
-  )
-
-  eval "$(<"$SSH_AGENT")" >/dev/null
-fi
-
-if ! ssh-add -l &>/dev/null; then
-  trap '' SIGINT
-  ssh-add -t 8h
-  trap - SIGINT
-fi
-
-# Aliases
-if [ -f "${HOME}/.aliases" ]; then
-  # shellcheck source=/dev/null
+# Aliases and shell functions
+if [[ -f "${HOME}/.aliases" ]]; then
   source "${HOME}/.aliases"
 fi
 
-# ~/.extra can be used for other settings you don't want to commit.
-if [ -f "${HOME}/.extra" ]; then
-  # shellcheck source=/dev/null
+# ~/.extra — machine-local settings not committed to the repo
+if [[ -f "${HOME}/.extra" ]]; then
   source "${HOME}/.extra"
 fi
 
-# Auto start|attach zellij session
-if command -v zellij &>/dev/null; then
-  if [ -z "$ZELLIJ" ]; then
-    zellij attach -c 'BDS 🐑'
-  fi
+# Auto-attach or start a zellij session (skip in nested or non-interactive shells)
+if command -v zellij &>/dev/null && [[ -z "${ZELLIJ}" ]]; then
+  zellij attach -c 'BDS 🐑'
 fi
