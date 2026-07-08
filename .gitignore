@@ -1,8 +1,12 @@
-!.config/k9s/skin.yml
-!.config/starship.toml
-!.config/zellij/config.yaml
+.config/*
 !.config/nvim/
+!.config/k9s/
+!.config/k9s/skin.yml
+!.config/zellij/
+!.config/zellij/config.yaml
+!.config/starship.toml
+!.config/bash/
+!.config/bash/**
+.gnupg/*
 !.gnupg/gpg.conf
-.config
-.gnupg/
 nvim.appimage
