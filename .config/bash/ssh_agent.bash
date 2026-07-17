@@ -3,6 +3,7 @@
 
 _ssh_agent_file="${HOME}/.ssh-agent"
 _ssh_agent_running=false
+_ssh_add_exit=2
 
 # Load existing agent environment if the cache file is present
 if [[ -r "${_ssh_agent_file}" ]]; then
