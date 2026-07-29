@@ -45,7 +45,24 @@ alias glgcm='git log --before=$(date -d"+ 1 month" "+%Y-%m-01") --after=$(date "
 alias glgt='git log --since="yesterday" --author="$(git config user.name)" --pretty=format:"%cd - %h - %s" \
   --date=short --no-merges'
 alias reflog='git reflog --pretty=raw | tig --pretty=raw'
-alias merged='git branch --merged "$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed "s|origin/||")" | grep -v "^\*\|master\|main" | xargs -n 1 git branch -d && git fetch --prune'
+merged() {
+  local base_ref
+
+  base_ref=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null ||
+    { git show-ref --verify --quiet refs/remotes/origin/main && printf '%s\n' origin/main; } ||
+    { git show-ref --verify --quiet refs/remotes/origin/master && printf '%s\n' origin/master; })
+
+  if [[ -z "$base_ref" ]]; then
+    echo "merged: unable to determine default branch (origin/HEAD not set)" >&2
+    return 1
+  fi
+
+  git branch --merged "$base_ref" |
+    grep -vE '^\*|^[[:space:]]*(main|master)$' |
+    while read -r b; do git branch -d "$b"; done
+
+  git fetch --prune
+}
 alias gsw='git switch'
 alias gswc='git switch -c'
 alias grs='git restore'
