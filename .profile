@@ -96,7 +96,7 @@ export MYSQL_PS1='(\D) \u@\h [\d] > '
 # 20ms for key sequences
 export KEYTIMEOUT=20
 
-# Setting ag as the default source for fzf
+# Setting rg as the default source for fzf
 export FZF_DEFAULT_COMMAND='rg --files --ignore-vcs --hidden'
 
 # fzf preview
