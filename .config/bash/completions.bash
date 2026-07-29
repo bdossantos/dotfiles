@@ -29,7 +29,7 @@ if [[ -n "${HOMEBREW_PREFIX}" ]]; then
 fi
 
 # gh CLI completions (includes gh copilot)
-if command -v gh &>/dev/null; then
+if command -v gh &>/dev/null && ! complete -p gh &>/dev/null; then
   eval "$(gh completion -s bash)"
 fi
 
