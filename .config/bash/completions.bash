@@ -35,8 +35,10 @@ fi
 
 # kubectl completions (also covers the k alias defined in .aliases)
 if command -v kubectl &>/dev/null; then
-  # shellcheck source=/dev/null
-  source <(kubectl completion bash)
+  if ! declare -F __start_kubectl &>/dev/null; then
+    # shellcheck source=/dev/null
+    source <(kubectl completion bash)
+  fi
   complete -o default -F __start_kubectl k
 fi
 
