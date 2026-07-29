@@ -27,3 +27,20 @@ if [[ -n "${HOMEBREW_PREFIX}" ]]; then
     unset _completion
   fi
 fi
+
+# gh CLI completions (includes gh copilot)
+if command -v gh &>/dev/null; then
+  eval "$(gh completion -s bash)"
+fi
+
+# kubectl completions (also covers the k alias defined in .aliases)
+if command -v kubectl &>/dev/null; then
+  # shellcheck source=/dev/null
+  source <(kubectl completion bash)
+  complete -o default -F __start_kubectl k
+fi
+
+# terraform completions
+if command -v terraform &>/dev/null; then
+  complete -C terraform terraform
+fi
