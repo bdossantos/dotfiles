@@ -57,7 +57,13 @@ fi
 export MANPATH="$HOME/.homebrew/share/man${MANPATH+:$MANPATH}:"
 
 # Don't clear the screen after quitting a manual page
-export MANPAGER='less -X'
+# Use bat for syntax-highlighted man pages when available, otherwise fall back
+if command -v bat >/dev/null 2>&1; then
+  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+  export MANROFFOPT='-c'
+else
+  export MANPAGER='less -X'
+fi
 
 # color scheme
 # Keep the terminal's own TERM value (e.g. `xterm-ghostty`) when its terminfo
