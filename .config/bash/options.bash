@@ -24,3 +24,18 @@ shopt -s extglob
 
 # case-insensitive glob matching
 shopt -s nocaseglob
+
+# enable ** recursive globbing (e.g. ls **/*.rb)
+shopt -s globstar
+
+# update LINES/COLUMNS after each command (fixes resize artefacts)
+shopt -s checkwinsize
+
+# cd by typing a path alone, without the cd command
+shopt -s autocd
+
+# spell-correction for directory tab-completion
+shopt -s dirspell
+
+# show history expansion result in readline buffer before executing
+shopt -s histverify
