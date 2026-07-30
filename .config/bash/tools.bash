@@ -8,14 +8,9 @@ if command -v brew &>/dev/null; then
   eval "$(brew shellenv)"
 fi
 
-# chruby — Ruby version manager
-if [[ -f "${HOMEBREW_PREFIX}/share/chruby/chruby.sh" ]]; then
-  # shellcheck disable=SC2034
-  RUBIES=("${HOME}/.rubies/*")
-  # shellcheck source=/dev/null
-  source "${HOMEBREW_PREFIX}/share/chruby/chruby.sh"
-  # shellcheck source=/dev/null
-  source "${HOMEBREW_PREFIX}/share/chruby/auto.sh"
+# mise — polyglot version manager (replaces chruby + auto.sh)
+if command -v mise &>/dev/null; then
+  eval "$(mise activate bash)"
 fi
 
 # zoxide — smarter cd
