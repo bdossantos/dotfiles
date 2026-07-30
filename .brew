@@ -39,7 +39,6 @@ brew install \
   bazel \
   binutils \
   cheat \
-  chruby \
   cli53 \
   closure-compiler \
   coreutils \
@@ -99,6 +98,7 @@ brew install \
   luarocks \
   make \
   miller \
+  mise \
   micro-snitch \
   moreutils \
   nmap \
@@ -117,8 +117,6 @@ brew install \
   python@3.9 \
   readline \
   ripgrep \
-  ruby-build \
-  ruby-install \
   ruff \
   s3cmd \
   shellcheck \
@@ -174,20 +172,10 @@ brew install \
   virtualbox
 "
 
-## ruby
-mkdir -p "${HOME}/.rubies"
-
-RUBIES=(
-  3.4.1
-  3.3.6
-  3.2.6
-)
-
-for ruby in "${RUBIES[@]}"; do
-  if [[ ! -f "${HOME}/.rubies/ruby-${ruby}/bin/ruby" ]]; then
-    "${HOME}/.homebrew/bin/ruby-install" "ruby" "$ruby"
-  fi
-done
+# Install tool versions declared in ~/.config/mise/config.toml
+if command -v mise &>/dev/null; then
+  mise install
+fi
 
 # Disable the macOS default ssh-agent for your user.
 launchctl disable user/$UID/com.openssh.ssh-agent
