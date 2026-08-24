@@ -11,7 +11,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     lazypath,
   })
   if vim.v.shell_error == 0 then
-    vim.fn.system({ "git", "-C", lazypath, "checkout", "85c7ff3711b730b4030d03144f6db6375044ae82" })
+    vim.fn.system({ "git", "-C", lazypath, "checkout", "306a05526ada86a7b30af95c5cc81ffba93fef97" })
   end
   if vim.v.shell_error ~= 0 then
     vim.api.nvim_echo({
