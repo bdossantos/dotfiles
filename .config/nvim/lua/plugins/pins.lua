@@ -4,7 +4,7 @@ return {
   { "CopilotC-Nvim/CopilotChat.nvim", commit = "f5171b9575279995205fde6a6c06c2632bb0b9d9" }, -- latest: v4.7.4
   { "b0o/SchemaStore.nvim", commit = "73e89eb3e536a4dd8f991c963bd37189520c9919" },
   { "fang2hou/blink-copilot", commit = "7ad8209b2f880a2840c94cdcd80ab4dc511d4f39" }, -- latest: v1.4.1
-  { "Saghen/blink.cmp", commit = "d50cfb205c677143d1f036a4749e21c1c8c6bc85" }, -- latest: v1.10.2
+  { "Saghen/blink.cmp", branch = "v1", commit = "78336bc89ee5365633bcf754d93df01678b5c08f" }, -- latest: v1.10.2
   { "akinsho/bufferline.nvim", commit = "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3" }, -- v4.9.1
   { "catppuccin/nvim", name = "catppuccin", commit = "edefef779ab08ce1a4a404713e3012b0d202bd35" }, -- latest: v2.0.0
   { "p00f/clangd_extensions.nvim", commit = "78c2ecd659d54972be17aa6ba2deac3c53223b80" },
