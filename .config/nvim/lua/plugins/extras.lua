@@ -9,7 +9,7 @@ return {
   -- Surround text objects (replaces tpope/vim-surround)
   {
     "nvim-mini/mini.surround",
-    commit = "990ce30f724d08e79670107de6b915a3f1bb9a9b",
+    commit = "8d5d0c5aa92449368ac251e85451d79d8f69d296",
     keys = function(_, keys)
       local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
       local opts = require("lazy.core.plugin").values(plugin, "opts", false)
@@ -46,7 +46,7 @@ return {
   -- Text alignment (replaces godlygeek/tabular)
   {
     "nvim-mini/mini.align",
-    commit = "c701192658ddac4e3b20956a964c2b03157b5e51",
+    commit = "77d7446b9f2452193f13ced9fb73a8b3aa4a4f4d",
     keys = {
       { "ga", mode = { "n", "v" }, desc = "Align with delimiter" },
       { "gA", mode = { "n", "v" }, desc = "Align with preview" },
@@ -61,7 +61,7 @@ return {
   -- Trailing whitespace management (replaces ntpeters/vim-better-whitespace)
   {
     "nvim-mini/mini.trailspace",
-    commit = "ae2fd422564c6e781caf6545355ca6051e20fa26",
+    commit = "82c4fb7d4336f8824ca6c97068932886b56326d0",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       require("mini.trailspace").setup()
@@ -100,7 +100,7 @@ return {
   -- Enhanced motion (replaces Lokaltog/vim-easymotion)
   {
     "folke/flash.nvim",
-    commit = "fcea7ff883235d9024dc41e638f164a450c14ca2",
+    commit = "5f0f270fdc7c5b0c21d903ee85b9cb06f2ac636a",
     event = "VeryLazy",
     vscode = true,
     opts = {},

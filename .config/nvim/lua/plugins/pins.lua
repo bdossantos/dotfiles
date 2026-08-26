@@ -2,9 +2,9 @@
 -- Only the commit field is set here; all other configuration comes from LazyVim defaults.
 return {
   { "CopilotC-Nvim/CopilotChat.nvim", commit = "f5171b9575279995205fde6a6c06c2632bb0b9d9" }, -- latest: v4.7.4
-  { "b0o/SchemaStore.nvim", commit = "73e89eb3e536a4dd8f991c963bd37189520c9919" },
+  { "b0o/SchemaStore.nvim", commit = "5f2a3b5dc13f3622000cb488c9af505b933152e3" },
   { "fang2hou/blink-copilot", commit = "7ad8209b2f880a2840c94cdcd80ab4dc511d4f39" }, -- latest: v1.4.1
-  { "Saghen/blink.cmp", commit = "d50cfb205c677143d1f036a4749e21c1c8c6bc85" }, -- latest: v1.10.2
+  { "Saghen/blink.cmp", commit = "101d71861f6a012f2be80e4100720874330d86aa" }, -- latest: v1.10.2
   { "akinsho/bufferline.nvim", commit = "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3" }, -- v4.9.1
   { "catppuccin/nvim", name = "catppuccin", commit = "edefef779ab08ce1a4a404713e3012b0d202bd35" }, -- latest: v2.0.0
   { "p00f/clangd_extensions.nvim", commit = "78c2ecd659d54972be17aa6ba2deac3c53223b80" },
@@ -18,7 +18,7 @@ return {
   { "folke/lazydev.nvim", commit = "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d" }, -- latest: v1.10.0
   { "nvim-lualine/lualine.nvim", commit = "221ce6b2d999187044529f49da6554a92f740a96" },
   { "iamcco/markdown-preview.nvim", commit = "a923f5fc5ba36a3b17e289dc35dc17f66d0548ee" }, -- latest: v0.0.10
-  { "mason-org/mason-lspconfig.nvim", commit = "9d28935aa95fa6c1dc7c4d6747f101a72a8a4bec" }, -- latest: v2.3.0
+  { "mason-org/mason-lspconfig.nvim", commit = "24d4ab0838b250753b307a8747ade06dc99aed9d" }, -- latest: v2.3.0
   { "mason-org/mason.nvim", commit = "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d" }, -- v2.3.1
   { "nvim-mini/mini.ai", commit = "25248c6aa002391936a6200f12d1466015987133" },
   { "nvim-mini/mini.icons", commit = "98faae31e9be1cc054ae63485e58ceb185efcad0" },
@@ -26,8 +26,8 @@ return {
   { "folke/noice.nvim", commit = "7bfd942445fb63089b59f97ca487d605e715f155" }, -- latest: v4.10.0
   { "MunifTanjim/nui.nvim", commit = "10fc361835c856ba4233ef5ea135b919bf3dce97" }, -- latest: 0.4.0
   { "mfussenegger/nvim-ansible", commit = "c7f595d568b588942d4d0c37b5cd6cae3764a148" },
-  { "mfussenegger/nvim-lint", commit = "0370fe965697aa8f04252a1562441bdc13723cd1" },
-  { "neovim/nvim-lspconfig", commit = "221c43884319e791519f0d6c94a7f2fbcd653278" }, -- latest: v2.10.0
+  { "mfussenegger/nvim-lint", commit = "3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e" },
+  { "neovim/nvim-lspconfig", commit = "af9adce488c75ca0a81017945c2b7fa7b461bc23" }, -- latest: v2.10.0
   { "nvim-treesitter/nvim-treesitter", commit = "8b98b4470eb326f1c7b50dae79f8c963568e5720" },
   { "nvim-treesitter/nvim-treesitter-textobjects", commit = "898ee307df58f854d11cd7edd06472574d48014e" },
   { "windwp/nvim-ts-autotag", commit = "88c1453db4ba7dd24131086fe51fdf74e587d275" },
