@@ -1,0 +1,7 @@
+# Runtimes required for the Neovim setup
+# https://mise.jdx.dev/configuration.html
+[tools]
+node = "22"
+lua = "5.4"
+python = "3.13"
+ruby = "3.3"

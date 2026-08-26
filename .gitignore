@@ -2,6 +2,7 @@
 !.config/nvim/
 !.config/k9s/
 !.config/k9s/skin.yml
+!.config/mise/
 !.config/zellij/
 !.config/zellij/config.yaml
 !.config/starship.toml
