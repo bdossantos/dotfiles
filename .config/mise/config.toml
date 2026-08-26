@@ -1,9 +1,5 @@
 # Runtimes required for the Neovim setup
 # https://mise.jdx.dev/configuration.html
-[settings]
-paranoid = true
-safe = true
-
 [tools]
 node = "22"
 lua = "5.4"
