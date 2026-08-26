@@ -20,7 +20,7 @@ return {
   -- Configure LazyVim to use dracula as default colorscheme
   {
     "LazyVim/LazyVim",
-    commit = "83d90f339defdb109a6ede333865a66ffc7ef6aa",
+    commit = "459a4c3b1059671e766a46c7cc223827dc67e3d0",
     opts = {
       colorscheme = "dracula",
     },
