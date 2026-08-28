@@ -60,5 +60,9 @@ keybinds {
 }
 
 pane_frames false
+default_mode "tmux"
+on_force_close "detach"
+copy_on_select false
+scrollback_lines 50000
 theme "dracula"
 mouse_mode true
