@@ -143,34 +143,32 @@ brew install \
   xz \
   zoxide
 
-# 1password and little-snitch should be installed globally ...
-brew install --appdir /Applications \
-  1password \
-  little-snitch
+# Casks that must live in /Applications or need system-wide install require an
+# admin account. Skipped by default; run with ADMIN_USER=<admin account> to
+# install them (e.g. ADMIN_USER=admin ./.brew).
+ADMIN_USER=${ADMIN_USER:-}
+if [[ -n $ADMIN_USER ]]; then
+  echo "--> login as ${ADMIN_USER} to install some casks system-wide in /Applications"
 
-# Yes, I use a non privileged user for daily use
-echo "--> login as admin to install some casks system-wide in /Applications"
-
-su admin -c "
-while true; do sudo -n true; sleep 60; kill -0 $$ || exit; done 2>/dev/null &
-
-make -f ${HOME}/.dotfiles/Makefile install-homebrew
+  su "${ADMIN_USER}" -c "
+make -f '${HOME}/.dotfiles/Makefile' install-homebrew
 
 export HOMEBREW_CASK_OPTS='--appdir=/Applications --no-binaries --require-sha'
-export PATH='/Users/admin/.homebrew/bin:${PATH}'
-
-echo '--> Install/update Homebrew cask'
+export PATH=\"\${HOME}/.homebrew/bin:\${PATH}\"
 
 brew update
 
-brew tap homebrew/cask-drivers
-
-brew install \
-  gpg-suite \
-  keybase \
-  vagrant \
+brew install \\
+  1password \\
+  little-snitch \\
+  gpg-suite \\
+  keybase \\
+  vagrant \\
   virtualbox
 "
+else
+  echo '--> ADMIN_USER not set, skipping system-wide casks (1password, little-snitch, gpg-suite, keybase, vagrant, virtualbox)'
+fi
 
 # Install tool versions declared in ~/.config/mise/config.toml
 if command -v mise &>/dev/null; then
