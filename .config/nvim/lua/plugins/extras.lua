@@ -87,7 +87,6 @@ return {
     opts = {
       plugins = {
         gitsigns = true, -- Show git signs in zen mode
-        tmux = true, -- Integrate with tmux if available
         kitty = { enabled = false, font = "+2" },
       },
     },

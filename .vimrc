@@ -112,9 +112,8 @@ set laststatus=2
 " Update sign column every quarter second
 set updatetime=250
 
-" airline/tmuxline integration
+" airline tabline integration
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tmuxline#enabled = 0
 
 " airline/powerline font interation
 let g:airline_powerline_fonts=1
