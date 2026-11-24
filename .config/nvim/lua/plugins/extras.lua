@@ -9,7 +9,7 @@ return {
   -- Surround text objects (replaces tpope/vim-surround)
   {
     "nvim-mini/mini.surround",
-    commit = "8d5d0c5aa92449368ac251e85451d79d8f69d296",
+    commit = "77f376bdebb3440ad13bc40b48062b29bccb7577",
     keys = function(_, keys)
       local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
       local opts = require("lazy.core.plugin").values(plugin, "opts", false)
@@ -46,7 +46,7 @@ return {
   -- Text alignment (replaces godlygeek/tabular)
   {
     "nvim-mini/mini.align",
-    commit = "77d7446b9f2452193f13ced9fb73a8b3aa4a4f4d",
+    commit = "b66a8300762ba0ec34236c995f6d45031f9d089c",
     keys = {
       { "ga", mode = { "n", "v" }, desc = "Align with delimiter" },
       { "gA", mode = { "n", "v" }, desc = "Align with preview" },
@@ -61,7 +61,7 @@ return {
   -- Trailing whitespace management (replaces ntpeters/vim-better-whitespace)
   {
     "nvim-mini/mini.trailspace",
-    commit = "82c4fb7d4336f8824ca6c97068932886b56326d0",
+    commit = "50b96b876a3d599d7d61696ba947ac02f890ab74",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       require("mini.trailspace").setup()

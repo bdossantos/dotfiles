@@ -3,11 +3,11 @@
 return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    commit = "f5171b9575279995205fde6a6c06c2632bb0b9d9",
+    commit = "2b7da97d655416462d4d5c38d0eb1f1eacc900a2",
   }, -- latest: v4.7.4
   {
     "b0o/SchemaStore.nvim",
-    commit = "5f2a3b5dc13f3622000cb488c9af505b933152e3",
+    commit = "624384c0e0671db9ee8cd23e2678840e84335903",
   },
   {
     "fang2hou/blink-copilot",
@@ -16,12 +16,12 @@ return {
   {
     "Saghen/blink.cmp",
     branch = "v1",
-    commit = "78336bc89ee5365633bcf754d93df01678b5c08f",
+    commit = "e0d51adba95174760e2e1454fe39543d96194118",
   }, -- latest: v1.10.2
   {
     "akinsho/bufferline.nvim",
     commit = "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3",
-  }, -- v4.9.1
+  }, -- latest: v4.9.1
   {
     "catppuccin/nvim",
     name = "catppuccin",
@@ -33,7 +33,7 @@ return {
   },
   {
     "Civitasv/cmake-tools.nvim",
-    commit = "22859d754b5de738cfe9945e0910729f63deefd0",
+    commit = "782a254c62a61af1d4febddd0d6dbc5ea414a027",
   },
   { "monaqa/dial.nvim", commit = "f2634758455cfa52a8acea6f142dcd6271a1bf57" }, -- latest: v0.5.1
   {
@@ -42,15 +42,15 @@ return {
   }, -- latest: v3.1.1
   {
     "rafamadriz/friendly-snippets",
-    commit = "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
+    commit = "7a1c9f7897a4eb078b157a04c7af81e5869215b1",
   },
   {
     "lewis6991/gitsigns.nvim",
-    commit = "5be654f2232c10ddcad19c1607a67b6b4b78fc29",
+    commit = "ea38d317af34f8ffcfbaf0f0dcc1471736661a4c",
   }, -- latest: v2.1.0
   {
     "MagicDuck/grug-far.nvim",
-    commit = "11595bf747edc270bce2069d1020502ad4ae56cf",
+    commit = "91b7e58b6ffc6ddad5acb7a7c1df21257724449e",
   },
   {
     "qvalentin/helm-ls.nvim",
@@ -67,20 +67,20 @@ return {
   }, -- latest: v0.0.10
   {
     "mason-org/mason-lspconfig.nvim",
-    commit = "24d4ab0838b250753b307a8747ade06dc99aed9d",
+    commit = "761d376b5fbe6b21f659432ffadc1205c660176c",
   }, -- latest: v2.3.0
   {
     "mason-org/mason.nvim",
     commit = "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
-  }, -- v2.3.1
-  { "nvim-mini/mini.ai", commit = "25248c6aa002391936a6200f12d1466015987133" },
+  }, -- latest: v2.3.1
+  { "nvim-mini/mini.ai", commit = "813d10a43d5d4eda4816e6a27eb6bf6250f75ea8" },
   {
     "nvim-mini/mini.icons",
-    commit = "98faae31e9be1cc054ae63485e58ceb185efcad0",
+    commit = "5d58117d176c133f4cb5585ec8cb3450881c89a0",
   },
   {
     "nvim-mini/mini.pairs",
-    commit = "b1c5a726921b7a8c9321e9a7a208aa0571de5810",
+    commit = "e332261859814c307e72458222070f84b6d6f4e8",
   },
   { "folke/noice.nvim", commit = "7bfd942445fb63089b59f97ca487d605e715f155" }, -- latest: v4.10.0
   {
@@ -93,23 +93,23 @@ return {
   },
   {
     "mfussenegger/nvim-lint",
-    commit = "3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e",
+    commit = "6bf29b9dbdad60b38b489b23309c22ba6d4c915a",
   },
   {
     "neovim/nvim-lspconfig",
-    commit = "af9adce488c75ca0a81017945c2b7fa7b461bc23",
-  }, -- latest: v2.10.0
+    commit = "7d22e678970d95d8d18494ec389c52b07111c53a",
+  }, -- latest: v2.13.0
   {
     "nvim-treesitter/nvim-treesitter",
-    commit = "8b98b4470eb326f1c7b50dae79f8c963568e5720",
+    commit = "52773f0d13a0c11d0c3ef33c14ab6ecc1c17148b",
   },
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
-    commit = "898ee307df58f854d11cd7edd06472574d48014e",
+    commit = "5c7b0263797dfd1bd6202f2b219f3b53a80b2187",
   },
   {
     "windwp/nvim-ts-autotag",
-    commit = "88c1453db4ba7dd24131086fe51fdf74e587d275",
+    commit = "d7220b55e16ed3c04e88086256def5d282429493",
   },
   {
     "folke/persistence.nvim",
@@ -121,8 +121,8 @@ return {
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    commit = "4663eb3ecd538bd5062628fb6d95bbe6bdca78f6",
-  }, -- latest: v8.13.0
+    commit = "a67f826164c38c836fc6060f32b275c4c43317a7",
+  }, -- latest: v8.14.0
   { "folke/snacks.nvim", commit = "882c996cf28183f4d63640de0b4c02ec886d01f2" }, -- latest: v2.31.0
   {
     "nvim-telescope/telescope-fzf-native.nvim",
@@ -138,12 +138,12 @@ return {
   },
   {
     "nvim-telescope/telescope.nvim",
-    commit = "40aedd8a68c78a656a10a8d62d80c54af59420fb",
-  }, -- latest: v0.2.1
+    commit = "1e1bab730218eaf97fce743be3f56e51075928ac",
+  }, -- latest: v0.2.2
   {
     "folke/todo-comments.nvim",
     commit = "31e3c38ce9b29781e4422fc0322eb0a21f4e8668",
-  }, -- v1.5.0
+  }, -- latest: v1.5.0
   {
     "folke/tokyonight.nvim",
     commit = "cdc07ac78467a233fd62c493de29a17e0cf2b2b6",
@@ -160,7 +160,7 @@ return {
   { "tpope/vim-dadbod", commit = "6d1d41da4873a445c5605f2005ad2c68c99d8770" },
   {
     "kristijanhusak/vim-dadbod-completion",
-    commit = "a8dac0b3cf6132c80dc9b18bef36d4cf7a9e1fe6",
+    commit = "8c65c6b02e8434e5360fc78097e489c05e899697",
   },
   {
     "kristijanhusak/vim-dadbod-ui",
@@ -170,5 +170,5 @@ return {
     "folke/which-key.nvim",
     commit = "3aab2147e74890957785941f0c1ad87d0a44c15a",
   }, -- latest: v3.17.0
-  { "gbprod/yanky.nvim", commit = "dd6689fdda85f66cab7d9b1a1664625f3be0920d" }, -- latest: v2.0.0
+  { "gbprod/yanky.nvim", commit = "edcbe0f6d693b9e7860626094f886a2d79cfe63b" }, -- latest: v2.0.0
 }

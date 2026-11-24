@@ -4,7 +4,7 @@
 return {
   {
     "zbirenbaum/copilot.lua",
-    commit = "7e6723aabea044519462958ffcea68d7985c5ed0",
+    commit = "d1570ddc00fc4fc4caf7422803805ee22cca14ff",
     opts = {
       filetypes = {
         yaml = true,
