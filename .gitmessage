@@ -40,7 +40,7 @@
 # =====
 #
 # The scope provides additional contextual information and can be anything
-# specifying the place of the commit change (e.g. bash, vim, tmux, git, ssh).
+# specifying the place of the commit change (e.g. bash, vim, zellij, git, ssh).
 #
 # Description
 # ===========

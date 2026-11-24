@@ -14,7 +14,6 @@ fi
 
 alias ri='ri -f ansi'
 command -v colordiff &>/dev/null && alias diff='colordiff'
-alias takeover='tmux detach -a'
 alias ag='ag --smart-case --pager="less -MIRFX"'
 
 # Git
@@ -190,10 +189,8 @@ alias sudo='sudo '
 # set goaccess config file
 alias goaccess='goaccess -p ~/.goaccessrc '
 
-# ssht/sshrc
+# SSH
 alias yolossh='ssh -F /dev/null -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null"'
-alias ssht=sshrc
-command -v compdef &>/dev/null && compdef ssht=ssh && compdef sshrc=ssh
 
 # Secure ssh-agent usage
 alias ssh-add='ssh-add -c -t 8h'

@@ -21,7 +21,7 @@ Personal dotfiles for macOS, managed with
 | `.macos`            | Sensible macOS defaults                          |
 | `.macos_hardening`  | Security-focused macOS hardening settings        |
 | `.ssh/`             | SSH client configuration                         |
-| `.tmux.conf`        | tmux with vi-style key bindings                  |
+| `.config/zellij/`   | [Zellij](https://zellij.dev) terminal multiplexer with Dracula theme |
 | `.vimrc`            | Vim with Vundle plugins (fzf, ALE, airline, …)   |
 | `bin/`              | Utility scripts                                  |
 
