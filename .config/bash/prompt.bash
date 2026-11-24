@@ -3,8 +3,8 @@
 # Must be sourced before history.bash so that PROMPT_COMMAND is fully
 # populated by the time history -a is prepended.
 
-# Ghostty shell integration
-if [[ -n "${GHOSTTY_RESOURCES_DIR}" ]]; then
+# Ghostty shell integration (skip inside Zellij where panes are multiplexed)
+if [[ -n "${GHOSTTY_RESOURCES_DIR}" ]] && [[ -z "${ZELLIJ}" ]]; then
   # shellcheck source=/dev/null
   builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash"
 fi

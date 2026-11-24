@@ -67,15 +67,30 @@ fi
 
 # color scheme
 # Keep the terminal's own TERM value (e.g. `xterm-ghostty`) when its terminfo
-# entry is available, so terminal-specific features aren't lost. Otherwise
-# fall back to `xterm-256color`, then `xterm`, to avoid "unknown terminal
-# type" errors from ncurses-based tools (less, git log, ag, etc.) on hosts
-# that lack the terminal's terminfo entry (e.g. minimal remote hosts).
-if [ -z "${TERM}" ] || ! infocmp "${TERM}" &>/dev/null; then
-  if infocmp xterm-256color &>/dev/null; then
-    export TERM='xterm-256color'
-  else
-    export TERM='xterm'
+# entry is available, unless it is plain 8-color `xterm`. Leave `dumb`
+# untouched for non-interactive/dumb terminals. Otherwise fall back to
+# `xterm-256color`, then `xterm`, to avoid "unknown terminal type" errors
+# from ncurses-based tools (less, git log, rg, etc.) on hosts lacking the
+# terminal's terminfo entry.
+if [ "${TERM}" != 'dumb' ]; then
+  if [ -z "${TERM}" ] || [ "${TERM}" = 'xterm' ] || ! infocmp "${TERM}" >/dev/null 2>&1; then
+    if infocmp xterm-256color >/dev/null 2>&1; then
+      export TERM='xterm-256color'
+    else
+      export TERM='xterm'
+    fi
+  fi
+
+  # Enable BSD/macOS CLI colors
+  export CLICOLOR=1
+
+  # Advertise 24-bit truecolor for modern terminals (skip Apple Terminal.app)
+  if [ -z "${COLORTERM}" ] && [ "${TERM_PROGRAM}" != 'Apple_Terminal' ]; then
+    case "${TERM}" in
+      *-256color | xterm-ghostty | xterm-kitty | alacritty | wezterm)
+        export COLORTERM='truecolor'
+        ;;
+    esac
   fi
 fi
 export BAT_THEME='Dracula'

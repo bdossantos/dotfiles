@@ -36,7 +36,8 @@ if [[ -f "${HOME}/.extra" ]]; then
   source "${HOME}/.extra"
 fi
 
-# Auto-attach or start a zellij session (skip in nested or non-interactive shells)
-if command -v zellij &>/dev/null && [[ -z "${ZELLIJ}" ]]; then
+# Auto-attach or start a zellij session (interactive local TTY, non-nested)
+if [[ $- == *i* ]] && [[ -t 0 && -t 1 ]] && [[ -z "${ZELLIJ}" ]] &&
+  [[ -z "${SSH_CONNECTION}" ]] && command -v zellij &>/dev/null; then
   zellij attach -c 'BDS 🐑'
 fi

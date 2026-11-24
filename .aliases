@@ -190,7 +190,7 @@ alias sudo='sudo '
 alias goaccess='goaccess -p ~/.goaccessrc '
 
 # SSH
-alias yolossh='ssh -F /dev/null -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null"'
+alias yolossh='ssh -F /dev/null -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -o "SetEnv=TERM=xterm-256color" -o "SendEnv=COLORTERM"'
 
 # Secure ssh-agent usage
 alias ssh-add='ssh-add -c -t 8h'
