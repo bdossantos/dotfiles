@@ -83,16 +83,19 @@ set wildmenu                      " Enhanced command line completion.
 set wildmode=list:longest         " Complete files like a shell.
 
 " Set the terminal's title
-if &term == 'screen'
-  set t_ts=k
-  set t_fs=\
-elseif &term == 'screen' || &term == 'xterm'
+if &term =~# '^\%(xterm\|screen\)'
   set title
 endif
 
 set guifont="JetBrains Mono":h14
 
 syntax enable
+
+if has('termguicolors') && ($COLORTERM ==# 'truecolor' || $COLORTERM ==# '24bit' || &term ==# 'xterm-ghostty')
+  set termguicolors
+else
+  set t_Co=256
+endif
 
 set background=dark
 

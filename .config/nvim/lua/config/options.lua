@@ -62,6 +62,7 @@ opt.modeline = false
 opt.clipboard = "unnamed"
 
 -- Terminal title (only for compatible terminals)
-if vim.env.TERM == "screen" or vim.env.TERM == "xterm" then
+local term = vim.env.TERM or ""
+if term:match("^xterm") or term:match("^screen") then
   opt.title = true
 end

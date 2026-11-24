@@ -66,3 +66,8 @@ copy_on_select false
 scroll_buffer_size 50000
 theme "dracula"
 mouse_mode true
+
+env {
+    TERM "xterm-256color"
+    COLORTERM "truecolor"
+}
