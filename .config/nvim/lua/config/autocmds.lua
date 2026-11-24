@@ -10,6 +10,13 @@ local autocmd = vim.api.nvim_create_autocmd
 
 local vimrcEx = augroup("vimrcEx", { clear = true })
 
+autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
+  group = vimrcEx,
+  pattern = "*",
+  command = "checktime",
+  desc = "Check for externally modified files",
+})
+
 -- Jump to last cursor position when reopening files
 autocmd("BufReadPost", {
   group = vimrcEx,

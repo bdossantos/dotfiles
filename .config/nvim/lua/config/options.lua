@@ -39,6 +39,8 @@ opt.background = "dark"
 -- FILE HANDLING
 -- ===================================================================
 
+opt.autoread = true -- Reload files changed outside Neovim
+
 -- Swap file locations (avoid cluttering working directory)
 -- The '//' ensures unique filenames using full path
 opt.directory = vim.fn.expand("~/.vimswap//")

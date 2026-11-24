@@ -43,6 +43,7 @@ let g:copilot_filetypes = {
 
 " Settings
 set autoindent                    " match indentation of previous line
+set autoread                      " reload files changed outside Vim
 set autowrite                     " Automatically :write before running commands
 set backspace=indent,eol,start    " backspace through everything in insert mode
 set clipboard=unnamed             " For OSX clipboard
@@ -187,6 +188,8 @@ nnoremap <C-n> :call NumberToggle()<cr>
 
 augroup vimrcEx
   autocmd!
+
+  autocmd FocusGained,BufEnter,CursorHold * checktime
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it for commit messages, when the position is invalid, or when
