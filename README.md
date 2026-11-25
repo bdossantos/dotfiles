@@ -14,7 +14,6 @@ Personal dotfiles for macOS, managed with [mise](https://mise.jdx.dev)
 | `.config/nvim/`     | Neovim config with [lazy.nvim](https://github.com/folke/lazy.nvim) plugin manager and a pinned `lazy-lock.json` lockfile |
 | `.aliases`          | Handy shell aliases                              |
 | `.bash_profile` / `.bashrc` / `.profile` | Bash startup files     |
-| `.brew`             | Homebrew formulae (casks live in `.config/mise/`) |
 | `.config/mise/`     | [mise](https://mise.jdx.dev) tools, dotfiles, macOS defaults and casks |
 | `.gitconfig`        | Git settings (diff-so-fancy, GPG signing, …)     |
 | `.gitmessage`       | Conventional Commits message template            |
@@ -82,32 +81,37 @@ su - admin -c "env PATH=$PATH:/usr/sbin/ bash -x $HOME/.dotfiles/.macos"
 su - admin -c "env PATH=$PATH:/usr/sbin/ bash -x $HOME/.dotfiles/.macos_hardening"
 ```
 
-### Install Homebrew formulae and apps
+### Install Homebrew formulae, apps and tools
 
-Command-line tools that have a mise equivalent (ripgrep, fzf, jq, bat, eza,
-shellcheck, shfmt, awscli, ...) are installed by mise in
-`.config/mise/conf.d/tools.toml`, without Homebrew or `sudo`:
+Everything formerly installed by the `.brew` script is declared in mise:
+
+- command-line tools with a mise equivalent (ripgrep, fzf, jq, bat, eza,
+  shellcheck, shfmt, awscli, ...) in `.config/mise/conf.d/tools.toml`, installed
+  without Homebrew or `sudo`
+- Homebrew formulae (`brew:`), casks and fonts (`brew-cask:`) in
+  `.config/mise/conf.d/packages.toml`
+
+Install [mise](https://mise.jdx.dev/getting-started.html) first, then:
 
 ```bash
+make install-packages
+# or
+mise bootstrap packages apply --dry-run
+mise bootstrap packages apply
 mise install
+mise bootstrap packages upgrade   # replaces `brew upgrade`
 ```
 
-The remaining formulae (GNU/system utilities, libraries, macOS-only tools,
-gcloud, ...) are installed by `.brew` in the user-owned `~/.homebrew` prefix
-(mise's `brew` manager would need `/opt/homebrew` and `sudo`). `.brew` also
-runs `mise install`:
+mise's `brew` manager installs formulae in the standard Homebrew prefix
+(`/opt/homebrew` on Apple Silicon), and creates it with `sudo` when missing.
+To keep the daily user unprivileged, create it once as `admin`:
 
 ```bash
-make run-brew
+sudo mkdir -p /opt/homebrew && sudo chown -R "$USER" /opt/homebrew
 ```
 
-Apps and fonts are Homebrew casks installed by mise
-(`.config/mise/conf.d/packages.toml`):
-
-```bash
-mise bootstrap packages apply --manager brew-cask --dry-run
-mise bootstrap packages apply --manager brew-cask
-```
+`/opt/homebrew/bin` is added to `PATH` in `.profile`. `brew` formulae are only
+available on Apple Silicon (and Linux), casks also work on Intel.
 
 Casks that must be installed system-wide by the admin user are in
 `.config/mise/system-casks.toml`:

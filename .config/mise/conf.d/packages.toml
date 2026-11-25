@@ -1,11 +1,15 @@
-# macOS apps and fonts (replaces the casks of .brew)
+# Homebrew formulae, apps and fonts (replaces the former .brew script)
+# https://mise.jdx.dev/bootstrap/packages/brew.html
 # https://mise.jdx.dev/bootstrap/packages/brew-cask.html
 #
-#   mise bootstrap packages apply --manager brew-cask --dry-run
-#   mise bootstrap packages apply --manager brew-cask
+#   mise bootstrap packages apply --dry-run
+#   mise bootstrap packages apply
+#   mise bootstrap packages upgrade
 #
-# Apps go to ~/Applications (MISE_BREW_CASK_OPT_APPDIR, see .profile).
-# Command-line formulae are still installed by .brew in ~/.homebrew.
+# Formulae are installed in the standard Homebrew prefix (/opt/homebrew),
+# which mise creates with sudo if it does not exist. Apps go to
+# ~/Applications (MISE_BREW_CASK_OPT_APPDIR, see .profile).
+# Command-line tools that exist in the mise registry are in tools.toml.
 [bootstrap.packages]
 "brew-cask:anki" = { os = "macos" }
 "brew-cask:firefox" = { os = "macos" }
@@ -27,3 +31,69 @@
 # Should be installed globally
 "brew-cask:1password" = { os = "macos", appdir = "/Applications" }
 "brew-cask:little-snitch" = { os = "macos", appdir = "/Applications" }
+
+# Formulae
+"brew:ack" = "latest"
+"brew:advancecomp" = "latest"
+"brew:ansifilter" = "latest"
+"brew:autoenv" = "latest"
+"brew:bash" = "latest"
+"brew:bash-completion@2" = "latest"
+"brew:binutils" = "latest"
+"brew:closure-compiler" = "latest"
+"brew:coreutils" = "latest"
+"brew:ctags" = "latest"
+"brew:curl" = "latest"
+"brew:diffutils" = "latest"
+"brew:ed" = "latest"
+"brew:editorconfig" = "latest"
+"brew:entr" = "latest"
+"brew:findomain" = "latest"
+"brew:findutils" = "latest"
+"brew:gawk" = "latest"
+"brew:gcc" = "latest"
+"brew-cask:gcloud-cli" = { os = ["linux", "macos"] }
+"brew:gifsicle" = "latest"
+"brew:git" = "latest"
+"brew:gnu-indent" = "latest"
+"brew:gnu-sed" = "latest"
+"brew:gnu-tar" = "latest"
+"brew:gnu-which" = "latest"
+"brew:gnupg" = "latest"
+"brew:gpatch" = "latest"
+"brew:grep" = "latest"
+"brew:gsl" = "latest"
+"brew:gzip" = "latest"
+"brew:htmlcompressor" = "latest"
+"brew:htop" = "latest"
+"brew:ipcalc" = "latest"
+"brew:jhead" = "latest"
+"brew:jpeg" = "latest"
+"brew:jpegoptim" = "latest"
+"brew:less" = "latest"
+"brew:lesspipe" = "latest"
+"brew:libyaml" = "latest"
+"brew:luarocks" = "latest"
+"brew:make" = "latest"
+"brew:moreutils" = "latest"
+"brew:nmap" = "latest"
+"brew:openssh" = "latest"
+"brew:openssl" = "latest"
+"brew:optipng" = "latest"
+"brew:pigz" = "latest"
+"brew:pngcrush" = "latest"
+"brew:pngquant" = "latest"
+"brew:pv" = "latest"
+"brew:pwgen" = "latest"
+"brew:readline" = "latest"
+"brew:shpotify" = { os = "macos" }
+"brew:ssh-copy-id" = "latest"
+"brew:tcpdump" = "latest"
+"brew:terminal-notifier" = { os = "macos" }
+"brew:the_silver_searcher" = "latest"
+"brew:tig" = "latest"
+"brew:tree" = "latest"
+"brew:vim" = "latest"
+"brew:watch" = "latest"
+"brew:wget" = "latest"
+"brew:xz" = "latest"

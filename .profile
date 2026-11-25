@@ -1,8 +1,8 @@
 # PATH
-export PATH="$HOME/.homebrew/bin:$HOME/.homebrew/sbin:$HOME/.local/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/home/linuxbrew/.linuxbrew/bin:$HOME/.local/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
 # Homebrew prefix
-export HOMEBREW_PREFIX='/usr/local'
+export HOMEBREW_PREFIX='/opt/homebrew'
 if command -v brew >/dev/null 2>&1; then
   HOMEBREW_PREFIX="$(brew --prefix)"
   export HOMEBREW_PREFIX
@@ -55,7 +55,7 @@ elif less_pipe=$(command -v lesspipe.sh); then
 fi
 
 # man
-export MANPATH="$HOME/.homebrew/share/man${MANPATH+:$MANPATH}:"
+export MANPATH="${HOMEBREW_PREFIX}/share/man${MANPATH+:$MANPATH}:"
 
 # Don't clear the screen after quitting a manual page
 # Use bat for syntax-highlighted man pages when available, otherwise fall back
