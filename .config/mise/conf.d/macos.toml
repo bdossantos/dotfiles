@@ -227,6 +227,10 @@ springboard-show-duration = 0.0
 springboard-hide-duration = 0.0
 springboard-page-duration = 0.0
 
+# Safari and Mail are sandboxed: their preferences live in
+# ~/Library/Containers/<domain>, which only exists once the app has been
+# opened, and which the terminal can only write with Full Disk Access
+# (System Settings > Privacy & Security > Full Disk Access).
 [bootstrap.settings.macos.defaults."com.apple.Safari"]
 # Privacy: don’t send search queries to Apple
 UniversalSearchEnabled = false
@@ -277,6 +281,7 @@ SendDoNotTrackHTTPHeader = true
 # Update extensions automatically
 InstallExtensionUpdatesAutomatically = true
 
+# Sandboxed, see com.apple.Safari above
 [bootstrap.settings.macos.defaults."com.apple.mail"]
 # Disable automatic loading of remote content in Mail.app
 DisableURLLoading = true
