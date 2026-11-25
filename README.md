@@ -176,16 +176,16 @@ See also <https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.
 | Module | Purpose |
 | --- | --- |
 | `options.bash` | `shopt` flags and `set -o vi` |
+| `tools.bash` | brew env, mise, zoxide, direnv, gcloud SDK, fzf, nomad |
 | `prompt.bash` | Ghostty shell integration + starship prompt (sets `PROMPT_COMMAND`) |
-| `tools.bash` | brew env, chruby, zoxide, direnv, gcloud SDK, fzf, nomad |
 | `history.bash` | Prepends `history -a` to `PROMPT_COMMAND` (must run last among PROMPT_COMMAND setters) |
 | `completions.bash` | System-wide and Homebrew tab completions |
 | `ssh_agent.bash` | Auto-start / attach SSH agent and add keys |
 
 **Required tools:** `bash` ≥ 4 (install via `brew install bash`)
 
-**Optional tools** (gracefully skipped when absent): `starship`, `zoxide`,
-`direnv`, `fzf`, `chruby`, `gcloud` (via Homebrew), `nomad`, `zellij`
+**Optional tools** (gracefully skipped when absent): `mise`, `starship`, `zoxide`,
+`direnv`, `fzf`, `gcloud` (via Homebrew), `nomad`, `zellij`
 
 ## Neovim
 
