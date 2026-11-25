@@ -32,6 +32,7 @@ keybinds {
         bind "[" { SwitchToMode "scroll"; }
         bind "Ctrl q" { Quit; }
         bind "Ctrl b" { Write 2; SwitchToMode "normal"; }
+        bind "i" { ToggleSessionCard; SwitchToMode "normal"; }
         bind "\"" { NewPane "Down"; SwitchToMode "normal"; }
         bind "%" { NewPane "Right"; SwitchToMode "normal"; }
         bind "z" { ToggleFocusFullscreen; SwitchToMode "normal"; }
