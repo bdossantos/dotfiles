@@ -1,5 +1,6 @@
 keybinds {
     normal {
+        unbind "Ctrl o"
         bind "Ctrl a" { SwitchToMode "tmux"; }
     }
     pane {
