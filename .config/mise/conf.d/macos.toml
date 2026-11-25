@@ -185,8 +185,6 @@ expose-animation-duration = 0.0
 # Don’t group windows by application in Mission Control
 # (i.e. use the old Exposé behavior instead)
 expose-group-by-app = false
-# Don’t show Dashboard as a Space
-dashboard-in-overlay = true
 # Don’t automatically rearrange Spaces based on most recent use
 mru-spaces = false
 autohide-delay = 0.0
@@ -205,7 +203,6 @@ show-recents = false
 #  4: Desktop
 #  5: Start screen saver
 #  6: Disable screen saver
-#  7: Dashboard
 # 10: Put display to sleep
 # 11: Launchpad
 # 12: Notification Center
@@ -225,12 +222,6 @@ wvous-br-modifier = 0
 springboard-show-duration = 0.0
 springboard-hide-duration = 0.0
 springboard-page-duration = 0.0
-
-[bootstrap.settings.macos.defaults."com.apple.dashboard"]
-# Disable Dashboard
-mcx-disabled = true
-# Enable Dashboard dev mode (allows keeping widgets on the desktop)
-devmode = true
 
 [bootstrap.settings.macos.defaults."com.apple.Safari"]
 # Privacy: don’t send search queries to Apple
@@ -274,13 +265,6 @@ AutoFillCreditCardData = false
 AutoFillMiscellaneousForms = false
 # Warn about fraudulent websites
 WarnAboutFraudulentWebsites = true
-# Disable plug-ins
-WebKitPluginsEnabled = false
-"com.apple.Safari.ContentPageGroupIdentifier.WebKit2PluginsEnabled" = false
-# Disable Java
-WebKitJavaEnabled = false
-"com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabled" = false
-"com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabledForLocalFiles" = false
 # Block pop-up windows
 WebKitJavaScriptCanOpenWindowsAutomatically = false
 "com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically" = false
@@ -288,10 +272,6 @@ WebKitJavaScriptCanOpenWindowsAutomatically = false
 SendDoNotTrackHTTPHeader = true
 # Update extensions automatically
 InstallExtensionUpdatesAutomatically = true
-
-[bootstrap.settings.macos.defaults."com.apple.iTunes"]
-# Disable automatic device syncing
-dontAutomaticallySyncIPods = true
 
 [bootstrap.settings.macos.defaults."com.apple.mail"]
 # Disable automatic loading of remote content in Mail.app
@@ -339,10 +319,6 @@ SortDirection = 0
 [bootstrap.settings.macos.defaults."com.apple.addressbook"]
 # Enable the debug menu in Address Book
 ABShowDebugMenu = true
-
-[bootstrap.settings.macos.defaults."com.apple.iCal"]
-# Enable the debug menu in iCal (pre-10.8)
-IncludeDebugMenu = true
 
 [bootstrap.settings.macos.defaults."com.apple.TextEdit"]
 # Use plain text mode for new TextEdit documents
@@ -400,19 +376,6 @@ AppleEnableMouseSwipeNavigateWithScrolls = false
 DisablePrintPreview = true
 PMPrintingExpandedStateForPrint2 = true
 
-[bootstrap.settings.macos.defaults."com.operasoftware.Opera"]
-# Expand the print dialog by default
-PMPrintingExpandedStateForPrint2 = true
-
-[bootstrap.settings.macos.defaults."com.operasoftware.OperaDeveloper"]
-PMPrintingExpandedStateForPrint2 = true
-
-[bootstrap.settings.macos.defaults."com.irradiatedsoftware.SizeUp"]
-# Start SizeUp at login
-StartAtLogin = true
-# Don’t show the preferences window on next start
-ShowPrefsOnNextStart = false
-
 [bootstrap.settings.macos.defaults."org.m0k.transmission"]
 # Use `~/Documents/Torrents` to store incomplete downloads
 UseIncompleteDownloadFolder = true
@@ -436,22 +399,6 @@ BlocklistURL = "http://john.bitsurge.net/public/biglist.p2p.gz"
 BlocklistAutoUpdate = true
 # Randomize port on launch
 RandomPort = true
-
-[bootstrap.settings.macos.defaults."com.twitter.twitter-mac"]
-# Disable smart quotes as it’s annoying for code tweets
-AutomaticQuoteSubstitutionEnabled = false
-# Show the app window when clicking the menu bar icon
-MenuItemBehavior = 1
-# Enable the hidden ‘Develop’ menu
-ShowDevelopMenu = true
-# Open links in the background
-openLinksInBackground = true
-# Allow closing the ‘new tweet’ window by pressing `Esc`
-ESCClosesComposeWindow = true
-# Show full names rather than Twitter handles
-ShowFullNames = true
-# Hide the app in the background if it’s not the front-most window
-HideInBackground = true
 
 [bootstrap.settings.macos.defaults."com.apple.Mail"]
 DisableSendAnimations = true
