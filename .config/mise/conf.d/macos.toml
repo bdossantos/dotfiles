@@ -305,10 +305,6 @@ SecureKeyboardEntry = true
 # Disable the annoying line marks
 ShowLineMarks = 0
 
-[bootstrap.settings.macos.defaults."com.googlecode.iterm2"]
-# Don’t display the annoying prompt when quitting iTerm
-PromptOnQuit = false
-
 [bootstrap.settings.macos.defaults."com.apple.TimeMachine"]
 # Prevent Time Machine from prompting to use new hard drives as backup volume
 DoNotOfferNewDisksForBackup = true
