@@ -74,7 +74,7 @@
 "brew:moreutils" = "latest"
 "brew:nmap" = "latest"
 "brew:openssh" = "latest"
-"brew:openssl" = "latest"
+"brew:openssl@4" = "latest"
 "brew:optipng" = "latest"
 "brew:pigz" = "latest"
 "brew:pngcrush" = "latest"
