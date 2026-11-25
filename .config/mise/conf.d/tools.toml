@@ -5,7 +5,7 @@
 #
 # Tools are downloaded in ~/.local/share/mise, no Homebrew nor sudo needed.
 # Formulae without a mise equivalent (GNU/system utilities, libraries,
-# macOS-only tools, gcloud, ...) are still installed by .brew in ~/.homebrew.
+# macOS-only tools, ...) are installed by packages.toml (`brew:` formulae).
 [tools]
 ast-grep = "latest"
 aws-cli = "latest"

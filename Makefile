@@ -13,7 +13,7 @@ install: ## Install all the things
 		install-vundle \
 		install-nvim-deps \
 	@[[ $OS == 'Darwin' ]] \
-		&& make install-homebrew run-brew
+		&& make install-packages
 
 install-dotfiles: ## Pull and Install dotfiles
 	@git pull -q && git submodule update --init --recursive -q
@@ -28,13 +28,11 @@ install-dotfiles: ## Pull and Install dotfiles
 	done
 	@mise dot apply --force --yes
 
-install-homebrew: ## Install homebrew, the missing package manager for OS X
-	$(info --> Install homebrew)
-	@mkdir -m 0700 -p ~/.homebrew
-	@if [[ ! -f ~/.homebrew/bin/brew ]]; then \
-		curl -L https://github.com/Homebrew/brew/tarball/master \
-			| tar xz --strip 1 -C ~/.homebrew; \
-	fi
+install-packages: ## Install brew formulae, casks and tools with mise
+	$(info --> Install packages)
+	@command -v mise >/dev/null || { echo 'CAN I HAZ MISE ?'; exit 1; }
+	@mise bootstrap packages apply
+	@mise install
 
 install-vundle: ## Install Vundle, the plug-in manager for Vim
 	$(info --> Install Vundle)
@@ -50,9 +48,6 @@ install-nvim-deps: ## Install/setup Neovim dependencies
 pre-commit: ## Run pre-commit tests
 	$(info --> Run pre-commit)
 	@pre-commit run --all-files
-
-run-brew: ## Run ./.brew
-	@bash -x .brew
 
 test: ## Run tests suite
 	@$(MAKE) pre-commit

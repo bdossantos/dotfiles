@@ -8,6 +8,9 @@
 # (`pmset`, `systemsetup`, `nvram`, ...), values built from `$HOME`,
 # and restarting the affected applications.
 
+# Disable the macOS default ssh-agent for your user.
+launchctl disable "user/${UID}/com.openssh.ssh-agent"
+
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
 osascript -e 'tell application "System Preferences" to quit'
