@@ -2,6 +2,11 @@
 # shellcheck disable=SC1090,SC1091
 # ~/.bashrc — thin loader; all logic lives in ~/.config/bash/*.bash
 
+# Ensure local user-installed tools are available in non-login shells too.
+if [[ ":${PATH}:" != *":${HOME}/.local/bin:"* ]]; then
+  export PATH="${HOME}/.local/bin:${PATH}"
+fi
+
 _bash_config="${HOME}/.config/bash"
 
 # 1. Shell options (shopt, set -o vi, …)
