@@ -17,7 +17,6 @@
 "brew-cask:ghostty" = { os = "macos" }
 "brew-cask:google-chrome" = { os = "macos" }
 "brew-cask:imageoptim" = { os = "macos" }
-"brew-cask:iterm2" = { os = "macos" }
 "brew-cask:micro-snitch" = { os = "macos" }
 "brew-cask:omnigraffle" = { os = "macos" }
 "brew-cask:spotify" = { os = "macos" }
