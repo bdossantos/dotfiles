@@ -72,6 +72,10 @@ mise bootstrap macos defaults apply --dry-run
 mise bootstrap macos defaults apply
 ```
 
+Safari and Mail are sandboxed apps: open each of them once, and give your
+terminal Full Disk Access (System Settings → Privacy & Security), before
+applying, otherwise their preferences cannot be written.
+
 mise never uses `sudo`, so everything that needs it (`pmset`, `systemsetup`,
 system-wide `defaults`, hardening, …) stays in the scripts below. Run them
 as the admin user:
