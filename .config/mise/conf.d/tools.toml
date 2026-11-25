@@ -36,6 +36,7 @@ terraform = "latest"
 # The pypi: backend installs with uv (pipx otherwise)
 uv = "latest"
 vale = "latest"
+zellij = "latest"
 zoxide = "latest"
 "aqua:barnybug/cli53" = "latest"
 "aqua:grafana/loki/logcli" = "latest"
