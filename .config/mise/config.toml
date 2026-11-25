@@ -4,9 +4,9 @@
 idiomatic_version_file_enable_tools = ["ruby", "python", "node", "go", "rust"]
 
 [tools]
-node = "22"
+node = "26"
 lua = "5.4"
 python = "3.13"
-ruby = "3.3"
-go = "1.26"
+ruby = "4.0"
+go = "1.27"
 rust = "1.100"
