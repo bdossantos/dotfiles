@@ -111,6 +111,7 @@ mise bootstrap packages apply --dry-run
 mise bootstrap packages apply
 mise install
 mise bootstrap packages upgrade   # replaces `brew upgrade`
+mise lock --global --bump         # refresh pinned tool versions in mise.lock
 ```
 
 mise's `brew` manager does not need Homebrew, but Homebrew provides the `brew`

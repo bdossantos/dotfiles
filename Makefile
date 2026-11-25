@@ -27,6 +27,9 @@ link-mise-config: ## Link ~/.config/mise so mise can load this repo's config
 	@command -v mise >/dev/null || { echo 'CAN I HAZ MISE ?'; exit 1; }
 	@mkdir -p ~/.config/mise/conf.d
 	@ln -sf "$(CURDIR)/.config/mise/config.toml" ~/.config/mise/config.toml
+	@if [[ -f "$(CURDIR)/.config/mise/mise.lock" ]]; then \
+		ln -sf "$(CURDIR)/.config/mise/mise.lock" ~/.config/mise/mise.lock; \
+	fi
 	@for f in "$(CURDIR)"/.config/mise/conf.d/*.toml; do \
 		ln -sf "$$f" ~/.config/mise/conf.d/; \
 	done

@@ -1,0 +1,23 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      diff-so-fancy:
+        specifier: 1.4.14
+        version: 1.4.14
+
+packages:
+
+  diff-so-fancy@1.4.14:
+    resolution: {integrity: sha512-ftNct0uf9+pD9wcKJazzdEL/hkO9ZuLfbMkHhaOqnjheMNFuuavoKMDKs9BDyXT2MNnymbHIXobSNz347zrNPA==}
+    hasBin: true
+
+snapshots:
+
+  diff-so-fancy@1.4.14: {}

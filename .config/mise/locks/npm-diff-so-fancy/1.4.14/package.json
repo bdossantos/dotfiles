@@ -1,0 +1,7 @@
+{
+  "name": "mise-npm-install",
+  "private": true,
+  "dependencies": {
+    "diff-so-fancy": "1.4.14"
+  }
+}
