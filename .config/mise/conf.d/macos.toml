@@ -4,8 +4,46 @@
 # Apply with `mise bootstrap macos defaults apply` (add `--dry-run` to preview).
 # Dock, Finder and the menu bar only read their preferences when they start:
 # restart them (or log out) to see the changes.
+# Common Dock, Finder and keyboard settings use mise's named keys, everything
+# else is set by domain and key.
 # System-wide settings (`sudo defaults`, `pmset`, `systemsetup`, ...) cannot be
 # set by mise and remain in .macos and .macos_hardening.
+
+[bootstrap.settings.macos.dock]
+# Automatically hide and show the Dock, without delay nor animation
+autohide = true
+autohide_delay = 0.0
+autohide_time_modifier = 0.0
+# Set the icon size of Dock items to 36 pixels
+tilesize = 36
+# Don’t show recent applications in Dock
+show_recents = false
+# Don’t automatically rearrange Spaces based on most recent use
+mru_spaces = false
+
+[bootstrap.settings.macos.finder]
+# Expose hidden files in Finder
+show_all_files = true
+show_status_bar = true
+show_pathbar = true
+# Keep folders on top when sorting by name
+sort_folders_first = true
+# Disable the warning when changing a file extension
+show_extensions_warning = false
+# Use list view in all Finder windows by default
+preferred_view_style = "list"
+# Save to disk (not to iCloud) by default
+save_new_documents_to_cloud = false
+
+[bootstrap.settings.macos.keyboard]
+# Set a blazingly fast keyboard repeat rate
+key_repeat = 1
+initial_key_repeat = 10
+# Disable press-and-hold for keys in favor of key repeat
+press_and_hold = false
+# Disable automatic capitalization and auto-correct, annoying when typing code
+automatic_capitalization = false
+automatic_spelling_correction = false
 
 [bootstrap.settings.macos.defaults."com.apple.universalaccess"]
 # Disable transparency in the menu bar and elsewhere on Yosemite
@@ -36,33 +74,22 @@ NSNavPanelExpandedStateForSaveMode2 = true
 # Expand print panel by default
 PMPrintingExpandedStateForPrint = true
 PMPrintingExpandedStateForPrint2 = true
-# Save to disk (not to iCloud) by default
-NSDocumentSaveNewDocumentsToCloud = false
 # Display ASCII control characters using caret notation in standard text views
 # Try e.g. `cd /tmp; unidecode "\x{0000}" > cc.txt; open -e cc.txt`
 NSTextShowsControlCharacters = true
 # Disable automatic termination of inactive apps
 NSDisableAutomaticTermination = true
-# Disable automatic capitalization as it’s annoying when typing code
-NSAutomaticCapitalizationEnabled = false
 # Disable smart dashes as they’re annoying when typing code
 NSAutomaticDashSubstitutionEnabled = false
 # Disable automatic period substitution as it’s annoying when typing code
 NSAutomaticPeriodSubstitutionEnabled = false
 # Disable smart quotes as they’re annoying when typing code
 NSAutomaticQuoteSubstitutionEnabled = false
-# Disable auto-correct
-NSAutomaticSpellingCorrectionEnabled = false
 # Disable “natural” (Lion-style) scrolling
 "com.apple.swipescrolldirection" = false
 # Enable full keyboard access for all controls
 # (e.g. enable Tab in modal dialogs)
 AppleKeyboardUIMode = 3
-# Disable press-and-hold for keys in favor of key repeat
-ApplePressAndHoldEnabled = false
-# Set a blazingly fast keyboard repeat rate
-KeyRepeat = 1
-InitialKeyRepeat = 10
 # Set language and text formats
 # Note: if you’re in the US, replace `EUR` with `USD`, `Centimeters` with
 # `Inches`, `en_GB` with `en_US`, and `true` with `false`.
@@ -113,8 +140,6 @@ type = "png"
 disable-shadow = true
 
 [bootstrap.settings.macos.defaults."com.apple.finder"]
-# Expose hidden files in Finder
-AppleShowAllFiles = true
 # Finder: allow quitting via ⌘ + Q; doing so will also hide desktop icons
 QuitMenuItem = true
 DisableAllAnimations = true
@@ -126,22 +151,11 @@ ShowExternalHardDrivesOnDesktop = true
 ShowHardDrivesOnDesktop = true
 ShowMountedServersOnDesktop = true
 ShowRemovableMediaOnDesktop = true
-# Finder: show status bar
-ShowStatusBar = true
-# Finder: show path bar
-ShowPathbar = true
 # Display full POSIX path as Finder window title
 _FXShowPosixPathInTitle = true
-# Keep folders on top when sorting by name
-_FXSortFoldersFirst = true
 # When performing a search, search the current folder by default
 FXDefaultSearchScope = "SCcf"
-# Disable the warning when changing a file extension
-FXEnableExtensionChangeWarning = false
 OpenWindowForNewRemovableDisk = true
-# Use list view in all Finder windows by default
-# Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`
-FXPreferredViewStyle = "Nlsv"
 # Disable the warning before emptying the Trash
 WarnOnEmptyTrash = false
 # Expand the following File Info panes:
@@ -169,8 +183,6 @@ BrowseAllInterfaces = true
 [bootstrap.settings.macos.defaults."com.apple.dock"]
 # Enable highlight hover effect for the grid view of a stack (Dock)
 mouse-over-hilite-stack = true
-# Set the icon size of Dock items to 36 pixels
-tilesize = 36
 # Change minimize/maximize window effect
 mineffect = "scale"
 # Minimize windows into their application’s icon
@@ -185,16 +197,8 @@ expose-animation-duration = 0.0
 # Don’t group windows by application in Mission Control
 # (i.e. use the old Exposé behavior instead)
 expose-group-by-app = false
-# Don’t automatically rearrange Spaces based on most recent use
-mru-spaces = false
-autohide-delay = 0.0
-autohide-time-modifier = 0.0
-# Automatically hide and show the Dock
-autohide = true
 # Make Dock icons of hidden applications translucent
 showhidden = true
-# Don’t show recent applications in Dock
-show-recents = false
 # Hot corners
 # Possible values:
 #  0: no-op
