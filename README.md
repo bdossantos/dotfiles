@@ -39,9 +39,13 @@ cd ~/.dotfiles
 make install
 ```
 
-`make install` links `~/.config/mise`, then runs `mise dot apply`, which
-symlinks every file tracked by Git into `$HOME` (see
-`.config/mise/conf.d/dotfiles.toml`).
+`make install` installs mise if missing, links `~/.config/mise`, installs
+Homebrew on Apple Silicon if missing, and runs `mise bootstrap`, which applies
+packages, directories, Git repositories (Vundle), dotfiles, macOS defaults
+(restarting Dock/Finder/SystemUIServer via `post-defaults`), the login shell,
+mise tools and the `bootstrap` finish task (see `.config/mise/conf.d/`).
+Preview everything first with `make bootstrap-dry-run` (or
+`mise bootstrap --dry-run`).
 
 ### Migrating from GNU Stow
 
@@ -96,8 +100,8 @@ Everything formerly installed by the `.brew` script is declared in mise:
   `.config/mise/conf.d/packages.toml`
 
 Install mise first (`make install-mise`, or see the
-[mise documentation](https://mise.jdx.dev/getting-started.html)), then
-`make install` runs `make install-homebrew install-packages` on macOS:
+[mise documentation](https://mise.jdx.dev/getting-started.html)), then run
+`make install` (or apply only packages and tools):
 
 ```bash
 make install-homebrew             # brew itself, in /opt/homebrew
@@ -132,7 +136,13 @@ su admin -c "MISE_GLOBAL_CONFIG_FILE=$HOME/.dotfiles/.config/mise/system-casks.t
 
 ### Set Bash as default shell
 
+`mise bootstrap` sets your login shell to Homebrew's Bash via
+`[bootstrap.user]` in `.config/mise/conf.d/bootstrap.toml`. To run only that
+step (or do it manually):
+
 ```bash
+mise bootstrap user apply
+# or manually:
 chsh -s "$(brew --prefix)/bin/bash"
 exec $SHELL
 ```

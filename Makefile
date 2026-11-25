@@ -3,7 +3,9 @@ SHELL := /usr/bin/env bash
 
 .DEFAULT_GOAL := help
 
-# .profile is not sourced yet on a fresh machine
+# Ensure mise.run installs (~/.local/bin) are found in the same run, and
+# keep brew-cask apps in ~/Applications before .profile is sourced
+export PATH := $(HOME)/.local/bin:$(PATH)
 export MISE_BREW_CASK_OPT_APPDIR ?= $(HOME)/Applications
 
 help:
@@ -11,25 +13,26 @@ help:
 		| sort \
 		| awk 'BEGIN { FS = ":.*?## " }; { printf "\033[36m%-30s\033[0m %s\n", $$1, $$2 }'
 
-install: ## Install all the things
-	@make install-mise \
-		install-dotfiles \
-		install-vundle \
-		install-nvim-deps
-	@[[ "$$(uname)" == 'Darwin' ]] \
-		&& make install-homebrew install-packages
+install: ## Bootstrap the machine with mise
+	@$(MAKE) install-mise link-mise-config
+	@if [[ "$$(uname)" == 'Darwin' ]]; then \
+		$(MAKE) install-homebrew; \
+	fi
+	@mise bootstrap --force-dotfiles
 
-install-dotfiles: ## Pull and Install dotfiles
-	@git pull -q && git submodule update --init --recursive -q
-	@mkdir -m 0700 -p ~/.ssh && touch ~/.ssh/allowed_signers
+bootstrap-dry-run: link-mise-config ## Preview what `mise bootstrap` would change
+	@mise bootstrap --dry-run
+
+link-mise-config: ## Link ~/.config/mise so mise can load this repo's config
 	@command -v mise >/dev/null || { echo 'CAN I HAZ MISE ?'; exit 1; }
-	@# mise reads the [dotfiles] entries from its own configuration, so link
-	@# it first, then let `mise dot apply` deploy everything else
 	@mkdir -p ~/.config/mise/conf.d
 	@ln -sf "$(CURDIR)/.config/mise/config.toml" ~/.config/mise/config.toml
 	@for f in "$(CURDIR)"/.config/mise/conf.d/*.toml; do \
 		ln -sf "$$f" ~/.config/mise/conf.d/; \
 	done
+
+install-dotfiles: link-mise-config ## Pull and deploy dotfiles with mise
+	@git pull -q && git submodule update --init --recursive -q
 	@mise dot apply --force --yes
 
 install-homebrew: ## Install homebrew in /opt/homebrew (Apple Silicon)
@@ -51,17 +54,6 @@ install-packages: ## Install brew formulae, casks and tools with mise
 	@command -v mise >/dev/null || { echo 'CAN I HAZ MISE ?'; exit 1; }
 	@mise bootstrap packages apply
 	@mise install
-
-install-vundle: ## Install Vundle, the plug-in manager for Vim
-	$(info --> Install Vundle)
-	@mkdir -p ~/.vim/bundle/ ~/.vimswap ~/.vimundo ~/.tmp
-	@[[ -d ~/.vim/bundle/Vundle.vim ]] \
-		|| git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-	@vim +PluginInstall +qall &>/dev/null
-
-install-nvim-deps: ## Install/setup Neovim dependencies
-	$(info --> Setup Neovim directories)
-	@mkdir -p ~/.vimswap ~/.vimundo ~/.tmp
 
 pre-commit: ## Run pre-commit tests
 	$(info --> Run pre-commit)

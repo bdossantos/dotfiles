@@ -1,0 +1,36 @@
+# Machine bootstrap (directories, repos, login shell, hooks and finish task)
+# https://mise.jdx.dev/bootstrap.html
+#
+#   mise bootstrap --dry-run
+#   mise bootstrap
+#
+# Shell activation is handled by `.config/bash/tools.bash` (sourced from
+# `~/.bashrc`, which is symlinked by `[dotfiles]`), so
+# `[bootstrap.mise_shell_activate]` is intentionally omitted.
+
+[bootstrap.directories."~/.ssh"]
+mode = "0700"
+
+[bootstrap.directories."~/.vim/bundle"]
+
+[bootstrap.directories."~/.vimswap"]
+
+[bootstrap.directories."~/.vimundo"]
+
+[bootstrap.directories."~/.tmp"]
+
+[bootstrap.repos]
+"~/.vim/bundle/Vundle.vim" = { url = "https://github.com/VundleVim/Vundle.vim.git" }
+
+[bootstrap.user]
+login_shell = "{{ system_brew_prefix }}/bin/bash"
+
+[bootstrap.hooks]
+post-defaults = "killall Dock Finder SystemUIServer 2>/dev/null || true"
+
+[tasks.bootstrap]
+description = "Finish setup (SSH allowed_signers, Vim Vundle plugins)"
+run = [
+  "touch ~/.ssh/allowed_signers",
+  "command -v vim >/dev/null && vim +PluginInstall +qall >/dev/null 2>&1 || true",
+]
