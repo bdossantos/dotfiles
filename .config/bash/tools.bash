@@ -1,6 +1,7 @@
 # shellcheck shell=bash
 # Third-party tool integrations
-# Must be sourced before history.bash: tools such as direnv append to
+# Must be sourced before prompt.bash (so mise-managed tools like starship are
+# on PATH) and before history.bash: tools such as mise and direnv update
 # PROMPT_COMMAND, and history.bash needs to run last to prepend history -a.
 
 # brew — refresh PATH, HOMEBREW_CELLAR, HOMEBREW_REPOSITORY, MANPATH, INFOPATH
