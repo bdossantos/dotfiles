@@ -3,13 +3,17 @@ SHELL := /usr/bin/env bash
 
 .DEFAULT_GOAL := help
 
+# .profile is not sourced yet on a fresh machine
+export MISE_BREW_CASK_OPT_APPDIR ?= $(HOME)/Applications
+
 help:
 	@grep -E '^[a-zA-Z1-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 		| sort \
 		| awk 'BEGIN { FS = ":.*?## " }; { printf "\033[36m%-30s\033[0m %s\n", $$1, $$2 }'
 
 install: ## Install all the things
-	@make install-dotfiles \
+	@make install-mise \
+		install-dotfiles \
 		install-vundle \
 		install-nvim-deps
 	@[[ "$$(uname)" == 'Darwin' ]] \
