@@ -1,5 +1,10 @@
 # Runtimes required for the Neovim setup
 # https://mise.jdx.dev/configuration.html
+
+# Per-cask `appdir` needs 2026.10.0 and `[bootstrap.settings.macos]` needs
+# 2026.11.8 (older releases silently ignore it)
+min_version = "2026.11.8"
+
 [settings]
 idiomatic_version_file_enable_tools = ["ruby", "python", "node", "go", "rust"]
 
