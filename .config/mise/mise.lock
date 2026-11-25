@@ -381,10 +381,11 @@ aube = { path = "locks/prettier/3.10.1", digest = "sha256:2d1e8d35e9c42e9df167e3
 backend = "npm:prettier"
 specifiers = ["latest"]
 
-[[tools."pypi:gitlint"]]
+[[tools."pypi:gitlint-core"]]
 version = "0.19.1"
-backend = "pypi:gitlint"
+backend = "pypi:gitlint-core"
 specifiers = ["latest"]
+uv = { path = "locks/pypi-gitlint-core/0.19.1", digest = "sha256:930c3b18092ec357c82134978f61d030eb50c757d523648ff78fdb765b0d14dc" }
 
 [[tools."pypi:s3cmd"]]
 version = "2.4.0"
