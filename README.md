@@ -18,8 +18,6 @@ Personal dotfiles for macOS, managed with [mise](https://mise.jdx.dev)
 | `.gitconfig`        | Git settings (diff-so-fancy, GPG signing, …)     |
 | `.gitmessage`       | Conventional Commits message template            |
 | `.gnupg/`           | GPG configuration                                |
-| `.macos`            | Sensible macOS defaults that need `sudo`        |
-| `.macos_hardening`  | Security-focused macOS hardening settings        |
 | `.ssh/`             | SSH client configuration                         |
 | `.config/zellij/`   | [Zellij](https://zellij.dev) terminal multiplexer with Dracula theme |
 | `.vimrc`            | Vim with Vundle plugins (fzf, ALE, airline, …)   |
@@ -79,15 +77,6 @@ mise bootstrap macos defaults apply
 Safari and Mail are sandboxed apps: open each of them once, and give your
 terminal Full Disk Access (System Settings → Privacy & Security), before
 applying, otherwise their preferences cannot be written.
-
-mise never uses `sudo`, so everything that needs it (`pmset`, `systemsetup`,
-system-wide `defaults`, hardening, …) stays in the scripts below. Run them
-as the admin user:
-
-```bash
-su - admin -c "env PATH=$PATH:/usr/sbin/ bash -x $HOME/.dotfiles/.macos"
-su - admin -c "env PATH=$PATH:/usr/sbin/ bash -x $HOME/.dotfiles/.macos_hardening"
-```
 
 ### Install Homebrew formulae, apps and tools
 
