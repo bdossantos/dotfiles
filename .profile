@@ -8,7 +8,8 @@ if command -v brew >/dev/null 2>&1; then
   export HOMEBREW_PREFIX
 fi
 
-export HOMEBREW_CASK_OPTS="--appdir=${HOME}/Applications --fontdir=${HOME}/Library/Fonts --no-binaries --require-sha"
+# Where `mise bootstrap packages` installs brew-cask apps
+export MISE_BREW_CASK_OPT_APPDIR="${HOME}/Applications"
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_INSECURE_REDIRECT=1

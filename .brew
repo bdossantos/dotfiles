@@ -7,7 +7,6 @@ set -o nounset
 DEBUG=${DEBUG:=0}
 [[ $DEBUG -eq 1 ]] && set -o xtrace
 
-export HOMEBREW_CASK_OPTS="--appdir=${HOME}/Applications --fontdir=${HOME}/Library/Fonts --no-binaries --require-sha"
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_INSECURE_REDIRECT=1
@@ -24,11 +23,10 @@ brew update
 echo '--> Upgrade any already-installed formulae'
 brew upgrade
 
-echo '--> Install all brew Packages'
+echo '--> Install all brew formulae'
 brew install \
   ack \
   advancecomp \
-  anki \
   ansifilter \
   ast-grep \
   autoenv \
@@ -53,15 +51,10 @@ brew install \
   fd \
   findomain \
   findutils \
-  firefox \
-  font-hack \
-  font-hack-nerd-font \
-  font-jetbrains-mono \
   fzf \
   gawk \
   gcc \
   gcloud-cli \
-  ghostty \
   gifsicle \
   git \
   gitlint \
@@ -69,9 +62,7 @@ brew install \
   gnu-sed \
   gnu-tar \
   gnu-which \
-  go \
   go-jsonnet \
-  google-chrome \
   gpatch \
   gpg \
   grep \
@@ -80,9 +71,7 @@ brew install \
   hadolint \
   htmlcompressor \
   htop \
-  imageoptim \
   ipcalc \
-  iterm2 \
   jhead \
   jpeg \
   jpegoptim \
@@ -99,10 +88,8 @@ brew install \
   make \
   miller \
   mise \
-  micro-snitch \
   moreutils \
   nmap \
-  omnigraffle \
   openssh \
   openssl \
   optipng \
@@ -114,7 +101,6 @@ brew install \
   prettier \
   pv \
   pwgen \
-  python@3.9 \
   readline \
   ripgrep \
   ruff \
@@ -122,54 +108,25 @@ brew install \
   shellcheck \
   shfmt \
   shpotify \
-  spotify \
   ssh-copy-id \
   starship \
-  stow \
   tcpdump \
   terminal-notifier \
   tfenv \
   the_silver_searcher \
   tig \
   tldr \
-  tor-browser \
   tree \
   vale \
   vim \
-  vlc \
   watch \
   wget \
   xz \
   zoxide
 
-# 1password and little-snitch should be installed globally ...
-brew install --appdir /Applications \
-  1password \
-  little-snitch
-
-# Yes, I use a non privileged user for daily use
-echo "--> login as admin to install some casks system-wide in /Applications"
-
-su admin -c "
-while true; do sudo -n true; sleep 60; kill -0 $$ || exit; done 2>/dev/null &
-
-make -f ${HOME}/.dotfiles/Makefile install-homebrew
-
-export HOMEBREW_CASK_OPTS='--appdir=/Applications --no-binaries --require-sha'
-export PATH='/Users/admin/.homebrew/bin:${PATH}'
-
-echo '--> Install/update Homebrew cask'
-
-brew update
-
-brew tap homebrew/cask-drivers
-
-brew install \
-  gpg-suite \
-  keybase \
-  vagrant \
-  virtualbox
-"
+# Apps, fonts and system-wide casks are installed by mise (brew-cask), see
+# ~/.config/mise/conf.d/packages.toml and ~/.config/mise/system-casks.toml:
+#   mise bootstrap packages apply --manager brew-cask
 
 # Install tool versions declared in ~/.config/mise/config.toml
 if command -v mise &>/dev/null; then
