@@ -11,9 +11,9 @@ help:
 install: ## Install all the things
 	@make install-dotfiles \
 		install-vundle \
-		install-nvim-deps \
-	@[[ $OS == 'Darwin' ]] \
-		&& make install-packages
+		install-nvim-deps
+	@[[ "$$(uname)" == 'Darwin' ]] \
+		&& make install-homebrew install-packages
 
 install-dotfiles: ## Pull and Install dotfiles
 	@git pull -q && git submodule update --init --recursive -q
@@ -27,6 +27,20 @@ install-dotfiles: ## Pull and Install dotfiles
 		ln -sf "$$f" ~/.config/mise/conf.d/; \
 	done
 	@mise dot apply --force --yes
+
+install-homebrew: ## Install homebrew in /opt/homebrew (Apple Silicon)
+	$(info --> Install homebrew)
+	@[[ "$$(uname)" == 'Darwin' && "$$(uname -m)" == 'arm64' ]] \
+		|| { echo 'Homebrew install is only supported on Apple Silicon'; exit 1; }
+	@if [[ ! -x /opt/homebrew/bin/brew ]]; then \
+		sudo mkdir -p /opt/homebrew && sudo chown -R "$$USER" /opt/homebrew; \
+		curl -fsSL https://github.com/Homebrew/brew/tarball/master \
+			| tar xz --strip 1 -C /opt/homebrew; \
+	fi
+
+install-mise: ## Install mise, the polyglot tool manager
+	$(info --> Install mise)
+	@command -v mise >/dev/null || curl -fsSL https://mise.run | sh
 
 install-packages: ## Install brew formulae, casks and tools with mise
 	$(info --> Install packages)

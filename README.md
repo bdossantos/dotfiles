@@ -91,9 +91,12 @@ Everything formerly installed by the `.brew` script is declared in mise:
 - Homebrew formulae (`brew:`), casks and fonts (`brew-cask:`) in
   `.config/mise/conf.d/packages.toml`
 
-Install [mise](https://mise.jdx.dev/getting-started.html) first, then:
+Install mise first (`make install-mise`, or see the
+[mise documentation](https://mise.jdx.dev/getting-started.html)), then
+`make install` runs `make install-homebrew install-packages` on macOS:
 
 ```bash
+make install-homebrew             # brew itself, in /opt/homebrew
 make install-packages
 # or
 mise bootstrap packages apply --dry-run
@@ -102,13 +105,13 @@ mise install
 mise bootstrap packages upgrade   # replaces `brew upgrade`
 ```
 
-mise's `brew` manager installs formulae in the standard Homebrew prefix
-(`/opt/homebrew` on Apple Silicon), and creates it with `sudo` when missing.
-To keep the daily user unprivileged, create it once as `admin`:
-
-```bash
-sudo mkdir -p /opt/homebrew && sudo chown -R "$USER" /opt/homebrew
-```
+mise's `brew` manager does not need Homebrew, but Homebrew provides the `brew`
+command (used by `brew shellenv` in `.config/bash/tools.bash`). `make
+install-homebrew` extracts Homebrew into the standard prefix (`/opt/homebrew`,
+Apple Silicon only) when `brew` is missing, creating the prefix with `sudo`
+once so the daily user stays unprivileged. Homebrew then sees what mise
+installs. Use `mise bootstrap packages upgrade` rather than `brew upgrade`, to
+avoid the two tools fighting over versions.
 
 `/opt/homebrew/bin` is added to `PATH` in `.profile`. `brew` formulae are only
 available on Apple Silicon (and Linux), casks also work on Intel.
