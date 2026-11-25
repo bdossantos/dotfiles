@@ -1,4 +1,5 @@
-# User-level macOS defaults (replaces the `defaults write` lines of .macos)
+# User-level macOS defaults (replaces the former .macos and .macos_hardening
+# scripts)
 # https://mise.jdx.dev/bootstrap/macos-defaults.html
 #
 # Apply with `mise bootstrap macos defaults apply` (add `--dry-run` to preview).
@@ -6,8 +7,6 @@
 # restart them (or log out) to see the changes.
 # Common Dock, Finder and keyboard settings use mise's named keys, everything
 # else is set by domain and key.
-# System-wide settings (`sudo defaults`, `pmset`, `systemsetup`, ...) cannot be
-# set by mise and remain in .macos and .macos_hardening.
 
 [bootstrap.settings.macos.dock]
 # Automatically hide and show the Dock, without delay nor animation
