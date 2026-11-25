@@ -583,6 +583,23 @@ checksum_source = "mise-versions"
 url = "https://github.com/vale-cli/vale/releases/download/v3.28.1/vale_3.28.1_macOS_arm64.tar.gz"
 url_api = "https://api.github.com/repos/vale-cli/vale/releases/assets/768120908"
 
+[[tools.zellij]]
+version = "0.46.1"
+backend = "aqua:zellij-org/zellij"
+specifiers = ["latest"]
+
+[tools.zellij."platforms.linux-x64"]
+checksum = "sha256:5bbfb977f383b78e9c3cc9342511f9a84d05f2283fb53f158737dcea2d59e2a6"
+checksum_source = "mise-versions"
+url = "https://github.com/zellij-org/zellij/releases/download/v0.46.1/zellij-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/zellij-org/zellij/releases/assets/786116478"
+
+[tools.zellij."platforms.macos-arm64"]
+checksum = "sha256:97ace8e179b98576debd963870424cf208e1ef4fc9bd6180e3c73ff1d798087d"
+checksum_source = "mise-versions"
+url = "https://github.com/zellij-org/zellij/releases/download/v0.46.1/zellij-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/zellij-org/zellij/releases/assets/786127642"
+
 [[tools.zoxide]]
 version = "0.10.0"
 backend = "aqua:ajeetdsouza/zoxide"
