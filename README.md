@@ -3,8 +3,8 @@
 [![CI](https://github.com/bdossantos/dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/bdossantos/dotfiles/actions/workflows/ci.yml)
 [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-brightgreen.svg)](LICENCE)
 
-Personal dotfiles for macOS, managed with
-[GNU Stow](https://www.gnu.org/software/stow/).
+Personal dotfiles for macOS, managed with [mise](https://mise.jdx.dev)
+(`mise dot`, `mise bootstrap`).
 
 ## What's included
 
@@ -14,11 +14,12 @@ Personal dotfiles for macOS, managed with
 | `.config/nvim/`     | Neovim config with [lazy.nvim](https://github.com/folke/lazy.nvim) plugin manager and a pinned `lazy-lock.json` lockfile |
 | `.aliases`          | Handy shell aliases                              |
 | `.bash_profile` / `.bashrc` / `.profile` | Bash startup files     |
-| `.brew`             | Homebrew formulae and casks                      |
+| `.brew`             | Homebrew formulae (casks live in `.config/mise/`) |
+| `.config/mise/`     | [mise](https://mise.jdx.dev) tools, dotfiles, macOS defaults and casks |
 | `.gitconfig`        | Git settings (diff-so-fancy, GPG signing, …)     |
 | `.gitmessage`       | Conventional Commits message template            |
 | `.gnupg/`           | GPG configuration                                |
-| `.macos`            | Sensible macOS defaults                          |
+| `.macos`            | Sensible macOS defaults that need `sudo`        |
 | `.macos_hardening`  | Security-focused macOS hardening settings        |
 | `.ssh/`             | SSH client configuration                         |
 | `.config/zellij/`   | [Zellij](https://zellij.dev) terminal multiplexer with Dracula theme |
@@ -28,14 +29,28 @@ Personal dotfiles for macOS, managed with
 ## Prerequisites
 
 - **git**
-- **[GNU Stow](https://www.gnu.org/software/stow/)** — `brew install stow`
-  (macOS) or `apt install stow` (Debian/Ubuntu)
+- **[mise](https://mise.jdx.dev)** with `mise dot` and `mise bootstrap`
+  support — `brew install mise` or <https://mise.jdx.dev/getting-started.html>
 
 ## Installation
 
 ```bash
 git clone https://github.com/bdossantos/dotfiles ~/.dotfiles
 cd ~/.dotfiles
+make install
+```
+
+`make install` links `~/.config/mise`, then runs `mise dot apply`, which
+symlinks every file tracked by Git into `$HOME` (see
+`.config/mise/conf.d/dotfiles.toml`).
+
+### Migrating from GNU Stow
+
+Remove the old Stow symlinks first, then install again:
+
+```bash
+cd ~/.dotfiles
+make migrate-from-stow
 make install
 ```
 
@@ -50,8 +65,17 @@ make uninstall
 
 ### Sensible macOS defaults
 
-When setting up a new Mac, you may want to apply sensible defaults and
-security hardening:
+User-level preferences are declared in
+`.config/mise/conf.d/macos.toml`:
+
+```bash
+mise bootstrap macos defaults apply --dry-run
+mise bootstrap macos defaults apply
+```
+
+mise never uses `sudo`, so everything that needs it (`pmset`, `systemsetup`,
+system-wide `defaults`, hardening, …) stays in the scripts below. Run them
+as the admin user:
 
 ```bash
 su - admin -c "env PATH=$PATH:/usr/sbin/ bash -x $HOME/.dotfiles/.macos"
@@ -60,8 +84,27 @@ su - admin -c "env PATH=$PATH:/usr/sbin/ bash -x $HOME/.dotfiles/.macos_hardenin
 
 ### Install Homebrew formulae and apps
 
+Command-line formulae are installed by `.brew` in the user-owned `~/.homebrew`
+prefix (mise's `brew` manager would need `/opt/homebrew` and `sudo`):
+
 ```bash
 make run-brew
+```
+
+Apps and fonts are Homebrew casks installed by mise
+(`.config/mise/conf.d/packages.toml`):
+
+```bash
+mise bootstrap packages apply --manager brew-cask --dry-run
+mise bootstrap packages apply --manager brew-cask
+```
+
+Casks that must be installed system-wide by the admin user are in
+`.config/mise/system-casks.toml`:
+
+```bash
+su admin -c "MISE_GLOBAL_CONFIG_FILE=$HOME/.dotfiles/.config/mise/system-casks.toml \
+  mise bootstrap packages apply --manager brew-cask"
 ```
 
 ## Bash

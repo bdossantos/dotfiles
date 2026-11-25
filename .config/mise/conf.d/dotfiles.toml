@@ -1,0 +1,20 @@
+# Deploy this repository into $HOME (replaces GNU Stow)
+# https://mise.jdx.dev/dotfiles.html
+#
+# Only files committed to Git are linked (`manifest = "git"`), one symlink
+# per file (`symlink-each`), so ~/.ssh, ~/.gnupg and ~/.config keep their
+# unmanaged files.
+[dotfiles."~"]
+source = "~/.dotfiles"
+mode = "symlink-each"
+manifest = "git"
+exclude = [
+  "/.github",
+  "/.gitignore",
+  "/.pre-commit-config.yaml",
+  "/.travis.yml",
+  "/LICENCE",
+  "/Makefile",
+  "/README.md",
+  "/requirements.txt",
+]

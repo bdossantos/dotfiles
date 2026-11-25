@@ -18,17 +18,15 @@ install: ## Install all the things
 install-dotfiles: ## Pull and Install dotfiles
 	@git pull -q && git submodule update --init --recursive -q
 	@mkdir -m 0700 -p ~/.ssh && touch ~/.ssh/allowed_signers
-	@command -v stow >/dev/null || { echo 'CAN I HAZ STOW ?'; exit 1; }
-	@stow -S . -t "$(HOME)" -v \
-		--ignore='.pre-commit-config.yaml' \
-		--ignore='.travis.yml' \
-		--ignore='requirements.txt' \
-		--ignore='README.md' \
-		--ignore='LICENCE' \
-		--ignore='Makefile' \
-		--override='.bashrc' \
-		--override='.profile' \
-		--override='.bash_profile'
+	@command -v mise >/dev/null || { echo 'CAN I HAZ MISE ?'; exit 1; }
+	@# mise reads the [dotfiles] entries from its own configuration, so link
+	@# it first, then let `mise dot apply` deploy everything else
+	@mkdir -p ~/.config/mise/conf.d
+	@ln -sf "$(CURDIR)/.config/mise/config.toml" ~/.config/mise/config.toml
+	@for f in "$(CURDIR)"/.config/mise/conf.d/*.toml; do \
+		ln -sf "$$f" ~/.config/mise/conf.d/; \
+	done
+	@mise dot apply --force --yes
 
 install-homebrew: ## Install homebrew, the missing package manager for OS X
 	$(info --> Install homebrew)
@@ -62,6 +60,10 @@ test: ## Run tests suite
 uninstall: uninstall-dotfiles ## Uninstall all the things
 
 uninstall-dotfiles: ## Uninstall dotfiles
+	@mise dot unapply
+
+migrate-from-stow: ## One-off: remove the symlinks created by GNU Stow
+	@command -v stow >/dev/null || { echo 'CAN I HAZ STOW ?'; exit 1; }
 	@stow -D . -t "$(HOME)" -v \
 		--ignore='.github' \
 		--ignore='README.md' \

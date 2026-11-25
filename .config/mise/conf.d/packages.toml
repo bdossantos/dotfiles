@@ -1,0 +1,29 @@
+# macOS apps and fonts (replaces the casks of .brew)
+# https://mise.jdx.dev/bootstrap/packages/brew-cask.html
+#
+#   mise bootstrap packages apply --manager brew-cask --dry-run
+#   mise bootstrap packages apply --manager brew-cask
+#
+# Apps go to ~/Applications (MISE_BREW_CASK_OPT_APPDIR, see .profile).
+# Command-line formulae are still installed by .brew in ~/.homebrew.
+[bootstrap.packages]
+"brew-cask:anki" = { os = "macos" }
+"brew-cask:firefox" = { os = "macos" }
+"brew-cask:ghostty" = { os = "macos" }
+"brew-cask:google-chrome" = { os = "macos" }
+"brew-cask:imageoptim" = { os = "macos" }
+"brew-cask:iterm2" = { os = "macos" }
+"brew-cask:micro-snitch" = { os = "macos" }
+"brew-cask:omnigraffle" = { os = "macos" }
+"brew-cask:spotify" = { os = "macos" }
+"brew-cask:tor-browser" = { os = "macos" }
+"brew-cask:vlc" = { os = "macos" }
+
+# Fonts
+"brew-cask:font-hack" = { os = ["linux", "macos"] }
+"brew-cask:font-hack-nerd-font" = { os = ["linux", "macos"] }
+"brew-cask:font-jetbrains-mono" = { os = ["linux", "macos"] }
+
+# Should be installed globally
+"brew-cask:1password" = { os = "macos", appdir = "/Applications" }
+"brew-cask:little-snitch" = { os = "macos", appdir = "/Applications" }

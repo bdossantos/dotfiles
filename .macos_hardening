@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# MacOs Hardening:
+# MacOs Hardening (user-level defaults live in ~/.config/mise/conf.d/macos.toml):
 #
 #  - Ensure FileVault is enabled
 #  - Ensure firmware password is enabled
@@ -103,43 +103,22 @@ sudo /usr/bin/security authorizationdb write system.preferences deny
 
 sudo pkill -HUP socketfilterfw
 
-# Set the screen to lock as soon as the screensaver starts
-defaults write com.apple.screensaver askForPassword -int 1
-defaults write com.apple.screensaver askForPasswordDelay -int 0
-
-# Expose hidden files and Library folder in Finder
-defaults write com.apple.finder AppleShowAllFiles -bool true
+# Expose the Library folder in Finder
 chflags nohidden ~/Library
-
-# Show all filename extensions (so that "Evil.jpg.app" cannot masquerade easily).
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
-
-# Don't default to saving documents to iCloud
-defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
 # Disable Bonjour multicast advertisements
 sudo defaults write /Library/Preferences/com.apple.mDNSResponder.plist NoMulticastAdvertisements -bool YES
 
-# Set AirDrop Discoverability to 'Contacts Only'
-defaults write com.apple.sharingd DiscoverableMode -string 'Contacts Only'
+# Restart sharingd to apply the AirDrop Discoverability setting
 sudo killall -HUP sharingd
-
-# Set AppStore update check to every one (1) day
-defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
 
 # Captive portal
 sudo defaults write \
   /Library/Preferences/SystemConfiguration/com.apple.captive.control Active \
   -bool false
 
-# disable automatic loading of remote content by Mail.app
-defaults write -app mail DisableURLLoading -bool true
-
 # Disable Remote Login
 sudo systemsetup -f -setremotelogin off
-
-# Disable Safari Auto Open 'safe' Files
-defaults write -app safari AutoOpenSafeDownloads -bool false
 
 # You may wish to enforce hibernation and evict FileVault keys from memory
 # instead of traditional sleep to memory
