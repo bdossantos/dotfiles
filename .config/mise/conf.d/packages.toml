@@ -13,6 +13,7 @@
 [bootstrap.packages]
 "brew-cask:anki" = { os = "macos" }
 "brew-cask:firefox" = { os = "macos" }
+"brew-cask:gcloud-cli" = { os = "macos" }
 "brew-cask:ghostty" = { os = "macos" }
 "brew-cask:google-chrome" = { os = "macos" }
 "brew-cask:imageoptim" = { os = "macos" }
@@ -48,7 +49,6 @@
 "brew:findutils" = "latest"
 "brew:gawk" = "latest"
 "brew:gcc" = "latest"
-"brew-cask:gcloud-cli" = { os = ["linux", "macos"] }
 "brew:gifsicle" = "latest"
 "brew:git" = "latest"
 "brew:gnu-indent" = "latest"
