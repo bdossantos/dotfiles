@@ -28,101 +28,68 @@ brew install \
   ack \
   advancecomp \
   ansifilter \
-  ast-grep \
   autoenv \
-  awscli \
   bash \
   bash-completion@2 \
-  bat \
-  bazel \
   binutils \
-  cheat \
-  cli53 \
   closure-compiler \
   coreutils \
   ctags \
   curl \
-  diff-so-fancy \
   diffutils \
   ed \
   editorconfig \
   entr \
-  eza \
-  fd \
   findomain \
   findutils \
-  fzf \
   gawk \
   gcc \
   gcloud-cli \
   gifsicle \
   git \
-  gitlint \
   gnu-indent \
   gnu-sed \
   gnu-tar \
   gnu-which \
-  go-jsonnet \
   gpatch \
   gpg \
   grep \
   gsl \
   gzip \
-  hadolint \
   htmlcompressor \
   htop \
   ipcalc \
   jhead \
   jpeg \
   jpegoptim \
-  jq \
-  k9s \
-  kops \
-  kubectx \
-  lazygit \
   less \
   lesspipe \
   libyaml \
-  logcli \
   luarocks \
   make \
-  miller \
   mise \
   moreutils \
   nmap \
   openssh \
   openssl \
   optipng \
-  packer \
   pigz \
   pngcrush \
   pngquant \
-  pre-commit \
-  prettier \
   pv \
   pwgen \
   readline \
-  ripgrep \
-  ruff \
-  s3cmd \
-  shellcheck \
-  shfmt \
   shpotify \
   ssh-copy-id \
-  starship \
   tcpdump \
   terminal-notifier \
-  tfenv \
   the_silver_searcher \
   tig \
-  tldr \
   tree \
-  vale \
   vim \
   watch \
   wget \
-  xz \
-  zoxide
+  xz
 
 # Apps, fonts and system-wide casks are installed by mise (brew-cask), see
 # ~/.config/mise/conf.d/packages.toml and ~/.config/mise/system-casks.toml:
