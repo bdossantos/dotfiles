@@ -28,10 +28,6 @@
 "brew-cask:font-hack-nerd-font" = { os = ["linux", "macos"] }
 "brew-cask:font-jetbrains-mono" = { os = ["linux", "macos"] }
 
-# Should be installed globally
-"brew-cask:1password" = { os = "macos", appdir = "/Applications" }
-"brew-cask:little-snitch" = { os = "macos", appdir = "/Applications" }
-
 # Formulae
 "brew:ack" = "latest"
 "brew:advancecomp" = "latest"

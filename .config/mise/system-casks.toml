@@ -8,6 +8,9 @@
 #
 # https://mise.jdx.dev/bootstrap/packages/brew-cask.html
 [bootstrap.packages]
+# 1Password refuses to run outside /Applications, Little Snitch ships a pkg
+"brew-cask:1password" = { os = "macos", appdir = "/Applications" }
+"brew-cask:little-snitch" = { os = "macos", appdir = "/Applications" }
 "brew-cask:gpg-suite" = { os = "macos", appdir = "/Applications" }
 "brew-cask:keybase" = { os = "macos", appdir = "/Applications" }
 "brew-cask:vagrant" = { os = "macos", appdir = "/Applications" }
