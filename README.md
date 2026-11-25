@@ -84,8 +84,18 @@ su - admin -c "env PATH=$PATH:/usr/sbin/ bash -x $HOME/.dotfiles/.macos_hardenin
 
 ### Install Homebrew formulae and apps
 
-Command-line formulae are installed by `.brew` in the user-owned `~/.homebrew`
-prefix (mise's `brew` manager would need `/opt/homebrew` and `sudo`):
+Command-line tools that have a mise equivalent (ripgrep, fzf, jq, bat, eza,
+shellcheck, shfmt, awscli, ...) are installed by mise in
+`.config/mise/conf.d/tools.toml`, without Homebrew or `sudo`:
+
+```bash
+mise install
+```
+
+The remaining formulae (GNU/system utilities, libraries, macOS-only tools,
+gcloud, ...) are installed by `.brew` in the user-owned `~/.homebrew` prefix
+(mise's `brew` manager would need `/opt/homebrew` and `sudo`). `.brew` also
+runs `mise install`:
 
 ```bash
 make run-brew

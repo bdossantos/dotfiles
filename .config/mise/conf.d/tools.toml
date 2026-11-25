@@ -1,0 +1,42 @@
+# Command-line tools (replaces the matching formulae of .brew)
+# https://mise.jdx.dev/registry.html
+#
+#   mise install
+#
+# Tools are downloaded in ~/.local/share/mise, no Homebrew nor sudo needed.
+# Formulae without a mise equivalent (GNU/system utilities, libraries,
+# macOS-only tools, gcloud, ...) are still installed by .brew in ~/.homebrew.
+[tools]
+ast-grep = "latest"
+aws-cli = "latest"
+bat = "latest"
+bazel = "latest"
+cheat = "latest"
+eza = "latest"
+fd = "latest"
+fzf = "latest"
+go-jsonnet = "latest"
+hadolint = "latest"
+jq = "latest"
+k9s = "latest"
+kops = "latest"
+kubectx = "latest"
+lazygit = "latest"
+miller = "latest"
+packer = "latest"
+pre-commit = "latest"
+prettier = "latest"
+ripgrep = "latest"
+ruff = "latest"
+shellcheck = "latest"
+shfmt = "latest"
+starship = "latest"
+tealdeer = "latest"
+tfenv = "latest"
+vale = "latest"
+zoxide = "latest"
+"aqua:barnybug/cli53" = "latest"
+"aqua:grafana/loki/logcli" = "latest"
+"npm:diff-so-fancy" = "latest"
+"pipx:gitlint" = "latest"
+"pipx:s3cmd" = "latest"
