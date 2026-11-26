@@ -8,6 +8,7 @@ min_version = "2026.11.8"
 [settings]
 idiomatic_version_file_enable_tools = ["ruby", "python", "node", "go", "rust"]
 lockfile = true
+minimum_release_age = "7d"
 
 [tools]
 node = "26"
