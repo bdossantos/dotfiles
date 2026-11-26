@@ -10,6 +10,9 @@ idiomatic_version_file_enable_tools = ["ruby", "python", "node", "go", "rust"]
 lockfile = true
 minimum_release_age = "7d"
 
+[tool_config]
+locked = true
+
 [tools]
 node = "26"
 lua = "5.4"

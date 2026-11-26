@@ -98,18 +98,17 @@ make install-packages
 # or
 mise bootstrap packages apply --dry-run
 mise bootstrap packages apply
-mise install
+mise install --locked
 mise bootstrap packages upgrade   # replaces `brew upgrade`
-mise lock --global --bump         # refresh pinned tool versions in mise.lock
 ```
 
 mise's `brew` manager does not need Homebrew, but Homebrew provides the `brew`
 command (used by `brew shellenv` in `.config/bash/tools.bash`). `make
-install-homebrew` extracts Homebrew into the standard prefix (`/opt/homebrew`,
-Apple Silicon only) when `brew` is missing, creating the prefix with `sudo`
-once so the daily user stays unprivileged. Homebrew then sees what mise
-installs. Use `mise bootstrap packages upgrade` rather than `brew upgrade`, to
-avoid the two tools fighting over versions.
+install-homebrew` verifies a pinned Homebrew source archive before extracting
+it into `/opt/homebrew` on Apple Silicon. If the prefix is missing, it creates
+it with `sudo` and assigns ownership to the current user. An existing prefix
+must already be writable. Use `mise bootstrap packages upgrade` rather than
+`brew upgrade` for packages managed by mise.
 
 `/opt/homebrew/bin` is added to `PATH` in `.profile`. `brew` formulae are only
 available on Apple Silicon (and Linux), casks also work on Intel.
@@ -121,6 +120,48 @@ Casks that must be installed system-wide by the admin user are in
 su admin -c "MISE_GLOBAL_CONFIG_FILE=$HOME/.dotfiles/.config/mise/system-casks.toml \
   mise bootstrap packages apply --manager brew-cask"
 ```
+
+### Supply-chain safeguards
+
+The global mise config sets `minimum_release_age = "7d"` and requires
+locked tools. The seven-day delay applies when mise resolves versions with
+release dates; undated releases, exact versions and existing lock entries are
+not held back. Existing locked versions were not retroactively checked against
+this policy. npm and PyPI can also apply the cutoff to newly resolved
+dependencies, but other installers may resolve dependencies independently.
+
+`.config/mise/mise.lock` records tool versions and available platform
+checksums; `.config/mise/locks/` contains the npm and PyPI dependency graphs.
+Keep both in Git and review changes before installing. The lock currently
+covers Linux x64 and macOS arm64; other platforms need reviewed lock entries.
+Checksums detect changes to recorded artifacts, but do not prove the original
+release is trustworthy. Already installed tools are not reverified.
+
+To update tools deliberately, preview and review upstream changes first:
+
+```bash
+mise lock --global --bump --dry-run
+mise lock --global --bump
+git diff -- .config/mise/mise.lock .config/mise/locks/
+mise install --locked
+```
+
+Commit the reviewed lockfile and dependency graph changes together. The
+bootstrap pins mise 2026.11.8 release archives and Homebrew 7.0.13's source
+commit and checks their recorded SHA-256 values before installation. Existing
+executables are not reverified or replaced. Update these pins and hashes
+together after reviewing releases; the Homebrew source hash is recorded from
+the downloaded archive, not an upstream signature.
+
+The release-age setting and tool lock do **not** cover `brew:` formulae,
+`brew-cask:` apps, their dependencies, Homebrew itself, or self-updating apps.
+mise fetches current Homebrew metadata, verifies bottles and checks casks when
+their metadata has a checksum. A versioned formula such as `openssl@4` selects
+a major line, not an exact build. Review package changes before running apply
+or upgrade; even a fresh install selects current versions. Where a vendor
+provides a stable versioned app archive and checksum, a reviewed `macos-app:`
+entry can pin that app, but it does not support every cask or prevent the app
+from updating itself. Keep security-sensitive apps patched.
 
 ## Bash
 
