@@ -69,10 +69,10 @@ install-mise: ## Install mise, the polyglot tool manager
 				sha=7a7f9342559cc4ca670054337ecf497e69d832a05f66e531628381dc92b88f48 ;; \
 			Darwin-x86_64) platform=macos-x64; \
 				sha=355729a12f3d3b23059ad372855a82f5c8720d1d3fb63dbe5068bc9b4952201c ;; \
-			Linux-x86_64) platform=linux-x64; \
-				sha=d2d5a46f507bba772686e2c8f2316b3a4439dac49a37a30db5c0e7bb077c5431 ;; \
-			Linux-aarch64) platform=linux-arm64; \
-				sha=b36da3c4892380325d44dee3678ba618de191254d8a4aed8011ee66b28a6cbd7 ;; \
+			Linux-x86_64) platform=linux-x64-musl; \
+				sha=459ac6f5c1581b44987347af09ddcb518ef255631a098e3ec0430982555eb138 ;; \
+			Linux-aarch64) platform=linux-arm64-musl; \
+				sha=8b3b9d3508a4fc1bee5f90b0bea1926f5656f40f58e40374616daeaaf8d3587c ;; \
 			*) echo 'Unsupported platform for pinned mise release' >&2; exit 1 ;; \
 		esac; \
 		tmp="$$(mktemp -d)"; trap 'rm -rf "$$tmp"' EXIT; \

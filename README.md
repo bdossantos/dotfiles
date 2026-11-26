@@ -124,11 +124,13 @@ su admin -c "MISE_GLOBAL_CONFIG_FILE=$HOME/.dotfiles/.config/mise/system-casks.t
 ### Supply-chain safeguards
 
 The global mise config sets `minimum_release_age = "7d"` and requires
-locked tools. The seven-day delay applies when mise resolves versions with
-release dates; undated releases, exact versions and existing lock entries are
-not held back. Existing locked versions were not retroactively checked against
-this policy. npm and PyPI can also apply the cutoff to newly resolved
-dependencies, but other installers may resolve dependencies independently.
+locked tools declared in that config. `make install` also requires locked
+entries during bootstrap. The seven-day delay applies when mise resolves
+versions with release dates; undated releases, exact versions and existing lock
+entries are not held back. Existing locked versions were not retroactively
+checked against this policy. npm and PyPI can also apply the cutoff to newly
+resolved dependencies, but other installers may resolve dependencies
+independently.
 
 `.config/mise/mise.lock` records tool versions and available platform
 checksums; `.config/mise/locks/` contains the npm and PyPI dependency graphs.
@@ -147,14 +149,20 @@ mise install --locked
 ```
 
 Commit the reviewed lockfile and dependency graph changes together. The
-bootstrap pins mise 2026.11.8 release archives and Homebrew 7.0.13's source
-commit and checks their recorded SHA-256 values before installation. Existing
-executables are not reverified or replaced. Update these pins and hashes
-together after reviewing releases; the Homebrew source hash is recorded from
-the downloaded archive, not an upstream signature.
+bootstrap pins the [mise 2026.11.8 release archives][mise-release] and the
+[Homebrew 7.0.13 source commit][brew-release], checking their recorded SHA-256
+values before installation. The mise hashes come from the release assets.
+Existing executables are not reverified or replaced. Update pins and hashes
+together after reviewing releases and checking upstream verification
+information; the Homebrew source hash was calculated from the downloaded
+archive, not an upstream signature.
+
+[mise-release]: https://github.com/jdx/mise/releases/tag/v2026.11.8
+[brew-release]: https://github.com/Homebrew/brew/releases/tag/7.0.13
 
 The release-age setting and tool lock do **not** cover `brew:` formulae,
 `brew-cask:` apps, their dependencies, Homebrew itself, or self-updating apps.
+Vundle and the Vim plugins installed by the bootstrap task are also unpinned.
 mise fetches current Homebrew metadata, verifies bottles and checks casks when
 their metadata has a checksum. A versioned formula such as `openssl@4` selects
 a major line, not an exact build. Review package changes before running apply
