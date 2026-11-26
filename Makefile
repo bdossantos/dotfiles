@@ -18,7 +18,7 @@ install: ## Bootstrap the machine with mise
 	@if [[ "$$(uname)" == 'Darwin' ]]; then \
 		$(MAKE) install-homebrew; \
 	fi
-	@mise bootstrap --force-dotfiles
+	@MISE_LOCKED=1 mise bootstrap --force-dotfiles
 
 bootstrap-dry-run: link-mise-config ## Preview what `mise bootstrap` would change
 	@mise bootstrap --dry-run
@@ -56,7 +56,7 @@ install-packages: ## Install brew formulae, casks and tools with mise
 	$(info --> Install packages)
 	@command -v mise >/dev/null || { echo 'CAN I HAZ MISE ?'; exit 1; }
 	@mise bootstrap packages apply
-	@mise install
+	@mise install --locked
 
 pre-commit: ## Run pre-commit tests
 	$(info --> Run pre-commit)
