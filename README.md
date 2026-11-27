@@ -78,6 +78,11 @@ mise bootstrap macos defaults apply --dry-run
 mise bootstrap macos defaults apply
 ```
 
+`make macos-apply` applies them and restarts Dock, Finder and SystemUIServer;
+`make macos-status` reports drift and exits 1 if anything differs from the
+config. mise never unsets a key: to get a value back to Apple's default,
+declare it explicitly or run `defaults delete <domain> <key>`.
+
 Safari and Mail are sandboxed apps: open each of them once, and give your
 terminal Full Disk Access (System Settings → Privacy & Security), before
 applying, otherwise their preferences cannot be written.

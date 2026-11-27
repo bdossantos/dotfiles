@@ -23,6 +23,13 @@ install: ## Bootstrap the machine with mise
 bootstrap-dry-run: link-mise-config ## Preview what `mise bootstrap` would change
 	@mise bootstrap --dry-run
 
+macos-status: link-mise-config ## Show macOS defaults drift (exit 1 if anything differs)
+	@mise bootstrap macos defaults status --missing
+
+macos-apply: link-mise-config ## Apply macOS defaults and restart Dock/Finder/SystemUIServer
+	@mise bootstrap macos defaults apply
+	@killall Dock Finder SystemUIServer 2>/dev/null || true
+
 link-mise-config: ## Link ~/.config/mise so mise can load this repo's config
 	@command -v mise >/dev/null || { echo 'CAN I HAZ MISE ?'; exit 1; }
 	@mkdir -p ~/.config/mise/conf.d

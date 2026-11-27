@@ -9,6 +9,8 @@
 # else is set by domain and key.
 
 [bootstrap.settings.macos.dock]
+# Keep the Dock on the left edge of the screen
+orientation = "left"
 # Automatically hide and show the Dock, without delay nor animation
 autohide = true
 autohide_delay = 0.0
@@ -44,6 +46,19 @@ press_and_hold = false
 automatic_capitalization = false
 automatic_spelling_correction = false
 
+[bootstrap.settings.macos.trackpad]
+# Keep three-finger drag off
+three_finger_drag = false
+
+# Keep tap-to-click off (physical click only). Not the named `tap_to_click`
+# key: macOS stores `Clicking` as an integer and coerces it back after every
+# write, so a boolean would show up as permanent drift in `make macos-status`.
+[bootstrap.settings.macos.defaults."com.apple.AppleMultitouchTrackpad"]
+Clicking = 0
+
+[bootstrap.settings.macos.defaults."com.apple.driver.AppleBluetoothMultitouch.trackpad"]
+Clicking = 0
+
 [bootstrap.settings.macos.defaults.NSGlobalDomain]
 # Set highlight color to green
 AppleHighlightColor = "0.764700 0.976500 0.568600"
@@ -74,6 +89,10 @@ NSAutomaticDashSubstitutionEnabled = false
 NSAutomaticPeriodSubstitutionEnabled = false
 # Disable smart quotes as they’re annoying when typing code
 NSAutomaticQuoteSubstitutionEnabled = false
+# Disable inline text prediction (macOS 14+), annoying when typing code
+NSAutomaticInlinePredictionEnabled = false
+# Disable window open/close animations
+NSAutomaticWindowAnimationsEnabled = false
 # Disable “natural” (Lion-style) scrolling
 "com.apple.swipescrolldirection" = false
 # Enable full keyboard access for all controls
@@ -102,8 +121,9 @@ WebKitDeveloperExtras = true
 "Quit When Finished" = true
 
 [bootstrap.settings.macos.defaults."com.apple.LaunchServices"]
-# Disable the “Are you sure you want to open this application?” dialog
-LSQuarantine = false
+# Keep the “Are you sure you want to open this application?” dialog for
+# downloaded apps (Apple’s default; it used to be disabled here)
+LSQuarantine = true
 
 [bootstrap.settings.macos.defaults."com.apple.helpviewer"]
 # Set Help Viewer windows to non-floating mode
@@ -123,6 +143,8 @@ askForPasswordDelay = 0
 type = "png"
 # Disable shadow in screenshots
 disable-shadow = true
+# Write screenshots right away, without the floating thumbnail preview
+show-thumbnail = false
 
 [bootstrap.settings.macos.defaults."com.apple.finder"]
 # Finder: allow quitting via ⌘ + Q; doing so will also hide desktop icons
@@ -143,6 +165,8 @@ FXDefaultSearchScope = "SCcf"
 OpenWindowForNewRemovableDisk = true
 # Disable the warning before emptying the Trash
 WarnOnEmptyTrash = false
+# Automatically remove items from the Trash after 30 days
+FXRemoveOldTrashItems = true
 # Expand the following File Info panes:
 # “General”, “Open with”, and “Sharing & Permissions”
 FXInfoPanesExpanded = { "General" = true, "OpenWith" = true, "Privileges" = true }
@@ -153,17 +177,13 @@ DSDontWriteNetworkStores = true
 DSDontWriteUSBStores = true
 
 [bootstrap.settings.macos.defaults."com.apple.frameworks.diskimages"]
-# Disable disk image verification
-skip-verify = true
-skip-verify-locked = true
-skip-verify-remote = true
+# Keep verifying disk image checksums (Apple’s default; it used to be skipped)
+skip-verify = false
+skip-verify-locked = false
+skip-verify-remote = false
 # Automatically open a new Finder window when a volume is mounted
 auto-open-ro-root = true
 auto-open-rw-root = true
-
-[bootstrap.settings.macos.defaults."com.apple.NetworkBrowser"]
-# Enable AirDrop over Ethernet and on unsupported Macs running Lion
-BrowseAllInterfaces = true
 
 [bootstrap.settings.macos.defaults."com.apple.dock"]
 # Enable highlight hover effect for the grid view of a stack (Dock)
@@ -212,17 +232,6 @@ springboard-show-duration = 0.0
 springboard-hide-duration = 0.0
 springboard-page-duration = 0.0
 
-[bootstrap.settings.macos.defaults."com.apple.terminal"]
-# Only use UTF-8 in Terminal.app
-StringEncodings = [4]
-# Enable Secure Keyboard Entry in Terminal.app
-# See: https://security.stackexchange.com/a/47786/8918
-SecureKeyboardEntry = true
-
-[bootstrap.settings.macos.defaults."com.apple.Terminal"]
-# Disable the annoying line marks
-ShowLineMarks = 0
-
 [bootstrap.settings.macos.defaults."com.apple.TimeMachine"]
 # Prevent Time Machine from prompting to use new hard drives as backup volume
 DoNotOfferNewDisksForBackup = true
@@ -254,63 +263,38 @@ advanced-image-options = true
 # Auto-play videos when opened with QuickTime Player
 MGPlayMovieOnOpen = true
 
-[bootstrap.settings.macos.defaults."com.apple.SoftwareUpdate"]
-# Enable the automatic update check
-AutomaticCheckEnabled = true
-# Check for software updates daily, not just once per week
-ScheduleFrequency = 1
-# Download newly available updates in background
-AutomaticDownload = 1
-# Install System data files & security updates
-CriticalUpdateInstall = 1
-# Automatically download apps purchased on other Macs
-ConfigDataInstall = 1
-
-[bootstrap.settings.macos.defaults."com.apple.commerce"]
-# Turn on app auto-update
-AutoUpdate = true
-# Allow the App Store to reboot machine on macOS updates
-AutoUpdateRestartRequired = true
+# Software Update and App Store auto-update are intentionally not set here:
+# their state lives in system-wide domains and is owned by MDM (DDM), the
+# user-level keys have no effect.
 
 [bootstrap.settings.macos.defaults."com.google.Chrome"]
 # Disable the all too sensitive backswipe on trackpads
 AppleEnableSwipeNavigateWithScrolls = false
 # Disable the all too sensitive backswipe on Magic Mouse
 AppleEnableMouseSwipeNavigateWithScrolls = false
-# Use the system-native print preview dialog
-DisablePrintPreview = true
 # Expand the print dialog by default
 PMPrintingExpandedStateForPrint2 = true
 
-[bootstrap.settings.macos.defaults."com.google.Chrome.canary"]
-AppleEnableSwipeNavigateWithScrolls = false
-AppleEnableMouseSwipeNavigateWithScrolls = false
-DisablePrintPreview = true
-PMPrintingExpandedStateForPrint2 = true
+[bootstrap.settings.macos.defaults."com.apple.WindowManager"]
+# Window management is handled by Loop: don’t hide windows when clicking the
+# wallpaper, and turn off the native edge-drag tiling that fights with it
+EnableStandardClickToShowDesktop = false
+EnableTilingByEdgeDrag = false
+EnableTopTilingByEdgeDrag = false
+EnableTilingOptionAccelerator = false
+EnableTiledWindowMargins = false
 
-[bootstrap.settings.macos.defaults."org.m0k.transmission"]
-# Use `~/Documents/Torrents` to store incomplete downloads
-UseIncompleteDownloadFolder = true
-# Use `~/Downloads` to store completed downloads
-DownloadLocationConstant = true
-# Don’t prompt for confirmation before downloading
-DownloadAsk = false
-MagnetOpenAsk = false
-# Don’t prompt for confirmation before removing non-downloading active transfers
-CheckRemoveDownloading = true
-# Trash original torrent files
-DeleteOriginalTorrent = true
-# Hide the donate message
-WarningDonate = false
-# Hide the legal disclaimer
-WarningLegal = false
-# IP block list.
-# Source: https://giuliomac.wordpress.com/2014/02/19/best-blocklist-for-transmission/
-BlocklistNew = true
-BlocklistURL = "http://john.bitsurge.net/public/biglist.p2p.gz"
-BlocklistAutoUpdate = true
-# Randomize port on launch
-RandomPort = true
+[bootstrap.settings.macos.defaults."com.apple.menuextra.clock"]
+# Show the day of the week and AM/PM in the menu bar clock
+ShowDayOfWeek = true
+ShowAMPM = true
+# Show the date only when there is enough room (0: when space allows,
+# 1: always, 2: never)
+ShowDate = 0
+
+[bootstrap.settings.macos.defaults."com.apple.assistant.support"]
+# Disable Siri
+"Assistant Enabled" = false
 
 [bootstrap.settings.macos.defaults."com.apple.sharingd"]
 # Set AirDrop Discoverability to 'Contacts Only'
