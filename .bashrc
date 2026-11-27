@@ -7,7 +7,7 @@ _bash_config="${HOME}/.config/bash"
 # 1. Shell options (shopt, set -o vi, …)
 [[ -r "${_bash_config}/options.bash" ]] && source "${_bash_config}/options.bash"
 
-# 2. Tool integrations — brew, mise, zoxide, direnv, fzf, gcloud, nomad; must
+# 2. Tool integrations — mise, zoxide, direnv, fzf, gcloud, nomad; must
 #    precede prompt.bash (so mise-managed starship is on PATH) and history.bash
 [[ -r "${_bash_config}/tools.bash" ]] && source "${_bash_config}/tools.bash"
 
@@ -18,7 +18,7 @@ _bash_config="${HOME}/.config/bash"
 #    other PROMPT_COMMAND setters (mise, direnv, starship, …)
 [[ -r "${_bash_config}/history.bash" ]] && source "${_bash_config}/history.bash"
 
-# 5. Tab completions (system + Homebrew)
+# 5. Tab completions (system + mise)
 [[ -r "${_bash_config}/completions.bash" ]] && source "${_bash_config}/completions.bash"
 
 # 6. SSH agent — auto-start / attach

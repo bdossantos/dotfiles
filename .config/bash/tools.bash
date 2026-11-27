@@ -4,11 +4,6 @@
 # on PATH) and before history.bash: tools such as mise and direnv update
 # PROMPT_COMMAND, and history.bash needs to run last to prepend history -a.
 
-# brew — refresh PATH, HOMEBREW_CELLAR, HOMEBREW_REPOSITORY, MANPATH, INFOPATH
-if command -v brew &>/dev/null; then
-  eval "$(brew shellenv)"
-fi
-
 # mise — polyglot version manager (replaces chruby + auto.sh)
 if command -v mise &>/dev/null; then
   eval "$(mise activate bash)"
@@ -24,14 +19,14 @@ if command -v direnv &>/dev/null; then
   eval "$(direnv hook bash)"
 fi
 
-# gcloud SDK (Homebrew-installed)
-if [[ -n "${HOMEBREW_PREFIX}" ]] &&
-  [[ -f "${HOMEBREW_PREFIX}/share/google-cloud-sdk/path.bash.inc" ]] &&
-  [[ -f "${HOMEBREW_PREFIX}/share/google-cloud-sdk/completion.bash.inc" ]]; then
-  # shellcheck source=/dev/null
-  source "${HOMEBREW_PREFIX}/share/google-cloud-sdk/path.bash.inc"
-  # shellcheck source=/dev/null
-  source "${HOMEBREW_PREFIX}/share/google-cloud-sdk/completion.bash.inc"
+# gcloud SDK (mise-installed: the bin/ directory is already on PATH)
+if command -v gcloud &>/dev/null; then
+  _gcloud_dir="$(mise where gcloud 2>/dev/null)"
+  if [[ -r "${_gcloud_dir}/completion.bash.inc" ]]; then
+    # shellcheck source=/dev/null
+    source "${_gcloud_dir}/completion.bash.inc"
+  fi
+  unset _gcloud_dir
 fi
 
 # fzf — fuzzy finder (key bindings + completion)

@@ -4,9 +4,11 @@ SHELL := /usr/bin/env bash
 .DEFAULT_GOAL := help
 
 # Ensure mise.run installs (~/.local/bin) are found in the same run, and
-# keep brew-cask apps in ~/Applications before .profile is sourced
+# keep brew-cask apps in ~/Applications, recorded in a user-owned prefix
+# (the default, /opt/homebrew, needs sudo), before .profile is sourced
 export PATH := $(HOME)/.local/bin:$(PATH)
 export MISE_BREW_CASK_OPT_APPDIR ?= $(HOME)/Applications
+export MISE_SYSTEM_BREW_PREFIX ?= $(HOME)/.local/share/mise-casks
 
 help:
 	@grep -E '^[a-zA-Z1-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -16,9 +18,6 @@ help:
 install: ## Bootstrap the machine with mise
 	@$(MAKE) install-mise link-mise-config
 	@mise install --locked --dry-run
-	@if [[ "$$(uname)" == 'Darwin' ]]; then \
-		$(MAKE) install-homebrew; \
-	fi
 	@MISE_LOCKED=1 mise bootstrap --force-dotfiles
 
 bootstrap-dry-run: link-mise-config ## Preview what `mise bootstrap` would change
@@ -38,28 +37,6 @@ link-mise-config: ## Link ~/.config/mise so mise can load this repo's config
 install-dotfiles: link-mise-config ## Pull and deploy dotfiles with mise
 	@git pull -q && git submodule update --init --recursive -q
 	@mise dot apply --force --yes
-
-install-homebrew: ## Install homebrew in /opt/homebrew (Apple Silicon)
-	$(info --> Install homebrew)
-	@[[ "$$(uname)" == 'Darwin' && "$$(uname -m)" == 'arm64' ]] \
-		|| { echo 'Homebrew install is only supported on Apple Silicon'; exit 1; }
-	@set -eu; if [[ ! -x /opt/homebrew/bin/brew ]]; then \
-		tmp="$$(mktemp -d)"; trap 'rm -rf "$$tmp"' EXIT; \
-		commit=bc63375ac3a4d6debb1ceb441ae6e22854f0909a; \
-		sha=c1dfbc7074f4a1c9799cf5c228df4def0d2de2645fbe1e3402810e0410fe161c; \
-		curl -fsSL "https://codeload.github.com/Homebrew/brew/tar.gz/$$commit" \
-			-o "$$tmp/brew.tar.gz"; \
-		if command -v shasum >/dev/null; then \
-			printf '%s  %s\n' "$$sha" "$$tmp/brew.tar.gz" | shasum -a 256 -c; \
-		else \
-			printf '%s  %s\n' "$$sha" "$$tmp/brew.tar.gz" | sha256sum -c; \
-		fi; \
-		if [[ ! -d /opt/homebrew ]]; then \
-			sudo mkdir -p /opt/homebrew; \
-			sudo chown "$$(id -un)" /opt/homebrew; \
-		fi; \
-		tar xzf "$$tmp/brew.tar.gz" --strip-components 1 -C /opt/homebrew; \
-	fi
 
 install-mise: ## Install mise, the polyglot tool manager
 	$(info --> Install mise)
@@ -89,7 +66,7 @@ install-mise: ## Install mise, the polyglot tool manager
 		install -m 755 "$$tmp/mise/bin/mise" "$(HOME)/.local/bin/mise"; \
 	fi
 
-install-packages: ## Install brew formulae, casks and tools with mise
+install-packages: ## Install apps, fonts and tools with mise
 	$(info --> Install packages)
 	@command -v mise >/dev/null || { echo 'CAN I HAZ MISE ?'; exit 1; }
 	@mise install --locked --dry-run

@@ -1,28 +1,36 @@
-# Command-line tools (replaces the matching formulae of .brew)
+# Command-line tools (replaces the former Homebrew formulae)
 # https://mise.jdx.dev/registry.html
 #
 #   mise install
 #
 # Tools are downloaded in ~/.local/share/mise, no Homebrew nor sudo needed.
-# Formulae without a mise equivalent (GNU/system utilities, libraries,
-# macOS-only tools, ...) are installed by packages.toml (`brew:` formulae).
+# Pin the platforms with `mise lock --platform macos-arm64,linux-x64`.
 [tools]
 ast-grep = "latest"
 aws-cli = "latest"
+azure-cli = "latest"
 bat = "latest"
 bazel = "latest"
 cheat = "latest"
+direnv = "latest"
 eza = "latest"
 fd = "latest"
 fzf = "latest"
+gcloud = "latest"
+gh = "latest"
 go-jsonnet = "latest"
 hadolint = "latest"
+helm = "latest"
 jq = "latest"
 k9s = "latest"
 kops = "latest"
+kubectl = "latest"
 kubectx = "latest"
+kubelogin = "latest"
 lazygit = "latest"
 miller = "latest"
+neovim = "latest"
+nomad = "latest"
 packer = "latest"
 pre-commit = "latest"
 prettier = "latest"
@@ -31,8 +39,10 @@ ruff = "latest"
 shellcheck = "latest"
 shfmt = "latest"
 starship = "latest"
+task = "latest"
 tealdeer = "latest"
 terraform = "latest"
+tmux = "latest"
 # The pypi: backend installs with uv (pipx otherwise)
 uv = "latest"
 vale = "latest"
@@ -43,3 +53,30 @@ zoxide = "latest"
 "npm:diff-so-fancy" = "latest"
 "pypi:gitlint-core" = "latest"
 "pypi:s3cmd" = "latest"
+
+# GNU userland. uutils ships a single `coreutils` binary (`coreutils date`,
+# `coreutils shuf`, ...), so it does not shadow the macOS tools.
+"aqua:uutils/coreutils" = "latest"
+
+# GNU tools macOS does not ship, or ships in an older BSD flavour, from
+# conda-forge (user-space, no conda needed). Those whose commands macOS also
+# provides (sed, awk, find, xargs, make) are excluded from the shims in
+# config.toml and aliased to their GNU names (gsed, gawk, ...) in .aliases.
+"conda:bash" = "latest"
+"conda:bash-completion" = "latest"
+"conda:findutils" = "latest"
+"conda:gawk" = "latest"
+"conda:make" = "latest"
+"conda:sed" = "latest"
+"conda:entr" = "latest"
+"conda:moreutils" = "latest"
+"conda:pigz" = "latest"
+"conda:pv" = "latest"
+"conda:the_silver_searcher" = "latest"
+"conda:tig" = "latest"
+"conda:tree" = "latest"
+"conda:watch" = "latest"
+"conda:wget" = "latest"
+"conda:editorconfig" = "latest"
+"conda:universal-ctags" = "latest"
+"conda:luarocks" = "latest"

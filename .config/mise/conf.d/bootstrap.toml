@@ -22,8 +22,9 @@ mode = "0700"
 [bootstrap.repos]
 "~/.vim/bundle/Vundle.vim" = { url = "https://github.com/VundleVim/Vundle.vim.git" }
 
-[bootstrap.user]
-login_shell = "{{ system_brew_prefix }}/bin/bash"
+# The login shell stays /bin/zsh: `chsh` only accepts the shells listed in
+# /etc/shells, which needs admin rights to edit. `.zshrc` hands over to the
+# mise-installed bash instead, so `[bootstrap.user]` is intentionally omitted.
 
 [bootstrap.hooks]
 post-defaults = "killall Dock Finder SystemUIServer 2>/dev/null || true"

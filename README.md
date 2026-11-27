@@ -27,7 +27,11 @@ Personal dotfiles for macOS, managed with [mise](https://mise.jdx.dev)
 
 - **git**
 - **[mise](https://mise.jdx.dev)** with `mise dot` and `mise bootstrap`
-  support — `brew install mise` or <https://mise.jdx.dev/getting-started.html>
+  support — installed by `make install-mise`, or see
+  <https://mise.jdx.dev/getting-started.html>
+
+No Homebrew, `sudo` or admin rights are needed: everything is installed in
+`$HOME` (`~/.local/share/mise`, `~/Applications`, `~/Library/Fonts`).
 
 ## Installation
 
@@ -37,11 +41,11 @@ cd ~/.dotfiles
 make install
 ```
 
-`make install` installs mise if missing, links `~/.config/mise`, installs
-Homebrew on Apple Silicon if missing, and runs `mise bootstrap`, which applies
-packages, directories, Git repositories (Vundle), dotfiles, macOS defaults
-(restarting Dock/Finder/SystemUIServer via `post-defaults`), the login shell,
-mise tools and the `bootstrap` finish task (see `.config/mise/conf.d/`).
+`make install` installs mise if missing, links `~/.config/mise`, and runs
+`mise bootstrap`, which applies packages (apps and fonts), directories, Git
+repositories (Vundle), dotfiles, macOS defaults (restarting
+Dock/Finder/SystemUIServer via `post-defaults`), mise tools and the `bootstrap`
+finish task (see `.config/mise/conf.d/`).
 Preview everything first with `make bootstrap-dry-run` (or
 `mise bootstrap --dry-run`).
 
@@ -78,48 +82,47 @@ Safari and Mail are sandboxed apps: open each of them once, and give your
 terminal Full Disk Access (System Settings → Privacy & Security), before
 applying, otherwise their preferences cannot be written.
 
-### Install Homebrew formulae, apps and tools
+### Install apps, fonts and tools (no Homebrew, no sudo)
 
-Everything formerly installed by the `.brew` script is declared in mise:
+Everything formerly installed by Homebrew is declared in mise:
 
-- command-line tools with a mise equivalent (ripgrep, fzf, jq, bat, eza,
-  shellcheck, shfmt, awscli, ...) in `.config/mise/conf.d/tools.toml`, installed
-  without Homebrew or `sudo`
-- Homebrew formulae (`brew:`), casks and fonts (`brew-cask:`) in
-  `.config/mise/conf.d/packages.toml`
+- command-line tools in `.config/mise/conf.d/tools.toml`: release binaries
+  (`aqua`, `npm`, `pypi` backends) and GNU userland from conda-forge
+  (`conda:`), all installed in `~/.local/share/mise`
+- macOS apps and fonts (`brew-cask:`) in `.config/mise/conf.d/packages.toml`,
+  installed in `~/Applications` and `~/Library/Fonts`
 
-Install mise first (`make install-mise`, or see the
-[mise documentation](https://mise.jdx.dev/getting-started.html)), then run
-`make install` (or apply only packages and tools):
+Homebrew formulae (`brew:`) are **not** used: mise can only install them in
+`/opt/homebrew`, which needs `sudo` to be created. Install mise first
+(`make install-mise`), then run `make install` (or apply only packages and
+tools):
 
 ```bash
-make install-homebrew             # brew itself, in /opt/homebrew
 make install-packages
 # or
 mise bootstrap packages apply --dry-run
 mise bootstrap packages apply
 mise install --locked
-mise bootstrap packages upgrade   # replaces `brew upgrade`
+mise bootstrap packages upgrade   # upgrade apps and fonts
+mise upgrade                      # upgrade tools (review the lock first)
 ```
 
-mise's `brew` manager does not need Homebrew, but Homebrew provides the `brew`
-command (used by `brew shellenv` in `.config/bash/tools.bash`). `make
-install-homebrew` verifies a pinned Homebrew source archive before extracting
-it into `/opt/homebrew` on Apple Silicon. If the prefix is missing, it creates
-it with `sudo` and assigns ownership to the current user. An existing prefix
-must already be writable. Use `mise bootstrap packages upgrade` rather than
-`brew upgrade` for packages managed by mise.
+`brew-cask:` entries need a prefix where mise records what it installed. The
+default, `/opt/homebrew`, needs `sudo`, so `.profile` and the `Makefile` set the
+(undocumented) `MISE_SYSTEM_BREW_PREFIX` to `~/.local/share/mise-casks`, and
+`MISE_BREW_CASK_OPT_APPDIR` to `~/Applications`. Re-check this when bumping
+mise.
 
-`/opt/homebrew/bin` is added to `PATH` in `.profile`. `brew` formulae are only
-available on Apple Silicon (and Linux), casks also work on Intel.
+Limits of a no-admin setup: casks shipping a `pkg` installer, system
+extensions (Little Snitch, VirtualBox, GPG Suite, ...) or refusing to run
+outside `/Applications` (1Password) cannot be installed. Install them with an
+admin account, or from the vendor.
 
-Casks that must be installed system-wide by the admin user are in
-`.config/mise/system-casks.toml`:
+GNU tools whose commands macOS also provides (`sed`, `awk`, `find`, `xargs`,
+`make`) are excluded from the mise shims (`[settings.shims]` in
+`.config/mise/config.toml`) and exposed as `gsed`, `gawk`, `gfind`, `gxargs`
+and `gmake` in `.aliases`. `gdate` and `gshuf` come from uutils coreutils.
 
-```bash
-su admin -c "MISE_GLOBAL_CONFIG_FILE=$HOME/.dotfiles/.config/mise/system-casks.toml \
-  mise bootstrap packages apply --manager brew-cask"
-```
 
 ### Supply-chain safeguards
 
@@ -149,42 +152,35 @@ mise install --locked
 ```
 
 Commit the reviewed lockfile and dependency graph changes together. The
-bootstrap pins the [mise 2026.11.8 release archives][mise-release] and the
-[Homebrew 7.0.13 source commit][brew-release], checking their recorded SHA-256
-values before installation. The mise hashes come from the release assets.
-Existing executables are not reverified or replaced. Update pins and hashes
-together after reviewing releases and checking upstream verification
-information; the Homebrew source hash was calculated from the downloaded
-archive, not an upstream signature.
+bootstrap pins the [mise 2026.11.8 release archives][mise-release], checking
+their recorded SHA-256 values before installation. The hashes come from the
+release assets. Existing executables are not reverified or replaced. Update the
+pin and hashes together after reviewing the release and checking upstream
+verification information.
 
 [mise-release]: https://github.com/jdx/mise/releases/tag/v2026.11.8
-[brew-release]: https://github.com/Homebrew/brew/releases/tag/7.0.13
 
-The release-age setting and tool lock do **not** cover `brew:` formulae,
-`brew-cask:` apps, their dependencies, Homebrew itself, or self-updating apps.
+The release-age setting and tool lock do **not** cover `brew-cask:` apps, their
+dependencies, or self-updating apps. conda packages are locked with their URLs
+and SHA-256 (`[conda-packages]` in `mise.lock`), but only for the locked
+platforms.
 Vundle and the Vim plugins installed by the bootstrap task are also unpinned.
-mise fetches current Homebrew metadata, verifies bottles and checks casks when
-their metadata has a checksum. A versioned formula such as `openssl@4` selects
-a major line, not an exact build. Review package changes before running apply
-or upgrade; even a fresh install selects current versions. Where a vendor
+mise fetches current Homebrew cask metadata and checks casks when their
+metadata has a checksum. Review package changes before running apply or
+upgrade; even a fresh install selects current versions. Where a vendor
 provides a stable versioned app archive and checksum, a reviewed `macos-app:`
 entry can pin that app, but it does not support every cask or prevent the app
 from updating itself. Keep security-sensitive apps patched.
 
 ## Bash
 
-### Set Bash as default shell
+### Use mise's Bash as default shell
 
-`mise bootstrap` sets your login shell to Homebrew's Bash via
-`[bootstrap.user]` in `.config/mise/conf.d/bootstrap.toml`. To run only that
-step (or do it manually):
-
-```bash
-mise bootstrap user apply
-# or manually:
-chsh -s "$(brew --prefix)/bin/bash"
-exec $SHELL
-```
+Without admin rights, `chsh` cannot switch to a shell that is not listed in
+`/etc/shells`, so the login shell stays `/bin/zsh`. The tracked `.zshrc` hands
+over to the Bash installed by mise (`conda:bash`, falling back to `/bin/bash`):
+open a new terminal after `make install`. Set `DOTFILES_NO_BASH=1` to stay in
+zsh if the mise-installed Bash is broken.
 
 ### Choosing between .bashrc, .profile, .bash_profile, etc.
 
@@ -214,16 +210,16 @@ See also <https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.
 | Module | Purpose |
 | --- | --- |
 | `options.bash` | `shopt` flags and `set -o vi` |
-| `tools.bash` | brew env, mise, zoxide, direnv, gcloud SDK, fzf, nomad |
+| `tools.bash` | mise, zoxide, direnv, gcloud SDK, fzf, nomad |
 | `prompt.bash` | Ghostty shell integration + starship prompt (sets `PROMPT_COMMAND`) |
 | `history.bash` | Prepends `history -a` to `PROMPT_COMMAND` (must run last among PROMPT_COMMAND setters) |
-| `completions.bash` | System-wide and Homebrew tab completions |
+| `completions.bash` | System-wide and mise-installed tab completions |
 | `ssh_agent.bash` | Auto-start / attach SSH agent and add keys |
 
-**Required tools:** `bash` ≥ 4 (install via `brew install bash`)
+**Required tools:** `bash` ≥ 4 (installed by mise, `conda:bash`)
 
 **Optional tools** (gracefully skipped when absent): `mise`, `starship`, `zoxide`,
-`direnv`, `fzf`, `gcloud` (via Homebrew), `nomad`, `zellij`
+`direnv`, `fzf`, `gcloud`, `nomad`, `zellij`
 
 ## Neovim
 
