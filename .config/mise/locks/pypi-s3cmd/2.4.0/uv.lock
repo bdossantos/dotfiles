@@ -7,7 +7,7 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-11-24T20:20:26.16069Z"
+exclude-newer = "2026-11-20T13:13:47.324778Z"
 
 [[package]]
 name = "mise-pypi-tool-environment"
