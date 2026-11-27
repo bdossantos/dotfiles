@@ -48,5 +48,8 @@ jobs:
         with:
           install: false
           cache: false
+      # [dotfiles] source is ~/.dotfiles, the documented clone location
+      - name: Link checkout to ~/.dotfiles
+        run: ln -s "$GITHUB_WORKSPACE" "$HOME/.dotfiles"
       - name: Validate mise config
         run: make test-mise
