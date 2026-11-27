@@ -1,5 +1,5 @@
 # shellcheck shell=bash
-# Tab completions: system-wide and Homebrew
+# Tab completions: system-wide and mise-installed
 
 # System bash completions
 if [[ -r /etc/bash_completion ]]; then
@@ -12,21 +12,13 @@ if [[ -r /etc/profile.d/bash_completion.sh ]]; then
   source /etc/profile.d/bash_completion.sh
 fi
 
-# Homebrew bash completions
-# https://docs.brew.sh/Shell-Completion
-if [[ -n "${HOMEBREW_PREFIX}" ]]; then
-  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
-    export BASH_COMPLETION_COMPAT_DIR="${HOMEBREW_PREFIX}/etc/bash_completion.d"
-    # shellcheck source=/dev/null
-    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
-  else
-    for _completion in "${HOMEBREW_PREFIX}"/etc/bash_completion.d/*; do
-      # shellcheck source=/dev/null
-      [[ -r "$_completion" ]] && source "$_completion"
-    done
-    unset _completion
-  fi
+# bash-completion installed by mise (conda:bash-completion)
+_bash_completion="${MISE_DATA_DIR:-${HOME}/.local/share/mise}/installs/conda-bash-completion/latest/share/bash-completion/bash_completion"
+if [[ -r "$_bash_completion" ]] && ! declare -F _completion_loader &>/dev/null; then
+  # shellcheck source=/dev/null
+  source "$_bash_completion"
 fi
+unset _bash_completion
 
 # gh CLI completions (includes gh copilot)
 if command -v gh &>/dev/null && ! complete -p gh &>/dev/null; then

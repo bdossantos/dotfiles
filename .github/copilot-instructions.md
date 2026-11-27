@@ -3,8 +3,10 @@
 ## Repository Overview
 
 This repository contains personal dotfiles for Benjamin Dos Santos, managed
-with [GNU Stow](https://www.gnu.org/software/stow/). It includes configuration
-files for Bash, Vim, Zellij, Git, Ghostty, SSH, and various command-line tools.
+with [mise](https://mise.jdx.dev) (`mise dot` for the dotfiles, `mise bootstrap`
+for apps, fonts, macOS defaults and tools), without Homebrew nor admin rights.
+It includes configuration files for Bash, Vim, Zellij, Git, Ghostty, SSH, and
+various command-line tools.
 
 ## Commit Messages
 

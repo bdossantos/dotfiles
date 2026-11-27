@@ -134,8 +134,29 @@ fi
 # Delete file securely
 alias shred='shred -n 200 -z -u'
 
+# GNU userland installed by mise, under the usual g-prefixed names
+# - conda: tools whose commands macOS also provides are kept out of the shims
+#   (see [settings.shims] in .config/mise/config.toml): call them by path
+# - uutils ships a single `coreutils` binary
+_mise_installs="${MISE_DATA_DIR:-${HOME}/.local/share/mise}/installs"
+# Format: <conda package>:<command>:<alias>
+for _gnu in sed:sed:gsed gawk:gawk:gawk findutils:find:gfind findutils:xargs:gxargs make:make:gmake; do
+  IFS=: read -r _gnu_pkg _gnu_cmd _gnu_alias <<<"$_gnu"
+  _gnu_bin="${_mise_installs}/conda-${_gnu_pkg}/latest/bin/${_gnu_cmd}"
+  if [[ -x "$_gnu_bin" ]]; then
+    # shellcheck disable=SC2139
+    alias "${_gnu_alias}=$(printf '%q' "$_gnu_bin")"
+  fi
+done
+unset _gnu _gnu_pkg _gnu_cmd _gnu_alias _gnu_bin _mise_installs
+
+if command -v coreutils &>/dev/null; then
+  gdate() { coreutils date "$@"; }
+  gshuf() { coreutils shuf "$@"; }
+fi
+
 # Shuf
-if command -v gshuf &>/dev/null; then
+if declare -F gshuf &>/dev/null; then
   alias shuf='gshuf'
 fi
 
@@ -229,10 +250,7 @@ function tea() {
   [[ "$STEEP_TIME" != [0-9]* ]] && exit 1
   sleep "$STEEP_TIME"
 
-  terminal-notifier \
-    -title '🍵 Tea Club' \
-    -message 'Your tea is ready!' \
-    -appIcon 'https://www.emojibase.com/resources/img/emojis/apple/x2615.png.pagespeed.ic.fUhSj-YPGK.png'
+  osascript -e 'display notification "Your tea is ready!" with title "🍵 Tea Club"'
 }
 
 function netdata() {
@@ -310,8 +328,8 @@ if [[ $OS == 'Darwin' ]]; then
   # Stopwatch
   alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
 
-  # Get OS X Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
-  alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update'
+  # Update the apps, fonts and tools managed by mise (no sudo needed)
+  alias update='mise bootstrap packages upgrade; mise upgrade'
 
   # IP addresses
   alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
@@ -386,11 +404,14 @@ if [[ $OS == 'Darwin' ]]; then
     find "$@" -type f | gxargs -d '\n' -n 1 chmod 0600
   }
 
-  alias awk='gawk'
-  alias date='gdate'
-  alias find='gfind'
-  alias make='gmake'
-  alias sed='gsed'
+  # Only once the GNU tools are installed (see above)
+  for _gnu in awk:gawk date:gdate find:gfind make:gmake sed:gsed; do
+    if alias "${_gnu##*:}" &>/dev/null || declare -F "${_gnu##*:}" &>/dev/null; then
+      # shellcheck disable=SC2139
+      alias "${_gnu%%:*}=${_gnu##*:}"
+    fi
+  done
+  unset _gnu
 fi
 
 # Aliases for Linux, Ops.

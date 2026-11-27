@@ -1,18 +1,10 @@
-# PATH
-export PATH="$HOME/.local/share/mise/shims:/opt/homebrew/bin:/opt/homebrew/sbin:/home/linuxbrew/.linuxbrew/bin:$HOME/.local/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
-
-# Homebrew prefix
-export HOMEBREW_PREFIX='/opt/homebrew'
-if command -v brew >/dev/null 2>&1; then
-  HOMEBREW_PREFIX="$(brew --prefix)"
-  export HOMEBREW_PREFIX
-fi
-
-# Where `mise bootstrap packages` installs brew-cask apps
+# Where `mise bootstrap packages` installs brew-cask apps, and the user-owned
+# prefix where it records them (the default, /opt/homebrew, needs sudo)
 export MISE_BREW_CASK_OPT_APPDIR="${HOME}/Applications"
-export HOMEBREW_NO_ANALYTICS=1
-export HOMEBREW_NO_AUTO_UPDATE=1
-export HOMEBREW_NO_INSECURE_REDIRECT=1
+export MISE_SYSTEM_BREW_PREFIX="${HOME}/.local/share/mise-casks"
+
+# PATH
+export PATH="$HOME/.local/share/mise/shims:$MISE_SYSTEM_BREW_PREFIX/bin:$HOME/.local/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
 # XDG_CONFIG_DIR
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
@@ -53,9 +45,6 @@ if less_pipe=$(command -v lesspipe); then
 elif less_pipe=$(command -v lesspipe.sh); then
   eval "$($less_pipe)"
 fi
-
-# man
-export MANPATH="${HOMEBREW_PREFIX}/share/man${MANPATH+:$MANPATH}:"
 
 # Don't clear the screen after quitting a manual page
 # Use bat for syntax-highlighted man pages when available, otherwise fall back
@@ -131,11 +120,6 @@ export FZF_CTRL_T_OPTS="--preview '($FZF_PREVIEW_COMMAND) 2> /dev/null | head -$
 if [ ! -d "$TMPDIR" ]; then
   export TMPDIR="/tmp/${USER}"
   mkdir -p -m 0700 "$TMPDIR"
-fi
-
-# diff-highligh
-if [ -d "${HOMEBREW_PREFIX}/share/git-core/contrib/diff-highlight/" ]; then
-  export PATH="${PATH}:${HOMEBREW_PREFIX}/share/git-core/contrib/diff-highlight"
 fi
 
 # Set this to false to turn off version control status checking within the prompt for all themes

@@ -1,14 +1,29 @@
 # Runtimes required for the Neovim setup
 # https://mise.jdx.dev/configuration.html
 
-# Per-cask `appdir` needs 2026.10.0 and `[bootstrap.settings.macos]` needs
-# 2026.11.8 (older releases silently ignore it)
+# Per-cask `appdir` needs 2026.10.0, `[bootstrap.settings.macos]` needs
+# 2026.11.8 and `[settings.shims] exclude` needs 2026.9.10 (older releases
+# silently ignore them)
 min_version = "2026.11.8"
 
 [settings]
 idiomatic_version_file_enable_tools = ["ruby", "python", "node", "go", "rust"]
 lockfile = true
 minimum_release_age = "7d"
+
+# GNU tools installed from conda-forge (see conf.d/tools.toml) expose commands
+# macOS already provides: keep those out of the shims so scripts keep getting
+# the BSD versions, `.aliases` maps the GNU ones to gsed, gawk, gfind, ...
+[settings.shims]
+exclude = [
+  "awk",
+  "find",
+  "locate",
+  "make",
+  "sed",
+  "updatedb",
+  "xargs",
+]
 
 [tool_config]
 locked = true
