@@ -43,18 +43,18 @@ install-mise: ## Install mise, the polyglot tool manager
 	@set -eu; if ! command -v mise >/dev/null; then \
 		case "$$(uname -s)-$$(uname -m)" in \
 			Darwin-arm64) platform=macos-arm64; \
-				sha=7a7f9342559cc4ca670054337ecf497e69d832a05f66e531628381dc92b88f48 ;; \
+				sha=76ff289e5ef2ffdeec54ad75275795d3e05699cb74b9f2f656652d3d1ddd7d11 ;; \
 			Darwin-x86_64) platform=macos-x64; \
-				sha=355729a12f3d3b23059ad372855a82f5c8720d1d3fb63dbe5068bc9b4952201c ;; \
+				sha=4ad598c502813f63cb9a82518f60e66f25d2c715e5bd5b949ca66323e94bd154 ;; \
 			Linux-x86_64) platform=linux-x64-musl; \
-				sha=459ac6f5c1581b44987347af09ddcb518ef255631a098e3ec0430982555eb138 ;; \
+				sha=86a5c3d8cf3d62b45a10ddd6afe8225bada9423e517ec8df7d589aa7d02c171d ;; \
 			Linux-aarch64) platform=linux-arm64-musl; \
-				sha=8b3b9d3508a4fc1bee5f90b0bea1926f5656f40f58e40374616daeaaf8d3587c ;; \
+				sha=bf73525892d7942b881b885867bb028cab98ed528356c4490364eb1001ef9deb ;; \
 			*) echo 'Unsupported platform for pinned mise release' >&2; exit 1 ;; \
 		esac; \
 		tmp="$$(mktemp -d)"; trap 'rm -rf "$$tmp"' EXIT; \
-		archive="mise-v2026.11.8-$$platform.tar.gz"; \
-		curl -fsSL "https://github.com/jdx/mise/releases/download/v2026.11.8/$$archive" \
+		archive="mise-v2026.11.14-$$platform.tar.gz"; \
+		curl -fsSL "https://github.com/jdx/mise/releases/download/v2026.11.14/$$archive" \
 			-o "$$tmp/mise.tar.gz"; \
 		if command -v shasum >/dev/null; then \
 			printf '%s  %s\n' "$$sha" "$$tmp/mise.tar.gz" | shasum -a 256 -c; \
