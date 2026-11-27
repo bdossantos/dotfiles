@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # The login shell stays /bin/zsh: `chsh` only accepts the shells listed in
 # /etc/shells, which needs admin rights to edit. Hand over to the bash
 # installed by mise (conda:bash) instead, and fall back to the system bash.
