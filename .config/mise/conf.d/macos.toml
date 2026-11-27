@@ -44,16 +44,6 @@ press_and_hold = false
 automatic_capitalization = false
 automatic_spelling_correction = false
 
-[bootstrap.settings.macos.defaults."com.apple.universalaccess"]
-# Disable transparency in the menu bar and elsewhere on Yosemite
-reduceTransparency = true
-# Use scroll gesture with the Ctrl (^) modifier key to zoom
-closeViewScrollWheelToggle = true
-HIDScrollZoomModifierMask = 262144
-# Follow the keyboard focus while zoomed in
-closeViewZoomFollowsFocus = true
-reduceMotion = true
-
 [bootstrap.settings.macos.defaults.NSGlobalDomain]
 # Set highlight color to green
 AppleHighlightColor = "0.764700 0.976500 0.568600"
@@ -114,10 +104,6 @@ WebKitDeveloperExtras = true
 [bootstrap.settings.macos.defaults."com.apple.LaunchServices"]
 # Disable the “Are you sure you want to open this application?” dialog
 LSQuarantine = false
-
-[bootstrap.settings.macos.defaults."com.apple.systempreferences"]
-# Disable Resume system-wide
-NSQuitAlwaysKeepsWindows = false
 
 [bootstrap.settings.macos.defaults."com.apple.helpviewer"]
 # Set Help Viewer windows to non-floating mode
@@ -226,74 +212,6 @@ springboard-show-duration = 0.0
 springboard-hide-duration = 0.0
 springboard-page-duration = 0.0
 
-# Safari and Mail are sandboxed: their preferences live in
-# ~/Library/Containers/<domain>, which only exists once the app has been
-# opened, and which the terminal can only write with Full Disk Access
-# (System Settings > Privacy & Security > Full Disk Access).
-[bootstrap.settings.macos.defaults."com.apple.Safari"]
-# Privacy: don’t send search queries to Apple
-UniversalSearchEnabled = false
-SuppressSearchSuggestions = true
-# Press Tab to highlight each item on a web page
-WebKitTabToLinksPreferenceKey = true
-"com.apple.Safari.ContentPageGroupIdentifier.WebKit2TabsToLinks" = true
-# Show the full URL in the address bar (note: this still hides the scheme)
-ShowFullURLInSmartSearchField = true
-# Set Safari’s home page to `about:blank` for faster loading
-HomePage = "about:blank"
-# Prevent Safari from opening ‘safe’ files automatically after downloading
-AutoOpenSafeDownloads = false
-# Allow hitting the Backspace key to go to the previous page in history
-"com.apple.Safari.ContentPageGroupIdentifier.WebKit2BackspaceKeyNavigationEnabled" = true
-# Hide Safari’s bookmarks bar by default
-ShowFavoritesBar = false
-# Hide Safari’s sidebar in Top Sites
-ShowSidebarInTopSites = false
-# Disable Safari’s thumbnail cache for History and Top Sites
-DebugSnapshotsUpdatePolicy = 2
-# Enable Safari’s debug menu
-IncludeInternalDebugMenu = true
-# Make Safari’s search banners default to Contains instead of Starts With
-FindOnPageMatchesWordStartsOnly = false
-# Remove useless icons from Safari’s bookmarks bar
-ProxiesInBookmarksBar = []
-# Enable the Develop menu and the Web Inspector in Safari
-IncludeDevelopMenu = true
-WebKitDeveloperExtrasEnabledPreferenceKey = true
-"com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" = true
-# Enable continuous spellchecking
-WebContinuousSpellCheckingEnabled = true
-# Disable auto-correct
-WebAutomaticSpellingCorrectionEnabled = false
-# Disable AutoFill
-AutoFillFromAddressBook = false
-AutoFillPasswords = false
-AutoFillCreditCardData = false
-AutoFillMiscellaneousForms = false
-# Warn about fraudulent websites
-WarnAboutFraudulentWebsites = true
-# Block pop-up windows
-WebKitJavaScriptCanOpenWindowsAutomatically = false
-"com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically" = false
-# Enable “Do Not Track”
-SendDoNotTrackHTTPHeader = true
-# Update extensions automatically
-InstallExtensionUpdatesAutomatically = true
-
-# Sandboxed, see com.apple.Safari above
-[bootstrap.settings.macos.defaults."com.apple.mail"]
-# Disable automatic loading of remote content in Mail.app
-DisableURLLoading = true
-# Disable send and reply animations in Mail.app
-DisableReplyAnimations = true
-DisableSendAnimations = true
-# Copy email addresses as `foo@example.com` instead of `Foo Bar <foo@example.com>` in Mail.app
-AddressesIncludeNameOnPasteboard = false
-# Disable inline attachments (just show the icons)
-DisableInlineAttachmentViewing = true
-# Disable automatic spell checking
-SpellCheckingBehavior = "NoSpellCheckingEnabled"
-
 [bootstrap.settings.macos.defaults."com.apple.terminal"]
 # Only use UTF-8 in Terminal.app
 StringEncodings = [4]
@@ -320,10 +238,6 @@ ShowCategory = 0
 SortColumn = "CPUUsage"
 SortDirection = 0
 
-[bootstrap.settings.macos.defaults."com.apple.addressbook"]
-# Enable the debug menu in Address Book
-ABShowDebugMenu = true
-
 [bootstrap.settings.macos.defaults."com.apple.TextEdit"]
 # Use plain text mode for new TextEdit documents
 RichText = 0
@@ -339,12 +253,6 @@ advanced-image-options = true
 [bootstrap.settings.macos.defaults."com.apple.QuickTimePlayerX"]
 # Auto-play videos when opened with QuickTime Player
 MGPlayMovieOnOpen = true
-
-[bootstrap.settings.macos.defaults."com.apple.appstore"]
-# Enable the WebKit Developer Tools in the Mac App Store
-WebKitDeveloperExtras = true
-# Enable Debug Menu in the Mac App Store
-ShowDebugMenu = true
 
 [bootstrap.settings.macos.defaults."com.apple.SoftwareUpdate"]
 # Enable the automatic update check
@@ -403,10 +311,6 @@ BlocklistURL = "http://john.bitsurge.net/public/biglist.p2p.gz"
 BlocklistAutoUpdate = true
 # Randomize port on launch
 RandomPort = true
-
-[bootstrap.settings.macos.defaults."com.apple.Mail"]
-DisableSendAnimations = true
-DisableReplyAnimations = true
 
 [bootstrap.settings.macos.defaults."com.apple.sharingd"]
 # Set AirDrop Discoverability to 'Contacts Only'
@@ -494,32 +398,6 @@ domain = "com.apple.finder"
 key = "StandardViewSettings"
 path = ["IconViewSettings", "iconSize"]
 value = 80.0
-
-# Add the keyboard shortcut ⌘ + Enter to send an email in Mail.app
-[[bootstrap.settings.macos.defaults_entries]]
-domain = "com.apple.mail"
-key = "NSUserKeyEquivalents"
-path = ["Send"]
-value = "@\u21a9"
-
-# Display emails in threaded mode, sorted by date (oldest at the top)
-[[bootstrap.settings.macos.defaults_entries]]
-domain = "com.apple.mail"
-key = "DraftsViewerAttributes"
-path = ["DisplayInThreadedMode"]
-value = "yes"
-
-[[bootstrap.settings.macos.defaults_entries]]
-domain = "com.apple.mail"
-key = "DraftsViewerAttributes"
-path = ["SortedDescending"]
-value = "yes"
-
-[[bootstrap.settings.macos.defaults_entries]]
-domain = "com.apple.mail"
-key = "DraftsViewerAttributes"
-path = ["SortOrder"]
-value = "received-date"
 
 # Prevent Photos from opening automatically when devices are plugged in
 [[bootstrap.settings.macos.defaults_entries]]
