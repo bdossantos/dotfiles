@@ -429,6 +429,23 @@ uv = { path = "locks/azure-cli/2.93.0~a837e014", digest = "sha256:3091ce870644ba
 dependency_prereleases = "allow"
 with = '["pip"]'
 
+[[tools.azure-kubelogin]]
+version = "0.2.22"
+backend = "aqua:Azure/kubelogin"
+specifiers = ["latest"]
+
+[tools.azure-kubelogin."platforms.linux-x64"]
+checksum = "sha256:716cbcb1880bca8f0e976b8917d06fcfe04de2c1e737eaaabbb26e2782330119"
+checksum_source = "mise-versions"
+url = "https://github.com/Azure/kubelogin/releases/download/v0.2.22/kubelogin-linux-amd64.zip"
+url_api = "https://api.github.com/repos/Azure/kubelogin/releases/assets/673072154"
+
+[tools.azure-kubelogin."platforms.macos-arm64"]
+checksum = "sha256:b586d6409d578f2048053a6117ace47f0154f36c5beb6792c674679987a7efc8"
+checksum_source = "mise-versions"
+url = "https://github.com/Azure/kubelogin/releases/download/v0.2.22/kubelogin-darwin-arm64.zip"
+url_api = "https://api.github.com/repos/Azure/kubelogin/releases/assets/673072140"
+
 [[tools.bat]]
 version = "0.26.1"
 backend = "aqua:sharkdp/bat"
@@ -1249,23 +1266,6 @@ checksum = "sha256:b8c9b5150ca6d902474a115cf7e535831081b9ae10cbe561ea36c82bb3823
 checksum_source = "mise-versions"
 url = "https://github.com/ahmetb/kubectx/releases/download/v0.11.0/kubectx_v0.11.0_darwin_arm64.tar.gz"
 url_api = "https://api.github.com/repos/ahmetb/kubectx/releases/assets/382590921"
-
-[[tools.kubelogin]]
-version = "1.36.4"
-backend = "aqua:int128/kubelogin"
-specifiers = ["latest"]
-
-[tools.kubelogin."platforms.linux-x64"]
-checksum = "sha256:9e8baeb4905d35a301304af2548324997add512fe94ab20e65993d167212bf85"
-checksum_source = "mise-versions"
-url = "https://github.com/int128/kubelogin/releases/download/v1.36.4/kubelogin_linux_amd64.zip"
-url_api = "https://api.github.com/repos/int128/kubelogin/releases/assets/545423188"
-
-[tools.kubelogin."platforms.macos-arm64"]
-checksum = "sha256:5aa470d059a9672d732439474678ac05a0de5623ad3af54966b8fe1ac7df4254"
-checksum_source = "mise-versions"
-url = "https://github.com/int128/kubelogin/releases/download/v1.36.4/kubelogin_darwin_arm64.zip"
-url_api = "https://api.github.com/repos/int128/kubelogin/releases/assets/545423629"
 
 [[tools.lazygit]]
 version = "0.66.3"
