@@ -21,7 +21,7 @@ install: ## Bootstrap the machine with mise
 	@MISE_LOCKED=1 mise bootstrap --force-dotfiles
 
 bootstrap-dry-run: link-mise-config ## Preview what `mise bootstrap` would change
-	@mise bootstrap --dry-run
+	@mise bootstrap --force-dotfiles --dry-run
 
 macos-status: link-mise-config ## Show macOS defaults drift (exit 1 if anything differs)
 	@mise bootstrap macos defaults status --missing
@@ -90,7 +90,7 @@ test: ## Run tests suite
 test-mise: link-mise-config ## Validate the mise config and lockfile (no changes applied)
 	$(info --> Validate mise config)
 	@mise install --locked --dry-run
-	@mise bootstrap --dry-run
+	@mise bootstrap --force-dotfiles --dry-run
 
 uninstall: uninstall-dotfiles ## Uninstall all the things
 
