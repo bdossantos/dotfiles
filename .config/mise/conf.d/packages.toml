@@ -21,11 +21,9 @@
 "brew-cask:imageoptim" = { os = "macos" }
 "brew-cask:loop" = { os = "macos" }
 "brew-cask:micro-snitch" = { os = "macos" }
-"brew-cask:omnigraffle" = { os = "macos" }
 "brew-cask:podman-desktop" = { os = "macos" }
 "brew-cask:slack" = { os = "macos" }
 "brew-cask:spotify" = { os = "macos" }
-"brew-cask:tor-browser" = { os = "macos" }
 "brew-cask:vlc" = { os = "macos" }
 
 # Fonts
