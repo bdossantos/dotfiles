@@ -56,7 +56,9 @@ zoxide = "latest"
 
 # GNU userland. uutils ships a single `coreutils` binary (`coreutils date`,
 # `coreutils shuf`, ...), so it does not shadow the macOS tools.
-"aqua:uutils/coreutils" = "latest"
+# Pinned: the 0.13.0 release ships no macOS binaries, switch back to "latest"
+# once upstream publishes them again.
+"aqua:uutils/coreutils" = "0.12"
 
 # GNU tools macOS does not ship, or ships in an older BSD flavour, from
 # conda-forge (user-space, no conda needed). Those whose commands macOS also

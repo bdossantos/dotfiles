@@ -373,15 +373,21 @@ url = "https://github.com/grafana/loki/releases/download/v3.7.10/logcli-darwin-a
 url_api = "https://api.github.com/repos/grafana/loki/releases/assets/742748619"
 
 [[tools."aqua:uutils/coreutils"]]
-version = "0.13.0"
+version = "0.12.0"
 backend = "aqua:uutils/coreutils"
-specifiers = ["latest"]
+specifiers = ["0.12"]
 
 [tools."aqua:uutils/coreutils"."platforms.linux-x64"]
-checksum = "sha256:0970b93a3a5ef6a6eba13ab04b4015308bb32da01c7fa2d000f340eed2d7b394"
+checksum = "sha256:e08bd526f3c14717b145dfed4dbff5545848ca67a9b940be7ff7de5afea32786"
 checksum_source = "mise-versions"
-url = "https://github.com/uutils/coreutils/releases/download/0.13.0/coreutils-0.13.0-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/uutils/coreutils/releases/assets/770154200"
+url = "https://github.com/uutils/coreutils/releases/download/0.12.0/coreutils-0.12.0-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/uutils/coreutils/releases/assets/569034668"
+
+[tools."aqua:uutils/coreutils"."platforms.macos-arm64"]
+checksum = "sha256:7caea447564405b3eb50cce2a89d314df07d1b7a67090dc4cc7c82eba7014052"
+checksum_source = "mise-versions"
+url = "https://github.com/uutils/coreutils/releases/download/0.12.0/coreutils-0.12.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/uutils/coreutils/releases/assets/569200817"
 
 [[tools.ast-grep]]
 version = "0.51.3"
