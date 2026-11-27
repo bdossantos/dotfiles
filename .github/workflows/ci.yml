@@ -7,51 +7,46 @@ on:
   pull_request:
     branches: [master]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.9]
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # ratchet:actions/checkout@v7.0.1
-      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # ratchet:actions/cache@v6.1.0
-        id: cache-pip
         with:
-          path: |
-            ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt', '**/requirements-dev.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-            ${{ runner.os }}-
-      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # ratchet:actions/cache@v6.1.0
-        id: cache-shellcheck
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # ratchet:actions/setup-python@v7.1.0
+        id: python
         with:
-          path: bin/shellcheck
-          key: ${{ runner.os }}-shellcheck
-          restore-keys: |
-            ${{ runner.os }}-shellcheck
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: requirements.txt
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # ratchet:actions/cache@v6.1.0
         with:
           path: ~/.cache/pre-commit
-          key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
-      - name: Install virtualenv
-        run: |
-          sudo apt-get update && sudo apt-get install -y python3-setuptools python3-wheel
-      - name: Setup bin directories
-        run: |
-          mkdir -p "$(pwd)/bin"
-          export PATH=$(pwd)/bin:$HOME/.local/bin:$PATH
-      - name: Get shellcheck binary
-        if: steps.cache-shellcheck.outputs.cache-hit != 'true'
-        run: |
-          export SHELLCHECK_VERSION=v0.9.0
-          wget -qO- https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz | tar -xJv
-          mv "shellcheck-${SHELLCHECK_VERSION}/shellcheck" "$(pwd)/bin/shellcheck"
-          chmod +x "$(pwd)/bin/shellcheck"
+          key: pre-commit|${{ steps.python.outputs.python-version }}|${{ hashFiles('.pre-commit-config.yaml') }}
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-      - name: Lint and test
-        run: |
-          timeout 1h make test
+        run: pip install -r requirements.txt
+      - name: Lint
+        run: make test
+
+  mise:
+    runs-on: macos-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # ratchet:actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@924e7c586e33d7d4bae9c14e26c5d22e2beb6e78 # ratchet:jdx/mise-action@v5.3.0
+        with:
+          install: false
+          cache: false
+      - name: Validate mise config
+        run: make test-mise

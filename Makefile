@@ -80,6 +80,11 @@ pre-commit: ## Run pre-commit tests
 test: ## Run tests suite
 	@$(MAKE) pre-commit
 
+test-mise: link-mise-config ## Validate the mise config and lockfile (no changes applied)
+	$(info --> Validate mise config)
+	@mise install --locked --dry-run
+	@mise bootstrap --dry-run
+
 uninstall: uninstall-dotfiles ## Uninstall all the things
 
 uninstall-dotfiles: ## Uninstall dotfiles
