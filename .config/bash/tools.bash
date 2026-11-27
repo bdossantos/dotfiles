@@ -10,7 +10,11 @@ if command -v mise &>/dev/null; then
 fi
 
 # zoxide — smarter cd
+# starship (prompt.bash) moves the existing PROMPT_COMMAND into
+# STARSHIP_PROMPT_COMMAND, so __zoxide_hook still runs but zoxide's doctor
+# can't see it in PROMPT_COMMAND and prints a false-positive warning.
 if command -v zoxide &>/dev/null; then
+  export _ZO_DOCTOR=0
   eval "$(zoxide init bash)"
 fi
 
